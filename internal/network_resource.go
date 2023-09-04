@@ -2,7 +2,6 @@ package provider
 
 import (
 	p "github.com/pulumi/pulumi-go-provider"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
 	"github.com/threefoldtech/zos/pkg/gridtypes"
@@ -19,12 +18,26 @@ type NetworkArgs struct {
 	tfPluginClient deployer.TFPluginClient `pulumi:"tf_plugin_client"`
 	Name           string                  `pulumi:"name"`
 	Description    string                  `pulumi:"description"`
-	Nodes          pulumi.IntArray         `pulumi:"nodes"`
+	Nodes          []int                   `pulumi:"nodes"`
 	IPRange        gridtypes.IPNet         `pulumi:"ip_range"`
 	AddWGAccess    bool                    `pulumi:"add_wg_access"`
 }
 
 // NetworkState is describing the fields that exist on the created resource
+// type NetworkState struct {
+// 	NetworkArgs
+
+// 	SolutionType     string                  `pulumi:"solution_type"`
+// 	AccessWGConfig   string                  `pulumi:"access_wg_config"`
+// 	ExternalIP       *gridtypes.IPNet        `pulumi:"external_ip"`
+// 	ExternalSK       wgtypes.Key             `pulumi:"external_sk"`
+// 	PublicNodeID     int                     `pulumi:"public_node_id"`
+// 	NodesIPRange     map[int]gridtypes.IPNet `pulumi:"nodes_ip_range"`
+// 	NodeDeploymentID map[int]int             `pulumi:"node_deployment_id"`
+// 	WGPort           map[int]int             `pulumi:"wg_port"`
+// 	Keys             map[int]wgtypes.Key     `pulumi:"keys"`
+// }
+
 type NetworkState struct {
 	NetworkArgs
 
@@ -52,6 +65,10 @@ func (Network) Create(ctx p.Context, name string, input NetworkArgs, preview boo
 		Nodes:       make([]uint32, len(state.Nodes)),
 		IPRange:     state.IPRange,
 		AddWGAccess: state.AddWGAccess,
+	}
+
+	for k, v := range state.Nodes {
+		network.Nodes[k] = uint32(v)
 	}
 
 	if err := state.tfPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
