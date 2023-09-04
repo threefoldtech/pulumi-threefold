@@ -3,10 +3,11 @@ module github.com/rawdaGastan/pulumi-provider-grid
 go 1.20
 
 require (
+	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.11.1
+	github.com/pulumi/pulumi/sdk/v3 v3.72.0
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.10.4
 	github.com/threefoldtech/zos v0.5.6-0.20230809073554-ddb0ad98fc4c
-	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200609130330-bd2cb7843e1b
 )
 
 require (
@@ -68,10 +69,8 @@ require (
 	github.com/pgavlin/goldmark v1.1.33-0.20200616210433-b5eb04559386 // indirect
 	github.com/pierrec/xxHash v0.1.5 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/pulumi/pulumi/pkg/v3 v3.72.0 // indirect
-	github.com/pulumi/pulumi/sdk/v3 v3.72.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/rs/cors v1.9.0 // indirect
@@ -103,6 +102,7 @@ require (
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/term v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
+	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200609130330-bd2cb7843e1b // indirect
 	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4 // indirect
 	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
