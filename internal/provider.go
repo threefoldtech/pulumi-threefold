@@ -8,6 +8,8 @@ import (
 func RunProvider(providerName, Version string) error {
 	return p.RunProvider(providerName, Version,
 		infer.Provider(infer.Options{
-			Resources: []infer.InferredResource{},
+			Resources: []infer.InferredResource{
+				infer.Resource[Network, NetworkArgs, NetworkState](),
+			},
 		}))
 }
