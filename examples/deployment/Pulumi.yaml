@@ -1,0 +1,39 @@
+name: pulumi-provider-grid
+runtime: yaml
+
+plugins:
+  providers:
+    - name: grid
+      path: ../..
+
+resources:
+  provider:
+    type: pulumi:providers:grid
+    properties:
+      type: sr25519
+      mnemonic: shift mimic traffic mimic dutch sad harsh spring leg kitchen april dynamic
+
+  network:
+    type: grid:internal:Network
+    options:
+      provider: ${provider}
+    properties:
+      name: testing
+      description: test network
+      nodes:
+        - 3
+      ip_range: 10.1.0.0/16
+      add_wg_access: true
+      solution_type: Network
+
+  deployment:
+    type: grid:internal:Deployment
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${network}
+    properties:
+      node_id: 1
+
+outputs:
+  node_deployment_id: ${deployment.node_deployment_id}
