@@ -15,6 +15,3 @@ func main() {
 		log.Println(err)
 	}
 }
-// go build github.com/rawdaGastan/pulumi-provider-grid/ 
-// pulumi plugin install resource pulumi-provider-grid v1.0.0 -f pulumi-provider-grid --reinstall 
-//  (cd consumer && pulumi up)
