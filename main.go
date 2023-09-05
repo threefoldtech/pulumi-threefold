@@ -8,10 +8,10 @@ import (
 
 // Version is initialized by the Go linker to contain the semver of this build.
 var Version string
-var ProviderName = "pulumi-provider-grid"
+var ProviderName = "grid"
 
 func main() {
-	if err := p.RunProvider(ProviderName, Version); err != nil {
+	if err := p.RunProvider(ProviderName, "v1.0.0"); err != nil {
 		log.Println(err)
 	}
 }
