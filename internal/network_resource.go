@@ -61,12 +61,17 @@ func parseToNetworkState(network workloads.ZNet) NetworkState {
 	state := NetworkState{
 		NetworkArgs:      stateArgs,
 		AccessWGConfig:   network.AccessWGConfig,
-		ExternalIP:       network.ExternalIP.String(),
 		ExternalSK:       network.ExternalSK.String(),
 		PublicNodeID:     int32(network.PublicNodeID),
 		NodesIPRange:     nodesIPRange,
 		NodeDeploymentID: nodeDeploymentID,
 	}
+
+	if network.ExternalIP != nil {
+		state.ExternalIP = network.ExternalIP.String()
+	}
+
+	state.ExternalIP = ""
 
 	return state
 }
@@ -96,6 +101,7 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 
 // Create creates network and deploy it
 func (*Network) Create(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+
 	state := NetworkState{NetworkArgs: input}
 	if preview {
 		return name, state, nil
@@ -108,6 +114,7 @@ func (*Network) Create(ctx p.Context, name string, input NetworkArgs, preview bo
 
 	// deploy network
 	config := infer.GetConfig[Config](ctx)
+
 	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
 		return name, state, err
 	}
@@ -115,4 +122,83 @@ func (*Network) Create(ctx p.Context, name string, input NetworkArgs, preview bo
 	state = parseToNetworkState(network)
 
 	return name, state, nil
+}
+
+// Update updates the arguments of the network resource
+func (*Network) Update(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+
+	state := NetworkState{NetworkArgs: input}
+	if preview {
+		return name, state, nil
+	}
+	network, err := parseToZNet(input)
+	if err != nil {
+		return name, state, err
+	}
+
+	// update network
+	config := infer.GetConfig[Config](ctx)
+
+	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
+		return name, state, err
+	}
+
+	state = parseToNetworkState(network)
+
+	return name, state, nil
+}
+
+// ResourceNetworkRead get the state of the network resource
+func Read(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+
+	state := NetworkState{NetworkArgs: input}
+	if preview {
+		return name, state, nil
+	}
+
+	network, err := parseToZNet(input)
+	if err != nil {
+		return name, state, err
+	}
+
+	config := infer.GetConfig[Config](ctx)
+
+	if err := config.TFPluginClient.NetworkDeployer.InvalidateBrokenAttributes(&network); err != nil {
+		return name, state, err
+
+	}
+
+	if err = config.TFPluginClient.NetworkDeployer.ReadNodesConfig(ctx, &network); err != nil {
+		return name, state, err
+
+	}
+
+	state = parseToNetworkState(network)
+
+	return name, state, nil
+
+}
+
+// Delete deletes the network resource
+func Delete(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+
+	state := NetworkState{NetworkArgs: input}
+	if preview {
+		return name, state, nil
+	}
+
+	network, err := parseToZNet(input)
+	if err != nil {
+		return name, state, err
+	}
+
+	config := infer.GetConfig[Config](ctx)
+
+	if err = config.TFPluginClient.NetworkDeployer.Cancel(ctx, &network); err != nil {
+		state = parseToNetworkState(network)
+		return name, state, err
+	}
+
+	return name, state, nil
+
 }
