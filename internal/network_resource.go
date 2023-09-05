@@ -147,7 +147,7 @@ func (*Network) Update(ctx p.Context, name string, input NetworkArgs, preview bo
 }
 
 // ResourceNetworkRead get the state of the network resource
-func Read(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+func (*Network) Read(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
 
 	state := NetworkState{NetworkArgs: input}
 	if preview {
@@ -178,7 +178,7 @@ func Read(ctx p.Context, name string, input NetworkArgs, preview bool) (string, 
 }
 
 // Delete deletes the network resource
-func Delete(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+func (*Network) Delete(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
 
 	state := NetworkState{NetworkArgs: input}
 	if preview {
