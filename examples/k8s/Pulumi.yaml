@@ -1,0 +1,45 @@
+name: pulumi-provider-grid
+runtime: yaml
+
+plugins:
+  providers:
+    - name: grid
+      path: ../..
+
+resources:
+  provider:
+    type: pulumi:providers:grid
+    properties:
+      type: sr25519
+      mnemonic: candy odor talent chunk oxygen palace day ginger rice history fringe estate
+
+  kubernetes:
+    type: grid:internal:Kubernetes
+    options:
+      provider: ${provider}
+    properties:
+      master:
+        name: mr
+        node: 4
+        disk_size: 2
+        publicip: true
+        cpu: 2
+        memory: 2048
+
+      workers:
+        - name: w0
+          node: 5
+          disk_size: 2
+          cpu: 2
+          memory: 2048
+        - name: w1
+          node: 6
+          disk_size: 2
+          cpu: 2
+          memory: 2048
+
+      token: 12345678910123
+      network_name: myk8s
+
+outputs:
+  node_deployment_id: ${network.node_deployment_id}
