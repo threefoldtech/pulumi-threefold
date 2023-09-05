@@ -26,14 +26,14 @@ type KubernetesState struct {
 	KubernetesArgs
 }
 
-func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, error) {
+func parseToK8sCluster(kubernetesArgs KubernetesArgs) (*workloads.K8sCluster, error) {
 
 	// parse NodesIpRange
 	nodesIPRange := make(map[uint32]gridtypes.IPNet)
 	for k, v := range kubernetesArgs.NodesIPRange {
 		ipRange, err := gridtypes.ParseIPNet(v)
 		if err != nil {
-			return workloads.K8sCluster{}, err
+			return nil, err
 		}
 
 		nodesIPRange[uint32(k)] = ipRange
@@ -56,7 +56,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 		NodeDeploymentID: nodeDeploymentId,
 	}
 
-	return k8sCluster, nil
+	return &k8sCluster, nil
 }
 
 // Create creates Kubernetes cluster and deploy it
@@ -76,7 +76,7 @@ func (*Kubernetes) Create(ctx p.Context, name string, input KubernetesArgs, prev
 		return name, state, err
 	}
 
-	if err := config.TfPluginClient.K8sDeployer.UpdateFromRemote(ctx, k8sCluster); err != nil {
+	if err := config.TFPluginClient.K8sDeployer.UpdateFromRemote(ctx, k8sCluster); err != nil {
 		return name, state, err
 	}
 
@@ -101,7 +101,7 @@ func (*Kubernetes) Update(ctx p.Context, name string, input KubernetesArgs, prev
 		return name, state, err
 	}
 
-	if err := config.TfPluginClient.K8sDeployer.UpdateFromRemote(ctx, k8sCluster); err != nil {
+	if err := config.TFPluginClient.K8sDeployer.UpdateFromRemote(ctx, k8sCluster); err != nil {
 		return name, state, err
 	}
 
@@ -109,7 +109,7 @@ func (*Kubernetes) Update(ctx p.Context, name string, input KubernetesArgs, prev
 }
 
 // Read get the state of the Kubernetes resource
-func Read(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
+func (*Kubernetes) Read(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
 	state := KubernetesState{KubernetesArgs: input}
 	if preview {
 		return name, state, nil
@@ -126,7 +126,7 @@ func Read(ctx p.Context, name string, input KubernetesArgs, preview bool) (strin
 		return name, state, err
 	}
 
-	if err := k8sCluster.InvalidateBrokenAttributes(config.TfPluginClient.SubstrateConn); err != nil {
+	if err := k8sCluster.InvalidateBrokenAttributes(config.TFPluginClient.SubstrateConn); err != nil {
 		return name, state, err
 	}
 
@@ -138,7 +138,7 @@ func Read(ctx p.Context, name string, input KubernetesArgs, preview bool) (strin
 }
 
 // Delete deletes the Kubernetes resource
-func Delete(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
+func (*Kubernetes) Delete(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
 	state := KubernetesState{KubernetesArgs: input}
 	if preview {
 		return name, state, nil
