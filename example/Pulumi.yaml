@@ -15,17 +15,17 @@ resources:
       network: qa
 
   network:
-    type: grid:Network
-    
+    type: grid:internal:Network
     options:
       provider: ${provider}
-
     properties:
       name: test
       description: test network
       nodes:
-        - 30
+        - 2
       ip_range: 10.1.0.0/16
+      add_wg_access: true
+      solution_type: Network
 
 outputs:
   node_deployment_id: ${network.node_deployment_id}
