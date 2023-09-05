@@ -83,4 +83,77 @@ func (*Kubernetes) Create(ctx p.Context, name string, input KubernetesArgs, prev
 	return name, state, nil
 }
 
-// TODO: Add update & delete & read
+// Update updates the arguments of the Kubernetes resource
+func (*Kubernetes) Update(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
+	state := KubernetesState{KubernetesArgs: input}
+	if preview {
+		return name, state, nil
+	}
+
+	k8sCluster, err := parseToK8sCluster(input)
+	if err != nil {
+		return name, state, err
+	}
+
+	config := infer.GetConfig[Config](ctx)
+
+	if err := config.TFPluginClient.K8sDeployer.Deploy(ctx, k8sCluster); err != nil {
+		return name, state, err
+	}
+
+	if err := config.TfPluginClient.K8sDeployer.UpdateFromRemote(ctx, k8sCluster); err != nil {
+		return name, state, err
+	}
+
+	return name, state, nil
+}
+
+// Read get the state of the Kubernetes resource
+func Read(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
+	state := KubernetesState{KubernetesArgs: input}
+	if preview {
+		return name, state, nil
+	}
+
+	k8sCluster, err := parseToK8sCluster(input)
+	if err != nil {
+		return name, state, err
+	}
+
+	config := infer.GetConfig[Config](ctx)
+
+	if err := config.TFPluginClient.K8sDeployer.Validate(ctx, k8sCluster); err != nil {
+		return name, state, err
+	}
+
+	if err := k8sCluster.InvalidateBrokenAttributes(config.TfPluginClient.SubstrateConn); err != nil {
+		return name, state, err
+	}
+
+	if err := config.TFPluginClient.K8sDeployer.UpdateFromRemote(ctx, k8sCluster); err != nil {
+		return name, state, err
+	}
+
+	return name, state, nil
+}
+
+// Delete deletes the Kubernetes resource
+func Delete(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
+	state := KubernetesState{KubernetesArgs: input}
+	if preview {
+		return name, state, nil
+	}
+
+	k8sCluster, err := parseToK8sCluster(input)
+	if err != nil {
+		return name, state, err
+	}
+
+	config := infer.GetConfig[Config](ctx)
+
+	if err := config.TFPluginClient.K8sDeployer.Cancel(ctx, k8sCluster); err != nil {
+		return name, state, err
+	}
+
+	return name, state, nil
+}
