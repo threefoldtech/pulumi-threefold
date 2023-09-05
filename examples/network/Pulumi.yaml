@@ -4,15 +4,14 @@ runtime: yaml
 plugins:
   providers:
     - name: grid
-      path: ..
+      path: ../..
 
 resources:
   provider:
     type: pulumi:providers:grid
     properties:
       type: sr25519
-      mnemonic: shift mimic traffic mimic dutch sad harsh spring leg kitchen april dynamic
-      network: qa
+      mnemonic:
 
   network:
     type: grid:internal:Network

@@ -15,11 +15,11 @@ type Network struct{}
 // NetworkArgs is defining what arguments it accepts
 type NetworkArgs struct {
 	Name         string  `pulumi:"name"`
-	Description  string  `pulumi:"description"`
-	Nodes        []int32 `pulumi:"nodes"`
-	IPRange      string  `pulumi:"ip_range"`
-	AddWGAccess  bool    `pulumi:"add_wg_access"`
-	SolutionType string  `pulumi:"solution_type"`
+	Description  string  `pulumi:"description,optional"`
+	Nodes        []int32 `pulumi:"nodes,optional"`
+	IPRange      string  `pulumi:"ip_range,optional"`
+	AddWGAccess  bool    `pulumi:"add_wg_access,optional"`
+	SolutionType string  `pulumi:"solution_type,optional"`
 }
 
 type NetworkState struct {
@@ -70,8 +70,6 @@ func parseToNetworkState(network workloads.ZNet) NetworkState {
 	if network.ExternalIP != nil {
 		state.ExternalIP = network.ExternalIP.String()
 	}
-
-	state.ExternalIP = ""
 
 	return state
 }
