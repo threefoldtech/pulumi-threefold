@@ -9,6 +9,7 @@ import (
 	"github.com/threefoldtech/zos/pkg/gridtypes"
 )
 
+// Kubernetes struct data
 type K8sNode struct {
 	Name          string `pulumi:"name"`
 	Node          int32  `pulumi:"node"`
