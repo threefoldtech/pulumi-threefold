@@ -30,6 +30,8 @@ resources:
     type: grid:internal:Kubernetes
     options:
       provider: ${provider}
+      dependsOn:
+        - ${network}
     properties:
       master:
         name: mr
