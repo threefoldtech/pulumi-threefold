@@ -10,7 +10,7 @@ resources:
   provider:
     type: pulumi:providers:grid
     properties:
-      type: sr25519
+      key_type: sr25519
       mnemonic:
 
   network:
