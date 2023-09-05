@@ -11,7 +11,20 @@ resources:
     type: pulumi:providers:grid
     properties:
       type: sr25519
-      mnemonic: candy odor talent chunk oxygen palace day ginger rice history fringe estate
+      mnemonic:
+
+  network:
+    type: grid:internal:Network
+    options:
+      provider: ${provider}
+    properties:
+      name: test
+      description: test network
+      nodes:
+        - 3
+      ip_range: 10.1.0.0/16
+      add_wg_access: true
+      solution_type: Network
 
   kubernetes:
     type: grid:internal:Kubernetes
@@ -20,7 +33,7 @@ resources:
     properties:
       master:
         name: mr
-        node: 4
+        node: 3
         disk_size: 2
         publicip: true
         cpu: 2
@@ -28,18 +41,18 @@ resources:
 
       workers:
         - name: w0
-          node: 5
+          node: 3
           disk_size: 2
           cpu: 2
           memory: 2048
         - name: w1
-          node: 6
+          node: 3
           disk_size: 2
           cpu: 2
           memory: 2048
 
-      token: 12345678910123
-      network_name: myk8s
+      token: t123456789
+      network_name: test
 
 outputs:
-  node_deployment_id: ${network.node_deployment_id}
+  node_deployment_id: ${kubernetes.node_deployment_id}
