@@ -202,7 +202,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) workloads.K8sCluster {
 	}
 }
 
-func AddComputedFieldsFromState(k8sCluster *workloads.K8sCluster, state KubernetesState) error {
+func addComputedFieldsFromState(k8sCluster *workloads.K8sCluster, state KubernetesState) error {
 
 	// parse NodesIPRange
 	nodesIPRange := make(map[uint32]gridtypes.IPNet)
@@ -298,7 +298,7 @@ func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, in
 	}
 
 	k8sCluster := parseToK8sCluster(input)
-	if err := AddComputedFieldsFromState(&k8sCluster, oldState); err != nil {
+	if err := addComputedFieldsFromState(&k8sCluster, oldState); err != nil {
 		return state, err
 	}
 
@@ -320,7 +320,7 @@ func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, in
 // Read get the state of the Kubernetes resource
 func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (string, KubernetesState, error) {
 	k8sCluster := parseToK8sCluster(oldState.KubernetesArgs)
-	if err := AddComputedFieldsFromState(&k8sCluster, oldState); err != nil {
+	if err := addComputedFieldsFromState(&k8sCluster, oldState); err != nil {
 		return id, oldState, err
 	}
 
@@ -346,7 +346,7 @@ func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (str
 // Delete deletes the Kubernetes resource
 func (*Kubernetes) Delete(ctx p.Context, id string, oldState KubernetesState) error {
 	k8sCluster := parseToK8sCluster(oldState.KubernetesArgs)
-	if err := AddComputedFieldsFromState(&k8sCluster, oldState); err != nil {
+	if err := addComputedFieldsFromState(&k8sCluster, oldState); err != nil {
 		return err
 	}
 
