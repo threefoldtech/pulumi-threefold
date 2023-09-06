@@ -10,7 +10,6 @@ resources:
   provider:
     type: pulumi:providers:grid
     properties:
-      key_type: sr25519
       mnemonic:
 
   network:
@@ -23,8 +22,6 @@ resources:
       nodes:
         - 3
       ip_range: 10.1.0.0/16
-      add_wg_access: true
-      solution_type: Network
 
 outputs:
   node_deployment_id: ${network.node_deployment_id}
