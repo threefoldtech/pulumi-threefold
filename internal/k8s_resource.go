@@ -10,7 +10,7 @@ import (
 	"github.com/threefoldtech/zos/pkg/gridtypes"
 )
 
-// Kubernetes struct of input data
+// K8sNodeInput struct of input data
 type K8sNodeInput struct {
 	Name          string `pulumi:"name"`
 	Node          int32  `pulumi:"node"`
@@ -24,7 +24,7 @@ type K8sNodeInput struct {
 	FlistChecksum string `pulumi:"flist_checksum,optional"`
 }
 
-// Kubernetes struct of computed data
+// K8sNodeComputed struct of computed data
 type K8sNodeComputed struct {
 	ComputedIP  string `pulumi:"computedip"`
 	ComputedIP6 string `pulumi:"computedip6"`
