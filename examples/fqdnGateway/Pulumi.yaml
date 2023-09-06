@@ -1,0 +1,38 @@
+name: pulumi-provider-grid
+runtime: yaml
+
+plugins:
+  providers:
+    - name: grid
+      path: ../..
+
+resources:
+  provider:
+    type: pulumi:providers:grid
+    properties:
+      mnemonic: shift mimic traffic mimic dutch sad harsh spring leg kitchen april dynamic
+      network: qa
+
+  network:
+    type: grid:internal:Network
+    options:
+      provider: ${provider}
+    properties:
+      name: test
+      description: test network
+      nodes:
+        - 3
+      ip_range: 10.1.0.0/16
+
+  fqdnGateway:
+    type: grid:internal:FqdnGateway
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${network}
+    properties:
+      name: gateway
+      node_id: 2
+      fqdn: domain
+      backends:
+        - https://10.1.0.2:8081
