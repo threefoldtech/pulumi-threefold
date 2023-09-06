@@ -2,11 +2,13 @@ package provider
 
 import (
 	"fmt"
+	"strconv"
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
 	"github.com/threefoldtech/zos/pkg/gridtypes"
+	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 )
 
 // Network controlling struct
@@ -97,6 +99,51 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 	return network, nil
 }
 
+func updateNetworkFromState(network *workloads.ZNet, state NetworkState) error {
+	externalIP, err := gridtypes.ParseIPNet(state.ExternalIP)
+	if err != nil {
+		return err
+	}
+
+	externalSk, err := wgtypes.ParseKey(state.ExternalSK)
+	if err != nil {
+		return err
+	}
+
+	nodesIPRange := make(map[uint32]gridtypes.IPNet)
+	for k, v := range state.NodesIPRange {
+		ip, err := gridtypes.ParseIPNet(v)
+		if err != nil {
+			return err
+		}
+
+		kInt, err := strconv.Atoi(k)
+		if err != nil {
+			return err
+		}
+		nodesIPRange[uint32(kInt)] = ip
+	}
+
+	nodeDeploymentID := make(map[uint32]uint64)
+	for k, v := range state.NodeDeploymentID {
+		kInt, err := strconv.Atoi(k)
+		if err != nil {
+			return err
+		}
+
+		nodeDeploymentID[uint32(kInt)] = uint64(v)
+	}
+
+	network.AccessWGConfig = state.AccessWGConfig
+	network.ExternalIP = &externalIP
+	network.ExternalSK = externalSk
+	network.PublicNodeID = uint32(state.PublicNodeID)
+	network.NodesIPRange = nodesIPRange
+	network.NodeDeploymentID = nodeDeploymentID
+
+	return nil
+}
+
 // Create creates network and deploy it
 func (*Network) Create(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
 
@@ -123,80 +170,77 @@ func (*Network) Create(ctx p.Context, name string, input NetworkArgs, preview bo
 }
 
 // Update updates the arguments of the network resource
-func (*Network) Update(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+func (*Network) Update(ctx p.Context, id string, oldState NetworkState, input NetworkArgs, preview bool) (NetworkState, error) {
 
 	state := NetworkState{NetworkArgs: input}
 	if preview {
-		return name, state, nil
+		return state, nil
 	}
+
 	network, err := parseToZNet(input)
 	if err != nil {
-		return name, state, err
+		return state, err
+	}
+	if err := updateNetworkFromState(&network, oldState); err != nil {
+		return state, err
 	}
 
 	// update network
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
-		return name, state, err
+		return state, err
 	}
 
 	state = parseToNetworkState(network)
 
-	return name, state, nil
+	return state, nil
 }
 
 // ResourceNetworkRead get the state of the network resource
-func (*Network) Read(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+func (*Network) Read(ctx p.Context, id string, oldState NetworkState) (string, NetworkState, error) {
 
-	state := NetworkState{NetworkArgs: input}
-	if preview {
-		return name, state, nil
-	}
-
-	network, err := parseToZNet(input)
+	network, err := parseToZNet(oldState.NetworkArgs)
 	if err != nil {
-		return name, state, err
+		return id, oldState, err
+	}
+	if err := updateNetworkFromState(&network, oldState); err != nil {
+		return id, oldState, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.NetworkDeployer.InvalidateBrokenAttributes(&network); err != nil {
-		return name, state, err
+		return id, oldState, err
 
 	}
 
 	if err = config.TFPluginClient.NetworkDeployer.ReadNodesConfig(ctx, &network); err != nil {
-		return name, state, err
+		return id, oldState, err
 
 	}
 
-	state = parseToNetworkState(network)
+	state := parseToNetworkState(network)
 
-	return name, state, nil
-
+	return id, state, nil
 }
 
 // Delete deletes the network resource
-func (*Network) Delete(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+func (*Network) Delete(ctx p.Context, id string, oldState NetworkState) error {
 
-	state := NetworkState{NetworkArgs: input}
-	if preview {
-		return name, state, nil
-	}
-
-	network, err := parseToZNet(input)
+	network, err := parseToZNet(oldState.NetworkArgs)
 	if err != nil {
-		return name, state, err
+		return err
+	}
+	if err := updateNetworkFromState(&network, oldState); err != nil {
+		return err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err = config.TFPluginClient.NetworkDeployer.Cancel(ctx, &network); err != nil {
-		state = parseToNetworkState(network)
-		return name, state, err
+		return err
 	}
 
-	return name, state, nil
-
+	return nil
 }
