@@ -10,7 +10,7 @@ resources:
   provider:
     type: pulumi:providers:grid
     properties:
-      mnemonic: shift mimic traffic mimic dutch sad harsh spring leg kitchen april dynamic
+      mnemonic:
       network: qa
 
   network:

@@ -13,6 +13,7 @@ func RunProvider(providerName, Version string) error {
 		infer.Provider(infer.Options{
 			Resources: []infer.InferredResource{
 				infer.Resource[*Network, NetworkArgs, NetworkState](),
+				infer.Resource[*FqdnGateway, FqdnGatewayArgs, FqdnGatewayState](),
 			},
 			Config: infer.Config[*Config](),
 		}))
@@ -38,8 +39,8 @@ func (c *Config) Annotate(a infer.Annotator) {
 	a.Describe(&c.Substrate_URL, "The substrate url, example: wss://tfchain.dev.grid.tf/ws")
 	a.Describe(&c.Relay_URL, "The relay url, example: wss://relay.dev.grid.tf")
 	a.Describe(&c.Rmb_Timeout, "The timeout duration in seconds for rmb calls")
-	a.SetDefault(&c.Network, "", "dev")
-	a.SetDefault(&c.KeyType, "", "sr25519")
+	a.SetDefault(&c.Network, "dev", "")
+	a.SetDefault(&c.KeyType, "sr25519", "")
 }
 
 var _ = (infer.CustomConfigure)((*Config)(nil))
