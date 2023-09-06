@@ -145,11 +145,11 @@ func updateDeploymentkFromState(deployment *workloads.Deployment, state Deployme
 }
 
 // Create creates a deployment
-func (*Deployment) Create(ctx p.Context, name string, input DeploymentArgs, preview bool) (string, DeploymentState, error) {
+func (*Deployment) Create(ctx p.Context, id string, input DeploymentArgs, preview bool) (string, DeploymentState, error) {
 
 	state := DeploymentState{DeploymentArgs: input}
 	if preview {
-		return name, state, nil
+		return id, state, nil
 	}
 
 	deployment := parseToWorkloadDeployment(input)
@@ -157,16 +157,16 @@ func (*Deployment) Create(ctx p.Context, name string, input DeploymentArgs, prev
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.DeploymentDeployer.Deploy(ctx, &deployment); err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Sync(ctx, &deployment); err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
 	state = parseToDeploymentState(deployment)
 
-	return name, state, nil
+	return id, state, nil
 }
 
 // Update updates the arguments of the deployment resource
@@ -221,7 +221,7 @@ func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (str
 }
 
 // Delete deletes a deployment resource
-func (*Deployment) Delete(ctx p.Context, name string, oldState DeploymentState) error {
+func (*Deployment) Delete(ctx p.Context, id string, oldState DeploymentState) error {
 
 	deployment := parseToComputedDeployment(oldState)
 
