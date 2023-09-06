@@ -22,7 +22,6 @@ type NetworkArgs struct {
 	SolutionType string  `pulumi:"solution_type,optional"`
 }
 
-// NetworkState is describing the fields that exist on the created resource
 type NetworkState struct {
 	NetworkArgs
 
@@ -147,7 +146,7 @@ func (*Network) Update(ctx p.Context, name string, input NetworkArgs, preview bo
 	return name, state, nil
 }
 
-// Read gets the state of the network resource
+// Read get the state of the network resource
 func (*Network) Read(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
 
 	state := NetworkState{NetworkArgs: input}
