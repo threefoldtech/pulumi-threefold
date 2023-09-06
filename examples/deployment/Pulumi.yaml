@@ -10,21 +10,19 @@ resources:
   provider:
     type: pulumi:providers:grid
     properties:
-      type: sr25519
-      mnemonic: shift mimic traffic mimic dutch sad harsh spring leg kitchen april dynamic
+      mnemonic:
+      network: qa
 
   network:
     type: grid:internal:Network
     options:
       provider: ${provider}
     properties:
-      name: testing
+      name: test
       description: test network
       nodes:
         - 3
       ip_range: 10.1.0.0/16
-      add_wg_access: true
-      solution_type: Network
 
   deployment:
     type: grid:internal:Deployment
@@ -33,7 +31,23 @@ resources:
       dependsOn:
         - ${network}
     properties:
-      node_id: 1
+      node_id: 3
+      name: deployment
+      network_name: test
+      vms_inputs:
+        - name: vmTest
+          flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
+          network_name: test
+          cpu: 1
+          memory: 256
+      zdbs_inputs:
+        - name: zdbs
+          size: 512
+          password: "123456"
+          mode: user
+      disks:
+        - name: diskTest
+          size: 1
 
 outputs:
   node_deployment_id: ${deployment.node_deployment_id}
