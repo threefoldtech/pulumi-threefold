@@ -20,7 +20,8 @@ resources:
       name: test
       node_id: 2
       backends:
-        - 'http://69.164.223.208'
+        - "http://69.164.223.208"
 
 outputs:
   node_deployment_id: ${gatewayName.node_deployment_id}
+  fqdn: ${gatewayName.fqdn}
