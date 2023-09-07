@@ -8,6 +8,7 @@ require (
 	github.com/pulumi/pulumi/sdk/v3 v3.72.0
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.10.4
 	github.com/threefoldtech/zos v0.5.6-0.20230809073554-ddb0ad98fc4c
+	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200609130330-bd2cb7843e1b
 )
 
 require (
@@ -102,7 +103,6 @@ require (
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/term v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
-	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200609130330-bd2cb7843e1b // indirect
 	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4 // indirect
 	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect

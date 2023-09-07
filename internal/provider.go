@@ -14,6 +14,7 @@ func RunProvider(providerName, Version string) error {
 			Resources: []infer.InferredResource{
 				infer.Resource[*Network, NetworkArgs, NetworkState](),
 				infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
+				infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
 			},
 			Config: infer.Config[*Config](),
 		}))
