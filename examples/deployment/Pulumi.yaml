@@ -34,14 +34,14 @@ resources:
       node_id: 3
       name: deployment
       network_name: test
-      vms_inputs:
+      vms:
         - name: vmTest
           flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
           network_name: test
           cpu: 1
           memory: 256
-      zdbs_inputs:
-        - name: zdbs
+      zdbs:
+        - name: zdbsTest
           size: 512
           password: "123456"
           mode: user
