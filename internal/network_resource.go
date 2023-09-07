@@ -83,7 +83,7 @@ func (*Network) Update(ctx p.Context, id string, oldState NetworkState, input Ne
 	return state, nil
 }
 
-// ResourceNetworkRead get the state of the network resource
+// Read get the state of the network resource
 func (*Network) Read(ctx p.Context, id string, oldState NetworkState) (string, NetworkState, error) {
 
 	network, err := parseToZNet(oldState.NetworkArgs)
