@@ -90,11 +90,14 @@ func (*Network) Read(ctx p.Context, id string, oldState NetworkState) (string, N
 	if err != nil {
 		return id, oldState, err
 	}
+
 	if err := updateNetworkFromState(&network, oldState); err != nil {
 		return id, oldState, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
+
+	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(network.Name, network.NodesIPRange)
 
 	if err := config.TFPluginClient.NetworkDeployer.InvalidateBrokenAttributes(&network); err != nil {
 		return id, oldState, err
