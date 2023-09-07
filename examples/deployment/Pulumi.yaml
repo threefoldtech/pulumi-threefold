@@ -10,7 +10,7 @@ resources:
   provider:
     type: pulumi:providers:grid
     properties:
-      mnemonic:
+      mnemonic: shift mimic traffic mimic dutch sad harsh spring leg kitchen april dynamic
       network: qa
 
   network:
@@ -18,7 +18,7 @@ resources:
     options:
       provider: ${provider}
     properties:
-      name: test
+      name: test2
       description: test network
       nodes:
         - 3
@@ -32,12 +32,12 @@ resources:
         - ${network}
     properties:
       node_id: 3
-      name: deployment
-      network_name: test
+      name: deployment5
+      network_name: test2
       vms:
         - name: vmTest
           flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
-          network_name: test
+          network_name: test2
           cpu: 1
           memory: 256
       zdbs:
