@@ -3,6 +3,7 @@ package provider
 import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 )
 
 // Deployment controlling struct
@@ -71,6 +72,7 @@ func (*Deployment) Update(ctx p.Context, id string, input DeploymentArgs, oldSta
 	if err := updateDeploymentkFromState(&deployment, oldState); err != nil {
 		return id, state, err
 	}
+	ctx.Logf(diag.Info, "update deployment %+v", deployment)
 
 	config := infer.GetConfig[Config](ctx)
 
@@ -96,6 +98,7 @@ func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (str
 	if err := updateDeploymentkFromState(&deployment, oldState); err != nil {
 		return id, oldState, err
 	}
+	ctx.Logf(diag.Info, "read deployment %+v", deployment)
 
 	config := infer.GetConfig[Config](ctx)
 
