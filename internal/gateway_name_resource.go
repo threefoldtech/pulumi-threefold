@@ -3,7 +3,6 @@ package provider
 import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 )
 
 // GatewayName controlling struct
@@ -48,8 +47,6 @@ func (*GatewayName) Create(ctx p.Context, name string, input GatewayNameArgs, pr
 	if err := config.TFPluginClient.GatewayNameDeployer.Sync(ctx, &gw); err != nil {
 		return name, state, err
 	}
-
-	ctx.Logf(diag.Info, "gateway: %+v", gw)
 
 	state = parseToGWNameState(gw)
 
