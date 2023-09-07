@@ -23,30 +23,35 @@ resources:
         - 3
       ip_range: 10.1.0.0/16
 
-  deployment:
-    type: grid:internal:Deployment
+  kubernetes:
+    type: grid:internal:Kubernetes
     options:
       provider: ${provider}
       dependsOn:
         - ${network}
     properties:
-      node_id: 3
-      name: deployment
+      master:
+        name: mr
+        node: 3
+        disk_size: 2
+        publicip: true
+        cpu: 2
+        memory: 2048
+
+      workers:
+        - name: w0
+          node: 3
+          disk_size: 2
+          cpu: 2
+          memory: 2048
+        - name: w1
+          node: 3
+          disk_size: 2
+          cpu: 2
+          memory: 2048
+
+      token: t123456789
       network_name: test
-      vms:
-        - name: vmTest
-          flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
-          network_name: test
-          cpu: 1
-          memory: 256
-      zdbs:
-        - name: zdbsTest
-          size: 512
-          password: "123456"
-          mode: user
-      disks:
-        - name: diskTest
-          size: 1
 
 outputs:
-  node_deployment_id: ${deployment.node_deployment_id}
+  node_deployment_id: ${kubernetes.node_deployment_id}
