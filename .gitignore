@@ -20,3 +20,11 @@
 # Go workspace file
 go.work
 
+# vscode files
+.vscode
+
+# pulumi
+pulumi-resource-grid
+Pulumi.test.yaml
+schema-grid.json
+/examples/*/state
