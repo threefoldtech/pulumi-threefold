@@ -31,33 +31,30 @@ type NetworkState struct {
 }
 
 // Create creates network and deploy it
-func (*Network) Create(ctx p.Context, name string, input NetworkArgs, preview bool) (string, NetworkState, error) {
-
+func (*Network) Create(ctx p.Context, id string, input NetworkArgs, preview bool) (string, NetworkState, error) {
 	state := NetworkState{NetworkArgs: input}
 	if preview {
-		return name, state, nil
+		return id, state, nil
 	}
 
 	network, err := parseToZNet(input)
 	if err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
-	// deploy network
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
-	state = parseToNetworkState(network)
+	state = parseNetworkToState(network)
 
-	return name, state, nil
+	return id, state, nil
 }
 
 // Update updates the arguments of the network resource
 func (*Network) Update(ctx p.Context, id string, oldState NetworkState, input NetworkArgs, preview bool) (NetworkState, error) {
-
 	state := NetworkState{NetworkArgs: input}
 	if preview {
 		return state, nil
@@ -67,25 +64,24 @@ func (*Network) Update(ctx p.Context, id string, oldState NetworkState, input Ne
 	if err != nil {
 		return state, err
 	}
+
 	if err := updateNetworkFromState(&network, oldState); err != nil {
 		return state, err
 	}
 
-	// update network
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
 		return state, err
 	}
 
-	state = parseToNetworkState(network)
+	state = parseNetworkToState(network)
 
 	return state, nil
 }
 
 // Read get the state of the network resource
 func (*Network) Read(ctx p.Context, id string, oldState NetworkState) (string, NetworkState, error) {
-
 	network, err := parseToZNet(oldState.NetworkArgs)
 	if err != nil {
 		return id, oldState, err
@@ -101,26 +97,24 @@ func (*Network) Read(ctx p.Context, id string, oldState NetworkState) (string, N
 
 	if err := config.TFPluginClient.NetworkDeployer.InvalidateBrokenAttributes(&network); err != nil {
 		return id, oldState, err
-
 	}
 
 	if err = config.TFPluginClient.NetworkDeployer.ReadNodesConfig(ctx, &network); err != nil {
 		return id, oldState, err
-
 	}
 
-	state := parseToNetworkState(network)
+	state := parseNetworkToState(network)
 
 	return id, state, nil
 }
 
 // Delete deletes the network resource
 func (*Network) Delete(ctx p.Context, id string, oldState NetworkState) error {
-
 	network, err := parseToZNet(oldState.NetworkArgs)
 	if err != nil {
 		return err
 	}
+
 	if err := updateNetworkFromState(&network, oldState); err != nil {
 		return err
 	}

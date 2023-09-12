@@ -9,20 +9,20 @@ import (
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 )
 
-func parseToNetworkState(network workloads.ZNet) NetworkState {
+func parseNetworkToState(network workloads.ZNet) NetworkState {
 	nodes := []int32{}
-	for _, v := range network.Nodes {
-		nodes = append(nodes, int32(v))
+	for _, nodeID := range network.Nodes {
+		nodes = append(nodes, int32(nodeID))
 	}
 
 	nodesIPRange := make(map[string]string)
-	for k, v := range network.NodesIPRange {
-		nodesIPRange[fmt.Sprint(k)] = v.String()
+	for nodeID, ipRange := range network.NodesIPRange {
+		nodesIPRange[fmt.Sprint(nodeID)] = ipRange.String()
 	}
 
 	nodeDeploymentID := make(map[string]int64)
-	for k, v := range network.NodeDeploymentID {
-		nodeDeploymentID[fmt.Sprint(k)] = int64(v)
+	for nodeID, deploymentID := range network.NodeDeploymentID {
+		nodeDeploymentID[fmt.Sprint(nodeID)] = int64(deploymentID)
 	}
 
 	stateArgs := NetworkArgs{
@@ -57,8 +57,8 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 	}
 
 	nodes := []uint32{}
-	for _, v := range networkArgs.Nodes {
-		nodes = append(nodes, uint32(v))
+	for _, nodeID := range networkArgs.Nodes {
+		nodes = append(nodes, uint32(nodeID))
 	}
 
 	network := workloads.ZNet{
@@ -85,27 +85,27 @@ func updateNetworkFromState(network *workloads.ZNet, state NetworkState) error {
 	}
 
 	nodesIPRange := make(map[uint32]gridtypes.IPNet)
-	for k, v := range state.NodesIPRange {
-		ip, err := gridtypes.ParseIPNet(v)
+	for nodeID, ipRange := range state.NodesIPRange {
+		ip, err := gridtypes.ParseIPNet(ipRange)
 		if err != nil {
 			return err
 		}
 
-		kInt, err := strconv.Atoi(k)
+		node, err := strconv.Atoi(nodeID)
 		if err != nil {
 			return err
 		}
-		nodesIPRange[uint32(kInt)] = ip
+		nodesIPRange[uint32(node)] = ip
 	}
 
 	nodeDeploymentID := make(map[uint32]uint64)
-	for k, v := range state.NodeDeploymentID {
-		kInt, err := strconv.Atoi(k)
+	for nodeID, deploymentID := range state.NodeDeploymentID {
+		node, err := strconv.Atoi(nodeID)
 		if err != nil {
 			return err
 		}
 
-		nodeDeploymentID[uint32(kInt)] = uint64(v)
+		nodeDeploymentID[uint32(node)] = uint64(deploymentID)
 	}
 
 	network.AccessWGConfig = state.AccessWGConfig
