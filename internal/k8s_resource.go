@@ -29,10 +29,10 @@ type KubernetesState struct {
 }
 
 // Create creates Kubernetes cluster and deploy it
-func (*Kubernetes) Create(ctx p.Context, name string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
+func (*Kubernetes) Create(ctx p.Context, id string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
 	state := KubernetesState{KubernetesArgs: input}
 	if preview {
-		return name, state, nil
+		return id, state, nil
 	}
 
 	k8sCluster := parseToK8sCluster(input)
@@ -40,16 +40,16 @@ func (*Kubernetes) Create(ctx p.Context, name string, input KubernetesArgs, prev
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.K8sDeployer.Deploy(ctx, &k8sCluster); err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
 	if err := config.TFPluginClient.K8sDeployer.UpdateFromRemote(ctx, &k8sCluster); err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
-	state = parseToKubernetesState(k8sCluster)
+	state = parseToK8sState(k8sCluster)
 
-	return name, state, nil
+	return id, state, nil
 }
 
 // Update updates the arguments of the Kubernetes resource
@@ -60,7 +60,7 @@ func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, in
 	}
 
 	k8sCluster := parseToK8sCluster(input)
-	if err := addComputedFieldsFromState(&k8sCluster, oldState); err != nil {
+	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
 		return state, err
 	}
 
@@ -74,7 +74,7 @@ func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, in
 		return state, err
 	}
 
-	state = parseToKubernetesState(k8sCluster)
+	state = parseToK8sState(k8sCluster)
 
 	return state, nil
 }
@@ -82,7 +82,7 @@ func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, in
 // Read get the state of the Kubernetes resource
 func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (string, KubernetesState, error) {
 	k8sCluster := parseToK8sCluster(oldState.KubernetesArgs)
-	if err := addComputedFieldsFromState(&k8sCluster, oldState); err != nil {
+	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
 		return id, oldState, err
 	}
 
@@ -100,7 +100,7 @@ func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (str
 		return id, oldState, err
 	}
 
-	state := parseToKubernetesState(k8sCluster)
+	state := parseToK8sState(k8sCluster)
 
 	return id, state, nil
 }
@@ -108,7 +108,7 @@ func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (str
 // Delete deletes the Kubernetes resource
 func (*Kubernetes) Delete(ctx p.Context, id string, oldState KubernetesState) error {
 	k8sCluster := parseToK8sCluster(oldState.KubernetesArgs)
-	if err := addComputedFieldsFromState(&k8sCluster, oldState); err != nil {
+	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
 		return err
 	}
 

@@ -18,8 +18,8 @@ func parseToGWNameState(gw workloads.GatewayNameProxy) GatewayNameState {
 
 	// parse NodeDeploymentID
 	nodeDeploymentID := make(map[string]int64)
-	for k, v := range gw.NodeDeploymentID {
-		nodeDeploymentID[fmt.Sprint(k)] = int64(v)
+	for nodeID, deploymentID := range gw.NodeDeploymentID {
+		nodeDeploymentID[fmt.Sprint(nodeID)] = int64(deploymentID)
 	}
 
 	return GatewayNameState{
@@ -58,17 +58,17 @@ func parseToGWName(gwArgs GatewayNameArgs) workloads.GatewayNameProxy {
 	}
 }
 
-func setComputedFieldsToGWNameFromState(gw *workloads.GatewayNameProxy, state GatewayNameState) error {
+func updateGWNameFromState(gw *workloads.GatewayNameProxy, state GatewayNameState) error {
 
 	// parse NodeDeploymentID
 	nodeDeploymentID := make(map[uint32]uint64)
-	for k, v := range state.NodeDeploymentID {
-		kInt, err := strconv.Atoi(k)
+	for nodeID, deploymentID := range state.NodeDeploymentID {
+		node, err := strconv.Atoi(nodeID)
 		if err != nil {
 			return err
 		}
 
-		nodeDeploymentID[uint32(kInt)] = uint64(v)
+		nodeDeploymentID[uint32(node)] = uint64(deploymentID)
 	}
 
 	gw.NodeDeploymentID = nodeDeploymentID

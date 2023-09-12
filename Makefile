@@ -1,6 +1,5 @@
 GOPATH := $(shell go env GOPATH)
 
-
 DIRS := . $(shell find tests examples -type d)
 GARBAGE_PATTERNS := Pulumi.test.yaml state
 GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))

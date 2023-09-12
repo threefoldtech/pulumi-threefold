@@ -6,11 +6,11 @@ import (
 	"github.com/threefoldtech/zos/pkg/gridtypes/zos"
 )
 
-// FqdnGateway controlling struct
-type FqdnGateway struct{}
+// GatewayFQDN controlling struct
+type GatewayFQDN struct{}
 
-// FqdnGatewayArgs is defining what arguments it accepts
-type FqdnGatewayArgs struct {
+// GatewayFQDNArgs is defining what arguments it accepts
+type GatewayFQDNArgs struct {
 	NodeID         int32         `pulumi:"node_id"`
 	Name           string        `pulumi:"name"`
 	FQDN           string        `pulumi:"fqdn"`
@@ -21,23 +21,22 @@ type FqdnGatewayArgs struct {
 	SolutionType   string        `pulumi:"solution_type,optional"`
 }
 
-// FqdnGatewayState is describing the fields that exist on the fqdn gateway resource
-type FqdnGatewayState struct {
-	FqdnGatewayArgs
+// GatewayFQDNState is describing the fields that exist on the fqdn gateway resource
+type GatewayFQDNState struct {
+	GatewayFQDNArgs
 
 	ContractID       int64            `pulumi:"contract_id"`
 	NodeDeploymentID map[string]int64 `pulumi:"node_deployment_id"`
 }
 
 // Create creates a fqdn gateway
-func (*FqdnGateway) Create(ctx p.Context, id string, input FqdnGatewayArgs, preview bool) (string, FqdnGatewayState, error) {
-
-	state := FqdnGatewayState{FqdnGatewayArgs: input}
+func (*GatewayFQDN) Create(ctx p.Context, id string, input GatewayFQDNArgs, preview bool) (string, GatewayFQDNState, error) {
+	state := GatewayFQDNState{GatewayFQDNArgs: input}
 	if preview {
 		return id, state, nil
 	}
 
-	fqdnGateway := parseToWorkloadFqdnGateway(input)
+	fqdnGateway := parseToGatewayFQDN(input)
 
 	config := infer.GetConfig[Config](ctx)
 
@@ -49,23 +48,23 @@ func (*FqdnGateway) Create(ctx p.Context, id string, input FqdnGatewayArgs, prev
 		return id, state, err
 	}
 
-	state = parseToFqdnGatewayState(fqdnGateway)
+	state = parseToGatewayFQDNState(fqdnGateway)
 
 	return id, state, nil
 
 }
 
 // Update updates the arguments of a fqdn gateway resource
-func (*FqdnGateway) Update(ctx p.Context, id string, input FqdnGatewayArgs, oldState FqdnGatewayState, preview bool) (string, FqdnGatewayState, error) {
+func (*GatewayFQDN) Update(ctx p.Context, id string, input GatewayFQDNArgs, oldState GatewayFQDNState, preview bool) (string, GatewayFQDNState, error) {
 
-	state := FqdnGatewayState{FqdnGatewayArgs: input}
+	state := GatewayFQDNState{GatewayFQDNArgs: input}
 	if preview {
 		return id, state, nil
 	}
 
-	fqdnGateway := parseToWorkloadFqdnGateway(input)
+	fqdnGateway := parseToGatewayFQDN(input)
 
-	if err := updateFqdnGatewayFromState(&fqdnGateway, oldState); err != nil {
+	if err := updateGatewayFQDNFromState(&fqdnGateway, oldState); err != nil {
 		return id, state, err
 	}
 
@@ -79,18 +78,18 @@ func (*FqdnGateway) Update(ctx p.Context, id string, input FqdnGatewayArgs, oldS
 		return id, state, err
 	}
 
-	state = parseToFqdnGatewayState(fqdnGateway)
+	state = parseToGatewayFQDNState(fqdnGateway)
 
 	return id, state, nil
 
 }
 
 // Read gets the state of the fqdn gateway resource
-func (*FqdnGateway) Read(ctx p.Context, id string, oldState FqdnGatewayState) (string, FqdnGatewayState, error) {
+func (*GatewayFQDN) Read(ctx p.Context, id string, oldState GatewayFQDNState) (string, GatewayFQDNState, error) {
 
-	fqdnGateway := parseToWorkloadFqdnGateway(oldState.FqdnGatewayArgs)
+	fqdnGateway := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
 
-	if err := updateFqdnGatewayFromState(&fqdnGateway, oldState); err != nil {
+	if err := updateGatewayFQDNFromState(&fqdnGateway, oldState); err != nil {
 		return id, oldState, err
 	}
 
@@ -100,23 +99,21 @@ func (*FqdnGateway) Read(ctx p.Context, id string, oldState FqdnGatewayState) (s
 		return id, oldState, err
 	}
 
-	state := parseToFqdnGatewayState(fqdnGateway)
+	state := parseToGatewayFQDNState(fqdnGateway)
 
 	return id, state, nil
 
 }
 
 // Delete deletes a fqdn gateway resource
-func (*FqdnGateway) Delete(ctx p.Context, id string, oldState FqdnGatewayState) error {
+func (*GatewayFQDN) Delete(ctx p.Context, id string, oldState GatewayFQDNState) error {
+	fqdnGateway := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
 
-	fqdnGateway := parseToFqdnGatewayComputed(oldState)
-
-	config := infer.GetConfig[Config](ctx)
-
-	if err := config.TFPluginClient.GatewayFQDNDeployer.Cancel(ctx, &fqdnGateway); err != nil {
+	if err := updateGatewayFQDNFromState(&fqdnGateway, oldState); err != nil {
 		return err
 	}
 
-	return nil
+	config := infer.GetConfig[Config](ctx)
 
+	return config.TFPluginClient.GatewayFQDNDeployer.Cancel(ctx, &fqdnGateway)
 }

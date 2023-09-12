@@ -7,9 +7,8 @@ import (
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
 )
 
-func parseToFqdnGatewayState(fqdnGateway workloads.GatewayFQDNProxy) FqdnGatewayState {
-
-	stateArgs := FqdnGatewayArgs{
+func parseToGatewayFQDNState(fqdnGateway workloads.GatewayFQDNProxy) GatewayFQDNState {
+	stateArgs := GatewayFQDNArgs{
 		NodeID:         int32(fqdnGateway.NodeID),
 		Name:           fqdnGateway.Name,
 		Description:    fqdnGateway.Description,
@@ -21,24 +20,21 @@ func parseToFqdnGatewayState(fqdnGateway workloads.GatewayFQDNProxy) FqdnGateway
 	}
 
 	nodeDeploymentID := make(map[string]int64)
-	for key, value := range fqdnGateway.NodeDeploymentID {
-		nodeDeploymentID[fmt.Sprint(key)] = int64(value)
+	for nodeID, deploymentID := range fqdnGateway.NodeDeploymentID {
+		nodeDeploymentID[fmt.Sprint(nodeID)] = int64(deploymentID)
 	}
 
-	state := FqdnGatewayState{
-		FqdnGatewayArgs:  stateArgs,
+	state := GatewayFQDNState{
+		GatewayFQDNArgs:  stateArgs,
 		ContractID:       int64(fqdnGateway.ContractID),
 		NodeDeploymentID: nodeDeploymentID,
 	}
 
 	return state
-
 }
 
-func parseToWorkloadFqdnGateway(fqdnGatewayArgs FqdnGatewayArgs) workloads.GatewayFQDNProxy {
-
+func parseToGatewayFQDN(fqdnGatewayArgs GatewayFQDNArgs) workloads.GatewayFQDNProxy {
 	return workloads.GatewayFQDNProxy{
-
 		NodeID:         uint32(fqdnGatewayArgs.NodeID),
 		Name:           fqdnGatewayArgs.Name,
 		SolutionType:   fqdnGatewayArgs.SolutionType,
@@ -48,43 +44,21 @@ func parseToWorkloadFqdnGateway(fqdnGatewayArgs FqdnGatewayArgs) workloads.Gatew
 		TLSPassthrough: fqdnGatewayArgs.TLSPassthrough,
 		Description:    fqdnGatewayArgs.Description,
 	}
-
 }
 
-func parseToFqdnGatewayComputed(fqdnGatewayState FqdnGatewayState) workloads.GatewayFQDNProxy {
-
+func updateGatewayFQDNFromState(fqdnGateway *workloads.GatewayFQDNProxy, state GatewayFQDNState) error {
 	nodeDeploymentID := make(map[uint32]uint64)
 
-	for key, value := range fqdnGatewayState.NodeDeploymentID {
-		k, err := strconv.ParseUint(key, 10, 32)
+	for nodeID, deploymentID := range state.NodeDeploymentID {
+		node, err := strconv.ParseUint(nodeID, 10, 32)
 		if err != nil {
-			continue
+			return err
 		}
-		nodeDeploymentID[uint32(k)] = uint64(value)
-	}
-
-	return workloads.GatewayFQDNProxy{
-		NodeDeploymentID: nodeDeploymentID,
-		ContractID:       uint64(fqdnGatewayState.ContractID),
-	}
-
-}
-
-func updateFqdnGatewayFromState(fqdnGateway *workloads.GatewayFQDNProxy, state FqdnGatewayState) error {
-
-	nodeDeploymentID := make(map[uint32]uint64)
-
-	for key, value := range state.NodeDeploymentID {
-		k, err := strconv.ParseUint(key, 10, 32)
-		if err != nil {
-			continue
-		}
-		nodeDeploymentID[uint32(k)] = uint64(value)
+		nodeDeploymentID[uint32(node)] = uint64(deploymentID)
 	}
 
 	fqdnGateway.ContractID = uint64(state.ContractID)
 	fqdnGateway.NodeDeploymentID = nodeDeploymentID
 
 	return nil
-
 }

@@ -20,7 +20,7 @@ resources:
       name: test
       description: test network
       nodes:
-        - 3
+        - 29
       ip_range: 10.1.0.0/16
 
   kubernetes:
@@ -31,21 +31,22 @@ resources:
         - ${network}
     properties:
       master:
-        name: mr
-        node: 3
+        name: kubernetes
+        node: 29
         disk_size: 2
-        publicip: true
+        planetary: true
+        public_ip: true
         cpu: 2
         memory: 2048
 
       workers:
-        - name: w0
-          node: 3
+        - name: worker1
+          node: 29
           disk_size: 2
           cpu: 2
           memory: 2048
-        - name: w1
-          node: 3
+        - name: worker2
+          node: 29
           disk_size: 2
           cpu: 2
           memory: 2048
@@ -55,3 +56,5 @@ resources:
 
 outputs:
   node_deployment_id: ${kubernetes.node_deployment_id}
+  public_ip: ${kubernetes.master_computed.computed_ip}
+  ygg_ip: ${kubernetes.master_computed.ygg_ip}

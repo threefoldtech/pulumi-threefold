@@ -61,7 +61,7 @@ func (*GatewayName) Update(ctx p.Context, id string, oldState GatewayNameState, 
 	}
 
 	gw := parseToGWName(input)
-	if err := setComputedFieldsToGWNameFromState(&gw, oldState); err != nil {
+	if err := updateGWNameFromState(&gw, oldState); err != nil {
 		return state, err
 	}
 
@@ -83,7 +83,7 @@ func (*GatewayName) Update(ctx p.Context, id string, oldState GatewayNameState, 
 // Read gets the state of the GatewayName resource
 func (*GatewayName) Read(ctx p.Context, id string, oldState GatewayNameState) (string, GatewayNameState, error) {
 	gw := parseToGWName(oldState.GatewayNameArgs)
-	if err := setComputedFieldsToGWNameFromState(&gw, oldState); err != nil {
+	if err := updateGWNameFromState(&gw, oldState); err != nil {
 		return id, oldState, err
 	}
 
@@ -101,7 +101,7 @@ func (*GatewayName) Read(ctx p.Context, id string, oldState GatewayNameState) (s
 // Delete deletes the GatewayName resource
 func (*GatewayName) Delete(ctx p.Context, id string, oldState GatewayNameState) error {
 	gw := parseToGWName(oldState.GatewayNameArgs)
-	if err := setComputedFieldsToGWNameFromState(&gw, oldState); err != nil {
+	if err := updateGWNameFromState(&gw, oldState); err != nil {
 		return err
 	}
 
