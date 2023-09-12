@@ -6,12 +6,11 @@ import (
 	p "github.com/rawdaGastan/pulumi-provider-grid/internal"
 )
 
-// Version is initialized by the Go linker to contain the semver of this build.
-var Version string
-var ProviderName = "grid"
+var version = "v1.0.0"
+var providerName = "grid"
 
 func main() {
-	if err := p.RunProvider(ProviderName, "v1.0.0"); err != nil {
-		log.Println(err)
+	if err := p.RunProvider(providerName, version); err != nil {
+		log.Fatal(err.Error())
 	}
 }
