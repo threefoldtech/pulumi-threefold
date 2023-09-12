@@ -1,6 +1,9 @@
 package provider
 
 import (
+	"os"
+	"strings"
+
 	"github.com/pkg/errors"
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -13,17 +16,17 @@ func RunProvider(providerName, Version string) error {
 		infer.Provider(infer.Options{
 			Resources: []infer.InferredResource{
 				infer.Resource[*Network, NetworkArgs, NetworkState](),
-				infer.Resource[*FqdnGateway, FqdnGatewayArgs, FqdnGatewayState](),
 				infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
 				infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
 				infer.Resource[*GatewayName, GatewayNameArgs, GatewayNameState](),
+				infer.Resource[*FqdnGateway, FqdnGatewayArgs, FqdnGatewayState](),
 			},
 			Config: infer.Config[*Config](),
 		}))
 }
 
 type Config struct {
-	Mnemonic     string `pulumi:"mnemonic"  provider:"secret"`
+	Mnemonic     string `pulumi:"mnemonic,optional"  provider:"secret"`
 	Network      string `pulumi:"network,optional"`
 	KeyType      string `pulumi:"key_type,optional"`
 	SubstrateURL string `pulumi:"substrate_url,optional"`
@@ -42,6 +45,7 @@ func (c *Config) Annotate(a infer.Annotator) {
 	a.Describe(&c.SubstrateURL, "The substrate url, example: wss://tfchain.dev.grid.tf/ws")
 	a.Describe(&c.RelayURL, "The relay url, example: wss://relay.dev.grid.tf")
 	a.Describe(&c.RmbTimeout, "The timeout duration in seconds for rmb calls")
+	a.SetDefault(&c.Mnemonic, os.Getenv("MNEMONIC"), "")
 	a.SetDefault(&c.Network, "dev", "")
 	a.SetDefault(&c.KeyType, "sr25519", "")
 }
@@ -49,6 +53,10 @@ func (c *Config) Annotate(a infer.Annotator) {
 var _ = (infer.CustomConfigure)((*Config)(nil))
 
 func (c *Config) Configure(ctx p.Context) error {
+	if len(strings.TrimSpace(c.Mnemonic)) == 0 {
+		return errors.New("mnemonic is required")
+	}
+
 	tfPluginClient, err := deployer.NewTFPluginClient(c.Mnemonic, c.KeyType, c.Network, c.SubstrateURL, c.RelayURL, "", 0, false)
 	if err != nil {
 		return errors.Wrap(err, "error creating threefold plugin client")

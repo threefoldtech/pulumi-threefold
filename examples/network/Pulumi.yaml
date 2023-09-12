@@ -20,8 +20,9 @@ resources:
       name: testing
       description: test network
       nodes:
-        - 3
+        - 29
       ip_range: 10.1.0.0/16
 
 outputs:
   node_deployment_id: ${network.node_deployment_id}
+  nodes_ip_range: ${network.nodes_ip_range}
