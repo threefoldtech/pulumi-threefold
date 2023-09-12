@@ -6,7 +6,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.11.1
 	github.com/pulumi/pulumi/sdk/v3 v3.72.0
-	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.10.4
+	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.1
 	github.com/threefoldtech/zos v0.5.6-0.20230809073554-ddb0ad98fc4c
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200609130330-bd2cb7843e1b
 )
