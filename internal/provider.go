@@ -13,6 +13,7 @@ func RunProvider(providerName, Version string) error {
 		infer.Provider(infer.Options{
 			Resources: []infer.InferredResource{
 				infer.Resource[*Network, NetworkArgs, NetworkState](),
+				infer.Resource[*FqdnGateway, FqdnGatewayArgs, FqdnGatewayState](),
 				infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
 				infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
 				infer.Resource[*GatewayName, GatewayNameArgs, GatewayNameState](),
