@@ -16,16 +16,16 @@ type K8sNodeInput struct {
 	Flist         string `pulumi:"flist,optional"`
 	CPU           int    `pulumi:"cpu"`
 	Memory        int    `pulumi:"memory"`
-	PublicIP      bool   `pulumi:"publicip,optional"`
-	PublicIP6     bool   `pulumi:"publicip6,optional"`
+	PublicIP      bool   `pulumi:"public_ip,optional"`
+	PublicIP6     bool   `pulumi:"public_ip6,optional"`
 	Planetary     bool   `pulumi:"planetary,optional"`
 	FlistChecksum string `pulumi:"flist_checksum,optional"`
 }
 
 // K8sNodeComputed struct of computed data
 type K8sNodeComputed struct {
-	ComputedIP  string `pulumi:"computedip"`
-	ComputedIP6 string `pulumi:"computedip6"`
+	ComputedIP  string `pulumi:"computed_ip"`
+	ComputedIP6 string `pulumi:"computed_ip6"`
 	IP          string `pulumi:"ip"`
 	YggIP       string `pulumi:"ygg_ip"`
 	ConsoleURL  string `pulumi:"console_url"`
@@ -34,18 +34,18 @@ type K8sNodeComputed struct {
 	NetworkName string `pulumi:"network_name"`
 }
 
-func parseToKubernetesState(k8sCluster workloads.K8sCluster) KubernetesState {
+func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 
 	// parse NodesIpRange
 	nodesIPRange := make(map[string]string)
-	for k, v := range k8sCluster.NodesIPRange {
-		nodesIPRange[fmt.Sprint(k)] = v.String()
+	for nodeID, ipRange := range k8sCluster.NodesIPRange {
+		nodesIPRange[fmt.Sprint(nodeID)] = ipRange.String()
 	}
 
 	// parse NodeDeploymentID
 	nodeDeploymentID := make(map[string]int64)
-	for k, v := range k8sCluster.NodeDeploymentID {
-		nodeDeploymentID[fmt.Sprint(k)] = int64(v)
+	for nodeID, deploymentID := range k8sCluster.NodeDeploymentID {
+		nodeDeploymentID[fmt.Sprint(nodeID)] = int64(deploymentID)
 	}
 
 	// parse master computed
@@ -177,22 +177,22 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) workloads.K8sCluster {
 	}
 }
 
-func addComputedFieldsFromState(k8sCluster *workloads.K8sCluster, state KubernetesState) error {
+func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState) error {
 
 	// parse NodesIPRange
 	nodesIPRange := make(map[uint32]gridtypes.IPNet)
-	for k, v := range state.NodesIPRange {
-		ipRange, err := gridtypes.ParseIPNet(v)
+	for nodeID, ipRange := range state.NodesIPRange {
+		ipRange, err := gridtypes.ParseIPNet(ipRange)
 		if err != nil {
 			return err
 		}
 
-		kInt, err := strconv.Atoi(k)
+		node, err := strconv.Atoi(nodeID)
 		if err != nil {
 			return err
 		}
 
-		nodesIPRange[uint32(kInt)] = ipRange
+		nodesIPRange[uint32(node)] = ipRange
 	}
 
 	// update NodesIPRange
@@ -200,13 +200,13 @@ func addComputedFieldsFromState(k8sCluster *workloads.K8sCluster, state Kubernet
 
 	// parse NodeDeploymentID
 	nodeDeploymentID := make(map[uint32]uint64)
-	for k, v := range state.NodeDeploymentID {
-		kInt, err := strconv.Atoi(k)
+	for nodeID, deploymentID := range state.NodeDeploymentID {
+		node, err := strconv.Atoi(nodeID)
 		if err != nil {
 			return err
 		}
 
-		nodeDeploymentID[uint32(kInt)] = uint64(v)
+		nodeDeploymentID[uint32(node)] = uint64(deploymentID)
 	}
 
 	// update NodeDeploymentID

@@ -121,9 +121,5 @@ func (*Network) Delete(ctx p.Context, id string, oldState NetworkState) error {
 
 	config := infer.GetConfig[Config](ctx)
 
-	if err = config.TFPluginClient.NetworkDeployer.Cancel(ctx, &network); err != nil {
-		return err
-	}
-
-	return nil
+	return config.TFPluginClient.NetworkDeployer.Cancel(ctx, &network)
 }

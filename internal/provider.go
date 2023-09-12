@@ -19,7 +19,7 @@ func RunProvider(providerName, Version string) error {
 				infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
 				infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
 				infer.Resource[*GatewayName, GatewayNameArgs, GatewayNameState](),
-				infer.Resource[*FqdnGateway, FqdnGatewayArgs, FqdnGatewayState](),
+				infer.Resource[*GatewayFQDN, GatewayFQDNArgs, GatewayFQDNState](),
 			},
 			Config: infer.Config[*Config](),
 		}))
