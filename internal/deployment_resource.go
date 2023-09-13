@@ -14,7 +14,7 @@ type DeploymentArgs struct {
 	Name             string      `pulumi:"name"`
 	NetworkName      string      `pulumi:"network_name"`
 	SolutionType     string      `pulumi:"solution_type,optional"`
-	SolutionProvider *int64      `pulumi:"solution_provider,optional"`
+	SolutionProvider int64       `pulumi:"solution_provider,optional"`
 	Disks            []Disk      `pulumi:"disks,optional"`
 	ZdbsInputs       []ZDBInput  `pulumi:"zdbs,optional"`
 	VmsInputs        []VMInput   `pulumi:"vms,optional"`
@@ -35,13 +35,12 @@ type DeploymentState struct {
 
 // Create creates a deployment
 func (*Deployment) Create(ctx p.Context, id string, input DeploymentArgs, preview bool) (string, DeploymentState, error) {
-
 	state := DeploymentState{DeploymentArgs: input}
 	if preview {
 		return id, state, nil
 	}
 
-	deployment := parseToWorkloadDeployment(input)
+	deployment := parseInputToDeployment(input)
 
 	config := infer.GetConfig[Config](ctx)
 
@@ -53,22 +52,21 @@ func (*Deployment) Create(ctx p.Context, id string, input DeploymentArgs, previe
 		return id, state, err
 	}
 
-	state = parseToDeploymentState(deployment)
+	state = parseDeploymentToState(deployment)
 
 	return id, state, nil
 }
 
 // Update updates the arguments of the deployment resource
-func (*Deployment) Update(ctx p.Context, id string, input DeploymentArgs, oldState DeploymentState, preview bool) (string, DeploymentState, error) {
-
+func (*Deployment) Update(ctx p.Context, id string, oldState DeploymentState, input DeploymentArgs, preview bool) (string, DeploymentState, error) {
 	state := DeploymentState{DeploymentArgs: input}
 	if preview {
 		return id, state, nil
 	}
 
-	deployment := parseToWorkloadDeployment(input)
+	deployment := parseInputToDeployment(input)
 
-	if err := updateDeploymentkFromState(&deployment, oldState); err != nil {
+	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
 		return id, state, err
 	}
 
@@ -82,18 +80,16 @@ func (*Deployment) Update(ctx p.Context, id string, input DeploymentArgs, oldSta
 		return id, state, err
 	}
 
-	state = parseToDeploymentState(deployment)
+	state = parseDeploymentToState(deployment)
 
 	return id, state, nil
-
 }
 
 // Read gets the state of the deployment resource
 func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (string, DeploymentState, error) {
+	deployment := parseInputToDeployment(oldState.DeploymentArgs)
 
-	deployment := parseToWorkloadDeployment(oldState.DeploymentArgs)
-
-	if err := updateDeploymentkFromState(&deployment, oldState); err != nil {
+	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
 		return id, oldState, err
 	}
 
@@ -103,16 +99,18 @@ func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (str
 		return id, oldState, err
 	}
 
-	state := parseToDeploymentState(deployment)
+	state := parseDeploymentToState(deployment)
 
 	return id, state, nil
-
 }
 
 // Delete deletes a deployment resource
 func (*Deployment) Delete(ctx p.Context, id string, oldState DeploymentState) error {
+	deployment := parseInputToDeployment(oldState.DeploymentArgs)
 
-	deployment := parseToComputedDeployment(oldState)
+	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
+		return err
+	}
 
 	config := infer.GetConfig[Config](ctx)
 

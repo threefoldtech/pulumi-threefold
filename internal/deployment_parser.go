@@ -8,14 +8,14 @@ import (
 	"github.com/threefoldtech/zos/pkg/gridtypes/zos"
 )
 
-// Disk respresents the disk struct
+// Disk represents the disk struct
 type Disk struct {
 	Name        string `pulumi:"name"`
 	Size        int    `pulumi:"size"`
 	Description string `pulumi:"description,optional"`
 }
 
-// Mount respresents mounting of disks
+// Mount represents mounting of disks
 type Mount struct {
 	DiskName   string `pulumi:"disk_name"`
 	MountPoint string `pulumi:"mount_point"`
@@ -52,10 +52,9 @@ type VMInput struct {
 	CPU           int               `pulumi:"cpu"`
 	Memory        int               `pulumi:"memory"`
 	FlistChecksum string            `pulumi:"flist_checksum,optional"`
-	PublicIP      bool              `pulumi:"publicip,optional"`
-	PublicIP6     bool              `pulumi:"publicip6,optional"`
+	PublicIP      bool              `pulumi:"public_ip,optional"`
+	PublicIP6     bool              `pulumi:"public_ip6,optional"`
 	Planetary     bool              `pulumi:"planetary,optional"`
-	Corex         bool              `pulumi:"corex,optional"`
 	Description   string            `pulumi:"description,optional"`
 	GPUs          []zos.GPU         `pulumi:"gpus,optional"`
 	RootfsSize    int               `pulumi:"rootfs_size,optional"`
@@ -67,8 +66,8 @@ type VMInput struct {
 
 // VMComputed is a virtual machine computed struct
 type VMComputed struct {
-	ComputedIP  string `pulumi:"computedip"`
-	ComputedIP6 string `pulumi:"computedip6"`
+	ComputedIP  string `pulumi:"computed_ip"`
+	ComputedIP6 string `pulumi:"computed_ip6"`
 	YggIP       string `pulumi:"ygg_ip"`
 	ConsoleURL  string `pulumi:"console_url"`
 	IP          string `pulumi:"ip,optional"`
@@ -117,329 +116,106 @@ type Group struct {
 	Backends []Backend `pulumi:"backends,optional"`
 }
 
-func convertDisks(disks []workloads.Disk) []Disk {
-	result := make([]Disk, len(disks))
-	for i, disk := range disks {
-		result[i] = Disk{
-			Name:        disk.Name,
-			Size:        disk.SizeGB,
-			Description: disk.Description,
-		}
+func parseBackendsToState(backends workloads.Backends) []Backend {
+	var bs []Backend
+	for _, backend := range backends {
+		bs = append(bs, Backend{
+			Address:   backend.Address,
+			Namespace: backend.Namespace,
+			Password:  backend.Password,
+		})
 	}
-	return result
+	return bs
 }
 
-func convertToWorkloadDisks(disks []Disk) []workloads.Disk {
-	result := make([]workloads.Disk, len(disks))
-	for i, disk := range disks {
-		result[i] = workloads.Disk{
+func parseInputsToBackends(backends []Backend) workloads.Backends {
+	var bs workloads.Backends
+	for _, backend := range backends {
+		bs = append(bs, workloads.Backend{
+			Address:   backend.Address,
+			Namespace: backend.Namespace,
+			Password:  backend.Password,
+		})
+	}
+	return bs
+}
+
+func parseInputToDeployment(deploymentArgs DeploymentArgs) workloads.Deployment {
+	var solutionProvider *uint64
+	if deploymentArgs.SolutionProvider != 0 {
+		solutionProviderUint := uint64(deploymentArgs.SolutionProvider)
+		solutionProvider = &solutionProviderUint
+	}
+
+	var vms []workloads.VM
+	for _, vm := range deploymentArgs.VmsInputs {
+		var mounts []workloads.Mount
+		for _, mount := range vm.Mounts {
+			mounts = append(mounts, workloads.Mount{
+				DiskName:   mount.DiskName,
+				MountPoint: mount.MountPoint,
+			})
+		}
+
+		var zlogs []workloads.Zlog
+		for _, zlog := range vm.Zlogs {
+			zlogs = append(zlogs, workloads.Zlog{
+				Zmachine: zlog.Zmachine,
+				Output:   zlog.Output,
+			})
+		}
+
+		vms = append(vms, workloads.VM{
+			Name:          vm.Name,
+			Flist:         vm.Flist,
+			NetworkName:   vm.NetworkName,
+			FlistChecksum: vm.FlistChecksum,
+			PublicIP:      vm.PublicIP,
+			PublicIP6:     vm.PublicIP6,
+			Planetary:     vm.Planetary,
+			Description:   vm.Description,
+			GPUs:          vm.GPUs,
+			CPU:           vm.CPU,
+			Memory:        vm.Memory,
+			RootfsSize:    vm.RootfsSize,
+			Entrypoint:    vm.Entrypoint,
+			Mounts:        mounts,
+			Zlogs:         zlogs,
+			EnvVars:       vm.EnvVars,
+		})
+	}
+
+	var disks []workloads.Disk
+	for _, disk := range deploymentArgs.Disks {
+		disks = append(disks, workloads.Disk{
 			Name:        disk.Name,
 			SizeGB:      disk.Size,
 			Description: disk.Description,
-		}
+		})
 	}
-	return result
-}
 
-func convertZdbs(zdbs []workloads.ZDB) []ZDBInput {
-
-	result := make([]ZDBInput, len(zdbs))
-
-	for i, zdb := range zdbs {
-
-		result[i] = ZDBInput{
+	var zdbs []workloads.ZDB
+	for _, zdb := range deploymentArgs.ZdbsInputs {
+		zdbs = append(zdbs, workloads.ZDB{
 			Name:        zdb.Name,
 			Size:        zdb.Size,
 			Password:    zdb.Password,
 			Public:      zdb.Public,
 			Description: zdb.Description,
 			Mode:        zdb.Mode,
+		})
+	}
+
+	var qsfss []workloads.QSFS
+	for _, qsfs := range deploymentArgs.QSFSInputs {
+		var groups []workloads.Group
+		for _, group := range qsfs.Groups {
+			groups = append(groups, workloads.Group{
+				Backends: parseInputsToBackends(group.Backends),
+			})
 		}
-	}
 
-	return result
-}
-
-func convertToWorkloadZdbs(zdbs []ZDBInput) []workloads.ZDB {
-
-	result := make([]workloads.ZDB, len(zdbs))
-	for i, zdb := range zdbs {
-
-		result[i] = workloads.ZDB{
-			Name:        zdb.Name,
-			Size:        zdb.Size,
-			Password:    zdb.Password,
-			Public:      zdb.Public,
-			Description: zdb.Description,
-			Mode:        zdb.Mode,
-		}
-	}
-	return result
-}
-
-func convertZdbsComputed(zdbs []workloads.ZDB) []ZDBComputed {
-
-	result := make([]ZDBComputed, len(zdbs))
-
-	for i, zdb := range zdbs {
-
-		result[i] = ZDBComputed{
-			IPs:       zdb.IPs,
-			Port:      int32(zdb.Port),
-			Namespace: zdb.Namespace,
-		}
-	}
-
-	return result
-}
-
-func convertToWorkloadZdbsComputed(zdbs []ZDBComputed) []workloads.ZDB {
-
-	result := make([]workloads.ZDB, len(zdbs))
-
-	for i, zdb := range zdbs {
-
-		result[i] = workloads.ZDB{
-			IPs:       zdb.IPs,
-			Port:      uint32(zdb.Port),
-			Namespace: zdb.Namespace,
-		}
-	}
-
-	return result
-}
-
-func convertMounts(mounts []workloads.Mount) []Mount {
-	result := make([]Mount, len(mounts))
-	for i, mount := range mounts {
-		result[i] = Mount{
-			DiskName:   mount.DiskName,
-			MountPoint: mount.MountPoint,
-		}
-	}
-	return result
-}
-
-func convertToWorkloadMounts(mounts []Mount) []workloads.Mount {
-	result := make([]workloads.Mount, len(mounts))
-	for i, mount := range mounts {
-		result[i] = workloads.Mount{
-			DiskName:   mount.DiskName,
-			MountPoint: mount.MountPoint,
-		}
-	}
-	return result
-}
-
-func convertZlogs(zlogs []workloads.Zlog) []Zlog {
-	result := make([]Zlog, len(zlogs))
-	for i, zlog := range zlogs {
-		result[i] = Zlog{
-			Zmachine: zlog.Zmachine,
-			Output:   zlog.Output,
-		}
-	}
-	return result
-}
-
-func convertToWorkloadZlogs(zlogs []Zlog) []workloads.Zlog {
-	result := make([]workloads.Zlog, len(zlogs))
-	for i, zlog := range zlogs {
-		result[i] = workloads.Zlog{
-			Zmachine: zlog.Zmachine,
-			Output:   zlog.Output,
-		}
-	}
-	return result
-}
-
-func convertVMs(VMs []workloads.VM) []VMInput {
-
-	result := make([]VMInput, len(VMs))
-
-	for i, vm := range VMs {
-
-		result[i] = VMInput{
-			Name:          vm.Name,
-			Flist:         vm.Flist,
-			NetworkName:   vm.NetworkName,
-			FlistChecksum: vm.FlistChecksum,
-			PublicIP:      vm.PublicIP,
-			PublicIP6:     vm.PublicIP6,
-			Planetary:     vm.Planetary,
-			Corex:         vm.Corex,
-			Description:   vm.Description,
-			GPUs:          vm.GPUs,
-			CPU:           vm.CPU,
-			Memory:        vm.Memory,
-			RootfsSize:    vm.RootfsSize,
-			Entrypoint:    vm.Entrypoint,
-			Mounts:        convertMounts(vm.Mounts),
-			Zlogs:         convertZlogs(vm.Zlogs),
-			EnvVars:       vm.EnvVars,
-		}
-	}
-	return result
-}
-
-func convertToWorkloadVMs(VMs []VMInput) []workloads.VM {
-
-	result := make([]workloads.VM, len(VMs))
-
-	for i, vm := range VMs {
-
-		result[i] = workloads.VM{
-			Name:          vm.Name,
-			Flist:         vm.Flist,
-			NetworkName:   vm.NetworkName,
-			FlistChecksum: vm.FlistChecksum,
-			PublicIP:      vm.PublicIP,
-			PublicIP6:     vm.PublicIP6,
-			Planetary:     vm.Planetary,
-			Corex:         vm.Corex,
-			Description:   vm.Description,
-			GPUs:          vm.GPUs,
-			CPU:           vm.CPU,
-			Memory:        vm.Memory,
-			RootfsSize:    vm.RootfsSize,
-			Entrypoint:    vm.Entrypoint,
-			Mounts:        convertToWorkloadMounts(vm.Mounts),
-			Zlogs:         convertToWorkloadZlogs(vm.Zlogs),
-			EnvVars:       vm.EnvVars,
-		}
-	}
-
-	return result
-}
-
-func convertVMsComputed(VMs []workloads.VM) []VMComputed {
-
-	result := make([]VMComputed, len(VMs))
-
-	for i, vm := range VMs {
-
-		result[i] = VMComputed{
-			ComputedIP:  vm.ComputedIP,
-			ComputedIP6: vm.ComputedIP6,
-			YggIP:       vm.YggIP,
-			ConsoleURL:  vm.ConsoleURL,
-			IP:          vm.IP,
-		}
-	}
-	return result
-}
-
-func convertToVMsWorkloadComputed(VMs []VMComputed) []workloads.VM {
-
-	result := make([]workloads.VM, len(VMs))
-
-	for i, vm := range VMs {
-
-		result[i] = workloads.VM{
-			ComputedIP:  vm.ComputedIP,
-			ComputedIP6: vm.ComputedIP6,
-			YggIP:       vm.YggIP,
-			ConsoleURL:  vm.ConsoleURL,
-			IP:          vm.IP,
-		}
-	}
-	return result
-}
-
-func convertBackends(backends workloads.Backends) []Backend {
-	result := make([]Backend, len(backends))
-	for i, backend := range backends {
-		result[i] = Backend{
-			Address:   backend.Address,
-			Namespace: backend.Namespace,
-			Password:  backend.Password,
-		}
-	}
-	return result
-}
-
-func convertToWorkloadBackends(backends []Backend) workloads.Backends {
-	result := make(workloads.Backends, len(backends))
-	for i, backend := range backends {
-		result[i] = workloads.Backend{
-			Address:   backend.Address,
-			Namespace: backend.Namespace,
-			Password:  backend.Password,
-		}
-	}
-	return result
-}
-
-func convertMetadata(metadata workloads.Metadata) Metadata {
-	return Metadata{
-		EncryptionKey:       metadata.EncryptionKey,
-		Prefix:              metadata.Prefix,
-		EncryptionAlgorithm: metadata.EncryptionAlgorithm,
-		Type:                metadata.Type,
-		Backends:            convertBackends(metadata.Backends),
-	}
-}
-
-func convertToWorkloadMetadata(metadata Metadata) workloads.Metadata {
-	return workloads.Metadata{
-		EncryptionKey:       metadata.EncryptionKey,
-		Prefix:              metadata.Prefix,
-		EncryptionAlgorithm: metadata.EncryptionAlgorithm,
-		Type:                metadata.Type,
-		Backends:            convertToWorkloadBackends(metadata.Backends),
-	}
-}
-
-func convertGroups(groups workloads.Groups) []Group {
-	result := make([]Group, len(groups))
-	for i, group := range groups {
-		result[i] = Group{
-			Backends: convertBackends(group.Backends),
-		}
-	}
-	return result
-}
-
-func convertToWorkloadGroups(groups []Group) workloads.Groups {
-	result := make(workloads.Groups, len(groups))
-	for i, group := range groups {
-		result[i] = workloads.Group{
-			Backends: convertToWorkloadBackends(group.Backends),
-		}
-	}
-	return result
-}
-
-func convertQSFSs(qsfss []workloads.QSFS) []QSFSInput {
-
-	result := make([]QSFSInput, len(qsfss))
-
-	for i, qsfs := range qsfss {
-		result[i] = QSFSInput{
-			Name:                 qsfs.Name,
-			Description:          qsfs.Description,
-			Cache:                qsfs.Cache,
-			MinimalShards:        int32(qsfs.MinimalShards),
-			ExpectedShards:       int32(qsfs.ExpectedShards),
-			RedundantGroups:      int32(qsfs.RedundantGroups),
-			RedundantNodes:       int32(qsfs.RedundantNodes),
-			MaxZDBDataDirSize:    int32(qsfs.MaxZDBDataDirSize),
-			EncryptionAlgorithm:  qsfs.EncryptionAlgorithm,
-			EncryptionKey:        qsfs.EncryptionKey,
-			CompressionAlgorithm: qsfs.CompressionAlgorithm,
-			Metadata:             convertMetadata(qsfs.Metadata),
-			Groups:               convertGroups(qsfs.Groups),
-		}
-	}
-	return result
-}
-
-func convertToWorkloadQSFSs(qsfss []QSFSInput) []workloads.QSFS {
-
-	result := make([]workloads.QSFS, len(qsfss))
-
-	for i, qsfs := range qsfss {
-		result[i] = workloads.QSFS{
+		qsfss = append(qsfss, workloads.QSFS{
 			Name:                 qsfs.Name,
 			Description:          qsfs.Description,
 			Cache:                qsfs.Cache,
@@ -451,83 +227,15 @@ func convertToWorkloadQSFSs(qsfss []QSFSInput) []workloads.QSFS {
 			EncryptionAlgorithm:  qsfs.EncryptionAlgorithm,
 			EncryptionKey:        qsfs.EncryptionKey,
 			CompressionAlgorithm: qsfs.CompressionAlgorithm,
-			Metadata:             convertToWorkloadMetadata(qsfs.Metadata),
-			Groups:               convertToWorkloadGroups(qsfs.Groups),
-		}
-	}
-	return result
-}
-
-func convertQSFSsComputed(qsfss []workloads.QSFS) []QSFSComputed {
-
-	result := make([]QSFSComputed, len(qsfss))
-
-	for i, qsfs := range qsfss {
-		result[i] = QSFSComputed{
-			MetricsEndpoint: qsfs.MetricsEndpoint,
-		}
-	}
-	return result
-}
-
-func convertToQSFSsWorkloadComputed(qsfss []QSFSComputed) []workloads.QSFS {
-
-	result := make([]workloads.QSFS, len(qsfss))
-
-	for i, qsfs := range qsfss {
-		result[i] = workloads.QSFS{
-			MetricsEndpoint: qsfs.MetricsEndpoint,
-		}
-	}
-	return result
-}
-
-func parseToDeploymentState(deployment workloads.Deployment) DeploymentState {
-
-	var solutionProvider int64
-
-	if deployment.SolutionProvider != nil {
-		solutionProvider = int64(*deployment.SolutionProvider)
-	}
-
-	stateArgs := DeploymentArgs{
-
-		NodeID:           int32(deployment.NodeID),
-		Name:             deployment.Name,
-		SolutionType:     deployment.SolutionType,
-		SolutionProvider: &solutionProvider,
-		NetworkName:      deployment.NetworkName,
-		Disks:            convertDisks(deployment.Disks),
-		ZdbsInputs:       convertZdbs(deployment.Zdbs),
-		VmsInputs:        convertVMs(deployment.Vms),
-		QSFSInputs:       convertQSFSs(deployment.QSFS),
-	}
-
-	nodeDeploymentID := make(map[string]int64)
-	for key, value := range deployment.NodeDeploymentID {
-		nodeDeploymentID[fmt.Sprint(key)] = int64(value)
-	}
-
-	state := DeploymentState{
-
-		DeploymentArgs:   stateArgs,
-		NodeDeploymentID: nodeDeploymentID,
-		ContractID:       int64(deployment.ContractID),
-		IPrange:          deployment.IPrange,
-		ZdbsComputed:     convertZdbsComputed(deployment.Zdbs),
-		VmsComputed:      convertVMsComputed(deployment.Vms),
-		QsfsComputed:     convertQSFSsComputed(deployment.QSFS),
-	}
-
-	return state
-}
-
-func parseToWorkloadDeployment(deploymentArgs DeploymentArgs) workloads.Deployment {
-
-	var solutionProvider *uint64
-	if deploymentArgs.SolutionProvider != nil {
-		temp := uint64(*deploymentArgs.SolutionProvider)
-		solutionProvider = &temp
+			Metadata: workloads.Metadata{
+				EncryptionKey:       qsfs.Metadata.EncryptionKey,
+				Prefix:              qsfs.Metadata.Prefix,
+				EncryptionAlgorithm: qsfs.Metadata.EncryptionAlgorithm,
+				Type:                qsfs.Metadata.Type,
+				Backends:            parseInputsToBackends(qsfs.Metadata.Backends),
+			},
+			Groups: groups,
+		})
 	}
 
 	return workloads.Deployment{
@@ -536,55 +244,198 @@ func parseToWorkloadDeployment(deploymentArgs DeploymentArgs) workloads.Deployme
 		SolutionType:     deploymentArgs.SolutionType,
 		SolutionProvider: solutionProvider,
 		NetworkName:      deploymentArgs.NetworkName,
-		Disks:            convertToWorkloadDisks(deploymentArgs.Disks),
-		Zdbs:             convertToWorkloadZdbs(deploymentArgs.ZdbsInputs),
-		Vms:              convertToWorkloadVMs(deploymentArgs.VmsInputs),
-		QSFS:             convertToWorkloadQSFSs(deploymentArgs.QSFSInputs),
+		Disks:            disks,
+		Zdbs:             zdbs,
+		Vms:              vms,
+		QSFS:             qsfss,
 	}
-
 }
 
-func parseToComputedDeployment(deploymentState DeploymentState) workloads.Deployment {
+func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
+	var solutionProvider int64
+	if deployment.SolutionProvider != nil {
+		solutionProvider = int64(*deployment.SolutionProvider)
+	}
 
-	nodeDeploymentID := make(map[uint32]uint64)
+	var disks []Disk
+	for _, disk := range deployment.Disks {
+		disks = append(disks, Disk{
+			Name:        disk.Name,
+			Size:        disk.SizeGB,
+			Description: disk.Description,
+		})
+	}
 
-	for key, value := range deploymentState.NodeDeploymentID {
-		k, err := strconv.ParseUint(key, 10, 32)
-		if err != nil {
-			continue
+	var zdbs []ZDBInput
+	for _, zdb := range deployment.Zdbs {
+		zdbs = append(zdbs, ZDBInput{
+			Name:        zdb.Name,
+			Size:        zdb.Size,
+			Password:    zdb.Password,
+			Public:      zdb.Public,
+			Description: zdb.Description,
+			Mode:        zdb.Mode,
+		})
+	}
+
+	var vms []VMInput
+	for _, vm := range deployment.Vms {
+		var zlogs []Zlog
+		for _, zlog := range vm.Zlogs {
+			zlogs = append(zlogs, Zlog{
+				Zmachine: zlog.Zmachine,
+				Output:   zlog.Output,
+			})
 		}
-		nodeDeploymentID[uint32(k)] = uint64(value)
+
+		var mounts []Mount
+		for _, mount := range vm.Mounts {
+			mounts = append(mounts, Mount{
+				DiskName:   mount.DiskName,
+				MountPoint: mount.MountPoint,
+			})
+		}
+
+		vms = append(vms, VMInput{
+			Name:          vm.Name,
+			Flist:         vm.Flist,
+			NetworkName:   vm.NetworkName,
+			FlistChecksum: vm.FlistChecksum,
+			PublicIP:      vm.PublicIP,
+			PublicIP6:     vm.PublicIP6,
+			Planetary:     vm.Planetary,
+			Description:   vm.Description,
+			GPUs:          vm.GPUs,
+			CPU:           vm.CPU,
+			Memory:        vm.Memory,
+			RootfsSize:    vm.RootfsSize,
+			Entrypoint:    vm.Entrypoint,
+			Mounts:        mounts,
+			Zlogs:         zlogs,
+			EnvVars:       vm.EnvVars,
+		})
 	}
 
-	return workloads.Deployment{
+	var qsfss []QSFSInput
+	for _, qsfs := range deployment.QSFS {
+		var groups []Group
+		for _, group := range qsfs.Groups {
+			groups = append(groups, Group{
+				Backends: parseBackendsToState(group.Backends),
+			})
+		}
+
+		qsfss = append(qsfss, QSFSInput{
+			Name:                 qsfs.Name,
+			Description:          qsfs.Description,
+			Cache:                qsfs.Cache,
+			MinimalShards:        int32(qsfs.MinimalShards),
+			ExpectedShards:       int32(qsfs.ExpectedShards),
+			RedundantGroups:      int32(qsfs.RedundantGroups),
+			RedundantNodes:       int32(qsfs.RedundantNodes),
+			MaxZDBDataDirSize:    int32(qsfs.MaxZDBDataDirSize),
+			EncryptionAlgorithm:  qsfs.EncryptionAlgorithm,
+			EncryptionKey:        qsfs.EncryptionKey,
+			CompressionAlgorithm: qsfs.CompressionAlgorithm,
+			Metadata: Metadata{
+				EncryptionKey:       qsfs.Metadata.EncryptionKey,
+				Prefix:              qsfs.Metadata.Prefix,
+				EncryptionAlgorithm: qsfs.Metadata.EncryptionAlgorithm,
+				Type:                qsfs.Metadata.Type,
+				Backends:            parseBackendsToState(qsfs.Metadata.Backends),
+			},
+			Groups: groups,
+		})
+	}
+
+	stateArgs := DeploymentArgs{
+		NodeID:           int32(deployment.NodeID),
+		Name:             deployment.Name,
+		SolutionType:     deployment.SolutionType,
+		SolutionProvider: solutionProvider,
+		NetworkName:      deployment.NetworkName,
+		Disks:            disks,
+		ZdbsInputs:       zdbs,
+		VmsInputs:        vms,
+		QSFSInputs:       qsfss,
+	}
+
+	nodeDeploymentID := make(map[string]int64)
+	for nodeID, deploymentID := range deployment.NodeDeploymentID {
+		nodeDeploymentID[fmt.Sprint(nodeID)] = int64(deploymentID)
+	}
+
+	zdbsComputed := make([]ZDBComputed, 0)
+	for _, zdb := range deployment.Zdbs {
+		zdbsComputed = append(zdbsComputed, ZDBComputed{
+			IPs:       zdb.IPs,
+			Port:      int32(zdb.Port),
+			Namespace: zdb.Namespace,
+		})
+	}
+
+	vmsComputed := make([]VMComputed, 0)
+	for _, vm := range deployment.Vms {
+		vmsComputed = append(vmsComputed, VMComputed{
+			ComputedIP:  vm.ComputedIP,
+			ComputedIP6: vm.ComputedIP6,
+			YggIP:       vm.YggIP,
+			ConsoleURL:  vm.ConsoleURL,
+			IP:          vm.IP,
+		})
+	}
+
+	qsfsComputed := make([]QSFSComputed, 0)
+	for _, qsfs := range deployment.QSFS {
+		qsfsComputed = append(qsfsComputed, QSFSComputed{
+			MetricsEndpoint: qsfs.MetricsEndpoint,
+		})
+	}
+
+	state := DeploymentState{
+		DeploymentArgs:   stateArgs,
 		NodeDeploymentID: nodeDeploymentID,
-		ContractID:       uint64(deploymentState.ContractID),
-		IPrange:          deploymentState.IPrange,
+		ContractID:       int64(deployment.ContractID),
+		IPrange:          deployment.IPrange,
+		ZdbsComputed:     zdbsComputed,
+		VmsComputed:      vmsComputed,
+		QsfsComputed:     qsfsComputed,
 	}
 
+	return state
 }
 
-func updateDeploymentkFromState(deployment *workloads.Deployment, state DeploymentState) error {
-
+func updateDeploymentFromState(deployment *workloads.Deployment, state DeploymentState) error {
 	nodeDeploymentID := make(map[uint32]uint64)
-
-	for key, value := range state.NodeDeploymentID {
-		k, err := strconv.ParseUint(key, 10, 32)
-		if err == nil {
+	for nodeID, deploymentID := range state.NodeDeploymentID {
+		node, err := strconv.ParseUint(nodeID, 10, 32)
+		if err != nil {
 			return err
 		}
-		if err != nil {
-			continue
-		}
-		nodeDeploymentID[uint32(k)] = uint64(value)
+		nodeDeploymentID[uint32(node)] = uint64(deploymentID)
+	}
+
+	for i, zdb := range state.ZdbsComputed {
+		deployment.Zdbs[i].IPs = zdb.IPs
+		deployment.Zdbs[i].Port = uint32(zdb.Port)
+		deployment.Zdbs[i].Namespace = zdb.Namespace
+	}
+
+	for i, vm := range state.VmsComputed {
+		deployment.Vms[i].ComputedIP = vm.ComputedIP
+		deployment.Vms[i].ComputedIP6 = vm.ComputedIP6
+		deployment.Vms[i].YggIP = vm.YggIP
+		deployment.Vms[i].ConsoleURL = vm.ConsoleURL
+		deployment.Vms[i].IP = vm.IP
+	}
+
+	for i, qsfs := range state.QsfsComputed {
+		deployment.QSFS[i].MetricsEndpoint = qsfs.MetricsEndpoint
 	}
 
 	deployment.NodeDeploymentID = nodeDeploymentID
 	deployment.ContractID = uint64(state.ContractID)
 	deployment.IPrange = state.IPrange
-	deployment.Zdbs = convertToWorkloadZdbsComputed(state.ZdbsComputed)
-	deployment.Vms = convertToVMsWorkloadComputed(state.VmsComputed)
-	deployment.QSFS = convertToQSFSsWorkloadComputed(state.QsfsComputed)
 
 	return nil
 }
