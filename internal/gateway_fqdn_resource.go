@@ -55,7 +55,7 @@ func (*GatewayFQDN) Create(ctx p.Context, id string, input GatewayFQDNArgs, prev
 }
 
 // Update updates the arguments of a fqdn gateway resource
-func (*GatewayFQDN) Update(ctx p.Context, id string, input GatewayFQDNArgs, oldState GatewayFQDNState, preview bool) (string, GatewayFQDNState, error) {
+func (*GatewayFQDN) Update(ctx p.Context, id string, oldState GatewayFQDNState, input GatewayFQDNArgs, preview bool) (string, GatewayFQDNState, error) {
 
 	state := GatewayFQDNState{GatewayFQDNArgs: input}
 	if preview {
