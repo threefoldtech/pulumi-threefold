@@ -46,7 +46,7 @@ func (c *Config) Annotate(a infer.Annotator) {
 	a.Describe(&c.RelayURL, "The relay url, example: wss://relay.dev.grid.tf")
 	a.Describe(&c.RmbTimeout, "The timeout duration in seconds for rmb calls")
 	a.SetDefault(&c.Mnemonic, os.Getenv("MNEMONIC"), "")
-	a.SetDefault(&c.Network, "dev", "")
+	a.SetDefault(&c.Network, os.Getenv("NETWORK"), "")
 	a.SetDefault(&c.KeyType, "sr25519", "")
 }
 
@@ -55,6 +55,10 @@ var _ = (infer.CustomConfigure)((*Config)(nil))
 func (c *Config) Configure(ctx p.Context) error {
 	if len(strings.TrimSpace(c.Mnemonic)) == 0 {
 		return errors.New("mnemonic is required")
+	}
+
+	if len(strings.TrimSpace(c.Network)) == 0 {
+		c.Network = "dev"
 	}
 
 	tfPluginClient, err := deployer.NewTFPluginClient(c.Mnemonic, c.KeyType, c.Network, c.SubstrateURL, c.RelayURL, "", 0, false)
