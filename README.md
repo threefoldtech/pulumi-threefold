@@ -1,6 +1,6 @@
 # Pulumi-provider-grid
 
-[![Testing](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/test.yml/badge.svg?branch=development)](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/test.yml) [![Lint](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/lint.yml/badge.svg?branch=development)](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/lint.yml) [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
+[![Testing](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/test.yaml/badge.svg?branch=development)](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/test.yaml) [![Lint](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/lint.yaml/badge.svg?branch=development)](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/lint.yaml) [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 
 A pulumi provider for the [threefold grid](https://threefold.io) to manage your infrastructure using pulumi.
 
