@@ -11,7 +11,7 @@ type GatewayFQDN struct{}
 
 // GatewayFQDNArgs is defining what arguments it accepts
 type GatewayFQDNArgs struct {
-	NodeID         int32         `pulumi:"node_id"`
+	NodeID         interface{}   `pulumi:"node_id"`
 	Name           string        `pulumi:"name"`
 	FQDN           string        `pulumi:"fqdn"`
 	Backends       []zos.Backend `pulumi:"backends"`
@@ -36,7 +36,10 @@ func (*GatewayFQDN) Create(ctx p.Context, id string, input GatewayFQDNArgs, prev
 		return id, state, nil
 	}
 
-	fqdnGateway := parseToGatewayFQDN(input)
+	fqdnGateway, err := parseToGatewayFQDN(input)
+	if err != nil {
+		return id, state, err
+	}
 
 	config := infer.GetConfig[Config](ctx)
 
@@ -62,7 +65,10 @@ func (*GatewayFQDN) Update(ctx p.Context, id string, oldState GatewayFQDNState, 
 		return id, state, nil
 	}
 
-	fqdnGateway := parseToGatewayFQDN(input)
+	fqdnGateway, err := parseToGatewayFQDN(input)
+	if err != nil {
+		return id, state, err
+	}
 
 	if err := updateGatewayFQDNFromState(&fqdnGateway, oldState); err != nil {
 		return id, state, err
@@ -86,8 +92,10 @@ func (*GatewayFQDN) Update(ctx p.Context, id string, oldState GatewayFQDNState, 
 
 // Read gets the state of the fqdn gateway resource
 func (*GatewayFQDN) Read(ctx p.Context, id string, oldState GatewayFQDNState) (string, GatewayFQDNState, error) {
-
-	fqdnGateway := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
+	fqdnGateway, err := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
+	if err != nil {
+		return id, oldState, err
+	}
 
 	if err := updateGatewayFQDNFromState(&fqdnGateway, oldState); err != nil {
 		return id, oldState, err
@@ -107,7 +115,10 @@ func (*GatewayFQDN) Read(ctx p.Context, id string, oldState GatewayFQDNState) (s
 
 // Delete deletes a fqdn gateway resource
 func (*GatewayFQDN) Delete(ctx p.Context, id string, oldState GatewayFQDNState) error {
-	fqdnGateway := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
+	fqdnGateway, err := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
+	if err != nil {
+		return err
+	}
 
 	if err := updateGatewayFQDNFromState(&fqdnGateway, oldState); err != nil {
 		return err

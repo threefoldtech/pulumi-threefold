@@ -39,23 +39,27 @@ func parseToGWNameState(gw workloads.GatewayNameProxy) GatewayNameState {
 	}
 }
 
-func parseToGWName(gwArgs GatewayNameArgs) workloads.GatewayNameProxy {
-
+func parseToGWName(gwArgs GatewayNameArgs) (workloads.GatewayNameProxy, error) {
 	// parse backends
 	backends := make([]zos.Backend, len(gwArgs.Backends))
 	for idx, b := range gwArgs.Backends {
 		backends[idx] = zos.Backend(b)
 	}
 
+	nodeID, err := strconv.Atoi(fmt.Sprint(gwArgs.NodeID))
+	if err != nil {
+		return workloads.GatewayNameProxy{}, err
+	}
+
 	return workloads.GatewayNameProxy{
 		Name:           gwArgs.Name,
-		NodeID:         uint32(gwArgs.NodeID),
+		NodeID:         uint32(nodeID),
 		Backends:       backends,
 		TLSPassthrough: gwArgs.TLSPassthrough,
 		Network:        gwArgs.Network,
 		Description:    gwArgs.Description,
 		SolutionType:   gwArgs.SolutionType,
-	}
+	}, nil
 }
 
 func updateGWNameFromState(gw *workloads.GatewayNameProxy, state GatewayNameState) error {
