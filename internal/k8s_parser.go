@@ -10,16 +10,16 @@ import (
 
 // K8sNodeInput struct of input data
 type K8sNodeInput struct {
-	Name          string `pulumi:"name"`
-	Node          int32  `pulumi:"node"`
-	DiskSize      int    `pulumi:"disk_size"`
-	Flist         string `pulumi:"flist,optional"`
-	CPU           int    `pulumi:"cpu"`
-	Memory        int    `pulumi:"memory"`
-	PublicIP      bool   `pulumi:"public_ip,optional"`
-	PublicIP6     bool   `pulumi:"public_ip6,optional"`
-	Planetary     bool   `pulumi:"planetary,optional"`
-	FlistChecksum string `pulumi:"flist_checksum,optional"`
+	Name          string      `pulumi:"name"`
+	Node          interface{} `pulumi:"node"`
+	DiskSize      int         `pulumi:"disk_size"`
+	Flist         string      `pulumi:"flist,optional"`
+	CPU           int         `pulumi:"cpu"`
+	Memory        int         `pulumi:"memory"`
+	PublicIP      bool        `pulumi:"public_ip,optional"`
+	PublicIP6     bool        `pulumi:"public_ip6,optional"`
+	Planetary     bool        `pulumi:"planetary,optional"`
+	FlistChecksum string      `pulumi:"flist_checksum,optional"`
 }
 
 // K8sNodeComputed struct of computed data
@@ -121,12 +121,16 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 	}
 }
 
-func parseToK8sCluster(kubernetesArgs KubernetesArgs) workloads.K8sCluster {
+func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, error) {
+	nodeID, err := strconv.Atoi(fmt.Sprint(kubernetesArgs.Master.Node))
+	if err != nil {
+		return workloads.K8sCluster{}, err
+	}
 
 	// parse master
 	master := &workloads.K8sNode{
 		Name:          kubernetesArgs.Master.Name,
-		Node:          uint32(kubernetesArgs.Master.Node),
+		Node:          uint32(nodeID),
 		DiskSize:      kubernetesArgs.Master.DiskSize,
 		PublicIP:      kubernetesArgs.Master.PublicIP,
 		PublicIP6:     kubernetesArgs.Master.PublicIP6,
@@ -145,9 +149,14 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) workloads.K8sCluster {
 	// parse workers
 	workers := []workloads.K8sNode{}
 	for _, w := range kubernetesArgs.Workers {
+		nodeID, err := strconv.Atoi(fmt.Sprint(w.Node))
+		if err != nil {
+			return workloads.K8sCluster{}, err
+		}
+
 		newWorker := workloads.K8sNode{
 			Name:          w.Name,
-			Node:          uint32(w.Node),
+			Node:          uint32(nodeID),
 			DiskSize:      w.DiskSize,
 			PublicIP:      w.PublicIP,
 			PublicIP6:     w.PublicIP6,
@@ -174,7 +183,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) workloads.K8sCluster {
 		SolutionType: kubernetesArgs.SolutionType,
 		SSHKey:       kubernetesArgs.SSHKey,
 		NodesIPRange: make(map[uint32]gridtypes.IPNet),
-	}
+	}, nil
 }
 
 func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState) error {
