@@ -12,15 +12,24 @@ resources:
     properties:
       mnemonic:
 
+  schedular:
+    type: grid:internal:Schedular
+    options:
+      provider: ${provider}
+    properties:
+      farm_ids: [1]
+
   network:
     type: grid:internal:Network
     options:
       provider: ${provider}
+      dependsOn:
+        - ${schedular}
     properties:
       name: testing
       description: test network
       nodes:
-        - 29
+        - ${schedular.nodes[0]}
       ip_range: 10.1.0.0/16
 
 outputs:
