@@ -12,15 +12,26 @@ resources:
     properties:
       mnemonic:
 
+  schedular:
+    type: grid:internal:Schedular
+    options:
+      provider: ${provider}
+    properties:
+      mru: 2048
+      sru: 6144
+      farm_ids: [1]
+
   network:
     type: grid:internal:Network
     options:
       provider: ${provider}
+      dependsOn:
+        - ${schedular}
     properties:
       name: test
       description: test network
       nodes:
-        - 29
+        - ${schedular.nodes[0]}
       ip_range: 10.1.0.0/16
 
   kubernetes:
@@ -32,21 +43,20 @@ resources:
     properties:
       master:
         name: kubernetes
-        node: 29
+        node: ${schedular.nodes[0]}
         disk_size: 2
         planetary: true
-        public_ip: true
         cpu: 2
         memory: 2048
 
       workers:
         - name: worker1
-          node: 29
+          node: ${schedular.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
         - name: worker2
-          node: 29
+          node: ${schedular.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
@@ -56,5 +66,4 @@ resources:
 
 outputs:
   node_deployment_id: ${kubernetes.node_deployment_id}
-  public_ip: ${kubernetes.master_computed.computed_ip}
   ygg_ip: ${kubernetes.master_computed.ygg_ip}
