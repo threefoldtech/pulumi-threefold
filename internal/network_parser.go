@@ -10,9 +10,9 @@ import (
 )
 
 func parseNetworkToState(network workloads.ZNet) NetworkState {
-	nodes := []int32{}
+	nodes := []interface{}{}
 	for _, nodeID := range network.Nodes {
-		nodes = append(nodes, int32(nodeID))
+		nodes = append(nodes, nodeID)
 	}
 
 	nodesIPRange := make(map[string]string)
@@ -58,6 +58,10 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 
 	nodes := []uint32{}
 	for _, nodeID := range networkArgs.Nodes {
+		nodeID, err := strconv.Atoi(fmt.Sprint(nodeID))
+		if err != nil {
+			return workloads.ZNet{}, err
+		}
 		nodes = append(nodes, uint32(nodeID))
 	}
 
