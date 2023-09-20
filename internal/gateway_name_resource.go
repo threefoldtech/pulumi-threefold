@@ -10,13 +10,13 @@ type GatewayName struct{}
 
 // GatewayNameArgs is defining what arguments it accepts
 type GatewayNameArgs struct {
-	Name           string   `pulumi:"name"`
-	NodeID         int32    `pulumi:"node_id"`
-	Backends       []string `pulumi:"backends"`
-	TLSPassthrough bool     `pulumi:"tls_passthrough,optional"`
-	Network        string   `pulumi:"network,optional"`
-	Description    string   `pulumi:"description,optional"`
-	SolutionType   string   `pulumi:"solution_type,optional"`
+	Name           string      `pulumi:"name"`
+	NodeID         interface{} `pulumi:"node_id"`
+	Backends       []string    `pulumi:"backends"`
+	TLSPassthrough bool        `pulumi:"tls_passthrough,optional"`
+	Network        string      `pulumi:"network,optional"`
+	Description    string      `pulumi:"description,optional"`
+	SolutionType   string      `pulumi:"solution_type,optional"`
 }
 
 // GatewayNameState is describing the fields that exist on the created resource.
@@ -30,27 +30,30 @@ type GatewayNameState struct {
 }
 
 // Create creates GatewayName and deploy it
-func (*GatewayName) Create(ctx p.Context, name string, input GatewayNameArgs, preview bool) (string, GatewayNameState, error) {
+func (*GatewayName) Create(ctx p.Context, id string, input GatewayNameArgs, preview bool) (string, GatewayNameState, error) {
 	state := GatewayNameState{GatewayNameArgs: input}
 	if preview {
-		return name, state, nil
+		return id, state, nil
 	}
 
-	gw := parseToGWName(input)
+	gw, err := parseToGWName(input)
+	if err != nil {
+		return id, state, err
+	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.GatewayNameDeployer.Deploy(ctx, &gw); err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
 	if err := config.TFPluginClient.GatewayNameDeployer.Sync(ctx, &gw); err != nil {
-		return name, state, err
+		return id, state, err
 	}
 
 	state = parseToGWNameState(gw)
 
-	return name, state, nil
+	return id, state, nil
 }
 
 // Update updates the GatewayName resource
@@ -60,7 +63,11 @@ func (*GatewayName) Update(ctx p.Context, id string, oldState GatewayNameState, 
 		return state, nil
 	}
 
-	gw := parseToGWName(input)
+	gw, err := parseToGWName(input)
+	if err != nil {
+		return state, err
+	}
+
 	if err := updateGWNameFromState(&gw, oldState); err != nil {
 		return state, err
 	}
@@ -82,7 +89,11 @@ func (*GatewayName) Update(ctx p.Context, id string, oldState GatewayNameState, 
 
 // Read gets the state of the GatewayName resource
 func (*GatewayName) Read(ctx p.Context, id string, oldState GatewayNameState) (string, GatewayNameState, error) {
-	gw := parseToGWName(oldState.GatewayNameArgs)
+	gw, err := parseToGWName(oldState.GatewayNameArgs)
+	if err != nil {
+		return id, oldState, err
+	}
+
 	if err := updateGWNameFromState(&gw, oldState); err != nil {
 		return id, oldState, err
 	}
@@ -100,7 +111,11 @@ func (*GatewayName) Read(ctx p.Context, id string, oldState GatewayNameState) (s
 
 // Delete deletes the GatewayName resource
 func (*GatewayName) Delete(ctx p.Context, id string, oldState GatewayNameState) error {
-	gw := parseToGWName(oldState.GatewayNameArgs)
+	gw, err := parseToGWName(oldState.GatewayNameArgs)
+	if err != nil {
+		return err
+	}
+
 	if err := updateGWNameFromState(&gw, oldState); err != nil {
 		return err
 	}

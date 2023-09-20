@@ -34,7 +34,7 @@ type ZDBInput struct {
 	Password    string `pulumi:"password"`
 	Public      bool   `pulumi:"public,optional"`
 	Description string `pulumi:"description,optional"`
-	Mode        string `pulumi:"mode"`
+	Mode        string `pulumi:"mode,optional"`
 }
 
 // ZDBComputed is the ZDB workload Computed struct
@@ -140,11 +140,16 @@ func parseInputsToBackends(backends []Backend) workloads.Backends {
 	return bs
 }
 
-func parseInputToDeployment(deploymentArgs DeploymentArgs) workloads.Deployment {
+func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment, error) {
 	var solutionProvider *uint64
 	if deploymentArgs.SolutionProvider != 0 {
 		solutionProviderUint := uint64(deploymentArgs.SolutionProvider)
 		solutionProvider = &solutionProviderUint
+	}
+
+	nodeID, err := strconv.Atoi(fmt.Sprint(deploymentArgs.NodeID))
+	if err != nil {
+		return workloads.Deployment{}, err
 	}
 
 	var vms []workloads.VM
@@ -239,7 +244,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) workloads.Deployment 
 	}
 
 	return workloads.Deployment{
-		NodeID:           uint32(deploymentArgs.NodeID),
+		NodeID:           uint32(nodeID),
 		Name:             deploymentArgs.Name,
 		SolutionType:     deploymentArgs.SolutionType,
 		SolutionProvider: solutionProvider,
@@ -248,7 +253,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) workloads.Deployment 
 		Zdbs:             zdbs,
 		Vms:              vms,
 		QSFS:             qsfss,
-	}
+	}, nil
 }
 
 func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
@@ -349,7 +354,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 	}
 
 	stateArgs := DeploymentArgs{
-		NodeID:           int32(deployment.NodeID),
+		NodeID:           deployment.NodeID,
 		Name:             deployment.Name,
 		SolutionType:     deployment.SolutionType,
 		SolutionProvider: solutionProvider,

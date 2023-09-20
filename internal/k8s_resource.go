@@ -35,7 +35,10 @@ func (*Kubernetes) Create(ctx p.Context, id string, input KubernetesArgs, previe
 		return id, state, nil
 	}
 
-	k8sCluster := parseToK8sCluster(input)
+	k8sCluster, err := parseToK8sCluster(input)
+	if err != nil {
+		return id, state, err
+	}
 
 	config := infer.GetConfig[Config](ctx)
 
@@ -59,7 +62,11 @@ func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, in
 		return state, nil
 	}
 
-	k8sCluster := parseToK8sCluster(input)
+	k8sCluster, err := parseToK8sCluster(input)
+	if err != nil {
+		return state, err
+	}
+
 	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
 		return state, err
 	}
@@ -81,7 +88,11 @@ func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, in
 
 // Read get the state of the Kubernetes resource
 func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (string, KubernetesState, error) {
-	k8sCluster := parseToK8sCluster(oldState.KubernetesArgs)
+	k8sCluster, err := parseToK8sCluster(oldState.KubernetesArgs)
+	if err != nil {
+		return id, oldState, err
+	}
+
 	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
 		return id, oldState, err
 	}
@@ -107,7 +118,11 @@ func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (str
 
 // Delete deletes the Kubernetes resource
 func (*Kubernetes) Delete(ctx p.Context, id string, oldState KubernetesState) error {
-	k8sCluster := parseToK8sCluster(oldState.KubernetesArgs)
+	k8sCluster, err := parseToK8sCluster(oldState.KubernetesArgs)
+	if err != nil {
+		return err
+	}
+
 	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
 		return err
 	}

@@ -10,12 +10,12 @@ type Network struct{}
 
 // NetworkArgs is defining what arguments it accepts
 type NetworkArgs struct {
-	Name         string  `pulumi:"name"`
-	Description  string  `pulumi:"description"`
-	Nodes        []int32 `pulumi:"nodes"`
-	IPRange      string  `pulumi:"ip_range"`
-	AddWGAccess  bool    `pulumi:"add_wg_access,optional"`
-	SolutionType string  `pulumi:"solution_type,optional"`
+	Name         string        `pulumi:"name"`
+	Description  string        `pulumi:"description"`
+	Nodes        []interface{} `pulumi:"nodes"`
+	IPRange      string        `pulumi:"ip_range"`
+	AddWGAccess  bool          `pulumi:"add_wg_access,optional"`
+	SolutionType string        `pulumi:"solution_type,optional"`
 }
 
 // NetworkState is describing the fields that exist on the created resource.

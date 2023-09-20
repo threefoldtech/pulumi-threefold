@@ -10,7 +10,7 @@ type Deployment struct{}
 
 // DeploymentArgs is defining what arguments it accepts
 type DeploymentArgs struct {
-	NodeID           int32       `pulumi:"node_id"`
+	NodeID           interface{} `pulumi:"node_id"`
 	Name             string      `pulumi:"name"`
 	NetworkName      string      `pulumi:"network_name"`
 	SolutionType     string      `pulumi:"solution_type,optional"`
@@ -33,6 +33,10 @@ type DeploymentState struct {
 	QsfsComputed     []QSFSComputed   `pulumi:"qsfs_computed"`
 }
 
+func (z *ZDBInput) Annotate(a infer.Annotator) {
+	a.SetDefault(&z.Mode, "user", "")
+}
+
 // Create creates a deployment
 func (*Deployment) Create(ctx p.Context, id string, input DeploymentArgs, preview bool) (string, DeploymentState, error) {
 	state := DeploymentState{DeploymentArgs: input}
@@ -40,7 +44,10 @@ func (*Deployment) Create(ctx p.Context, id string, input DeploymentArgs, previe
 		return id, state, nil
 	}
 
-	deployment := parseInputToDeployment(input)
+	deployment, err := parseInputToDeployment(input)
+	if err != nil {
+		return id, state, err
+	}
 
 	config := infer.GetConfig[Config](ctx)
 
@@ -64,7 +71,10 @@ func (*Deployment) Update(ctx p.Context, id string, oldState DeploymentState, in
 		return id, state, nil
 	}
 
-	deployment := parseInputToDeployment(input)
+	deployment, err := parseInputToDeployment(input)
+	if err != nil {
+		return id, state, err
+	}
 
 	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
 		return id, state, err
@@ -87,7 +97,10 @@ func (*Deployment) Update(ctx p.Context, id string, oldState DeploymentState, in
 
 // Read gets the state of the deployment resource
 func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (string, DeploymentState, error) {
-	deployment := parseInputToDeployment(oldState.DeploymentArgs)
+	deployment, err := parseInputToDeployment(oldState.DeploymentArgs)
+	if err != nil {
+		return id, oldState, err
+	}
 
 	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
 		return id, oldState, err
@@ -106,7 +119,10 @@ func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (str
 
 // Delete deletes a deployment resource
 func (*Deployment) Delete(ctx p.Context, id string, oldState DeploymentState) error {
-	deployment := parseInputToDeployment(oldState.DeploymentArgs)
+	deployment, err := parseInputToDeployment(oldState.DeploymentArgs)
+	if err != nil {
+		return err
+	}
 
 	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
 		return err
