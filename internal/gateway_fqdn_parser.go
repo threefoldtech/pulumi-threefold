@@ -33,9 +33,14 @@ func parseToGatewayFQDNState(fqdnGateway workloads.GatewayFQDNProxy) GatewayFQDN
 	return state
 }
 
-func parseToGatewayFQDN(fqdnGatewayArgs GatewayFQDNArgs) workloads.GatewayFQDNProxy {
+func parseToGatewayFQDN(fqdnGatewayArgs GatewayFQDNArgs) (workloads.GatewayFQDNProxy, error) {
+	nodeID, err := strconv.Atoi(fmt.Sprint(fqdnGatewayArgs.NodeID))
+	if err != nil {
+		return workloads.GatewayFQDNProxy{}, err
+	}
+
 	return workloads.GatewayFQDNProxy{
-		NodeID:         uint32(fqdnGatewayArgs.NodeID),
+		NodeID:         uint32(nodeID),
 		Name:           fqdnGatewayArgs.Name,
 		SolutionType:   fqdnGatewayArgs.SolutionType,
 		Network:        fqdnGatewayArgs.NetworkName,
@@ -43,7 +48,7 @@ func parseToGatewayFQDN(fqdnGatewayArgs GatewayFQDNArgs) workloads.GatewayFQDNPr
 		Backends:       fqdnGatewayArgs.Backends,
 		TLSPassthrough: fqdnGatewayArgs.TLSPassthrough,
 		Description:    fqdnGatewayArgs.Description,
-	}
+	}, nil
 }
 
 func updateGatewayFQDNFromState(fqdnGateway *workloads.GatewayFQDNProxy, state GatewayFQDNState) error {

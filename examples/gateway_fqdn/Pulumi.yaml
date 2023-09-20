@@ -12,16 +12,59 @@ resources:
     properties:
       mnemonic:
 
+  schedular:
+    type: grid:internal:Schedular
+    options:
+      provider: ${provider}
+    properties:
+      mru: 256
+      farm_ids: [1]
+      ipv4: true
+      free_ips: 1
+
+  network:
+    type: grid:internal:Network
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${schedular}
+    properties:
+      name: test
+      description: test network
+      nodes:
+        - ${schedular.nodes[0]}
+      ip_range: 10.1.0.0/16
+
+  deployment:
+    type: grid:internal:Deployment
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${network}
+    properties:
+      node_id: ${schedular.nodes[0]}
+      name: deployment
+      network_name: test
+      vms:
+        - name: vm
+          flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
+          network_name: test
+          cpu: 2
+          memory: 256
+          planetary: true
+
   gatewayFQDN:
     type: grid:internal:GatewayFQDN
     options:
       provider: ${provider}
+      dependsOn:
+        - ${deployment}
     properties:
       name: testing
       node_id: 14
       fqdn: remote.omar.grid.tf
       backends:
-        - http://69.164.223.208
+        - http://[${deployment.vms_computed[0].ygg_ip}]:9000
 
 outputs:
   node_deployment_id: ${gatewayFQDN.node_deployment_id}
