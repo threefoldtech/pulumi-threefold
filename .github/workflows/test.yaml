@@ -10,6 +10,11 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        network: ["dev", "qa", "test", "main"]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,3 +29,6 @@ jobs:
 
       - name: Run Tests
         run: go test -v ./...
+        env:
+          MNEMONICS: ${{ secrets.MNEMONICS }}
+          NETWORK: ${{ matrix.network }}
