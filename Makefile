@@ -7,7 +7,7 @@ GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
 all: verifiers test
 
 build:
-	go build -o pulumi-resource-grid github.com/rawdaGastan/pulumi-provider-grid
+	go build -o pulumi-resource-grid github.com/threefoldtech/pulumi-provider-grid
 
 test: 
 	@echo "Running Tests"

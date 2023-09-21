@@ -1,4 +1,4 @@
-module github.com/rawdaGastan/pulumi-provider-grid
+module github.com/threefoldtech/pulumi-provider-grid
 
 go 1.21
 
@@ -7,8 +7,9 @@ require (
 	github.com/pulumi/pulumi-go-provider v0.12.1
 	github.com/pulumi/pulumi/pkg/v3 v3.72.0
 	github.com/pulumi/pulumi/sdk/v3 v3.72.0
-	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.1
-	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.10.2
+	github.com/stretchr/testify v1.8.4
+	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.2
+	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.11.2
 	github.com/threefoldtech/zos v0.5.6-0.20230809073554-ddb0ad98fc4c
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200609130330-bd2cb7843e1b
 )
@@ -95,7 +96,7 @@ require (
 	github.com/gomodule/redigo v2.0.0+incompatible // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/google/uuid v1.3.0 // indirect
+	github.com/google/uuid v1.3.1 // indirect
 	github.com/google/wire v0.5.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
@@ -175,7 +176,6 @@ require (
 	github.com/skeema/knownhosts v1.1.0 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20230809064214-d8ef5ca360eb // indirect
 	github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.10.2 // indirect
@@ -193,14 +193,14 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	gocloud.dev v0.29.0 // indirect
 	gocloud.dev/secrets/hashivault v0.27.0 // indirect
-	golang.org/x/crypto v0.12.0 // indirect
+	golang.org/x/crypto v0.13.0 // indirect
 	golang.org/x/exp v0.0.0-20230206171751-46f607a40771 // indirect
-	golang.org/x/mod v0.10.0 // indirect
-	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/mod v0.11.0 // indirect
+	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/oauth2 v0.6.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
-	golang.org/x/term v0.11.0 // indirect
+	golang.org/x/term v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
