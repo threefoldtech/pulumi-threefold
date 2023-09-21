@@ -12,7 +12,7 @@ type Deployment struct{}
 type DeploymentArgs struct {
 	NodeID           interface{} `pulumi:"node_id"`
 	Name             string      `pulumi:"name"`
-	NetworkName      string      `pulumi:"network_name"`
+	NetworkName      string      `pulumi:"network_name,optional"`
 	SolutionType     string      `pulumi:"solution_type,optional"`
 	SolutionProvider int64       `pulumi:"solution_provider,optional"`
 	Disks            []Disk      `pulumi:"disks,optional"`

@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	p "github.com/rawdaGastan/pulumi-provider-grid/internal"
+	p "github.com/threefoldtech/pulumi-provider-grid/internal"
 )
 
 var version = "v1.0.0"

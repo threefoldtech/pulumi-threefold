@@ -1,6 +1,6 @@
 # Pulumi-provider-grid
 
-[![Testing](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/test.yaml/badge.svg?branch=development)](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/test.yaml) [![Lint](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/lint.yaml/badge.svg?branch=development)](https://github.com/rawdaGastan/pulumi-provider-grid/actions/workflows/lint.yaml) [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/) <a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-0%25-brightgreen.svg?longCache=true&style=flat)</a>
+[![Testing](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/test.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/test.yaml) [![Lint](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/lint.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/lint.yaml) [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/) <a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-0%25-brightgreen.svg?longCache=true&style=flat)</a>
 
 A pulumi provider for the [threefold grid](https://threefold.io) to manage your infrastructure using pulumi.
 
@@ -11,20 +11,21 @@ A pulumi provider for the [threefold grid](https://threefold.io) to manage your 
 
 ## Using the provider
 
+- You can try to run examples:
+
 ```bash
-cd examples/deployment
+cd examples/virtual_machine
 
 export MNEMONICS="mnemonics words"
-export NETWORK="network" # dev, qa, test, main
+export NETWORK="network" # dev, qa, test, main -> default is dev
 
-mkdir $PWD/state
-pulumi login --cloud-url file://$PWD/state
-pulumi stack init test
-pulumi up --yes
-pulumi up --yes
-pulumi destroy --yes
-pulumi stack rm --yes
-pulumi logout
+make run
+```
+
+- to destroy the resources you created:
+
+```bash
+make destroy
 ```
 
 ## Building The Provider (for development only)
@@ -37,7 +38,7 @@ make build
 
 ```bash
 export MNEMONICS="mnemonics words"
-export NETWORK="network" # dev, qa, test, main
+export NETWORK="network" # dev, qa, test, main -> default is dev
 ```
 
 - ### Unit tests
