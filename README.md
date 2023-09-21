@@ -6,11 +6,12 @@ A pulumi provider for the [threefold grid](https://threefold.io) to manage your 
 
 ## Requirements
 
-- [Pulumi](https://www.pulumi.com/docs/install/) >= 3.81.0
+- [Pulumi](https://www.pulumi.com/docs/install/) >= 3.84.0
 - [Go](https://golang.org/doc/install) >= 1.21
 
 ## Using the provider
 
+- Build the provider
 - You can try to run examples:
 
 ```bash
