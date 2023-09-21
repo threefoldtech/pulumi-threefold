@@ -63,6 +63,7 @@ resources:
 
       token: t123456789
       network_name: test
+      ssh_key: 
 
 outputs:
   node_deployment_id: ${kubernetes.node_deployment_id}

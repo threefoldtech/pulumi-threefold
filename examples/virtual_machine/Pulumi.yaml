@@ -18,7 +18,7 @@ resources:
       provider: ${provider}
     properties:
       mru: 256
-      sru: 4096
+      sru: 2048
       farm_ids: [1]
 
   network:
@@ -56,11 +56,6 @@ resources:
               mount_point: /app
           env_vars:
             SSH_KEY:
-
-      zdbs:
-        - name: zdbsTest
-          size: 2
-          password: "123456"
 
       disks:
         - name: data
