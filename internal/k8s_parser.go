@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
@@ -122,6 +123,12 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 }
 
 func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, error) {
+	// for tests
+	sshKey := os.Getenv("SSH_KEY")
+	if sshKey != "" {
+		kubernetesArgs.SSHKey = sshKey
+	}
+
 	nodeID, err := strconv.Atoi(fmt.Sprint(kubernetesArgs.Master.Node))
 	if err != nil {
 		return workloads.K8sCluster{}, err

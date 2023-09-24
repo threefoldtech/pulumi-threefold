@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
@@ -168,6 +169,12 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 				Zmachine: zlog.Zmachine,
 				Output:   zlog.Output,
 			})
+		}
+
+		// for tests
+		sshKey := os.Getenv("SSH_KEY")
+		if sshKey != "" {
+			vm.EnvVars["SSH_KEY"] = sshKey
 		}
 
 		vms = append(vms, workloads.VM{
