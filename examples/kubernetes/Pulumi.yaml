@@ -12,8 +12,8 @@ resources:
     properties:
       mnemonic:
 
-  schedular:
-    type: grid:internal:Schedular
+  scheduler:
+    type: grid:internal:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -26,12 +26,12 @@ resources:
     options:
       provider: ${provider}
       dependsOn:
-        - ${schedular}
+        - ${scheduler}
     properties:
       name: test
       description: test network
       nodes:
-        - ${schedular.nodes[0]}
+        - ${scheduler.nodes[0]}
       ip_range: 10.1.0.0/16
 
   kubernetes:
@@ -43,7 +43,7 @@ resources:
     properties:
       master:
         name: kubernetes
-        node: ${schedular.nodes[0]}
+        node: ${scheduler.nodes[0]}
         disk_size: 2
         planetary: true
         cpu: 2
@@ -51,12 +51,12 @@ resources:
 
       workers:
         - name: worker1
-          node: ${schedular.nodes[0]}
+          node: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
         - name: worker2
-          node: ${schedular.nodes[0]}
+          node: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048

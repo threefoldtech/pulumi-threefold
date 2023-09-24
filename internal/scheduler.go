@@ -6,11 +6,11 @@ import (
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
 
-// Schedular controlling struct
-type Schedular struct{}
+// Scheduler controlling struct
+type Scheduler struct{}
 
-// SchedularArgs is defining what arguments it accepts
-type SchedularArgs struct {
+// SchedulerArgs is defining what arguments it accepts
+type SchedulerArgs struct {
 	MRU               int64   `pulumi:"mru,optional"`
 	HRU               int64   `pulumi:"hru,optional"`
 	SRU               int64   `pulumi:"sru,optional"`
@@ -36,23 +36,23 @@ type SchedularArgs struct {
 	GpuAvailable      bool    `pulumi:"gpu_available,optional"`
 }
 
-// SchedularState is describing the fields that exist on the created resource.
-type SchedularState struct {
-	SchedularArgs
+// SchedulerState is describing the fields that exist on the created resource.
+type SchedulerState struct {
+	SchedulerArgs
 
 	Nodes []int32 `pulumi:"nodes"`
 }
 
-// Create creates schedular
-func (*Schedular) Create(ctx p.Context, id string, input SchedularArgs, preview bool) (string, SchedularState, error) {
-	state := SchedularState{SchedularArgs: input}
+// Create creates scheduler
+func (*Scheduler) Create(ctx p.Context, id string, input SchedulerArgs, preview bool) (string, SchedulerState, error) {
+	state := SchedulerState{SchedulerArgs: input}
 	if preview {
 		return id, state, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodeFilter, ssds, hdds := parseSchedularInput(input)
+	nodeFilter, ssds, hdds := parseSchedulerInput(input)
 
 	nodes, err := deployer.FilterNodes(ctx, config.TFPluginClient, nodeFilter, hdds, ssds, nil)
 	if err != nil {
@@ -66,16 +66,16 @@ func (*Schedular) Create(ctx p.Context, id string, input SchedularArgs, preview 
 	return id, state, nil
 }
 
-// Update updates the arguments of the schedular resource
-func (*Schedular) Update(ctx p.Context, id string, oldState SchedularState, input SchedularArgs, preview bool) (SchedularState, error) {
-	state := SchedularState{SchedularArgs: input}
+// Update updates the arguments of the scheduler resource
+func (*Scheduler) Update(ctx p.Context, id string, oldState SchedulerState, input SchedulerArgs, preview bool) (SchedulerState, error) {
+	state := SchedulerState{SchedulerArgs: input}
 	if preview {
 		return state, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodeFilter, hdds, ssds := parseSchedularInput(input)
+	nodeFilter, hdds, ssds := parseSchedulerInput(input)
 	nodes, err := deployer.FilterNodes(ctx, config.TFPluginClient, nodeFilter, hdds, ssds, nil)
 	if err != nil {
 		return state, err
@@ -88,12 +88,12 @@ func (*Schedular) Update(ctx p.Context, id string, oldState SchedularState, inpu
 	return state, nil
 }
 
-// Read get the state of the schedular resource
-func (*Schedular) Read(ctx p.Context, id string, oldState SchedularState) (string, SchedularState, error) {
+// Read get the state of the scheduler resource
+func (*Scheduler) Read(ctx p.Context, id string, oldState SchedulerState) (string, SchedulerState, error) {
 	return id, oldState, nil
 }
 
-// Delete deletes the schedular resource
-func (*Schedular) Delete(ctx p.Context, id string, oldState SchedularState) error {
+// Delete deletes the scheduler resource
+func (*Scheduler) Delete(ctx p.Context, id string, oldState SchedulerState) error {
 	return nil
 }

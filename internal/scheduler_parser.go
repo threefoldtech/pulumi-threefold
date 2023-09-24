@@ -13,7 +13,7 @@ func Ref[T any](v T) *T {
 	return &v
 }
 
-func parseSchedularInput(input SchedularArgs) (types.NodeFilter, []uint64, []uint64) {
+func parseSchedulerInput(input SchedulerArgs) (types.NodeFilter, []uint64, []uint64) {
 	filter := types.NodeFilter{Status: Ref(string("up"))}
 	var ssds []uint64
 	var hdds []uint64

@@ -12,8 +12,8 @@ resources:
     properties:
       mnemonic:
 
-  schedular:
-    type: grid:internal:Schedular
+  scheduler:
+    type: grid:internal:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -27,10 +27,10 @@ resources:
     options:
       provider: ${provider}
       dependsOn:
-        - ${schedular}
+        - ${scheduler}
     properties:
       name: pulumi
-      node_id: ${schedular.nodes[0]}
+      node_id: ${scheduler.nodes[0]}
       backends:
         - "http://69.164.223.208"
 

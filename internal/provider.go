@@ -15,7 +15,7 @@ func RunProvider(providerName, Version string) error {
 	return p.RunProvider(providerName, Version,
 		infer.Provider(infer.Options{
 			Resources: []infer.InferredResource{
-				infer.Resource[*Schedular, SchedularArgs, SchedularState](),
+				infer.Resource[*Scheduler, SchedulerArgs, SchedulerState](),
 				infer.Resource[*Network, NetworkArgs, NetworkState](),
 				infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
 				infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
