@@ -47,6 +47,7 @@ resources:
       vms:
         - name: vm
           flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
+          entrypoint: "/sbin/zinit init"
           network_name: test
           cpu: 2
           memory: 256
