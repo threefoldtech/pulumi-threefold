@@ -1,10 +1,9 @@
 name: test
 
 on:
-  push:
-    branches: [main, development]
-  pull_request:
-    branches: [main, development]
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
 
 jobs:
   test:
@@ -27,8 +26,11 @@ jobs:
       - name: Install dependencies
         run: go get -d ./...
 
+      - name: Build provider
+        run: go build -o pulumi-resource-grid github.com/threefoldtech/pulumi-provider-grid
+
       - name: Run Tests
-        run: go test -v `go list ./... | grep -v tests`
+        run: go test -v ./tests
         env:
           MNEMONICS: ${{ secrets.MNEMONIC }}
           NETWORK: ${{ matrix.network }}
