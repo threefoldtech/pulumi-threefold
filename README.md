@@ -17,7 +17,7 @@ A pulumi provider for the [threefold grid](https://threefold.io) to manage your 
 ```bash
 cd examples/virtual_machine
 
-export MNEMONICS="mnemonics words"
+export MNEMONIC="mnemonic words"
 export NETWORK="network" # dev, qa, test, main -> default is dev
 
 make run
@@ -38,7 +38,7 @@ make build
 ## Run tests
 
 ```bash
-export MNEMONICS="mnemonics words"
+export MNEMONIC="mnemonic words"
 export NETWORK="network" # dev, qa, test, main -> default is dev
 ```
 
