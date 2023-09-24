@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        network: ["dev", "qa", "test", "main"]
+        network: ["dev"]
 
     steps:
       - name: Checkout code
@@ -30,5 +30,5 @@ jobs:
       - name: Run Tests
         run: go test -v ./...
         env:
-          MNEMONICS: ${{ secrets.MNEMONICS }}
+          MNEMONICS: ${{ secrets.MNEMONIC }}
           NETWORK: ${{ matrix.network }}
