@@ -12,8 +12,8 @@ resources:
     properties:
       mnemonic:
 
-  schedular:
-    type: grid:internal:Schedular
+  scheduler:
+    type: grid:internal:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -24,12 +24,12 @@ resources:
     options:
       provider: ${provider}
       dependsOn:
-        - ${schedular}
+        - ${scheduler}
     properties:
       name: testing
       description: test network
       nodes:
-        - ${schedular.nodes[0]}
+        - ${scheduler.nodes[0]}
       ip_range: 10.1.0.0/16
 
 outputs:
