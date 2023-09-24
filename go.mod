@@ -5,9 +5,9 @@ go 1.21
 require (
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-go-provider v0.12.1
-	github.com/pulumi/pulumi/pkg/v3 v3.84.0
-	github.com/pulumi/pulumi/sdk/v3 v3.84.0
+	github.com/pulumi/pulumi-go-provider v0.12.2
+	github.com/pulumi/pulumi/pkg/v3 v3.85.0
+	github.com/pulumi/pulumi/sdk/v3 v3.85.0
 	github.com/stretchr/testify v1.8.4
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.2
 	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.11.2
@@ -25,7 +25,7 @@ require (
 	cloud.google.com/go/logging v1.7.0 // indirect
 	cloud.google.com/go/longrunning v0.5.1 // indirect
 	cloud.google.com/go/storage v1.30.1 // indirect
-	github.com/AlecAivazis/survey/v2 v2.0.5 // indirect
+	github.com/AlecAivazis/survey/v2 v2.3.7 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.3.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.2 // indirect
