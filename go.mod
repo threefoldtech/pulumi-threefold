@@ -12,7 +12,7 @@ require (
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.2
 	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.11.2
 	github.com/threefoldtech/zos v0.5.6-0.20230809073554-ddb0ad98fc4c
-	golang.org/x/crypto v0.13.0
+	golang.org/x/crypto v0.14.0
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20200609130330-bd2cb7843e1b
 )
 
@@ -212,8 +212,8 @@ require (
 	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
-	golang.org/x/term v0.12.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/term v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
