@@ -2047,8 +2047,8 @@ github.com/pulumi/pulumi-go-provider v0.12.2 h1:uFDGSjLIhMHzK31WeC+9jH3s/4Nh8eVm
 github.com/pulumi/pulumi-go-provider v0.12.2/go.mod h1:EOQY/y4d2A8G/0CjkxlFBbrmLoLFkPf6WCZIiyBsP1M=
 github.com/pulumi/pulumi/pkg/v3 v3.85.0 h1:yk+Nr5U1wd2jOrrvX1WB3RYC4cw42SeY2igWxlxee0Q=
 github.com/pulumi/pulumi/pkg/v3 v3.85.0/go.mod h1:jNgGFnA/dHm9jrd+ROeXMIBoWICS27U4EOjUqL8EP08=
-github.com/pulumi/pulumi/sdk/v3 v3.85.0 h1:DRhwuwpd9lmo2gJUCAftsv/7avjUZio2NlLSprloh8Q=
-github.com/pulumi/pulumi/sdk/v3 v3.85.0/go.mod h1:vexSGJ5L834l3T7Fo/KpdywjGAgZ2CvChuqGFl+ebS0=
+github.com/pulumi/pulumi/sdk/v3 v3.87.0 h1:11sdr2Ca/RAcawpB6z+KD3ttRvmnmT209FqNKYe60MM=
+github.com/pulumi/pulumi/sdk/v3 v3.87.0/go.mod h1:vexSGJ5L834l3T7Fo/KpdywjGAgZ2CvChuqGFl+ebS0=
 github.com/rakyll/embedmd v0.0.0-20171029212350-c8060a0752a2/go.mod h1:7jOTMgqac46PZcF54q6l2hkLEG8op93fZu61KmxWDV4=
 github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
