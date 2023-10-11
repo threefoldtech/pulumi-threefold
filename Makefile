@@ -74,7 +74,7 @@ go_sdk:: build
 	pulumi package gen-sdk ./$(PROVIDER) --language go
 
 dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
-dotnet_sdk::
+dotnet_sdk:: build
 	rm -rf sdk/dotnet
 	pulumi package gen-sdk ./$(PROVIDER) --language dotnet
 	cd sdk/dotnet/&& \
@@ -82,7 +82,7 @@ dotnet_sdk::
 		dotnet build /p:Version=${DOTNET_VERSION}
 
 nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
-nodejs_sdk::
+nodejs_sdk:: build
 	rm -rf sdk/nodejs
 	pulumi package gen-sdk ./$(PROVIDER) --language nodejs
 	cd sdk/nodejs/ && \
@@ -93,7 +93,7 @@ nodejs_sdk::
 		rm ./bin/package.json.bak
 
 python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
-python_sdk::
+python_sdk:: build
 	rm -rf sdk/python
 	pulumi package gen-sdk ./$(PROVIDER) --language python
 	cp README.md sdk/python/
