@@ -28,3 +28,4 @@ pulumi-resource-grid
 Pulumi.test.yaml
 schema-grid.json
 /examples/*/state
+/sdk
