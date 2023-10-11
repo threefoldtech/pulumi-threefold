@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	p "github.com/threefoldtech/pulumi-provider-grid/internal"
+	p "github.com/threefoldtech/pulumi-provider-grid/provider"
 )
 
 // Version is initialized by the Go linker to contain the semver of this build.

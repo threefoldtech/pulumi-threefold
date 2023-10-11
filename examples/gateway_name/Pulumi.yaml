@@ -13,7 +13,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: grid:internal:Scheduler
+    type: grid:provider:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -23,7 +23,7 @@ resources:
       free_ips: 1
 
   gatewayName:
-    type: grid:internal:GatewayName
+    type: grid:provider:GatewayName
     options:
       provider: ${provider}
       dependsOn:

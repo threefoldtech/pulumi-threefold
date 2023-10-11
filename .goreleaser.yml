@@ -6,10 +6,10 @@ before:
     - go mod tidy
 builds:
   - binary: pulumi-resource-grid
-    dir: internal
+    dir: provider
     main: ../main.go
     ldflags:
-      - -X github.com/threefoldtech/pulumi-provider-grid/main.Version={{.Tag }}
+      - -X github.com/threefoldtech/pulumi-provider-grid/provider/cmd/pulumi-resource-grid/main.Version={{.Tag }}
     env:
       - CGO_ENABLED=0
     goos:
@@ -29,6 +29,3 @@ checksum:
   algorithm: sha256
 changelog:
   skip: true
-release:
-  # If you want to manually examine the release before its live, uncomment this line:
-  # draft: true

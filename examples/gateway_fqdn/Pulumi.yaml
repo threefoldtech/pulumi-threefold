@@ -13,7 +13,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: grid:internal:Scheduler
+    type: grid:provider:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -23,7 +23,7 @@ resources:
       free_ips: 1
 
   network:
-    type: grid:internal:Network
+    type: grid:provider:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -36,7 +36,7 @@ resources:
       ip_range: 10.1.0.0/16
 
   deployment:
-    type: grid:internal:Deployment
+    type: grid:provider:Deployment
     options:
       provider: ${provider}
       dependsOn:
@@ -54,7 +54,7 @@ resources:
           planetary: true
 
   gatewayFQDN:
-    type: grid:internal:GatewayFQDN
+    type: grid:provider:GatewayFQDN
     options:
       provider: ${provider}
       dependsOn:

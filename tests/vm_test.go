@@ -38,7 +38,7 @@ func TestVM(t *testing.T) {
 		},
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			for _, res := range stack.Deployment.Resources {
-				if res.Type == "grid:internal:Deployment" {
+				if res.Type == "grid:provider:Deployment" {
 					assert.NotEmpty(t, res.Outputs["node_deployment_id"])
 
 					vmsComputed := res.Outputs["vms_computed"].([]interface{})[0].(map[string]interface{})

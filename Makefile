@@ -9,7 +9,7 @@ PROVIDER := pulumi-resource-grid
 all: verifiers test
 
 build: clean
-	go build -o pulumi-resource-grid -ldflags "-X github.com/threefoldtech/pulumi-provider-grid/main.Version=$(shell git tag --sort=-version:refname | head -n 1)" 
+	go build -o pulumi-resource-grid -ldflags "-X github.com/threefoldtech/pulumi-provider-grid/provider/cmd/pulumi-resource-grid/main.Version=$(shell git tag --sort=-version:refname | head -n 1)" 
 
 test: 
 	@echo "Running Tests"
@@ -30,7 +30,6 @@ coverage: clean
 
 clean:
 	rm ./coverage -rf
-	rm -f schema-grid.json
 	rm -f pulumi-resource-grid
 	rm -rf $(GARBAGE)
 
