@@ -56,7 +56,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v5.0.0
         with:
           version: latest
-          args: release --rm-dist
+          args: release --clean
 
     strategy:
       fail-fast: true
@@ -86,7 +86,7 @@ jobs:
         uses: pulumi/action-install-pulumi-cli@v2.0.0
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{matrix.nodeversion}}
           registry-url: ${{env.NPM_REGISTRY_URL}}
@@ -120,7 +120,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.language  }}-sdk.tar.gz
-          path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
+          path: ${{ github.workspace }}/sdk/${{ matrix.language }}.tar.gz
 
       - if: ${{ matrix.language == 'python' && env.PUBLISH_PYPI == 'true' }}
         name: Publish package to PyPI

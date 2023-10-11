@@ -4,10 +4,12 @@ DIRS := . $(shell find tests examples -type d)
 GARBAGE_PATTERNS := Pulumi.test.yaml state
 GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
 
+PROVIDER := pulumi-resource-grid
+
 all: verifiers test
 
-build:
-	go build -o pulumi-resource-grid github.com/threefoldtech/pulumi-provider-grid
+build: clean
+	go build -o pulumi-resource-grid -ldflags "-X github.com/threefoldtech/pulumi-provider-grid/main.Version=$(shell git tag --sort=-version:refname | head -n 1)" 
 
 test: 
 	@echo "Running Tests"
@@ -66,3 +68,38 @@ spelling:
 staticcheck:
 	@echo "Running $@"
 	@${GOPATH}/bin/staticcheck -- ./...
+
+go_sdk:: build
+	rm -rf sdk/go
+	pulumi package gen-sdk ./$(PROVIDER) --language go
+
+dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
+dotnet_sdk::
+	rm -rf sdk/dotnet
+	pulumi package gen-sdk ./$(PROVIDER) --language dotnet
+	cd sdk/dotnet/&& \
+		echo "${DOTNET_VERSION}" >version.txt && \
+		dotnet build /p:Version=${DOTNET_VERSION}
+
+nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
+nodejs_sdk::
+	rm -rf sdk/nodejs
+	pulumi package gen-sdk ./$(PROVIDER) --language nodejs
+	cd sdk/nodejs/ && \
+		yarn install && \
+		yarn run tsc && \
+		cp ../../README.md ../../LICENSE package.json yarn.lock bin/ && \
+		sed -i.bak 's/$${VERSION}/$(VERSION)/g' bin/package.json && \
+		rm ./bin/package.json.bak
+
+python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
+python_sdk::
+	rm -rf sdk/python
+	pulumi package gen-sdk ./$(PROVIDER) --language python
+	cp README.md sdk/python/
+	cd sdk/python/ && \
+		python3 setup.py clean --all 2>/dev/null && \
+		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
+		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
+		rm ./bin/setup.py.bak && \
+		cd ./bin && python3 setup.py build sdist
