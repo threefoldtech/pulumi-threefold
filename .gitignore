@@ -24,7 +24,31 @@ go.work
 .vscode
 
 # pulumi
-Pulumi.test.yaml
+Pulumi.*.yaml
 schema-grid.json
 /examples/*/state
 /bin
+
+#sdks
+.idea
+.code
+**/vendor/
+**/bin/
+**/obj/
+**/node_modules/
+.DS_Store
+
+**/command-output/
+
+.idea/
+*.iml
+
+yarn.lock
+**/pulumiManifest.go
+
+ci-scripts
+provider/**/schema-embed.json
+**/version.txt
+**/nuget
+**/dist
+sdk/java/.gradle

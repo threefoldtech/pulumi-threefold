@@ -8,7 +8,7 @@ layout: package
 
 The Pulumi Grid provider is available as a package in all Pulumi languages:
 
-* Go: [`github.com/threefold/pulumi-grid/sdk`](https://pkg.go.dev/github.com/threefold/pulumi-grid/sdk)
+* Go: [`github.com/threefold/pulumi-grid/sdk/v3`](https://pkg.go.dev/github.com/threefold/pulumi-grid/sdk/v3)
 
 ## Setup
 
