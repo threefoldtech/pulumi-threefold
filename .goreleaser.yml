@@ -7,7 +7,7 @@ before:
 builds:
   - binary: pulumi-resource-grid
     dir: provider
-    main: ../main.go
+    main: ./cmd/pulumi-resource-grid/main.go
     ldflags:
       - -X github.com/threefoldtech/pulumi-provider-grid/provider/cmd/pulumi-resource-grid/main.Version={{.Tag }}
     env:
