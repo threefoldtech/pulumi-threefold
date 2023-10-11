@@ -1,6 +1,6 @@
 archives:
   - id: archive
-    name_template: '{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
+    name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
 before:
   hooks:
     - go mod tidy
@@ -28,7 +28,5 @@ checksum:
 changelog:
   skip: true
 release:
-  disable: false
-  prerelease: auto
-snapshot:
-  name_template: '{{ .Tag }}-SNAPSHOT'
+  # If you want to manually examine the release before its live, uncomment this line:
+  # draft: true
