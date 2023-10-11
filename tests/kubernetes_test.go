@@ -39,7 +39,7 @@ func TestKubernetes(t *testing.T) {
 		},
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			for _, res := range stack.Deployment.Resources {
-				if res.Type == "grid:internal:Kubernetes" {
+				if res.Type == "grid:provider:Kubernetes" {
 					assert.NotEmpty(t, res.Outputs["node_deployment_id"])
 
 					yggIP := res.Outputs["master_computed"].(map[string]interface{})["ygg_ip"].(string)

@@ -13,14 +13,14 @@ resources:
       mnemonic:
 
   scheduler:
-    type: grid:internal:Scheduler
+    type: grid:provider:Scheduler
     options:
       provider: ${provider}
     properties:
       farm_ids: [1]
 
   network:
-    type: grid:internal:Network
+    type: grid:provider:Network
     options:
       provider: ${provider}
       dependsOn:

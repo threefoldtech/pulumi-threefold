@@ -13,7 +13,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: grid:internal:Scheduler
+    type: grid:provider:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -22,7 +22,7 @@ resources:
       farm_ids: [1]
 
   network:
-    type: grid:internal:Network
+    type: grid:provider:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -35,7 +35,7 @@ resources:
       ip_range: 10.1.0.0/16
 
   deployment:
-    type: grid:internal:Deployment
+    type: grid:provider:Deployment
     options:
       provider: ${provider}
       dependsOn:

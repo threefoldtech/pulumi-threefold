@@ -6,7 +6,7 @@ Mainly to run the formatters, golangci-lint and staticcheck
 
 ## test workflow
 
-- Runs only the tests in internal/provider directory
+- Runs only the tests in provider directory
 
 ## release workflow
 

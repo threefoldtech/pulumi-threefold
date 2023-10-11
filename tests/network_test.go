@@ -31,7 +31,7 @@ func TestNetwork(t *testing.T) {
 		},
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			for _, res := range stack.Deployment.Resources {
-				if res.Type == "grid:internal:Network" {
+				if res.Type == "grid:provider:Network" {
 					assert.NotEmpty(t, res.Outputs["node_deployment_id"])
 					assert.NotEmpty(t, res.Outputs["nodes_ip_range"])
 				}
