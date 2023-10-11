@@ -2,7 +2,7 @@
 	"name": "Grid",
 	"displayName": "Grid",
 	"description": "The Grid Resource Provider for the [threefold grid](https://threefold.io) lets you manage your infrastructure using pulumi.",
-	"logoUrl": ,
+	"logoUrl": "www.threefold.io/images/black_threefold.png",
 	"publisher": "Threefold",
 	"homepage": "https://www.pulumi.com",
 	"license": "Apache-2.0",
