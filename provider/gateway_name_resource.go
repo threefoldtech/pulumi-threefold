@@ -30,7 +30,11 @@ type GatewayNameState struct {
 }
 
 // Create creates GatewayName and deploy it
-func (*GatewayName) Create(ctx p.Context, id string, input GatewayNameArgs, preview bool) (string, GatewayNameState, error) {
+func (*GatewayName) Create(
+	ctx p.Context,
+	id string,
+	input GatewayNameArgs,
+	preview bool) (string, GatewayNameState, error) {
 	state := GatewayNameState{GatewayNameArgs: input}
 	if preview {
 		return id, state, nil
@@ -57,7 +61,12 @@ func (*GatewayName) Create(ctx p.Context, id string, input GatewayNameArgs, prev
 }
 
 // Update updates the GatewayName resource
-func (*GatewayName) Update(ctx p.Context, id string, oldState GatewayNameState, input GatewayNameArgs, preview bool) (GatewayNameState, error) {
+func (*GatewayName) Update(
+	ctx p.Context,
+	id string,
+	oldState GatewayNameState,
+	input GatewayNameArgs,
+	preview bool) (GatewayNameState, error) {
 	state := GatewayNameState{GatewayNameArgs: input}
 	if preview {
 		return state, nil

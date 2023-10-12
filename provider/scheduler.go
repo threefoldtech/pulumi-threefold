@@ -67,7 +67,12 @@ func (*Scheduler) Create(ctx p.Context, id string, input SchedulerArgs, preview 
 }
 
 // Update updates the arguments of the scheduler resource
-func (*Scheduler) Update(ctx p.Context, id string, oldState SchedulerState, input SchedulerArgs, preview bool) (SchedulerState, error) {
+func (*Scheduler) Update(
+	ctx p.Context,
+	id string,
+	oldState SchedulerState,
+	input SchedulerArgs,
+	preview bool) (SchedulerState, error) {
 	state := SchedulerState{SchedulerArgs: input}
 	if preview {
 		return state, nil

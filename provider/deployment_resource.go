@@ -33,12 +33,17 @@ type DeploymentState struct {
 	QsfsComputed     []QSFSComputed   `pulumi:"qsfs_computed"`
 }
 
+// Annotate sets defaults and descriptions for zdb resource
 func (z *ZDBInput) Annotate(a infer.Annotator) {
 	a.SetDefault(&z.Mode, "user", "")
 }
 
 // Create creates a deployment
-func (*Deployment) Create(ctx p.Context, id string, input DeploymentArgs, preview bool) (string, DeploymentState, error) {
+func (*Deployment) Create(
+	ctx p.Context,
+	id string,
+	input DeploymentArgs,
+	preview bool) (string, DeploymentState, error) {
 	state := DeploymentState{DeploymentArgs: input}
 	if preview {
 		return id, state, nil
@@ -65,7 +70,12 @@ func (*Deployment) Create(ctx p.Context, id string, input DeploymentArgs, previe
 }
 
 // Update updates the arguments of the deployment resource
-func (*Deployment) Update(ctx p.Context, id string, oldState DeploymentState, input DeploymentArgs, preview bool) (string, DeploymentState, error) {
+func (*Deployment) Update(
+	ctx p.Context,
+	id string,
+	oldState DeploymentState,
+	input DeploymentArgs,
+	preview bool) (string, DeploymentState, error) {
 	state := DeploymentState{DeploymentArgs: input}
 	if preview {
 		return id, state, nil

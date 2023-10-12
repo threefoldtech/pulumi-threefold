@@ -29,7 +29,11 @@ type KubernetesState struct {
 }
 
 // Create creates Kubernetes cluster and deploy it
-func (*Kubernetes) Create(ctx p.Context, id string, input KubernetesArgs, preview bool) (string, KubernetesState, error) {
+func (*Kubernetes) Create(
+	ctx p.Context,
+	id string,
+	input KubernetesArgs,
+	preview bool) (string, KubernetesState, error) {
 	state := KubernetesState{KubernetesArgs: input}
 	if preview {
 		return id, state, nil
@@ -56,7 +60,12 @@ func (*Kubernetes) Create(ctx p.Context, id string, input KubernetesArgs, previe
 }
 
 // Update updates the arguments of the Kubernetes resource
-func (*Kubernetes) Update(ctx p.Context, id string, oldState KubernetesState, input KubernetesArgs, preview bool) (KubernetesState, error) {
+func (*Kubernetes) Update(
+	ctx p.Context,
+	id string,
+	oldState KubernetesState,
+	input KubernetesArgs,
+	preview bool) (KubernetesState, error) {
 	state := KubernetesState{KubernetesArgs: input}
 	if preview {
 		return state, nil

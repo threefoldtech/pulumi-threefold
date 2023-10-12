@@ -9,12 +9,12 @@ func convertGBToBytes(gb uint64) *uint64 {
 	return &bytes
 }
 
-func Ref[T any](v T) *T {
+func ref[T any](v T) *T {
 	return &v
 }
 
 func parseSchedulerInput(input SchedulerArgs) (types.NodeFilter, []uint64, []uint64) {
-	filter := types.NodeFilter{Status: Ref(string("up"))}
+	filter := types.NodeFilter{Status: ref(string("up"))}
 	var ssds []uint64
 	var hdds []uint64
 
@@ -23,29 +23,29 @@ func parseSchedulerInput(input SchedulerArgs) (types.NodeFilter, []uint64, []uin
 	}
 
 	if input.MRU != 0 {
-		filter.FreeMRU = Ref(uint64(input.MRU))
+		filter.FreeMRU = ref(uint64(input.MRU))
 	}
 
 	if input.HRU != 0 {
-		filter.FreeHRU = Ref(uint64(input.HRU))
+		filter.FreeHRU = ref(uint64(input.HRU))
 		hdds = append(hdds, *convertGBToBytes(*filter.FreeHRU))
 	}
 
 	if input.SRU != 0 {
-		filter.FreeSRU = Ref(uint64(input.SRU))
+		filter.FreeSRU = ref(uint64(input.SRU))
 		ssds = append(ssds, *convertGBToBytes(*filter.FreeSRU))
 	}
 
 	if input.FreeIPs != 0 {
-		filter.FreeIPs = Ref(uint64(input.FreeIPs))
+		filter.FreeIPs = ref(uint64(input.FreeIPs))
 	}
 
 	if input.NodeID != 0 {
-		filter.NodeID = Ref(uint64(input.NodeID))
+		filter.NodeID = ref(uint64(input.NodeID))
 	}
 
 	if input.TwinID != 0 {
-		filter.TwinID = Ref(uint64(input.TwinID))
+		filter.TwinID = ref(uint64(input.TwinID))
 	}
 
 	if input.IPv4 {

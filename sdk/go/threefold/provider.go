@@ -9,7 +9,7 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
-	"internal"
+	"github.com/threefold/pulumi-threefold/sdk/go/threefold/internal"
 )
 
 type Provider struct {
