@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [main, development]
 
-defaults:
-  run:
-    working-directory: provider
-
 jobs:
   test:
     name: Run Lint
@@ -23,9 +19,17 @@ jobs:
         with:
           go-version: 1.21
 
-      - name: Run golangci-lint
+      - name: Run provider golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.53.3
-          working-directory: provider
+          working-directory: ${{ matrix.dir }}
           args: --config=../.golangci.yml
+
+    strategy:
+      fail-fast: true
+      matrix:
+        dir:
+          - provider
+          - sdk
+          - tests

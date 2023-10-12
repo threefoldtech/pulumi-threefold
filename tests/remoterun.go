@@ -17,6 +17,7 @@ func remoteRun(user string, addr string, cmd string, privateKey string) (string,
 	if err != nil {
 		return "", errors.Wrapf(err, "could not parse ssh private key %v", key)
 	}
+
 	// Authentication
 	config := &ssh.ClientConfig{
 		User:            user,
@@ -49,7 +50,7 @@ func remoteRun(user string, addr string, cmd string, privateKey string) (string,
 // GenerateSSHKeyPair creates the public and private key for the machine
 func generateSSHKeyPair() (string, string, error) {
 
-	rsaKey, err := rsa.GenerateKey(rand.Reader, 1024)
+	rsaKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		return "", "", errors.Wrapf(err, "could not generate rsa key")
 	}

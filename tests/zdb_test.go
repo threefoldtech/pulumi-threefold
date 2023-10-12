@@ -17,7 +17,7 @@ func TestZDB(t *testing.T) {
 
 	network := os.Getenv("NETWORK")
 	if network == "" {
-		network = "dev"
+		network = devNetwork
 	}
 
 	cwd, _ := os.Getwd()
