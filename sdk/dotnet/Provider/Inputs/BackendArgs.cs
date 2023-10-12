@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Grid.Provider.Inputs
+namespace Pulumi.Threefold.Provider.Inputs
 {
 
     public sealed class BackendArgs : global::Pulumi.ResourceArgs

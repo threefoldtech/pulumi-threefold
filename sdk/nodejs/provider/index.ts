@@ -40,21 +40,21 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
-            case "grid:provider:Deployment":
+            case "threefold:provider:Deployment":
                 return new Deployment(name, <any>undefined, { urn })
-            case "grid:provider:GatewayFQDN":
+            case "threefold:provider:GatewayFQDN":
                 return new GatewayFQDN(name, <any>undefined, { urn })
-            case "grid:provider:GatewayName":
+            case "threefold:provider:GatewayName":
                 return new GatewayName(name, <any>undefined, { urn })
-            case "grid:provider:Kubernetes":
+            case "threefold:provider:Kubernetes":
                 return new Kubernetes(name, <any>undefined, { urn })
-            case "grid:provider:Network":
+            case "threefold:provider:Network":
                 return new Network(name, <any>undefined, { urn })
-            case "grid:provider:Scheduler":
+            case "threefold:provider:Scheduler":
                 return new Scheduler(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
     },
 };
-pulumi.runtime.registerResourceModule("grid", "provider", _module)
+pulumi.runtime.registerResourceModule("threefold", "provider", _module)

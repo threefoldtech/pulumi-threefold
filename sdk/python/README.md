@@ -1,6 +1,6 @@
-# Pulumi-provider-grid
+# Pulumi-threefold
 
-[![Testing](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/test.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/test.yaml) [![Lint](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/lint.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-provider-grid/actions/workflows/lint.yaml) [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/) <a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-0%25-brightgreen.svg?longCache=true&style=flat)</a>
+[![Testing](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/test.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/test.yaml) [![Lint](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/lint.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/lint.yaml) [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/) <a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-0%25-brightgreen.svg?longCache=true&style=flat)</a>
 
 A pulumi provider for the [threefold grid](https://threefold.io) to manage your infrastructure using pulumi.
 

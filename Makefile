@@ -6,10 +6,21 @@ GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
 
 PROVIDER := pulumi-resource-threefold
 
-all: verifiers test
+PACK             := threefold
+PACKDIR          := sdk
+PROJECT          := github.com/threefoldtech/pulumi-threefold
 
-build: clean
-	go build -o pulumi-resource-threefold -ldflags "-X github.com/threefoldtech/pulumi-threefold/provider/cmd/pulumi-resource-threefold/main.Version=$(shell git tag --sort=-version:refname | head -n 1)" 
+PROVIDER_PATH   := provider
+VERSION_PATH     := ${PROVIDER_PATH}/cmd/main.Version
+WORKING_DIR     := $(shell pwd)
+
+all: verifiers build test
+
+build:
+	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
+
+provider_debug::
+	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -gcflags="all=-N -l" -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
 
 test: 
 	@echo "Running Tests"
@@ -70,12 +81,12 @@ staticcheck:
 
 go_sdk:: build
 	rm -rf sdk/go
-	pulumi package gen-sdk ./$(PROVIDER) --language go
+	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
 
 dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
 dotnet_sdk:: build
 	rm -rf sdk/dotnet
-	pulumi package gen-sdk ./$(PROVIDER) --language dotnet
+	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language dotnet
 	cd sdk/dotnet/&& \
 		echo "${DOTNET_VERSION}" >version.txt && \
 		dotnet build /p:Version=${DOTNET_VERSION}
@@ -83,7 +94,7 @@ dotnet_sdk:: build
 nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 nodejs_sdk:: build
 	rm -rf sdk/nodejs
-	pulumi package gen-sdk ./$(PROVIDER) --language nodejs
+	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language nodejs
 	cd sdk/nodejs/ && \
 		yarn install && \
 		yarn run tsc && \
@@ -94,7 +105,7 @@ nodejs_sdk:: build
 python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
 python_sdk:: build
 	rm -rf sdk/python
-	pulumi package gen-sdk ./$(PROVIDER) --language python
+	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language python
 	cp README.md sdk/python/
 	cd sdk/python/ && \
 		python3 setup.py clean --all 2>/dev/null && \

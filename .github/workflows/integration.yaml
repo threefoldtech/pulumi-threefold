@@ -43,7 +43,7 @@ jobs:
         run: go get -d ./...
 
       - name: Build provider
-        run: go build -o pulumi-resource-threefold 
+        run: make build
 
       - name: Run Tests
         run: go test -v ./tests

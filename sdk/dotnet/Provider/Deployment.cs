@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Grid.Provider
+namespace Pulumi.Threefold.Provider
 {
-    [GridResourceType("grid:provider:Deployment")]
+    [ThreefoldResourceType("threefold:provider:Deployment")]
     public partial class Deployment : global::Pulumi.CustomResource
     {
         [Output("contract_id")]
@@ -66,12 +66,12 @@ namespace Pulumi.Grid.Provider
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Deployment(string name, DeploymentArgs args, CustomResourceOptions? options = null)
-            : base("grid:provider:Deployment", name, args ?? new DeploymentArgs(), MakeResourceOptions(options, ""))
+            : base("threefold:provider:Deployment", name, args ?? new DeploymentArgs(), MakeResourceOptions(options, ""))
         {
         }
 
         private Deployment(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("grid:provider:Deployment", name, null, MakeResourceOptions(options, id))
+            : base("threefold:provider:Deployment", name, null, MakeResourceOptions(options, id))
         {
         }
 

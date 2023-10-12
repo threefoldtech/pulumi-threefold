@@ -20,7 +20,7 @@ export class Kubernetes extends pulumi.CustomResource {
     }
 
     /** @internal */
-    public static readonly __pulumiType = 'grid:provider:Kubernetes';
+    public static readonly __pulumiType = 'threefold:provider:Kubernetes';
 
     /**
      * Returns true if the given object is an instance of Kubernetes.  This is designed to work even

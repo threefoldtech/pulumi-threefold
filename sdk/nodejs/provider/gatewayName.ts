@@ -18,7 +18,7 @@ export class GatewayName extends pulumi.CustomResource {
     }
 
     /** @internal */
-    public static readonly __pulumiType = 'grid:provider:GatewayName';
+    public static readonly __pulumiType = 'threefold:provider:GatewayName';
 
     /**
      * Returns true if the given object is an instance of GatewayName.  This is designed to work even

@@ -33,7 +33,7 @@ func TestZDB(t *testing.T) {
 		},
 		ExtraRuntimeValidation: func(t *testing.T, stack integration.RuntimeValidationStackInfo) {
 			for _, res := range stack.Deployment.Resources {
-				if res.Type == "grid:provider:Deployment" {
+				if res.Type == "threefold:provider:Deployment" {
 					assert.NotEmpty(t, res.Outputs["node_deployment_id"])
 
 					zdb := res.Outputs["zdbs"].([]interface{})[0].(map[string]interface{})

@@ -5,7 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
 declare var exports: any;
-const __config = new pulumi.Config("grid");
+const __config = new pulumi.Config("threefold");
 
 /**
  * The key type registered on substrate (ed25519 or sr25519).

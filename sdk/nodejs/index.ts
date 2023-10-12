@@ -21,10 +21,10 @@ export {
     provider,
     types,
 };
-pulumi.runtime.registerResourcePackage("grid", {
+pulumi.runtime.registerResourcePackage("threefold", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {
-        if (type !== "pulumi:providers:grid") {
+        if (type !== "pulumi:providers:threefold") {
             throw new Error(`unknown provider type ${type}`);
         }
         return new Provider(name, <any>undefined, { urn });
