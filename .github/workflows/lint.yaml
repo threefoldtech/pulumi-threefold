@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, development]
 
+defaults:
+  run:
+    working-directory: provider
+
 jobs:
   test:
     name: Run Lint
