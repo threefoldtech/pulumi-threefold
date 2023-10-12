@@ -1,6 +1,6 @@
 module github.com/threefoldtech/pulumi-threefold/provider
 
-go 1.21.0
+go 1.21
 
 require (
 	github.com/pkg/errors v0.9.1
