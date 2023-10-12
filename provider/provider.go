@@ -11,6 +11,7 @@ import (
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
 
+// RunProvider runs the pulumi provider and adds its resources
 func RunProvider(providerName, Version string) error {
 	return p.RunProvider(providerName, Version,
 		infer.Provider(infer.Options{
@@ -26,6 +27,7 @@ func RunProvider(providerName, Version string) error {
 		}))
 }
 
+// Config struct holds the configuration fields for the provider
 type Config struct {
 	Mnemonic     string `pulumi:"mnemonic,optional"  provider:"secret"`
 	Network      string `pulumi:"network,optional"`
@@ -39,6 +41,7 @@ type Config struct {
 
 var _ = (infer.Annotated)((*Config)(nil))
 
+// Annotate sets description and default values for configs
 func (c *Config) Annotate(a infer.Annotator) {
 	a.Describe(&c.Mnemonic, "The mnemonic of the user. It is very secret.")
 	a.Describe(&c.Network, "The network to deploy on.")
@@ -53,6 +56,7 @@ func (c *Config) Annotate(a infer.Annotator) {
 
 var _ = (infer.CustomConfigure)((*Config)(nil))
 
+// Configure checks configuration for the provider
 func (c *Config) Configure(ctx p.Context) error {
 	if len(strings.TrimSpace(c.Mnemonic)) == 0 {
 		return errors.New("mnemonic is required")
@@ -62,7 +66,9 @@ func (c *Config) Configure(ctx p.Context) error {
 		c.Network = "dev"
 	}
 
-	tfPluginClient, err := deployer.NewTFPluginClient(c.Mnemonic, c.KeyType, c.Network, c.SubstrateURL, c.RelayURL, "", 0, false)
+	tfPluginClient, err := deployer.NewTFPluginClient(
+		c.Mnemonic, c.KeyType, c.Network, c.SubstrateURL, c.RelayURL, "", 0, false,
+	)
 	if err != nil {
 		return errors.Wrap(err, "error creating threefold plugin client")
 	}

@@ -54,7 +54,12 @@ func (*Network) Create(ctx p.Context, id string, input NetworkArgs, preview bool
 }
 
 // Update updates the arguments of the network resource
-func (*Network) Update(ctx p.Context, id string, oldState NetworkState, input NetworkArgs, preview bool) (NetworkState, error) {
+func (*Network) Update(
+	ctx p.Context,
+	id string,
+	oldState NetworkState,
+	input NetworkArgs,
+	preview bool) (NetworkState, error) {
 	state := NetworkState{NetworkArgs: input}
 	if preview {
 		return state, nil
