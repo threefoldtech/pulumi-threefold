@@ -17,7 +17,7 @@ func TestKubernetes(t *testing.T) {
 
 	network := os.Getenv("NETWORK")
 	if network == "" {
-		network = "dev"
+		network = devNetwork
 	}
 
 	publicKey, privateKey, err := generateSSHKeyPair()
@@ -55,10 +55,20 @@ func AssertNodesAreReady(t *testing.T, masterYggIP, privateKey string, nodesNumb
 	t.Helper()
 
 	time.Sleep(30 * time.Second)
-	output, err := remoteRun("root", masterYggIP, "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml && kubectl get node", privateKey)
+	output, err := remoteRun(
+		"root",
+		masterYggIP,
+		"export KUBECONFIG=/etc/rancher/k3s/k3s.yaml && kubectl get node",
+		privateKey,
+	)
 	output = strings.TrimSpace(output)
 	assert.Empty(t, err)
 
 	numberOfReadyNodes := strings.Count(output, "Ready")
-	assert.True(t, numberOfReadyNodes == nodesNumber, "number of ready nodes is not equal to number of nodes only %d nodes are ready", numberOfReadyNodes)
+	assert.True(
+		t,
+		numberOfReadyNodes == nodesNumber,
+		"number of ready nodes is not equal to number of nodes only %d nodes are ready",
+		numberOfReadyNodes,
+	)
 }

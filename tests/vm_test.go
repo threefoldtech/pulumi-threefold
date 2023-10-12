@@ -16,7 +16,7 @@ func TestVM(t *testing.T) {
 
 	network := os.Getenv("NETWORK")
 	if network == "" {
-		network = "dev"
+		network = devNetwork
 	}
 
 	publicKey, privateKey, err := generateSSHKeyPair()
@@ -57,7 +57,7 @@ func TestVM(t *testing.T) {
 					// Check that disk has been mounted successfully
 					output, err := remoteRun("root", yggIP, fmt.Sprintf("df -h | grep -w %s", mountPoint), privateKey)
 					assert.NoError(t, err)
-					assert.Contains(t, string(output), fmt.Sprintf("%v.0G", diskSize))
+					assert.Contains(t, output, fmt.Sprintf("%v.0G", diskSize))
 				}
 			}
 		},
