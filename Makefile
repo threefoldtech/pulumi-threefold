@@ -4,12 +4,12 @@ DIRS := . $(shell find tests examples -type d)
 GARBAGE_PATTERNS := Pulumi.test.yaml state
 GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
 
-PROVIDER := pulumi-resource-grid
+PROVIDER := pulumi-resource-threefold
 
 all: verifiers test
 
 build: clean
-	go build -o pulumi-resource-grid -ldflags "-X github.com/threefoldtech/pulumi-provider-grid/provider/cmd/pulumi-resource-grid/main.Version=$(shell git tag --sort=-version:refname | head -n 1)" 
+	go build -o pulumi-resource-threefold -ldflags "-X github.com/threefoldtech/pulumi-threefold/provider/cmd/pulumi-resource-threefold/main.Version=$(shell git tag --sort=-version:refname | head -n 1)" 
 
 test: 
 	@echo "Running Tests"
@@ -30,7 +30,7 @@ coverage: clean
 
 clean:
 	rm ./coverage -rf
-	rm -f pulumi-resource-grid
+	rm -f pulumi-resource-threefold
 	rm -rf $(GARBAGE)
 
 getverifiers:

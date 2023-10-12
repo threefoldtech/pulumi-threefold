@@ -1,19 +1,19 @@
-name: pulumi-provider-grid
+name: pulumi-provider-threefold
 runtime: yaml
 
 plugins:
   providers:
-    - name: grid
+    - name: threefold
       path: ../..
 
 resources:
   provider:
-    type: pulumi:providers:grid
+    type: pulumi:providers:threefold
     properties:
       mnemonic:
 
   scheduler:
-    type: grid:provider:Scheduler
+    type: threefold:provider:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -22,7 +22,7 @@ resources:
       farm_ids: [1]
 
   deployment:
-    type: grid:provider:Deployment
+    type: threefold:provider:Deployment
     options:
       provider: ${provider}
     properties:

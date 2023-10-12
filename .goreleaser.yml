@@ -5,11 +5,11 @@ before:
   hooks:
     - go mod tidy
 builds:
-  - binary: pulumi-resource-grid
+  - binary: pulumi-resource-threefold
     dir: provider
-    main: ./cmd/pulumi-resource-grid/main.go
+    main: ./cmd/pulumi-resource-threefold/main.go
     ldflags:
-      - -X github.com/threefoldtech/pulumi-provider-grid/provider/cmd/pulumi-resource-grid/main.Version={{.Tag }}
+      - -X github.com/threefoldtech/pulumi-threefold/provider/cmd/pulumi-resource-threefold/main.Version={{.Tag }}
     env:
       - CGO_ENABLED=0
     goos:
