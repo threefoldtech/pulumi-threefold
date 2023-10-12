@@ -6,8 +6,8 @@ require (
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.12.2
-	github.com/pulumi/pulumi/pkg/v3 v3.85.0
-	github.com/pulumi/pulumi/sdk/v3 v3.85.0
+	github.com/pulumi/pulumi/pkg/v3 v3.88.1
+	github.com/pulumi/pulumi/sdk/v3 v3.88.1
 	github.com/stretchr/testify v1.8.4
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.2
 	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.11.2
@@ -130,7 +130,7 @@ require (
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/hashicorp/golang-lru v0.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/hashicorp/hcl/v2 v2.16.2 // indirect
+	github.com/hashicorp/hcl/v2 v2.17.0 // indirect
 	github.com/hashicorp/vault/api v1.8.2 // indirect
 	github.com/hashicorp/vault/sdk v0.6.1 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
@@ -177,8 +177,9 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/pulumi/esc v0.5.2 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
-	github.com/rogpeppe/go-internal v1.9.0 // indirect
+	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/rs/cors v1.9.0 // indirect
 	github.com/rs/zerolog v1.30.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
@@ -207,8 +208,8 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	gocloud.dev v0.29.0 // indirect
 	gocloud.dev/secrets/hashivault v0.27.0 // indirect
-	golang.org/x/exp v0.0.0-20230206171751-46f607a40771 // indirect
-	golang.org/x/mod v0.11.0 // indirect
+	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
+	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
