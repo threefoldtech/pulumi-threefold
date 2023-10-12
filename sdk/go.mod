@@ -1,6 +1,6 @@
 module github.com/threefold/pulumi-threefold/sdk
 
-go 1.21.0
+go 1.21
 
 require (
 	github.com/blang/semver v3.5.1+incompatible

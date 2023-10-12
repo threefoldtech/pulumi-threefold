@@ -3,7 +3,7 @@ archives:
     name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
 before:
   hooks:
-    - go mod tidy
+    - make go_sdk
 builds:
   - binary: pulumi-resource-threefold
     dir: provider
