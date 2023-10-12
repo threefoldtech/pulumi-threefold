@@ -69,7 +69,7 @@ func (c *Config) Configure(ctx p.Context) error {
 
 	c.TFPluginClient = tfPluginClient
 
-	ctx.Log(diag.Info, "grid provider setup")
+	ctx.Log(diag.Info, "threefold grid provider setup")
 
 	return nil
 }

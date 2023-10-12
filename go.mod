@@ -1,4 +1,4 @@
-module github.com/threefoldtech/pulumi-provider-grid
+module github.com/threefoldtech/pulumi-threefold
 
 go 1.21
 
