@@ -30,7 +30,7 @@
 			"mnemonic": {
 				"type": "string",
 				"description": "The mnemonic of the user. It is very secret.",
-				"default": "winner giant reward damage expose pulse recipe manual brand volcano dry avoid",
+				"default": "",
 				"defaultInfo": {
 					"environment": [
 						""
@@ -489,7 +489,7 @@
 			"mnemonic": {
 				"type": "string",
 				"description": "The mnemonic of the user. It is very secret.",
-				"default": "winner giant reward damage expose pulse recipe manual brand volcano dry avoid",
+				"default": "",
 				"defaultInfo": {
 					"environment": [
 						""
@@ -534,7 +534,7 @@
 			"mnemonic": {
 				"type": "string",
 				"description": "The mnemonic of the user. It is very secret.",
-				"default": "winner giant reward damage expose pulse recipe manual brand volcano dry avoid",
+				"default": "",
 				"defaultInfo": {
 					"environment": [
 						""
