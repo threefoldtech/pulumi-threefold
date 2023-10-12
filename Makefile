@@ -19,7 +19,7 @@ all: verifiers build test
 build:
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
 
-provider_debug::
+provider_debug:
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -gcflags="all=-N -l" -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
 
 test: 
@@ -45,40 +45,13 @@ clean:
 	rm -rf $(GARBAGE)
 
 getverifiers:
-	@echo "Installing staticcheck" && go get -u honnef.co/go/tools/cmd/staticcheck && go install honnef.co/go/tools/cmd/staticcheck
-	@echo "Installing gocyclo" && go get -u github.com/fzipp/gocyclo/cmd/gocyclo && go install github.com/fzipp/gocyclo/cmd/gocyclo
-	@echo "Installing deadcode" && go get -u github.com/remyoudompheng/go-misc/deadcode && go install github.com/remyoudompheng/go-misc/deadcode
-	@echo "Installing misspell" && go get -u github.com/client9/misspell/cmd/misspell && go install github.com/client9/misspell/cmd/misspell
 	@echo "Installing golangci-lint" && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 
-verifiers: fmt lint cyclo deadcode spelling staticcheck
-
-checks: verifiers
-
-fmt:
-	@echo "Running $@"
-	@gofmt -d .
-
 lint:
-	@echo "Running $@"
-	@${GOPATH}/bin/golangci-lint run
-
-cyclo:
-	@echo "Running $@"
-	@${GOPATH}/bin/gocyclo -over 100 .
-
-deadcode:
-	@echo "Running $@"
-	@${GOPATH}/bin/deadcode -test $(shell go list ./...) || true
-
-spelling:
-	@echo "Running $@"
-	@${GOPATH}/bin/misspell -i monitord -error `find .`
-
-staticcheck:
-	@echo "Running $@"
-	@${GOPATH}/bin/staticcheck -- ./...
-
+	for DIR in "provider" "sdk" "tests" ; do \
+		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
+	done
+	
 go_sdk:: build
 	rm -rf sdk/go
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
