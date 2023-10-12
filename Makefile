@@ -83,14 +83,6 @@ go_sdk:: build
 	rm -rf sdk/go
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
 
-dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
-dotnet_sdk:: build
-	rm -rf sdk/dotnet
-	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language dotnet
-	cd sdk/dotnet/&& \
-		echo "${DOTNET_VERSION}" >version.txt && \
-		dotnet build /p:Version=${DOTNET_VERSION}
-
 nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 nodejs_sdk:: build
 	rm -rf sdk/nodejs
