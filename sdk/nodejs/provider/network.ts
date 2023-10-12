@@ -18,7 +18,7 @@ export class Network extends pulumi.CustomResource {
     }
 
     /** @internal */
-    public static readonly __pulumiType = 'grid:provider:Network';
+    public static readonly __pulumiType = 'threefold:provider:Network';
 
     /**
      * Returns true if the given object is an instance of Network.  This is designed to work even

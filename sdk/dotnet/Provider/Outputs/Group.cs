@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Grid.Provider.Outputs
+namespace Pulumi.Threefold.Provider.Outputs
 {
 
     [OutputType]

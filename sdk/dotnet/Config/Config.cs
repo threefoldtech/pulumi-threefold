@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Immutable;
 
-namespace Pulumi.Grid
+namespace Pulumi.Threefold
 {
     public static class Config
     {
@@ -30,7 +30,7 @@ namespace Pulumi.Grid
             }
         }
 
-        private static readonly global::Pulumi.Config __config = new global::Pulumi.Config("grid");
+        private static readonly global::Pulumi.Config __config = new global::Pulumi.Config("threefold");
 
         private static readonly __Value<string?> _key_type = new __Value<string?>(() => __config.Get("key_type") ?? Utilities.GetEnv("") ?? "sr25519");
         /// <summary>

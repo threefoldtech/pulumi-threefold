@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Grid.Provider
+namespace Pulumi.Threefold.Provider
 {
-    [GridResourceType("grid:provider:Kubernetes")]
+    [ThreefoldResourceType("threefold:provider:Kubernetes")]
     public partial class Kubernetes : global::Pulumi.CustomResource
     {
         [Output("master")]
@@ -51,12 +51,12 @@ namespace Pulumi.Grid.Provider
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Kubernetes(string name, KubernetesArgs args, CustomResourceOptions? options = null)
-            : base("grid:provider:Kubernetes", name, args ?? new KubernetesArgs(), MakeResourceOptions(options, ""))
+            : base("threefold:provider:Kubernetes", name, args ?? new KubernetesArgs(), MakeResourceOptions(options, ""))
         {
         }
 
         private Kubernetes(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("grid:provider:Kubernetes", name, null, MakeResourceOptions(options, id))
+            : base("threefold:provider:Kubernetes", name, null, MakeResourceOptions(options, id))
         {
         }
 

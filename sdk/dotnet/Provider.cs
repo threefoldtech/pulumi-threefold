@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Grid
+namespace Pulumi.Threefold
 {
-    [GridResourceType("pulumi:providers:grid")]
+    [ThreefoldResourceType("pulumi:providers:threefold")]
     public partial class Provider : global::Pulumi.ProviderResource
     {
         /// <summary>
@@ -57,7 +57,7 @@ namespace Pulumi.Grid
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
-            : base("grid", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
+            : base("threefold", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
 

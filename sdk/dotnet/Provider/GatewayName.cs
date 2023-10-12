@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Grid.Provider
+namespace Pulumi.Threefold.Provider
 {
-    [GridResourceType("grid:provider:GatewayName")]
+    [ThreefoldResourceType("threefold:provider:GatewayName")]
     public partial class GatewayName : global::Pulumi.CustomResource
     {
         [Output("backends")]
@@ -54,12 +54,12 @@ namespace Pulumi.Grid.Provider
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public GatewayName(string name, GatewayNameArgs args, CustomResourceOptions? options = null)
-            : base("grid:provider:GatewayName", name, args ?? new GatewayNameArgs(), MakeResourceOptions(options, ""))
+            : base("threefold:provider:GatewayName", name, args ?? new GatewayNameArgs(), MakeResourceOptions(options, ""))
         {
         }
 
         private GatewayName(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("grid:provider:GatewayName", name, null, MakeResourceOptions(options, id))
+            : base("threefold:provider:GatewayName", name, null, MakeResourceOptions(options, id))
         {
         }
 

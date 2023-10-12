@@ -18,7 +18,7 @@ export class GatewayFQDN extends pulumi.CustomResource {
     }
 
     /** @internal */
-    public static readonly __pulumiType = 'grid:provider:GatewayFQDN';
+    public static readonly __pulumiType = 'threefold:provider:GatewayFQDN';
 
     /**
      * Returns true if the given object is an instance of GatewayFQDN.  This is designed to work even

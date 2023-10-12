@@ -14,17 +14,17 @@ def readme():
         with open('README.md', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
-        return "grid Pulumi Package - Development Version"
+        return "threefold Pulumi Package - Development Version"
 
 
-setup(name='pulumi_grid',
+setup(name='pulumi_threefold',
       python_requires='>=3.7',
       version=VERSION,
       long_description=readme(),
       long_description_content_type='text/markdown',
       packages=find_packages(),
       package_data={
-          'pulumi_grid': [
+          'pulumi_threefold': [
               'py.typed',
               'pulumi-plugin.json',
           ]

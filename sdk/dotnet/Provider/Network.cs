@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Grid.Provider
+namespace Pulumi.Threefold.Provider
 {
-    [GridResourceType("grid:provider:Network")]
+    [ThreefoldResourceType("threefold:provider:Network")]
     public partial class Network : global::Pulumi.CustomResource
     {
         [Output("access_wg_config")]
@@ -57,12 +57,12 @@ namespace Pulumi.Grid.Provider
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Network(string name, NetworkArgs args, CustomResourceOptions? options = null)
-            : base("grid:provider:Network", name, args ?? new NetworkArgs(), MakeResourceOptions(options, ""))
+            : base("threefold:provider:Network", name, args ?? new NetworkArgs(), MakeResourceOptions(options, ""))
         {
         }
 
         private Network(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("grid:provider:Network", name, null, MakeResourceOptions(options, id))
+            : base("threefold:provider:Network", name, null, MakeResourceOptions(options, id))
         {
         }
 

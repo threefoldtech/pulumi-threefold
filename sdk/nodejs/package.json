@@ -1,5 +1,5 @@
 {
-    "name": "@pulumi/grid",
+    "name": "@pulumi/threefold",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"
@@ -13,6 +13,6 @@
     },
     "pulumi": {
         "resource": true,
-        "name": "grid"
+        "name": "threefold"
     }
 }
