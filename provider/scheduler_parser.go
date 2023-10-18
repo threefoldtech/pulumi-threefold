@@ -14,7 +14,7 @@ func ref[T any](v T) *T {
 }
 
 func parseSchedulerInput(input SchedulerArgs) (types.NodeFilter, []uint64, []uint64) {
-	filter := types.NodeFilter{Status: ref(string("up"))}
+	filter := types.NodeFilter{Status: ref("up")}
 	var ssds []uint64
 	var hdds []uint64
 
