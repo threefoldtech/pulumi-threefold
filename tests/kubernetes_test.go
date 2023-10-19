@@ -54,7 +54,7 @@ func TestKubernetes(t *testing.T) {
 func AssertNodesAreReady(t *testing.T, masterYggIP, privateKey string, nodesNumber int) {
 	t.Helper()
 
-	time.Sleep(30 * time.Second)
+	time.Sleep(60 * time.Second)
 	output, err := remoteRun(
 		"root",
 		masterYggIP,
