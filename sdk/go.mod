@@ -1,4 +1,4 @@
-module github.com/threefold/pulumi-threefold/sdk
+module github.com/threefoldtech/pulumi-threefold/sdk
 
 go 1.21
 
