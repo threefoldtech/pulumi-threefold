@@ -1,4 +1,4 @@
-module github.com/threefold/pulumi-threefold/tests
+module github.com/threefoldtech/pulumi-threefold/tests
 
 go 1.21
 
@@ -214,4 +214,4 @@ require (
 	sourcegraph.com/sourcegraph/appdash v0.0.0-20211028080628-e2786a622600 // indirect
 )
 
-replace github.com/threefold/pulumi-threefold/provider => ../provider
+replace github.com/threefoldtech/pulumi-threefold/provider => ../provider
