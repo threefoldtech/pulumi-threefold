@@ -9,7 +9,7 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
-	"github.com/threefold/pulumi-threefold/sdk/go/threefold/internal"
+	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/internal"
 )
 
 var _ = internal.GetEnvOrDefault
