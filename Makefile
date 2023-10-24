@@ -11,16 +11,15 @@ PACKDIR          := sdk
 PROJECT          := github.com/threefoldtech/pulumi-threefold
 
 PROVIDER_PATH   := provider
-VERSION_PATH     := ${PROVIDER_PATH}/cmd/main.Version
+VERSION_PATH     := ${PROVIDER_PATH}/pkg/version.Version
 WORKING_DIR     := $(shell pwd)
+VERSION         := $(shell pulumictl get version)
 
 all: verifiers build test
 
 build:
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
-
-provider_debug:
-	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -gcflags="all=-N -l" -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
+	pulumi package get-schema $(WORKING_DIR)/bin/${PROVIDER} > $(WORKING_DIR)/provider/cmd/${PROVIDER}/schema.json
 
 test: 
 	@echo "Running Tests"
@@ -44,10 +43,8 @@ clean:
 	rm -f pulumi-resource-threefold
 	rm -rf $(GARBAGE)
 
-getverifiers:
-	@echo "Installing golangci-lint" && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
-
 lint:
+	@echo "Installing golangci-lint" && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 	for DIR in "provider" "sdk" "tests" ; do \
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
 	done

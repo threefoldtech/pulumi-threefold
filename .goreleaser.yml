@@ -9,7 +9,7 @@ builds:
     dir: provider
     main: ./cmd/pulumi-resource-threefold/main.go
     ldflags:
-      - -X github.com/threefoldtech/pulumi-threefold/provider/cmd/pulumi-resource-threefold/main.Version={{.Tag }}
+      - -X github.com/threefoldtech/pulumi-threefold/provider/pkg/version.Version={{.Tag }}
     env:
       - CGO_ENABLED=0
     goos:

@@ -3,15 +3,14 @@ package main
 import (
 	"log"
 
-	p "github.com/threefoldtech/pulumi-threefold/provider"
+	threefold "github.com/threefoldtech/pulumi-threefold/provider"
+	"github.com/threefoldtech/pulumi-threefold/provider/pkg/version"
 )
 
-// Version is initialized by the Go linker to contain the semver of this build.
-var Version string
 var providerName = "threefold"
 
 func main() {
-	if err := p.RunProvider(providerName, Version); err != nil {
+	if err := threefold.RunProvider(providerName, version.Version); err != nil {
 		log.Fatal(err.Error())
 	}
 }
