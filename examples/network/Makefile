@@ -11,3 +11,4 @@ destroy:
 	pulumi destroy --yes
 	pulumi stack rm --yes
 	pulumi logout
+	rm -rf ${current_dir}/state 

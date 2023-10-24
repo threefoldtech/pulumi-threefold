@@ -4,18 +4,21 @@ DIRS := . $(shell find tests examples -type d)
 GARBAGE_PATTERNS := Pulumi.test.yaml state
 GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
 
-PROVIDER := pulumi-resource-threefold
 
-PACK             := threefold
-PACKDIR          := sdk
-PROJECT          := github.com/threefoldtech/pulumi-threefold
+NAME            := threefold
+PROJECT         := github.com/threefoldtech/pulumi-${NAME}
+PROVIDER 				:= pulumi-resource-${NAME}
 
 PROVIDER_PATH   := provider
-VERSION_PATH     := ${PROVIDER_PATH}/pkg/version.Version
+VERSION_PATH    := ${PROVIDER_PATH}/pkg/version.Version
 WORKING_DIR     := $(shell pwd)
 VERSION         := $(shell pulumictl get version)
+LATEST_VERSION  := $(shell git describe --tags  --abbrev=0 --match="v[0-9]*" HEAD)
 
-all: verifiers build test
+all: lint build test
+
+install:
+	pulumi plugin install resource ${NAME} ${LATEST_VERSION} --server github://api.github.com/threefoldtech/pulumi-threefold
 
 build:
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
@@ -40,7 +43,7 @@ coverage: clean
 
 clean:
 	rm ./coverage -rf
-	rm -f pulumi-resource-threefold
+	rm -f ${PROVIDER}
 	rm -rf $(GARBAGE)
 
 lint:
