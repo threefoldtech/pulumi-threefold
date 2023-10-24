@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi-go-provider/middleware/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
@@ -15,6 +16,17 @@ import (
 func RunProvider(providerName, Version string) error {
 	return p.RunProvider(providerName, Version,
 		infer.Provider(infer.Options{
+			Metadata: schema.Metadata{
+				Description:       "The Pulumi Resource Provider for the Threefold Grid.",
+				DisplayName:       "Threefold Grid",
+				Keywords:          []string{"pulumi", "grid", "threefold", "category/infrastructure", "kind/native"},
+				Homepage:          "https://www.pulumi.com",
+				Repository:        "https://github.com/threefoldtech/pulumi-threefold",
+				Publisher:         "Threefold",
+				LogoURL:           "https://www.threefold.io/images/black_threefold.png",
+				License:           "Apache-2.0",
+				PluginDownloadURL: "github://api.github.com/threefoldtech/pulumi-threefold",
+			},
 			Resources: []infer.InferredResource{
 				infer.Resource[*Scheduler, SchedulerArgs, SchedulerState](),
 				infer.Resource[*Network, NetworkArgs, NetworkState](),
