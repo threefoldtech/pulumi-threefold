@@ -11,7 +11,12 @@ A pulumi provider for the [threefold grid](https://threefold.io) to manage your 
 
 ## Using the provider
 
-- Build the provider
+- Install the provider
+
+```bash
+make install
+```
+
 - You can try to run examples:
 
 ```bash

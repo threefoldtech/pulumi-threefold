@@ -1,10 +1,5 @@
-name: pulumi-provider-threefold
+name: pulumi-threefold
 runtime: yaml
-
-plugins:
-  providers:
-    - name: threefold
-      path: ../../bin
 
 resources:
   provider:
