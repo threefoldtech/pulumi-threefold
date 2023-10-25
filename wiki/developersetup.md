@@ -20,7 +20,7 @@
 
 ## Before committing code
 
-- Make sure to run the preliminary checks `fmt` `lint` `cyclo` `deadcode` `spelling` `staticcheck`, using the command `make checks`
+- Make sure to run the preliminary checks `lint`, using the command `make lint`
 - Make sure tests pass using `make tests`
 
 ## Creating a pull request

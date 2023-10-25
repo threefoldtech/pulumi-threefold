@@ -2,9 +2,9 @@
 
 ## lint workflow
 
-Mainly to run the formatters, golangci-lint and staticcheck
+Mainly to run the formatter golangci-lint
 
-## test workflow
+## integration workflow
 
 - Runs only the tests in provider directory
 
