@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - v*
+	workflow_dispatch:
 
 env:
   PROVIDER: "threefold"
@@ -26,35 +27,6 @@ env:
   PUBLISH_PYPI: false
 
 jobs:
-  publish_binary:
-    name: publish
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Unshallow clone for tags
-        run: git fetch --prune --unshallow
-
-      - name: Install Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.21
-
-      - name: Install pulumictl
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
-        with:
-          repo: pulumi/pulumictl
-
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5.0.0
-        with:
-          version: latest
-          args: release --clean
-
-    strategy:
-      fail-fast: true
-
   publish_sdk:
     name: Publish SDKs
     runs-on: ubuntu-latest
