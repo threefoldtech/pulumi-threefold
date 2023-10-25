@@ -37,14 +37,22 @@ class KubernetesArgs:
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             master: pulumi.Input['K8sNodeInputArgs'],
-             network_name: pulumi.Input[str],
-             token: pulumi.Input[str],
-             workers: pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]],
+             master: Optional[pulumi.Input['K8sNodeInputArgs']] = None,
+             network_name: Optional[pulumi.Input[str]] = None,
+             token: Optional[pulumi.Input[str]] = None,
+             workers: Optional[pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]]] = None,
              solution_type: Optional[pulumi.Input[str]] = None,
              ssh_key: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if master is None:
+            raise TypeError("Missing 'master' argument")
+        if network_name is None:
+            raise TypeError("Missing 'network_name' argument")
+        if token is None:
+            raise TypeError("Missing 'token' argument")
+        if workers is None:
+            raise TypeError("Missing 'workers' argument")
 
         _setter("master", master)
         _setter("network_name", network_name)
@@ -169,11 +177,7 @@ class Kubernetes(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = KubernetesArgs.__new__(KubernetesArgs)
 
-            if master is not None and not isinstance(master, K8sNodeInputArgs):
-                master = master or {}
-                def _setter(key, value):
-                    master[key] = value
-                K8sNodeInputArgs._configure(_setter, **master)
+            master = _utilities.configure(master, K8sNodeInputArgs, True)
             if master is None and not opts.urn:
                 raise TypeError("Missing required property 'master'")
             __props__.__dict__["master"] = master

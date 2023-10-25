@@ -92,7 +92,7 @@ class SchedulerArgs:
              rented: Optional[pulumi.Input[bool]] = None,
              sru: Optional[pulumi.Input[int]] = None,
              twin_id: Optional[pulumi.Input[int]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
 
         if certification_type is not None:

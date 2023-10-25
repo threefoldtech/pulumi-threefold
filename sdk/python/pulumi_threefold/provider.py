@@ -47,7 +47,7 @@ class ProviderArgs:
              relay_url: Optional[pulumi.Input[str]] = None,
              rmb_timeout: Optional[pulumi.Input[str]] = None,
              substrate_url: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
 
         if key_type is None:
