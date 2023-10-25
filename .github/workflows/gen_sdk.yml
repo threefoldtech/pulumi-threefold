@@ -45,11 +45,11 @@ jobs:
       - name: Install pulumictl
         uses: jaxxstorm/action-install-gh-release@v1.10.0
         with:
-          repo: pulumi/pulumictl
-			
-			- name: Install pulumi
-				uses: pulumi/setup-pulumi@v4
-				with:
+					repo: pulumi/pulumictl
+
+      - name: Install pulumi
+			  uses: pulumi/setup-pulumi@v4
+        with:
 					pulumi-version: ^3.0.0
 
       - name: Setup Node
