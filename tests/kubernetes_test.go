@@ -32,7 +32,7 @@ func TestKubernetes(t *testing.T) {
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "..", "examples/kubernetes"),
+		Dir:              path.Join(cwd, "examples/kubernetes"),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,
