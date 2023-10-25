@@ -102,8 +102,6 @@ jobs:
       matrix:
         language:
           - nodejs
-          - python
-          - go
         goversion:
           - 1.21.x
         nodeversion:
