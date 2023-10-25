@@ -1,4 +1,5 @@
 {
   "resource": true,
-  "name": "threefold"
+  "name": "threefold",
+  "server": "github://api.github.com/threefoldtech/pulumi-threefold"
 }

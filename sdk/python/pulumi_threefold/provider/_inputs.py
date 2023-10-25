@@ -40,7 +40,9 @@ class BackendArgs:
              address: pulumi.Input[str],
              namespace: pulumi.Input[str],
              password: pulumi.Input[str],
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("address", address)
         _setter("namespace", namespace)
         _setter("password", password)
@@ -91,7 +93,9 @@ class DiskArgs:
              name: pulumi.Input[str],
              size: pulumi.Input[int],
              description: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("name", name)
         _setter("size", size)
         if description is not None:
@@ -137,7 +141,9 @@ class GroupArgs:
     def _configure(
              _setter: Callable[[Any, Any], None],
              backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         if backends is not None:
             _setter("backends", backends)
 
@@ -190,7 +196,9 @@ class K8sNodeInputArgs:
              planetary: Optional[pulumi.Input[bool]] = None,
              public_ip: Optional[pulumi.Input[bool]] = None,
              public_ip6: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("cpu", cpu)
         _setter("disk_size", disk_size)
         _setter("memory", memory)
@@ -322,7 +330,9 @@ class MetadataArgs:
              backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None,
              encryption_algorithm: Optional[pulumi.Input[str]] = None,
              type: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("encryption_key", encryption_key)
         _setter("prefix", prefix)
         if backends is not None:
@@ -393,7 +403,9 @@ class MountArgs:
              _setter: Callable[[Any, Any], None],
              disk_name: pulumi.Input[str],
              mount_point: pulumi.Input[str],
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("disk_name", disk_name)
         _setter("mount_point", mount_point)
 
@@ -464,7 +476,9 @@ class QSFSInputArgs:
              compression_algorithm: Optional[pulumi.Input[str]] = None,
              description: Optional[pulumi.Input[str]] = None,
              encryption_algorithm: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("cache", cache)
         _setter("encryption_key", encryption_key)
         _setter("expected_shards", expected_shards)
@@ -657,7 +671,9 @@ class VMInputArgs:
              public_ip6: Optional[pulumi.Input[bool]] = None,
              rootfs_size: Optional[pulumi.Input[int]] = None,
              zlogs: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("cpu", cpu)
         _setter("flist", flist)
         _setter("memory", memory)
@@ -858,7 +874,9 @@ class ZDBInputArgs:
              description: Optional[pulumi.Input[str]] = None,
              mode: Optional[pulumi.Input[str]] = None,
              public: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("name", name)
         _setter("password", password)
         _setter("size", size)
@@ -941,7 +959,9 @@ class ZlogArgs:
              _setter: Callable[[Any, Any], None],
              output: pulumi.Input[str],
              zmachine: pulumi.Input[str],
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("output", output)
         _setter("zmachine", zmachine)
 

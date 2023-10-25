@@ -8,20 +8,27 @@ GARBAGE := $(foreach DIR,$(DIRS),$(addprefix $(DIR)/,$(GARBAGE_PATTERNS)))
 NAME            := threefold
 PROJECT         := github.com/threefoldtech/pulumi-${NAME}
 PROVIDER 				:= pulumi-resource-${NAME}
+CODEGEN         := pulumi-gen-${NAME}
 
 PROVIDER_PATH   := provider
 VERSION_PATH    := ${PROVIDER_PATH}/pkg/version.Version
+SCHEMA_PATH     := ${PROVIDER_PATH}/cmd/${PROVIDER}/schema.json
 WORKING_DIR     := $(shell pwd)
 VERSION         := $(shell pulumictl get version)
 LATEST_VERSION  := $(shell git describe --tags  --abbrev=0 --match="v[0-9]*" HEAD)
 
-all: lint build test
+all: lint build schema test
 
 install:
 	pulumi plugin install resource ${NAME} ${LATEST_VERSION} --server github://api.github.com/threefoldtech/pulumi-threefold
 
-build:
+build: gen
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
+
+gen::
+	(cd provider && go build -o $(WORKING_DIR)/bin/${CODEGEN} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" ${PROJECT}/${PROVIDER_PATH}/cmd/$(CODEGEN))
+
+schema:
 	pulumi package get-schema $(WORKING_DIR)/bin/${PROVIDER} > $(WORKING_DIR)/provider/cmd/${PROVIDER}/schema.json
 
 test: 
@@ -51,10 +58,15 @@ lint:
 	for DIR in "provider" "sdk" "tests" ; do \
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
 	done
-	
-go_sdk:: build
-	# rm -rf sdk/go
-	# pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
+
+lint-fix:
+	for DIR in "provider" "sdk" ; do \
+		cd $$DIR && golangci-lint run -c ../.golangci.yml --fix && cd .. ; \
+	done
+
+go_sdk: build
+	rm -rf sdk/go
+	$(WORKING_DIR)/bin/$(CODEGEN) -version=${VERSION} go $(SCHEMA_PATH) $(CURDIR)
 
 nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 nodejs_sdk:: build

@@ -44,7 +44,9 @@ class GatewayNameArgs:
              network: Optional[pulumi.Input[str]] = None,
              solution_type: Optional[pulumi.Input[str]] = None,
              tls_passthrough: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("backends", backends)
         _setter("name", name)
         _setter("node_id", node_id)

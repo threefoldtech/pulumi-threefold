@@ -20,8 +20,15 @@ def readme():
 setup(name='pulumi_threefold',
       python_requires='>=3.7',
       version=VERSION,
+      description="The Pulumi Resource Provider for the Threefold Grid.",
       long_description=readme(),
       long_description_content_type='text/markdown',
+      keywords='pulumi grid threefold category/infrastructure kind/native',
+      url='https://www.pulumi.com',
+      project_urls={
+          'Repository': 'https://github.com/threefoldtech/pulumi-threefold'
+      },
+      license='Apache-2.0',
       packages=find_packages(),
       package_data={
           'pulumi_threefold': [
