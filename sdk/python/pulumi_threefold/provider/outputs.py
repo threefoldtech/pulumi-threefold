@@ -45,7 +45,9 @@ class Backend(dict):
              address: str,
              namespace: str,
              password: str,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("address", address)
         _setter("namespace", namespace)
         _setter("password", password)
@@ -84,7 +86,9 @@ class Disk(dict):
              name: str,
              size: int,
              description: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("name", name)
         _setter("size", size)
         if description is not None:
@@ -118,7 +122,9 @@ class Group(dict):
     def _configure(
              _setter: Callable[[Any, Any], None],
              backends: Optional[Sequence['outputs.Backend']] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         if backends is not None:
             _setter("backends", backends)
 
@@ -161,7 +167,9 @@ class K8sNodeComputed(dict):
              ssh_key: str,
              token: str,
              ygg_ip: str,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("computed_ip", computed_ip)
         _setter("computed_ip6", computed_ip6)
         _setter("console_url", console_url)
@@ -251,7 +259,9 @@ class K8sNodeInput(dict):
              planetary: Optional[bool] = None,
              public_ip: Optional[bool] = None,
              public_ip6: Optional[bool] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("cpu", cpu)
         _setter("disk_size", disk_size)
         _setter("memory", memory)
@@ -343,7 +353,9 @@ class Metadata(dict):
              backends: Optional[Sequence['outputs.Backend']] = None,
              encryption_algorithm: Optional[str] = None,
              type: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("encryption_key", encryption_key)
         _setter("prefix", prefix)
         if backends is not None:
@@ -394,7 +406,9 @@ class Mount(dict):
              _setter: Callable[[Any, Any], None],
              disk_name: str,
              mount_point: str,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("disk_name", disk_name)
         _setter("mount_point", mount_point)
 
@@ -421,7 +435,9 @@ class QSFSComputed(dict):
     def _configure(
              _setter: Callable[[Any, Any], None],
              metrics_endpoint: str,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("metrics_endpoint", metrics_endpoint)
 
     @property
@@ -478,7 +494,9 @@ class QSFSInput(dict):
              compression_algorithm: Optional[str] = None,
              description: Optional[str] = None,
              encryption_algorithm: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("cache", cache)
         _setter("encryption_key", encryption_key)
         _setter("expected_shards", expected_shards)
@@ -586,7 +604,9 @@ class VMComputed(dict):
              console_url: str,
              ygg_ip: str,
              ip: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("computed_ip", computed_ip)
         _setter("computed_ip6", computed_ip6)
         _setter("console_url", console_url)
@@ -677,7 +697,9 @@ class VMInput(dict):
              public_ip6: Optional[bool] = None,
              rootfs_size: Optional[int] = None,
              zlogs: Optional[Sequence['outputs.Zlog']] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("cpu", cpu)
         _setter("flist", flist)
         _setter("memory", memory)
@@ -805,7 +827,9 @@ class ZDBComputed(dict):
              ips: Sequence[str],
              namespace: str,
              port: int,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("ips", ips)
         _setter("namespace", namespace)
         _setter("port", port)
@@ -853,7 +877,9 @@ class ZDBInput(dict):
              description: Optional[str] = None,
              mode: Optional[str] = None,
              public: Optional[bool] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("name", name)
         _setter("password", password)
         _setter("size", size)
@@ -912,7 +938,9 @@ class Zlog(dict):
              _setter: Callable[[Any, Any], None],
              output: str,
              zmachine: str,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("output", output)
         _setter("zmachine", zmachine)
 

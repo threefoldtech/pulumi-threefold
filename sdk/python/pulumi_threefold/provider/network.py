@@ -41,7 +41,9 @@ class NetworkArgs:
              nodes: pulumi.Input[Sequence[Any]],
              add_wg_access: Optional[pulumi.Input[bool]] = None,
              solution_type: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("description", description)
         _setter("ip_range", ip_range)
         _setter("name", name)

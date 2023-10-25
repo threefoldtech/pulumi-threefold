@@ -57,6 +57,11 @@ lint:
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
 	done
 
+lint-fix:
+	for DIR in "provider" "sdk" ; do \
+		cd $$DIR && pwd && golangci-lint run -c ../.golangci.yaml --fix && cd .. ; \
+	done
+
 go_sdk: gen
 	rm -rf sdk/go
 	$(WORKING_DIR)/bin/$(CODEGEN) -version=${VERSION} go $(SCHEMA_PATH) $(CURDIR)

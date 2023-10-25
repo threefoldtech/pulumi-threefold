@@ -1,7 +1,6 @@
 {
   "name": "threefold",
   "displayName": "Threefold Grid",
-  "version": "0.2.1-alpha.1698224023+26607989.dirty",
   "description": "The Pulumi Resource Provider for the Threefold Grid.",
   "keywords": [
     "pulumi",
