@@ -61,7 +61,3 @@ resources:
       disks:
         - name: data
           size: 2
-
-outputs:
-  node_deployment_id: ${deployment.node_deployment_id}
-  ygg_ip: ${deployment.vms_computed[0].ygg_ip}

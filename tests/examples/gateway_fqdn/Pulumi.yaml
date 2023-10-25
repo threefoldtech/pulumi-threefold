@@ -65,7 +65,3 @@ resources:
       fqdn: remote.omar.grid.tf
       backends:
         - http://[${deployment.vms_computed[0].ygg_ip}]:9000
-
-outputs:
-  node_deployment_id: ${gatewayFQDN.node_deployment_id}
-  fqdn: ${gatewayFQDN.fqdn}
