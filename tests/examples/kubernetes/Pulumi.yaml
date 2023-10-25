@@ -1,0 +1,70 @@
+name: pulumi-threefold
+runtime: yaml
+
+plugins:
+  providers:
+    - name: pulumi-resource-threefold
+      path: ..
+
+resources:
+  provider:
+    type: pulumi:providers:threefold
+    properties:
+      mnemonic:
+
+  scheduler:
+    type: threefold:provider:Scheduler
+    options:
+      provider: ${provider}
+    properties:
+      mru: 2048
+      sru: 6144
+      farm_ids: [1]
+
+  network:
+    type: threefold:provider:Network
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${scheduler}
+    properties:
+      name: test
+      description: test network
+      nodes:
+        - ${scheduler.nodes[0]}
+      ip_range: 10.1.0.0/16
+
+  kubernetes:
+    type: threefold:provider:Kubernetes
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${network}
+    properties:
+      master:
+        name: kubernetes
+        node: ${scheduler.nodes[0]}
+        disk_size: 2
+        planetary: true
+        cpu: 2
+        memory: 2048
+
+      workers:
+        - name: worker1
+          node: ${scheduler.nodes[0]}
+          disk_size: 2
+          cpu: 2
+          memory: 2048
+        - name: worker2
+          node: ${scheduler.nodes[0]}
+          disk_size: 2
+          cpu: 2
+          memory: 2048
+
+      token: t123456789
+      network_name: test
+      ssh_key:
+
+outputs:
+  node_deployment_id: ${kubernetes.node_deployment_id}
+  ygg_ip: ${kubernetes.master_computed.ygg_ip}

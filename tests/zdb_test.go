@@ -26,7 +26,7 @@ func TestZDB(t *testing.T) {
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "..", "examples/zdb"),
+		Dir:              path.Join(cwd, "examples/zdb"),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,

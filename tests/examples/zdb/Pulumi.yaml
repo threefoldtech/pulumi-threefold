@@ -1,0 +1,39 @@
+name: pulumi-threefold
+runtime: yaml
+
+plugins:
+  providers:
+    - name: pulumi-resource-threefold
+      path: ..
+
+resources:
+  provider:
+    type: pulumi:providers:threefold
+    properties:
+      mnemonic:
+
+  scheduler:
+    type: threefold:provider:Scheduler
+    options:
+      provider: ${provider}
+    properties:
+      mru: 256
+      sru: 2048
+      farm_ids: [1]
+
+  deployment:
+    type: threefold:provider:Deployment
+    options:
+      provider: ${provider}
+    properties:
+      node_id: ${scheduler.nodes[0]}
+      name: zdb
+      zdbs:
+        - name: zdbsTest
+          size: 2
+          password: "123456"
+
+outputs:
+  node_deployment_id: ${deployment.node_deployment_id}
+  zdb_endpoint: "[${deployment.zdbs_computed[0].ips[1]}]:${deployment.zdbs_computed[0].port}"
+  zdb_namespace: ${deployment.zdbs_computed[0].namespace}

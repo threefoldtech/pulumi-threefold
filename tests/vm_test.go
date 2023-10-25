@@ -31,7 +31,7 @@ func TestVM(t *testing.T) {
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "..", "examples/virtual_machine"),
+		Dir:              path.Join(cwd, "examples/virtual_machine"),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,
