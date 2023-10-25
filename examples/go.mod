@@ -2,7 +2,7 @@ module github.com/threefoldtech/pulumi-threefold/examples
 
 go 1.21
 
-require github.com/pulumi/pulumi/sdk/v3 v3.90.1
+require github.com/pulumi/pulumi/sdk/v3 v3.88.1
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
