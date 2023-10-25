@@ -1,2 +1,2 @@
-// Package threefold exports types, functions, subpackages for provisioning threefold resources.
+// The Pulumi Resource Provider for the Threefold Grid.
 package threefold
