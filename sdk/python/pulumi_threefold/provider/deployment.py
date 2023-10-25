@@ -43,8 +43,8 @@ class DeploymentArgs:
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             name: pulumi.Input[str],
-             node_id: Any,
+             name: Optional[pulumi.Input[str]] = None,
+             node_id: Optional[Any] = None,
              disks: Optional[pulumi.Input[Sequence[pulumi.Input['DiskArgs']]]] = None,
              network_name: Optional[pulumi.Input[str]] = None,
              qsfs: Optional[pulumi.Input[Sequence[pulumi.Input['QSFSInputArgs']]]] = None,
@@ -52,8 +52,12 @@ class DeploymentArgs:
              solution_type: Optional[pulumi.Input[str]] = None,
              vms: Optional[pulumi.Input[Sequence[pulumi.Input['VMInputArgs']]]] = None,
              zdbs: Optional[pulumi.Input[Sequence[pulumi.Input['ZDBInputArgs']]]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if node_id is None:
+            raise TypeError("Missing 'node_id' argument")
 
         _setter("name", name)
         _setter("node_id", node_id)

@@ -31,6 +31,9 @@ gen::
 schema:
 	pulumi package get-schema $(WORKING_DIR)/bin/${PROVIDER} > $(WORKING_DIR)/provider/cmd/${PROVIDER}/schema.json
 
+pulumi:
+	[ -x $(shell which pulumi) ] || curl -fsSL https://get.pulumi.com | sh
+	
 test: 
 	@echo "Running Tests"
 	go test -v `go list ./... | grep -v tests`

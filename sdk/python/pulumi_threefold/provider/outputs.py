@@ -42,11 +42,17 @@ class Backend(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             address: str,
-             namespace: str,
-             password: str,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             address: Optional[str] = None,
+             namespace: Optional[str] = None,
+             password: Optional[str] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if address is None:
+            raise TypeError("Missing 'address' argument")
+        if namespace is None:
+            raise TypeError("Missing 'namespace' argument")
+        if password is None:
+            raise TypeError("Missing 'password' argument")
 
         _setter("address", address)
         _setter("namespace", namespace)
@@ -83,11 +89,15 @@ class Disk(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             name: str,
-             size: int,
+             name: Optional[str] = None,
+             size: Optional[int] = None,
              description: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if size is None:
+            raise TypeError("Missing 'size' argument")
 
         _setter("name", name)
         _setter("size", size)
@@ -122,7 +132,7 @@ class Group(dict):
     def _configure(
              _setter: Callable[[Any, Any], None],
              backends: Optional[Sequence['outputs.Backend']] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
 
         if backends is not None:
@@ -159,16 +169,32 @@ class K8sNodeComputed(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             computed_ip: str,
-             computed_ip6: str,
-             console_url: str,
-             ip: str,
-             network_name: str,
-             ssh_key: str,
-             token: str,
-             ygg_ip: str,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             computed_ip: Optional[str] = None,
+             computed_ip6: Optional[str] = None,
+             console_url: Optional[str] = None,
+             ip: Optional[str] = None,
+             network_name: Optional[str] = None,
+             ssh_key: Optional[str] = None,
+             token: Optional[str] = None,
+             ygg_ip: Optional[str] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if computed_ip is None:
+            raise TypeError("Missing 'computed_ip' argument")
+        if computed_ip6 is None:
+            raise TypeError("Missing 'computed_ip6' argument")
+        if console_url is None:
+            raise TypeError("Missing 'console_url' argument")
+        if ip is None:
+            raise TypeError("Missing 'ip' argument")
+        if network_name is None:
+            raise TypeError("Missing 'network_name' argument")
+        if ssh_key is None:
+            raise TypeError("Missing 'ssh_key' argument")
+        if token is None:
+            raise TypeError("Missing 'token' argument")
+        if ygg_ip is None:
+            raise TypeError("Missing 'ygg_ip' argument")
 
         _setter("computed_ip", computed_ip)
         _setter("computed_ip6", computed_ip6)
@@ -249,18 +275,28 @@ class K8sNodeInput(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             cpu: int,
-             disk_size: int,
-             memory: int,
-             name: str,
-             node: Any,
+             cpu: Optional[int] = None,
+             disk_size: Optional[int] = None,
+             memory: Optional[int] = None,
+             name: Optional[str] = None,
+             node: Optional[Any] = None,
              flist: Optional[str] = None,
              flist_checksum: Optional[str] = None,
              planetary: Optional[bool] = None,
              public_ip: Optional[bool] = None,
              public_ip6: Optional[bool] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if cpu is None:
+            raise TypeError("Missing 'cpu' argument")
+        if disk_size is None:
+            raise TypeError("Missing 'disk_size' argument")
+        if memory is None:
+            raise TypeError("Missing 'memory' argument")
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if node is None:
+            raise TypeError("Missing 'node' argument")
 
         _setter("cpu", cpu)
         _setter("disk_size", disk_size)
@@ -348,13 +384,17 @@ class Metadata(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             encryption_key: str,
-             prefix: str,
+             encryption_key: Optional[str] = None,
+             prefix: Optional[str] = None,
              backends: Optional[Sequence['outputs.Backend']] = None,
              encryption_algorithm: Optional[str] = None,
              type: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if encryption_key is None:
+            raise TypeError("Missing 'encryption_key' argument")
+        if prefix is None:
+            raise TypeError("Missing 'prefix' argument")
 
         _setter("encryption_key", encryption_key)
         _setter("prefix", prefix)
@@ -404,10 +444,14 @@ class Mount(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             disk_name: str,
-             mount_point: str,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             disk_name: Optional[str] = None,
+             mount_point: Optional[str] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if disk_name is None:
+            raise TypeError("Missing 'disk_name' argument")
+        if mount_point is None:
+            raise TypeError("Missing 'mount_point' argument")
 
         _setter("disk_name", disk_name)
         _setter("mount_point", mount_point)
@@ -434,9 +478,11 @@ class QSFSComputed(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             metrics_endpoint: str,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             metrics_endpoint: Optional[str] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if metrics_endpoint is None:
+            raise TypeError("Missing 'metrics_endpoint' argument")
 
         _setter("metrics_endpoint", metrics_endpoint)
 
@@ -481,21 +527,41 @@ class QSFSInput(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             cache: int,
-             encryption_key: str,
-             expected_shards: int,
-             groups: Sequence['outputs.Group'],
-             max_zdb_data_dir_size: int,
-             metadata: 'outputs.Metadata',
-             minimal_shards: int,
-             name: str,
-             redundant_groups: int,
-             redundant_nodes: int,
+             cache: Optional[int] = None,
+             encryption_key: Optional[str] = None,
+             expected_shards: Optional[int] = None,
+             groups: Optional[Sequence['outputs.Group']] = None,
+             max_zdb_data_dir_size: Optional[int] = None,
+             metadata: Optional['outputs.Metadata'] = None,
+             minimal_shards: Optional[int] = None,
+             name: Optional[str] = None,
+             redundant_groups: Optional[int] = None,
+             redundant_nodes: Optional[int] = None,
              compression_algorithm: Optional[str] = None,
              description: Optional[str] = None,
              encryption_algorithm: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if cache is None:
+            raise TypeError("Missing 'cache' argument")
+        if encryption_key is None:
+            raise TypeError("Missing 'encryption_key' argument")
+        if expected_shards is None:
+            raise TypeError("Missing 'expected_shards' argument")
+        if groups is None:
+            raise TypeError("Missing 'groups' argument")
+        if max_zdb_data_dir_size is None:
+            raise TypeError("Missing 'max_zdb_data_dir_size' argument")
+        if metadata is None:
+            raise TypeError("Missing 'metadata' argument")
+        if minimal_shards is None:
+            raise TypeError("Missing 'minimal_shards' argument")
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if redundant_groups is None:
+            raise TypeError("Missing 'redundant_groups' argument")
+        if redundant_nodes is None:
+            raise TypeError("Missing 'redundant_nodes' argument")
 
         _setter("cache", cache)
         _setter("encryption_key", encryption_key)
@@ -599,13 +665,21 @@ class VMComputed(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             computed_ip: str,
-             computed_ip6: str,
-             console_url: str,
-             ygg_ip: str,
+             computed_ip: Optional[str] = None,
+             computed_ip6: Optional[str] = None,
+             console_url: Optional[str] = None,
+             ygg_ip: Optional[str] = None,
              ip: Optional[str] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if computed_ip is None:
+            raise TypeError("Missing 'computed_ip' argument")
+        if computed_ip6 is None:
+            raise TypeError("Missing 'computed_ip6' argument")
+        if console_url is None:
+            raise TypeError("Missing 'console_url' argument")
+        if ygg_ip is None:
+            raise TypeError("Missing 'ygg_ip' argument")
 
         _setter("computed_ip", computed_ip)
         _setter("computed_ip6", computed_ip6)
@@ -681,11 +755,11 @@ class VMInput(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             cpu: int,
-             flist: str,
-             memory: int,
-             name: str,
-             network_name: str,
+             cpu: Optional[int] = None,
+             flist: Optional[str] = None,
+             memory: Optional[int] = None,
+             name: Optional[str] = None,
+             network_name: Optional[str] = None,
              description: Optional[str] = None,
              entrypoint: Optional[str] = None,
              env_vars: Optional[Mapping[str, str]] = None,
@@ -697,8 +771,18 @@ class VMInput(dict):
              public_ip6: Optional[bool] = None,
              rootfs_size: Optional[int] = None,
              zlogs: Optional[Sequence['outputs.Zlog']] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if cpu is None:
+            raise TypeError("Missing 'cpu' argument")
+        if flist is None:
+            raise TypeError("Missing 'flist' argument")
+        if memory is None:
+            raise TypeError("Missing 'memory' argument")
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if network_name is None:
+            raise TypeError("Missing 'network_name' argument")
 
         _setter("cpu", cpu)
         _setter("flist", flist)
@@ -824,11 +908,17 @@ class ZDBComputed(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             ips: Sequence[str],
-             namespace: str,
-             port: int,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             ips: Optional[Sequence[str]] = None,
+             namespace: Optional[str] = None,
+             port: Optional[int] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if ips is None:
+            raise TypeError("Missing 'ips' argument")
+        if namespace is None:
+            raise TypeError("Missing 'namespace' argument")
+        if port is None:
+            raise TypeError("Missing 'port' argument")
 
         _setter("ips", ips)
         _setter("namespace", namespace)
@@ -871,14 +961,20 @@ class ZDBInput(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             name: str,
-             password: str,
-             size: int,
+             name: Optional[str] = None,
+             password: Optional[str] = None,
+             size: Optional[int] = None,
              description: Optional[str] = None,
              mode: Optional[str] = None,
              public: Optional[bool] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if password is None:
+            raise TypeError("Missing 'password' argument")
+        if size is None:
+            raise TypeError("Missing 'size' argument")
 
         _setter("name", name)
         _setter("password", password)
@@ -936,10 +1032,14 @@ class Zlog(dict):
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             output: str,
-             zmachine: str,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             output: Optional[str] = None,
+             zmachine: Optional[str] = None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if output is None:
+            raise TypeError("Missing 'output' argument")
+        if zmachine is None:
+            raise TypeError("Missing 'zmachine' argument")
 
         _setter("output", output)
         _setter("zmachine", zmachine)
