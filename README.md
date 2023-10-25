@@ -7,9 +7,9 @@ The provider is available at [pulumi registry](https://www.pulumi.com/registry/p
 
 ## Requirements
 
-- [Pulumi](https://www.pulumi.com/docs/install/) >= 3.84.0
+- [`Pulumi`](https://www.pulumi.com/docs/install/) >= 3.84.0
 - [`pulumictl`](https://github.com/pulumi/pulumictl#installation)
-- [Go](https://golang.org/doc/install) >= 1.21
+- [`Go`](https://golang.org/doc/install) >= 1.21
 
 ## Using the provider
 
