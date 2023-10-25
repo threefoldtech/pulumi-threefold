@@ -19,7 +19,8 @@ let's say the next tag is `v1.0.0`, release will be:
 - Check `goreleaser check`
 - Create a tag `git tag -a v1.0.0 -m "release v1.0.0"`
 - Push the tag `git push origin v1.0.0`
-- the release workflow will release the tag automatically
+- the release workflow will release the tag automatically.
+- [Pulumi registry](https://github.com/pulumi/registry) twice-daily scans for new releases of Pulumi packages hence it will pick up the new release and create a new PR for that to be published.
 
 ## Tags Convention
 
