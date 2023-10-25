@@ -42,6 +42,11 @@ integration:
 	@echo "Running integration tests"
 	go test -v ./tests
 
+release:
+	@echo "Running release script..." 
+	chmod +x release.sh 
+	./release.sh
+	
 coverage: clean 
 	@echo "Installing gopherbadger" && go get -u github.com/jpoles1/gopherbadger && go install github.com/jpoles1/gopherbadger
 	mkdir coverage
