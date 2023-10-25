@@ -43,7 +43,9 @@ class KubernetesArgs:
              workers: pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]],
              solution_type: Optional[pulumi.Input[str]] = None,
              ssh_key: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("master", master)
         _setter("network_name", network_name)
         _setter("token", token)

@@ -47,7 +47,9 @@ class GatewayFQDNArgs:
              network_name: Optional[pulumi.Input[str]] = None,
              solution_type: Optional[pulumi.Input[str]] = None,
              tls_pass_through: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("backends", backends)
         _setter("fqdn", fqdn)
         _setter("name", name)

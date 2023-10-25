@@ -52,7 +52,9 @@ class DeploymentArgs:
              solution_type: Optional[pulumi.Input[str]] = None,
              vms: Optional[pulumi.Input[Sequence[pulumi.Input['VMInputArgs']]]] = None,
              zdbs: Optional[pulumi.Input[Sequence[pulumi.Input['ZDBInputArgs']]]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None):
+             opts: Optional[pulumi.ResourceOptions]=None,
+             **kwargs):
+
         _setter("name", name)
         _setter("node_id", node_id)
         if disks is not None:
