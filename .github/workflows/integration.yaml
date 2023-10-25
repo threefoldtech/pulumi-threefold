@@ -39,8 +39,8 @@ jobs:
           sudo  sed -i -- 's/Peers\: \[\]/Peers: [\n'"$PEERS"']/g' /etc/yggdrasil.conf
           sudo systemctl start yggdrasil
 
-      - name: Build provider
-        run: make build
+      - name: Install provider
+        run: make install
 
       - name: Run Tests
         run: go test -v ./tests
