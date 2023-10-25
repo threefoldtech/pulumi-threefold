@@ -101,7 +101,7 @@ jobs:
       fail-fast: true
       matrix:
         language:
-          - nodejs
+          - python
         goversion:
           - 1.21.x
         nodeversion:
