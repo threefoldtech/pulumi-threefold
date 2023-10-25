@@ -3,7 +3,6 @@ linters:
     - errcheck
     - goconst
     - gofmt
-    - golint
     - govet
     - ineffassign
     - lll
@@ -11,7 +10,16 @@ linters:
     - misspell
     - nakedret
     - unconvert
+    - revive
   enable-all: false
+
+linters-settings:
+  revive:
+    rules:
+      - name: exported
+        arguments:
+          - disableStutteringCheck
+
 run:
   skip-files:
     - schema.go
