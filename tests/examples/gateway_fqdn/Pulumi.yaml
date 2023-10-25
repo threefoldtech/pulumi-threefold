@@ -1,0 +1,67 @@
+name: pulumi-threefold
+runtime: yaml
+
+plugins:
+  providers:
+    - name: pulumi-resource-threefold
+      path: ..
+
+resources:
+  provider:
+    type: pulumi:providers:threefold
+    properties:
+      mnemonic:
+
+  scheduler:
+    type: threefold:provider:Scheduler
+    options:
+      provider: ${provider}
+    properties:
+      mru: 256
+      farm_ids: [1]
+      ipv4: true
+      free_ips: 1
+
+  network:
+    type: threefold:provider:Network
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${scheduler}
+    properties:
+      name: test
+      description: test network
+      nodes:
+        - ${scheduler.nodes[0]}
+      ip_range: 10.1.0.0/16
+
+  deployment:
+    type: threefold:provider:Deployment
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${network}
+    properties:
+      node_id: ${scheduler.nodes[0]}
+      name: deployment
+      network_name: test
+      vms:
+        - name: vm
+          flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
+          network_name: test
+          cpu: 2
+          memory: 256
+          planetary: true
+
+  gatewayFQDN:
+    type: threefold:provider:GatewayFQDN
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${deployment}
+    properties:
+      name: testing
+      node_id: 14
+      fqdn: remote.omar.grid.tf
+      backends:
+        - http://[${deployment.vms_computed[0].ygg_ip}]:9000
