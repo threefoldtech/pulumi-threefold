@@ -17,17 +17,19 @@ WORKING_DIR     := $(shell pwd)
 VERSION         := $(shell pulumictl get version)
 LATEST_VERSION  := $(shell git describe --tags  --abbrev=0 --match="v[0-9]*" HEAD)
 
-all: lint build test
+all: lint build schema test
 
 install:
 	pulumi plugin install resource ${NAME} ${LATEST_VERSION} --server github://api.github.com/threefoldtech/pulumi-threefold
 
 build: gen
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
-	pulumi package get-schema $(WORKING_DIR)/bin/${PROVIDER} > $(WORKING_DIR)/provider/cmd/${PROVIDER}/schema.json
 
 gen::
 	(cd provider && go build -o $(WORKING_DIR)/bin/${CODEGEN} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" ${PROJECT}/${PROVIDER_PATH}/cmd/$(CODEGEN))
+
+schema:
+	pulumi package get-schema $(WORKING_DIR)/bin/${PROVIDER} > $(WORKING_DIR)/provider/cmd/${PROVIDER}/schema.json
 
 test: 
 	@echo "Running Tests"
@@ -62,7 +64,7 @@ lint-fix:
 		cd $$DIR && pwd && golangci-lint run -c ../.golangci.yaml --fix && cd .. ; \
 	done
 
-go_sdk: gen
+go_sdk: build
 	rm -rf sdk/go
 	$(WORKING_DIR)/bin/$(CODEGEN) -version=${VERSION} go $(SCHEMA_PATH) $(CURDIR)
 
