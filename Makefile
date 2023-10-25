@@ -61,7 +61,7 @@ lint:
 
 lint-fix:
 	for DIR in "provider" "sdk" ; do \
-		cd $$DIR && pwd && golangci-lint run -c ../.golangci.yaml --fix && cd .. ; \
+		cd $$DIR && golangci-lint run -c ../.golangci.yml --fix && cd .. ; \
 	done
 
 go_sdk: build
