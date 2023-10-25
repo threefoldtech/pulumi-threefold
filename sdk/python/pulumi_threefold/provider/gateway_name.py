@@ -37,15 +37,21 @@ class GatewayNameArgs:
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             backends: pulumi.Input[Sequence[pulumi.Input[str]]],
-             name: pulumi.Input[str],
-             node_id: Any,
+             backends: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             node_id: Optional[Any] = None,
              description: Optional[pulumi.Input[str]] = None,
              network: Optional[pulumi.Input[str]] = None,
              solution_type: Optional[pulumi.Input[str]] = None,
              tls_passthrough: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if backends is None:
+            raise TypeError("Missing 'backends' argument")
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if node_id is None:
+            raise TypeError("Missing 'node_id' argument")
 
         _setter("backends", backends)
         _setter("name", name)

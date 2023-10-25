@@ -35,14 +35,22 @@ class NetworkArgs:
     @staticmethod
     def _configure(
              _setter: Callable[[Any, Any], None],
-             description: pulumi.Input[str],
-             ip_range: pulumi.Input[str],
-             name: pulumi.Input[str],
-             nodes: pulumi.Input[Sequence[Any]],
+             description: Optional[pulumi.Input[str]] = None,
+             ip_range: Optional[pulumi.Input[str]] = None,
+             name: Optional[pulumi.Input[str]] = None,
+             nodes: Optional[pulumi.Input[Sequence[Any]]] = None,
              add_wg_access: Optional[pulumi.Input[bool]] = None,
              solution_type: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions]=None,
+             opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if description is None:
+            raise TypeError("Missing 'description' argument")
+        if ip_range is None:
+            raise TypeError("Missing 'ip_range' argument")
+        if name is None:
+            raise TypeError("Missing 'name' argument")
+        if nodes is None:
+            raise TypeError("Missing 'nodes' argument")
 
         _setter("description", description)
         _setter("ip_range", ip_range)
