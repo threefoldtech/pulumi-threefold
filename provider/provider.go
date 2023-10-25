@@ -26,6 +26,13 @@ func RunProvider(providerName, Version string) error {
 				LogoURL:           "https://www.threefold.io/images/black_threefold.png",
 				License:           "Apache-2.0",
 				PluginDownloadURL: "github://api.github.com/threefoldtech/pulumi-threefold",
+				LanguageMap: map[string]any{
+					"go": map[string]any{
+						"generateExtraInputTypes":        true,
+						"generateResourceContainerTypes": true,
+						"importBasePath":                 "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold",
+					},
+				},
 			},
 			Resources: []infer.InferredResource{
 				infer.Resource[*Scheduler, SchedulerArgs, SchedulerState](),
