@@ -18,6 +18,13 @@
   "meta": {
     "moduleFormat": "(.*)"
   },
+  "language": {
+    "go": {
+      "generateExtraInputTypes": true,
+      "generateResourceContainerTypes": true,
+      "importBasePath": "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
+    }
+  },
   "config": {
     "variables": {
       "key_type": {
