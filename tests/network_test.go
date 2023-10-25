@@ -24,7 +24,7 @@ func TestNetwork(t *testing.T) {
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "..", "examples/network"),
+		Dir:              path.Join(cwd, "examples/network"),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,
