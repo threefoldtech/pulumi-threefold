@@ -64,13 +64,8 @@ clean:
 
 lint:
 	@echo "Installing golangci-lint" && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
-	for DIR in "provider" "sdk" "tests" ; do \
+	for DIR in "provider" "sdk" "tests" "examples" ; do \
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
-	done
-
-lint-fix:
-	for DIR in "provider" "sdk" ; do \
-		cd $$DIR && golangci-lint run -c ../.golangci.yml --fix && cd .. ; \
 	done
 
 go_sdk: build
