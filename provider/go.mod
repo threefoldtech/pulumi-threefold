@@ -3,10 +3,13 @@ module github.com/threefoldtech/pulumi-threefold/provider
 go 1.21
 
 require (
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.12.2
+	github.com/pulumi/pulumi-go-provider/integration v0.10.0
 	github.com/pulumi/pulumi/pkg/v3 v3.88.1
 	github.com/pulumi/pulumi/sdk/v3 v3.88.1
+	github.com/stretchr/testify v1.8.4
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.2
 	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.11.2
 	github.com/threefoldtech/zos v0.5.6-0.20230809073554-ddb0ad98fc4c
@@ -71,7 +74,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.10 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
-	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
 	github.com/centrifuge/go-substrate-rpc-client/v4 v4.0.12 // indirect
@@ -93,7 +95,7 @@ require (
 	github.com/edsrzf/mmap-go v1.1.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/ethereum/go-ethereum v1.11.6 // indirect
-	github.com/fatih/color v1.13.0 // indirect
+	github.com/fatih/color v1.15.0 // indirect
 	github.com/frankban/quicktest v1.14.5 // indirect
 	github.com/gedex/inflector v0.0.0-20170307190818-16278e9db813 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
@@ -155,7 +157,7 @@ require (
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-localereader v0.0.1 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
@@ -200,7 +202,6 @@ require (
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20230809064214-d8ef5ca360eb // indirect
 	github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.10.2 // indirect
