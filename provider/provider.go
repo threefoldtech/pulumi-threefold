@@ -12,38 +12,42 @@ import (
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
 
-// RunProvider runs the pulumi provider and adds its resources
-func RunProvider(providerName, Version string) error {
-	return p.RunProvider(providerName, Version,
-		infer.Provider(infer.Options{
-			Metadata: schema.Metadata{
-				Description:       "The Pulumi Resource Provider for the Threefold Grid.",
-				DisplayName:       "Threefold Grid",
-				Keywords:          []string{"pulumi", "grid", "threefold", "category/infrastructure", "kind/native"},
-				Homepage:          "https://www.pulumi.com",
-				Repository:        "https://github.com/threefoldtech/pulumi-threefold",
-				Publisher:         "Threefold",
-				LogoURL:           "https://www.threefold.io/images/black_threefold.png",
-				License:           "Apache-2.0",
-				PluginDownloadURL: "github://api.github.com/threefoldtech/pulumi-threefold",
-				LanguageMap: map[string]any{
-					"go": map[string]any{
-						"generateExtraInputTypes":        true,
-						"generateResourceContainerTypes": true,
-						"importBasePath":                 "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold",
-					},
+// Provider data and resources
+func Provider() p.Provider {
+	return infer.Provider(infer.Options{
+		Metadata: schema.Metadata{
+			Description:       "The Pulumi Resource Provider for the Threefold Grid.",
+			DisplayName:       "Threefold Grid",
+			Keywords:          []string{"pulumi", "grid", "threefold", "category/infrastructure", "kind/native"},
+			Homepage:          "https://www.pulumi.com",
+			Repository:        "https://github.com/threefoldtech/pulumi-threefold",
+			Publisher:         "Threefold",
+			LogoURL:           "https://www.threefold.io/images/black_threefold.png",
+			License:           "Apache-2.0",
+			PluginDownloadURL: "github://api.github.com/threefoldtech/pulumi-threefold",
+			LanguageMap: map[string]any{
+				"go": map[string]any{
+					"generateExtraInputTypes":        true,
+					"generateResourceContainerTypes": true,
+					"importBasePath":                 "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold",
 				},
 			},
-			Resources: []infer.InferredResource{
-				infer.Resource[*Scheduler, SchedulerArgs, SchedulerState](),
-				infer.Resource[*Network, NetworkArgs, NetworkState](),
-				infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
-				infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
-				infer.Resource[*GatewayName, GatewayNameArgs, GatewayNameState](),
-				infer.Resource[*GatewayFQDN, GatewayFQDNArgs, GatewayFQDNState](),
-			},
-			Config: infer.Config[*Config](),
-		}))
+		},
+		Resources: []infer.InferredResource{
+			infer.Resource[*Scheduler, SchedulerArgs, SchedulerState](),
+			infer.Resource[*Network, NetworkArgs, NetworkState](),
+			infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
+			infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
+			infer.Resource[*GatewayName, GatewayNameArgs, GatewayNameState](),
+			infer.Resource[*GatewayFQDN, GatewayFQDNArgs, GatewayFQDNState](),
+		},
+		Config: infer.Config[*Config](),
+	})
+}
+
+// RunProvider runs the pulumi provider and adds its resources
+func RunProvider(providerName, Version string) error {
+	return p.RunProvider(providerName, Version, Provider())
 }
 
 // Config struct holds the configuration fields for the provider
