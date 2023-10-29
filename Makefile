@@ -36,7 +36,7 @@ pulumi:
 	
 test: 
 	@echo "Running Tests"
-	go test -v `go list ./... | grep -v tests`
+	cd provider && go test -v ./...
 
 integration:
 	@echo "Running integration tests"
@@ -47,13 +47,14 @@ release:
 	chmod +x release.sh 
 	./release.sh
 	
-coverage: clean 
-	@echo "Installing gopherbadger" && go get -u github.com/jpoles1/gopherbadger && go install github.com/jpoles1/gopherbadger
-	mkdir coverage
-	go test -v -vet=off ./... -coverprofile=coverage/coverage.out
-	go tool cover -html=coverage/coverage.out -o coverage/coverage.html
-	@${GOPATH}/bin/gopherbadger -png=false -md="README.md"
-	rm coverage.out
+coverage: clean
+	mkdir coverage && \
+	cd provider && \
+	echo "Installing gopherbadger" && go get -u github.com/jpoles1/gopherbadger && go install github.com/jpoles1/gopherbadger && \
+	go test -v -vet=off ./... -coverprofile=../coverage/coverage.out && \
+	go tool cover -html=../coverage/coverage.out -o ../coverage/coverage.html && \
+	${GOPATH}/bin/gopherbadger -png=false -md=../README.md && \
+	rm coverage.out && \
 	go mod tidy
 
 clean:
@@ -63,13 +64,8 @@ clean:
 
 lint:
 	@echo "Installing golangci-lint" && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
-	for DIR in "provider" "sdk" "tests" ; do \
+	for DIR in "provider" "sdk" "tests" "examples" ; do \
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
-	done
-
-lint-fix:
-	for DIR in "provider" "sdk" ; do \
-		cd $$DIR && golangci-lint run -c ../.golangci.yml --fix && cd .. ; \
 	done
 
 go_sdk: build
