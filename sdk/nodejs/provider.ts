@@ -31,6 +31,7 @@ export class Provider extends pulumi.ProviderResource {
      * The network to deploy on.
      */
     public readonly network!: pulumi.Output<string | undefined>;
+    public readonly pluginDownloadURL!: pulumi.Output<string | undefined>;
     /**
      * The relay url, example: wss://relay.dev.grid.tf
      */
@@ -43,6 +44,7 @@ export class Provider extends pulumi.ProviderResource {
      * The substrate url, example: wss://tfchain.dev.grid.tf/ws
      */
     public readonly substrate_url!: pulumi.Output<string | undefined>;
+    public readonly version!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -58,9 +60,11 @@ export class Provider extends pulumi.ProviderResource {
             resourceInputs["key_type"] = (args ? args.key_type : undefined) ?? (utilities.getEnv("") || "sr25519");
             resourceInputs["mnemonic"] = (args?.mnemonic ? pulumi.secret(args.mnemonic) : undefined) ?? (utilities.getEnv("") || "");
             resourceInputs["network"] = (args ? args.network : undefined) ?? (utilities.getEnv("") || "");
+            resourceInputs["pluginDownloadURL"] = args ? args.pluginDownloadURL : undefined;
             resourceInputs["relay_url"] = args ? args.relay_url : undefined;
             resourceInputs["rmb_timeout"] = args ? args.rmb_timeout : undefined;
             resourceInputs["substrate_url"] = args ? args.substrate_url : undefined;
+            resourceInputs["version"] = args ? args.version : undefined;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         const secretOpts = { additionalSecretOutputs: ["mnemonic"] };
@@ -85,6 +89,7 @@ export interface ProviderArgs {
      * The network to deploy on.
      */
     network?: pulumi.Input<string>;
+    pluginDownloadURL?: pulumi.Input<string>;
     /**
      * The relay url, example: wss://relay.dev.grid.tf
      */
@@ -97,4 +102,5 @@ export interface ProviderArgs {
      * The substrate url, example: wss://tfchain.dev.grid.tf/ws
      */
     substrate_url?: pulumi.Input<string>;
+    version?: pulumi.Input<string>;
 }

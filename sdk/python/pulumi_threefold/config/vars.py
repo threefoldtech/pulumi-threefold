@@ -37,6 +37,10 @@ class _ExportableConfig(types.ModuleType):
         return __config__.get('network') or (_utilities.get_env('') or '')
 
     @property
+    def plugin_download_url(self) -> Optional[str]:
+        return __config__.get('pluginDownloadURL')
+
+    @property
     def relay_url(self) -> Optional[str]:
         """
         The relay url, example: wss://relay.dev.grid.tf
@@ -56,4 +60,8 @@ class _ExportableConfig(types.ModuleType):
         The substrate url, example: wss://tfchain.dev.grid.tf/ws
         """
         return __config__.get('substrate_url')
+
+    @property
+    def version(self) -> Optional[str]:
+        return __config__.get('version')
 

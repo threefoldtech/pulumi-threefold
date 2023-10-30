@@ -17,9 +17,11 @@ class ProviderArgs:
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
+                 plugin_download_url: Optional[pulumi.Input[str]] = None,
                  relay_url: Optional[pulumi.Input[str]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
-                 substrate_url: Optional[pulumi.Input[str]] = None):
+                 substrate_url: Optional[pulumi.Input[str]] = None,
+                 version: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Provider resource.
         :param pulumi.Input[str] key_type: The key type registered on substrate (ed25519 or sr25519).
@@ -34,9 +36,11 @@ class ProviderArgs:
             key_type=key_type,
             mnemonic=mnemonic,
             network=network,
+            plugin_download_url=plugin_download_url,
             relay_url=relay_url,
             rmb_timeout=rmb_timeout,
             substrate_url=substrate_url,
+            version=version,
         )
     @staticmethod
     def _configure(
@@ -44,11 +48,15 @@ class ProviderArgs:
              key_type: Optional[pulumi.Input[str]] = None,
              mnemonic: Optional[pulumi.Input[str]] = None,
              network: Optional[pulumi.Input[str]] = None,
+             plugin_download_url: Optional[pulumi.Input[str]] = None,
              relay_url: Optional[pulumi.Input[str]] = None,
              rmb_timeout: Optional[pulumi.Input[str]] = None,
              substrate_url: Optional[pulumi.Input[str]] = None,
+             version: Optional[pulumi.Input[str]] = None,
              opts: Optional[pulumi.ResourceOptions] = None,
              **kwargs):
+        if plugin_download_url is None and 'pluginDownloadURL' in kwargs:
+            plugin_download_url = kwargs['pluginDownloadURL']
 
         if key_type is None:
             key_type = (_utilities.get_env('') or 'sr25519')
@@ -62,12 +70,16 @@ class ProviderArgs:
             network = (_utilities.get_env('') or '')
         if network is not None:
             _setter("network", network)
+        if plugin_download_url is not None:
+            _setter("plugin_download_url", plugin_download_url)
         if relay_url is not None:
             _setter("relay_url", relay_url)
         if rmb_timeout is not None:
             _setter("rmb_timeout", rmb_timeout)
         if substrate_url is not None:
             _setter("substrate_url", substrate_url)
+        if version is not None:
+            _setter("version", version)
 
     @property
     @pulumi.getter
@@ -106,6 +118,15 @@ class ProviderArgs:
         pulumi.set(self, "network", value)
 
     @property
+    @pulumi.getter(name="pluginDownloadURL")
+    def plugin_download_url(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "plugin_download_url")
+
+    @plugin_download_url.setter
+    def plugin_download_url(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "plugin_download_url", value)
+
+    @property
     @pulumi.getter
     def relay_url(self) -> Optional[pulumi.Input[str]]:
         """
@@ -141,6 +162,15 @@ class ProviderArgs:
     def substrate_url(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "substrate_url", value)
 
+    @property
+    @pulumi.getter
+    def version(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "version")
+
+    @version.setter
+    def version(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "version", value)
+
 
 class Provider(pulumi.ProviderResource):
     @overload
@@ -150,9 +180,11 @@ class Provider(pulumi.ProviderResource):
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
+                 plugin_download_url: Optional[pulumi.Input[str]] = None,
                  relay_url: Optional[pulumi.Input[str]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
                  substrate_url: Optional[pulumi.Input[str]] = None,
+                 version: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         Create a Threefold resource with the given unique name, props, and options.
@@ -195,9 +227,11 @@ class Provider(pulumi.ProviderResource):
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
+                 plugin_download_url: Optional[pulumi.Input[str]] = None,
                  relay_url: Optional[pulumi.Input[str]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
                  substrate_url: Optional[pulumi.Input[str]] = None,
+                 version: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -216,9 +250,11 @@ class Provider(pulumi.ProviderResource):
             if network is None:
                 network = (_utilities.get_env('') or '')
             __props__.__dict__["network"] = network
+            __props__.__dict__["plugin_download_url"] = plugin_download_url
             __props__.__dict__["relay_url"] = relay_url
             __props__.__dict__["rmb_timeout"] = rmb_timeout
             __props__.__dict__["substrate_url"] = substrate_url
+            __props__.__dict__["version"] = version
         secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["mnemonic"])
         opts = pulumi.ResourceOptions.merge(opts, secret_opts)
         super(Provider, __self__).__init__(
@@ -252,6 +288,11 @@ class Provider(pulumi.ProviderResource):
         return pulumi.get(self, "network")
 
     @property
+    @pulumi.getter(name="pluginDownloadURL")
+    def plugin_download_url(self) -> pulumi.Output[Optional[str]]:
+        return pulumi.get(self, "plugin_download_url")
+
+    @property
     @pulumi.getter
     def relay_url(self) -> pulumi.Output[Optional[str]]:
         """
@@ -274,4 +315,9 @@ class Provider(pulumi.ProviderResource):
         The substrate url, example: wss://tfchain.dev.grid.tf/ws
         """
         return pulumi.get(self, "substrate_url")
+
+    @property
+    @pulumi.getter
+    def version(self) -> pulumi.Output[Optional[str]]:
+        return pulumi.get(self, "version")
 

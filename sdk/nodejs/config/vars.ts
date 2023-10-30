@@ -40,6 +40,14 @@ Object.defineProperty(exports, "network", {
     enumerable: true,
 });
 
+export declare const pluginDownloadURL: string | undefined;
+Object.defineProperty(exports, "pluginDownloadURL", {
+    get() {
+        return __config.get("pluginDownloadURL");
+    },
+    enumerable: true,
+});
+
 /**
  * The relay url, example: wss://relay.dev.grid.tf
  */
@@ -69,6 +77,14 @@ export declare const substrate_url: string | undefined;
 Object.defineProperty(exports, "substrate_url", {
     get() {
         return __config.get("substrate_url");
+    },
+    enumerable: true,
+});
+
+export declare const version: string | undefined;
+Object.defineProperty(exports, "version", {
+    get() {
+        return __config.get("version");
     },
     enumerable: true,
 });

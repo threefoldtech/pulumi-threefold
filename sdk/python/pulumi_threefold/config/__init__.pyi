@@ -24,6 +24,8 @@ network: str
 The network to deploy on.
 """
 
+pluginDownloadURL: Optional[str]
+
 relay_url: Optional[str]
 """
 The relay url, example: wss://relay.dev.grid.tf
@@ -38,4 +40,6 @@ substrate_url: Optional[str]
 """
 The substrate url, example: wss://tfchain.dev.grid.tf/ws
 """
+
+version: Optional[str]
 

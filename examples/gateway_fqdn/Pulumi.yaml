@@ -8,7 +8,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -18,7 +18,7 @@ resources:
       free_ips: 1
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -31,7 +31,7 @@ resources:
       ip_range: 10.1.0.0/16
 
   deployment:
-    type: threefold:provider:Deployment
+    type: threefold:Deployment
     options:
       provider: ${provider}
       dependsOn:
@@ -49,7 +49,7 @@ resources:
           planetary: true
 
   gatewayFQDN:
-    type: threefold:provider:GatewayFQDN
+    type: threefold:GatewayFQDN
     options:
       provider: ${provider}
       dependsOn:

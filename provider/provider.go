@@ -9,6 +9,7 @@ import (
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
 
@@ -42,6 +43,9 @@ func Provider() p.Provider {
 			infer.Resource[*GatewayFQDN, GatewayFQDNArgs, GatewayFQDNState](),
 		},
 		Config: infer.Config[*Config](),
+		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
+			"provider": "index",
+		},
 	})
 }
 
@@ -52,12 +56,14 @@ func RunProvider(providerName, Version string) error {
 
 // Config struct holds the configuration fields for the provider
 type Config struct {
-	Mnemonic     string `pulumi:"mnemonic,optional"  provider:"secret"`
-	Network      string `pulumi:"network,optional"`
-	KeyType      string `pulumi:"key_type,optional"`
-	SubstrateURL string `pulumi:"substrate_url,optional"`
-	RelayURL     string `pulumi:"relay_url,optional"`
-	RmbTimeout   string `pulumi:"rmb_timeout,optional"`
+	Mnemonic          string  `pulumi:"mnemonic,optional"  provider:"secret"`
+	Network           string  `pulumi:"network,optional"`
+	KeyType           string  `pulumi:"key_type,optional"`
+	SubstrateURL      string  `pulumi:"substrate_url,optional"`
+	RelayURL          string  `pulumi:"relay_url,optional"`
+	RmbTimeout        string  `pulumi:"rmb_timeout,optional"`
+	Version           *string `pulumi:"version,optional"`
+	PluginDownloadURL *string `pulumi:"pluginDownloadURL,optional"`
 
 	TFPluginClient deployer.TFPluginClient
 }
