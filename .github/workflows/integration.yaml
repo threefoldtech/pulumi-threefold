@@ -36,7 +36,7 @@ jobs:
           sudo apt-get install yggdrasil=0.4.3-2
           sudo systemctl enable yggdrasil
           PEERS=$(curl https://raw.githubusercontent.com/threefoldtech/zos-config/main/development.json | jq '.yggdrasil.peers[]' -r | sed 's/\//\\\//g' | sed -z 's/\n/\\n/g')
-          sudo sed -i -- 's/Peers\: \[\]/Peers: [\n'"$PEERS"']/g' /etc/yggdrasil/yggdrasil.conf
+          sudo sed -i -- 's/Peers\: \[\]/Peers: [\n'"$PEERS"']/g' /etc/yggdrasil.conf
           sudo systemctl start yggdrasil
 
       - name: Install provider
