@@ -49,12 +49,6 @@ export MNEMONIC="mnemonic words"
 export NETWORK="network" # dev, qa, test, main -> default is dev
 ```
 
-- ### Unit tests
-
-  ```bash
-  make tests
-  ```
-
 - ### Integration tests
 
   ```bash
