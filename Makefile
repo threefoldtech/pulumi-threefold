@@ -19,7 +19,7 @@ LATEST_VERSION  := $(shell git describe --tags  --abbrev=0 --match="v[0-9]*" HEA
 
 all: lint build schema test
 
-install:
+install_latest:
 	pulumi plugin install resource ${NAME} ${LATEST_VERSION} --server github://api.github.com/threefoldtech/pulumi-threefold
 
 build: gen
@@ -68,9 +68,9 @@ lint:
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
 	done
 
-go_sdk: build
+go_sdk:: build
 	rm -rf sdk/go
-	$(WORKING_DIR)/bin/$(CODEGEN) -version=${VERSION} go $(SCHEMA_PATH) $(CURDIR)
+	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
 
 nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 nodejs_sdk:: build
@@ -94,3 +94,17 @@ python_sdk:: build
 		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && python3 setup.py build sdist
+
+
+install:: install_nodejs_sdk
+	cp $(WORKING_DIR)/bin/${PROVIDER} ${GOPATH}/bin
+
+install_nodejs_sdk::
+	-yarn unlink --cwd $(WORKING_DIR)/sdk/nodejs/bin
+	yarn link --cwd $(WORKING_DIR)/sdk/nodejs/bin
+
+install_python_sdk::
+	#target intentionally blank
+
+install_go_sdk::
+	#target intentionally blank
