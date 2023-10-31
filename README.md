@@ -16,7 +16,7 @@ The provider is available at [pulumi registry](https://www.pulumi.com/registry/p
 - Install the provider
 
 ```bash
-make install
+make install_latest
 ```
 
 - You can try to run examples:
