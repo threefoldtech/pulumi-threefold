@@ -86,7 +86,6 @@ func TestFun2(t *testing.T) {
     fmt.Println("F2 keys: ", deps.keys)
 
 }
-
 ```
 
 ### Mocking
