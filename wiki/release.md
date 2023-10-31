@@ -1,20 +1,32 @@
 
 # Release
 
+- The official release is done only for mainnet
+
+## Devnet, qanet, testnet release
+
+- Create a branch for the environment you want a release for
+- If we have for example a version `v1.0.0`, branch name should be:
+  - v1.0.0-dev
+  - v1.0.0-qa
+  - v1.0.0-rcX
+
+## Mainnet release
+
 - Export `$VERSION` env variable to the version you want
 - Run `make release`
 
-## Release without script
+### Release without script
 
 let's say the next tag is `v1.0.0`, release will be:
 
-### SDK
+#### SDK release
 
 - Run the command `make pulumi go_sdk nodejs_sdk python_sdk`
 - Create a tag `git tag -a sdk/v1.0.0 -m "release sdk/v1.0.0"`
 - Push the tag `git push origin sdk/v1.0.0`
 
-### Main release
+#### Main release
 
 - Check `goreleaser check`
 - Create a tag `git tag -a v1.0.0 -m "release v1.0.0"`
