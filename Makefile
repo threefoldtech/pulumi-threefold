@@ -17,7 +17,13 @@ WORKING_DIR     := $(shell pwd)
 VERSION         := $(shell pulumictl get version)
 LATEST_VERSION  := $(shell git describe --tags  --abbrev=0 --match="v[0-9]*" HEAD)
 
-all: lint build schema test
+all: prepare lint build schema test
+
+prepare:
+	go work sync
+	for DIR in "provider" "sdk" "tests" "examples" ; do \
+		cd $$DIR && go mod tidy && cd ../ ; \
+	done
 
 install_latest:
 	pulumi plugin install resource ${NAME} ${LATEST_VERSION} --server github://api.github.com/threefoldtech/pulumi-threefold
@@ -104,7 +110,7 @@ install_nodejs_sdk::
 	yarn link --cwd $(WORKING_DIR)/sdk/nodejs/bin
 
 install_python_sdk::
-	#target intentionally blank
+	cd sdk/python/bin && python3 setup.py install
 
 install_go_sdk::
 	#target intentionally blank
