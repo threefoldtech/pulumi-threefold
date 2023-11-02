@@ -41,7 +41,7 @@ jobs:
           sudo systemctl start yggdrasil
 
       - name: Install provider
-        run: make build
+        run: make install_release
 
       - name: Run Tests
         run: go test -v ./tests
