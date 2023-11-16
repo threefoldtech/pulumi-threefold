@@ -3,7 +3,7 @@ module github.com/threefoldtech/pulumi-threefold/examples
 go 1.21
 
 require (
-	github.com/pulumi/pulumi/sdk/v3 v3.94.0
+	github.com/pulumi/pulumi/sdk/v3 v3.94.1
 	github.com/threefoldtech/pulumi-threefold/sdk v0.3.0
 )
 
