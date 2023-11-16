@@ -6,6 +6,21 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "gomod"
-    directory: "/"
+    directory: "/provider"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "gomod"
+    directory: "/examples"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "gomod"
+    directory: "/sdk"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "gomod"
+    directory: "/tests"
     schedule:
       interval: "daily"
