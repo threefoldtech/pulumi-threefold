@@ -14,8 +14,7 @@ PROVIDER_PATH   := provider
 VERSION_PATH    := ${PROVIDER_PATH}/pkg/version.Version
 SCHEMA_PATH     := ${PROVIDER_PATH}/cmd/${PROVIDER}/schema.json
 WORKING_DIR     := $(shell pwd)
-VERSION         := $(shell pulumictl get version)
-LATEST_VERSION  := $(shell git describe --tags  --abbrev=0 --match="v[0-9]*" HEAD)
+VERSION         := $(shell git describe --tags  --abbrev=0 --match="v[0-9]*" HEAD)
 
 all: prepare lint build schema test
 
@@ -26,7 +25,7 @@ prepare:
 	done
 
 install_latest:
-	pulumi plugin install resource ${NAME} ${LATEST_VERSION} --server github://api.github.com/threefoldtech/pulumi-threefold
+	pulumi plugin install resource ${NAME} ${VERSION} --server github://api.github.com/threefoldtech/pulumi-threefold
 
 build: gen
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
@@ -38,7 +37,7 @@ schema:
 	pulumi package get-schema $(WORKING_DIR)/bin/${PROVIDER} > $(WORKING_DIR)/provider/cmd/${PROVIDER}/schema.json
 
 pulumi:
-	[ -x $(shell which pulumi) ] || curl -fsSL https://get.pulumi.com | sh
+	curl -fsSL https://get.pulumi.com | sh
 	
 test: 
 	@echo "Running Tests"
@@ -83,7 +82,6 @@ go_sdk:: build
 	rm -rf sdk/go
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
 
-nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 nodejs_sdk:: build
 	rm -rf sdk/nodejs
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language nodejs
@@ -94,7 +92,6 @@ nodejs_sdk:: build
 		sed -i.bak 's/$${VERSION}/$(VERSION)/g' bin/package.json && \
 		rm ./bin/package.json.bak
 
-python_sdk:: PYPI_VERSION := $(shell pulumictl get version --language python)
 python_sdk:: build
 	rm -rf sdk/python
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language python
@@ -102,7 +99,7 @@ python_sdk:: build
 	cd sdk/python/ && \
 		python3 setup.py clean --all 2>/dev/null && \
 		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
-		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
+		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
 		rm ./bin/setup.py.bak && \
 		cd ./bin && python3 setup.py build sdist
 

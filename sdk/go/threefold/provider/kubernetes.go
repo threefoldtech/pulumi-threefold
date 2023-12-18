@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/internal"
 )
 
@@ -121,12 +120,6 @@ func (i *Kubernetes) ToKubernetesOutputWithContext(ctx context.Context) Kubernet
 	return pulumi.ToOutputWithContext(ctx, i).(KubernetesOutput)
 }
 
-func (i *Kubernetes) ToOutput(ctx context.Context) pulumix.Output[*Kubernetes] {
-	return pulumix.Output[*Kubernetes]{
-		OutputState: i.ToKubernetesOutputWithContext(ctx).OutputState,
-	}
-}
-
 // KubernetesArrayInput is an input type that accepts KubernetesArray and KubernetesArrayOutput values.
 // You can construct a concrete instance of `KubernetesArrayInput` via:
 //
@@ -150,12 +143,6 @@ func (i KubernetesArray) ToKubernetesArrayOutput() KubernetesArrayOutput {
 
 func (i KubernetesArray) ToKubernetesArrayOutputWithContext(ctx context.Context) KubernetesArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(KubernetesArrayOutput)
-}
-
-func (i KubernetesArray) ToOutput(ctx context.Context) pulumix.Output[[]*Kubernetes] {
-	return pulumix.Output[[]*Kubernetes]{
-		OutputState: i.ToKubernetesArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // KubernetesMapInput is an input type that accepts KubernetesMap and KubernetesMapOutput values.
@@ -183,12 +170,6 @@ func (i KubernetesMap) ToKubernetesMapOutputWithContext(ctx context.Context) Kub
 	return pulumi.ToOutputWithContext(ctx, i).(KubernetesMapOutput)
 }
 
-func (i KubernetesMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*Kubernetes] {
-	return pulumix.Output[map[string]*Kubernetes]{
-		OutputState: i.ToKubernetesMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type KubernetesOutput struct{ *pulumi.OutputState }
 
 func (KubernetesOutput) ElementType() reflect.Type {
@@ -201,12 +182,6 @@ func (o KubernetesOutput) ToKubernetesOutput() KubernetesOutput {
 
 func (o KubernetesOutput) ToKubernetesOutputWithContext(ctx context.Context) KubernetesOutput {
 	return o
-}
-
-func (o KubernetesOutput) ToOutput(ctx context.Context) pulumix.Output[*Kubernetes] {
-	return pulumix.Output[*Kubernetes]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o KubernetesOutput) Master() K8sNodeInputOutput {
@@ -263,12 +238,6 @@ func (o KubernetesArrayOutput) ToKubernetesArrayOutputWithContext(ctx context.Co
 	return o
 }
 
-func (o KubernetesArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*Kubernetes] {
-	return pulumix.Output[[]*Kubernetes]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o KubernetesArrayOutput) Index(i pulumi.IntInput) KubernetesOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *Kubernetes {
 		return vs[0].([]*Kubernetes)[vs[1].(int)]
@@ -287,12 +256,6 @@ func (o KubernetesMapOutput) ToKubernetesMapOutput() KubernetesMapOutput {
 
 func (o KubernetesMapOutput) ToKubernetesMapOutputWithContext(ctx context.Context) KubernetesMapOutput {
 	return o
-}
-
-func (o KubernetesMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*Kubernetes] {
-	return pulumix.Output[map[string]*Kubernetes]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o KubernetesMapOutput) MapIndex(k pulumi.StringInput) KubernetesOutput {
