@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 
 __all__ = ['GatewayNameArgs', 'GatewayName']
@@ -24,46 +24,17 @@ class GatewayNameArgs:
         """
         The set of arguments for constructing a GatewayName resource.
         """
-        GatewayNameArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            backends=backends,
-            name=name,
-            node_id=node_id,
-            description=description,
-            network=network,
-            solution_type=solution_type,
-            tls_passthrough=tls_passthrough,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             backends: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-             name: Optional[pulumi.Input[str]] = None,
-             node_id: Optional[Any] = None,
-             description: Optional[pulumi.Input[str]] = None,
-             network: Optional[pulumi.Input[str]] = None,
-             solution_type: Optional[pulumi.Input[str]] = None,
-             tls_passthrough: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if backends is None:
-            raise TypeError("Missing 'backends' argument")
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if node_id is None:
-            raise TypeError("Missing 'node_id' argument")
-
-        _setter("backends", backends)
-        _setter("name", name)
-        _setter("node_id", node_id)
+        pulumi.set(__self__, "backends", backends)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "node_id", node_id)
         if description is not None:
-            _setter("description", description)
+            pulumi.set(__self__, "description", description)
         if network is not None:
-            _setter("network", network)
+            pulumi.set(__self__, "network", network)
         if solution_type is not None:
-            _setter("solution_type", solution_type)
+            pulumi.set(__self__, "solution_type", solution_type)
         if tls_passthrough is not None:
-            _setter("tls_passthrough", tls_passthrough)
+            pulumi.set(__self__, "tls_passthrough", tls_passthrough)
 
     @property
     @pulumi.getter
@@ -165,10 +136,6 @@ class GatewayName(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            GatewayNameArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,

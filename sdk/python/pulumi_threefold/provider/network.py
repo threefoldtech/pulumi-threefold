@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 
 __all__ = ['NetworkArgs', 'Network']
@@ -23,43 +23,14 @@ class NetworkArgs:
         """
         The set of arguments for constructing a Network resource.
         """
-        NetworkArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            description=description,
-            ip_range=ip_range,
-            name=name,
-            nodes=nodes,
-            add_wg_access=add_wg_access,
-            solution_type=solution_type,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             description: Optional[pulumi.Input[str]] = None,
-             ip_range: Optional[pulumi.Input[str]] = None,
-             name: Optional[pulumi.Input[str]] = None,
-             nodes: Optional[pulumi.Input[Sequence[Any]]] = None,
-             add_wg_access: Optional[pulumi.Input[bool]] = None,
-             solution_type: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if description is None:
-            raise TypeError("Missing 'description' argument")
-        if ip_range is None:
-            raise TypeError("Missing 'ip_range' argument")
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if nodes is None:
-            raise TypeError("Missing 'nodes' argument")
-
-        _setter("description", description)
-        _setter("ip_range", ip_range)
-        _setter("name", name)
-        _setter("nodes", nodes)
+        pulumi.set(__self__, "description", description)
+        pulumi.set(__self__, "ip_range", ip_range)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "nodes", nodes)
         if add_wg_access is not None:
-            _setter("add_wg_access", add_wg_access)
+            pulumi.set(__self__, "add_wg_access", add_wg_access)
         if solution_type is not None:
-            _setter("solution_type", solution_type)
+            pulumi.set(__self__, "solution_type", solution_type)
 
     @property
     @pulumi.getter
@@ -151,10 +122,6 @@ class Network(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            NetworkArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
