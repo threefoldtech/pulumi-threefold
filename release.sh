@@ -10,8 +10,6 @@ fi
 
 echo $RELEASE_VERSION
 
-make pulumi go_sdk nodejs_sdk python_sdk
-make lint
 goreleaser check
 
 tag_and_push() {
