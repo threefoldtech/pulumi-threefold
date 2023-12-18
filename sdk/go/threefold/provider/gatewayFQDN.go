@@ -9,7 +9,6 @@ import (
 
 	"errors"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/internal"
 )
 
@@ -125,12 +124,6 @@ func (i *GatewayFQDN) ToGatewayFQDNOutputWithContext(ctx context.Context) Gatewa
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayFQDNOutput)
 }
 
-func (i *GatewayFQDN) ToOutput(ctx context.Context) pulumix.Output[*GatewayFQDN] {
-	return pulumix.Output[*GatewayFQDN]{
-		OutputState: i.ToGatewayFQDNOutputWithContext(ctx).OutputState,
-	}
-}
-
 // GatewayFQDNArrayInput is an input type that accepts GatewayFQDNArray and GatewayFQDNArrayOutput values.
 // You can construct a concrete instance of `GatewayFQDNArrayInput` via:
 //
@@ -154,12 +147,6 @@ func (i GatewayFQDNArray) ToGatewayFQDNArrayOutput() GatewayFQDNArrayOutput {
 
 func (i GatewayFQDNArray) ToGatewayFQDNArrayOutputWithContext(ctx context.Context) GatewayFQDNArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayFQDNArrayOutput)
-}
-
-func (i GatewayFQDNArray) ToOutput(ctx context.Context) pulumix.Output[[]*GatewayFQDN] {
-	return pulumix.Output[[]*GatewayFQDN]{
-		OutputState: i.ToGatewayFQDNArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // GatewayFQDNMapInput is an input type that accepts GatewayFQDNMap and GatewayFQDNMapOutput values.
@@ -187,12 +174,6 @@ func (i GatewayFQDNMap) ToGatewayFQDNMapOutputWithContext(ctx context.Context) G
 	return pulumi.ToOutputWithContext(ctx, i).(GatewayFQDNMapOutput)
 }
 
-func (i GatewayFQDNMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*GatewayFQDN] {
-	return pulumix.Output[map[string]*GatewayFQDN]{
-		OutputState: i.ToGatewayFQDNMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GatewayFQDNOutput struct{ *pulumi.OutputState }
 
 func (GatewayFQDNOutput) ElementType() reflect.Type {
@@ -205,12 +186,6 @@ func (o GatewayFQDNOutput) ToGatewayFQDNOutput() GatewayFQDNOutput {
 
 func (o GatewayFQDNOutput) ToGatewayFQDNOutputWithContext(ctx context.Context) GatewayFQDNOutput {
 	return o
-}
-
-func (o GatewayFQDNOutput) ToOutput(ctx context.Context) pulumix.Output[*GatewayFQDN] {
-	return pulumix.Output[*GatewayFQDN]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GatewayFQDNOutput) Backends() pulumi.StringArrayOutput {
@@ -267,12 +242,6 @@ func (o GatewayFQDNArrayOutput) ToGatewayFQDNArrayOutputWithContext(ctx context.
 	return o
 }
 
-func (o GatewayFQDNArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*GatewayFQDN] {
-	return pulumix.Output[[]*GatewayFQDN]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o GatewayFQDNArrayOutput) Index(i pulumi.IntInput) GatewayFQDNOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *GatewayFQDN {
 		return vs[0].([]*GatewayFQDN)[vs[1].(int)]
@@ -291,12 +260,6 @@ func (o GatewayFQDNMapOutput) ToGatewayFQDNMapOutput() GatewayFQDNMapOutput {
 
 func (o GatewayFQDNMapOutput) ToGatewayFQDNMapOutputWithContext(ctx context.Context) GatewayFQDNMapOutput {
 	return o
-}
-
-func (o GatewayFQDNMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*GatewayFQDN] {
-	return pulumix.Output[map[string]*GatewayFQDN]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GatewayFQDNMapOutput) MapIndex(k pulumi.StringInput) GatewayFQDNOutput {

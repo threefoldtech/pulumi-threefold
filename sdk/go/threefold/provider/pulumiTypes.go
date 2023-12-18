@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/internal"
 )
 
@@ -49,12 +48,6 @@ func (i BackendArgs) ToBackendOutputWithContext(ctx context.Context) BackendOutp
 	return pulumi.ToOutputWithContext(ctx, i).(BackendOutput)
 }
 
-func (i BackendArgs) ToOutput(ctx context.Context) pulumix.Output[Backend] {
-	return pulumix.Output[Backend]{
-		OutputState: i.ToBackendOutputWithContext(ctx).OutputState,
-	}
-}
-
 // BackendArrayInput is an input type that accepts BackendArray and BackendArrayOutput values.
 // You can construct a concrete instance of `BackendArrayInput` via:
 //
@@ -80,12 +73,6 @@ func (i BackendArray) ToBackendArrayOutputWithContext(ctx context.Context) Backe
 	return pulumi.ToOutputWithContext(ctx, i).(BackendArrayOutput)
 }
 
-func (i BackendArray) ToOutput(ctx context.Context) pulumix.Output[[]Backend] {
-	return pulumix.Output[[]Backend]{
-		OutputState: i.ToBackendArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type BackendOutput struct{ *pulumi.OutputState }
 
 func (BackendOutput) ElementType() reflect.Type {
@@ -98,12 +85,6 @@ func (o BackendOutput) ToBackendOutput() BackendOutput {
 
 func (o BackendOutput) ToBackendOutputWithContext(ctx context.Context) BackendOutput {
 	return o
-}
-
-func (o BackendOutput) ToOutput(ctx context.Context) pulumix.Output[Backend] {
-	return pulumix.Output[Backend]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o BackendOutput) Address() pulumi.StringOutput {
@@ -130,12 +111,6 @@ func (o BackendArrayOutput) ToBackendArrayOutput() BackendArrayOutput {
 
 func (o BackendArrayOutput) ToBackendArrayOutputWithContext(ctx context.Context) BackendArrayOutput {
 	return o
-}
-
-func (o BackendArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]Backend] {
-	return pulumix.Output[[]Backend]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o BackendArrayOutput) Index(i pulumi.IntInput) BackendOutput {
@@ -179,12 +154,6 @@ func (i DiskArgs) ToDiskOutputWithContext(ctx context.Context) DiskOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(DiskOutput)
 }
 
-func (i DiskArgs) ToOutput(ctx context.Context) pulumix.Output[Disk] {
-	return pulumix.Output[Disk]{
-		OutputState: i.ToDiskOutputWithContext(ctx).OutputState,
-	}
-}
-
 // DiskArrayInput is an input type that accepts DiskArray and DiskArrayOutput values.
 // You can construct a concrete instance of `DiskArrayInput` via:
 //
@@ -210,12 +179,6 @@ func (i DiskArray) ToDiskArrayOutputWithContext(ctx context.Context) DiskArrayOu
 	return pulumi.ToOutputWithContext(ctx, i).(DiskArrayOutput)
 }
 
-func (i DiskArray) ToOutput(ctx context.Context) pulumix.Output[[]Disk] {
-	return pulumix.Output[[]Disk]{
-		OutputState: i.ToDiskArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type DiskOutput struct{ *pulumi.OutputState }
 
 func (DiskOutput) ElementType() reflect.Type {
@@ -228,12 +191,6 @@ func (o DiskOutput) ToDiskOutput() DiskOutput {
 
 func (o DiskOutput) ToDiskOutputWithContext(ctx context.Context) DiskOutput {
 	return o
-}
-
-func (o DiskOutput) ToOutput(ctx context.Context) pulumix.Output[Disk] {
-	return pulumix.Output[Disk]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DiskOutput) Description() pulumi.StringPtrOutput {
@@ -260,12 +217,6 @@ func (o DiskArrayOutput) ToDiskArrayOutput() DiskArrayOutput {
 
 func (o DiskArrayOutput) ToDiskArrayOutputWithContext(ctx context.Context) DiskArrayOutput {
 	return o
-}
-
-func (o DiskArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]Disk] {
-	return pulumix.Output[[]Disk]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o DiskArrayOutput) Index(i pulumi.IntInput) DiskOutput {
@@ -305,12 +256,6 @@ func (i GroupArgs) ToGroupOutputWithContext(ctx context.Context) GroupOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(GroupOutput)
 }
 
-func (i GroupArgs) ToOutput(ctx context.Context) pulumix.Output[Group] {
-	return pulumix.Output[Group]{
-		OutputState: i.ToGroupOutputWithContext(ctx).OutputState,
-	}
-}
-
 // GroupArrayInput is an input type that accepts GroupArray and GroupArrayOutput values.
 // You can construct a concrete instance of `GroupArrayInput` via:
 //
@@ -336,12 +281,6 @@ func (i GroupArray) ToGroupArrayOutputWithContext(ctx context.Context) GroupArra
 	return pulumi.ToOutputWithContext(ctx, i).(GroupArrayOutput)
 }
 
-func (i GroupArray) ToOutput(ctx context.Context) pulumix.Output[[]Group] {
-	return pulumix.Output[[]Group]{
-		OutputState: i.ToGroupArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type GroupOutput struct{ *pulumi.OutputState }
 
 func (GroupOutput) ElementType() reflect.Type {
@@ -354,12 +293,6 @@ func (o GroupOutput) ToGroupOutput() GroupOutput {
 
 func (o GroupOutput) ToGroupOutputWithContext(ctx context.Context) GroupOutput {
 	return o
-}
-
-func (o GroupOutput) ToOutput(ctx context.Context) pulumix.Output[Group] {
-	return pulumix.Output[Group]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GroupOutput) Backends() BackendArrayOutput {
@@ -378,12 +311,6 @@ func (o GroupArrayOutput) ToGroupArrayOutput() GroupArrayOutput {
 
 func (o GroupArrayOutput) ToGroupArrayOutputWithContext(ctx context.Context) GroupArrayOutput {
 	return o
-}
-
-func (o GroupArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]Group] {
-	return pulumix.Output[[]Group]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o GroupArrayOutput) Index(i pulumi.IntInput) GroupOutput {
@@ -437,12 +364,6 @@ func (i K8sNodeComputedArgs) ToK8sNodeComputedOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(K8sNodeComputedOutput)
 }
 
-func (i K8sNodeComputedArgs) ToOutput(ctx context.Context) pulumix.Output[K8sNodeComputed] {
-	return pulumix.Output[K8sNodeComputed]{
-		OutputState: i.ToK8sNodeComputedOutputWithContext(ctx).OutputState,
-	}
-}
-
 // K8sNodeComputedMapInput is an input type that accepts K8sNodeComputedMap and K8sNodeComputedMapOutput values.
 // You can construct a concrete instance of `K8sNodeComputedMapInput` via:
 //
@@ -468,12 +389,6 @@ func (i K8sNodeComputedMap) ToK8sNodeComputedMapOutputWithContext(ctx context.Co
 	return pulumi.ToOutputWithContext(ctx, i).(K8sNodeComputedMapOutput)
 }
 
-func (i K8sNodeComputedMap) ToOutput(ctx context.Context) pulumix.Output[map[string]K8sNodeComputed] {
-	return pulumix.Output[map[string]K8sNodeComputed]{
-		OutputState: i.ToK8sNodeComputedMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type K8sNodeComputedOutput struct{ *pulumi.OutputState }
 
 func (K8sNodeComputedOutput) ElementType() reflect.Type {
@@ -486,12 +401,6 @@ func (o K8sNodeComputedOutput) ToK8sNodeComputedOutput() K8sNodeComputedOutput {
 
 func (o K8sNodeComputedOutput) ToK8sNodeComputedOutputWithContext(ctx context.Context) K8sNodeComputedOutput {
 	return o
-}
-
-func (o K8sNodeComputedOutput) ToOutput(ctx context.Context) pulumix.Output[K8sNodeComputed] {
-	return pulumix.Output[K8sNodeComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o K8sNodeComputedOutput) Computed_ip() pulumi.StringOutput {
@@ -538,12 +447,6 @@ func (o K8sNodeComputedMapOutput) ToK8sNodeComputedMapOutput() K8sNodeComputedMa
 
 func (o K8sNodeComputedMapOutput) ToK8sNodeComputedMapOutputWithContext(ctx context.Context) K8sNodeComputedMapOutput {
 	return o
-}
-
-func (o K8sNodeComputedMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]K8sNodeComputed] {
-	return pulumix.Output[map[string]K8sNodeComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o K8sNodeComputedMapOutput) MapIndex(k pulumi.StringInput) K8sNodeComputedOutput {
@@ -601,12 +504,6 @@ func (i K8sNodeInputArgs) ToK8sNodeInputOutputWithContext(ctx context.Context) K
 	return pulumi.ToOutputWithContext(ctx, i).(K8sNodeInputOutput)
 }
 
-func (i K8sNodeInputArgs) ToOutput(ctx context.Context) pulumix.Output[K8sNodeInput] {
-	return pulumix.Output[K8sNodeInput]{
-		OutputState: i.ToK8sNodeInputOutputWithContext(ctx).OutputState,
-	}
-}
-
 // K8sNodeInputArrayInput is an input type that accepts K8sNodeInputArray and K8sNodeInputArrayOutput values.
 // You can construct a concrete instance of `K8sNodeInputArrayInput` via:
 //
@@ -632,12 +529,6 @@ func (i K8sNodeInputArray) ToK8sNodeInputArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(K8sNodeInputArrayOutput)
 }
 
-func (i K8sNodeInputArray) ToOutput(ctx context.Context) pulumix.Output[[]K8sNodeInput] {
-	return pulumix.Output[[]K8sNodeInput]{
-		OutputState: i.ToK8sNodeInputArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type K8sNodeInputOutput struct{ *pulumi.OutputState }
 
 func (K8sNodeInputOutput) ElementType() reflect.Type {
@@ -650,12 +541,6 @@ func (o K8sNodeInputOutput) ToK8sNodeInputOutput() K8sNodeInputOutput {
 
 func (o K8sNodeInputOutput) ToK8sNodeInputOutputWithContext(ctx context.Context) K8sNodeInputOutput {
 	return o
-}
-
-func (o K8sNodeInputOutput) ToOutput(ctx context.Context) pulumix.Output[K8sNodeInput] {
-	return pulumix.Output[K8sNodeInput]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o K8sNodeInputOutput) Cpu() pulumi.IntOutput {
@@ -712,12 +597,6 @@ func (o K8sNodeInputArrayOutput) ToK8sNodeInputArrayOutputWithContext(ctx contex
 	return o
 }
 
-func (o K8sNodeInputArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]K8sNodeInput] {
-	return pulumix.Output[[]K8sNodeInput]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o K8sNodeInputArrayOutput) Index(i pulumi.IntInput) K8sNodeInputOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) K8sNodeInput {
 		return vs[0].([]K8sNodeInput)[vs[1].(int)]
@@ -763,12 +642,6 @@ func (i MetadataArgs) ToMetadataOutputWithContext(ctx context.Context) MetadataO
 	return pulumi.ToOutputWithContext(ctx, i).(MetadataOutput)
 }
 
-func (i MetadataArgs) ToOutput(ctx context.Context) pulumix.Output[Metadata] {
-	return pulumix.Output[Metadata]{
-		OutputState: i.ToMetadataOutputWithContext(ctx).OutputState,
-	}
-}
-
 type MetadataOutput struct{ *pulumi.OutputState }
 
 func (MetadataOutput) ElementType() reflect.Type {
@@ -781,12 +654,6 @@ func (o MetadataOutput) ToMetadataOutput() MetadataOutput {
 
 func (o MetadataOutput) ToMetadataOutputWithContext(ctx context.Context) MetadataOutput {
 	return o
-}
-
-func (o MetadataOutput) ToOutput(ctx context.Context) pulumix.Output[Metadata] {
-	return pulumix.Output[Metadata]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o MetadataOutput) Backends() BackendArrayOutput {
@@ -842,12 +709,6 @@ func (i MountArgs) ToMountOutputWithContext(ctx context.Context) MountOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(MountOutput)
 }
 
-func (i MountArgs) ToOutput(ctx context.Context) pulumix.Output[Mount] {
-	return pulumix.Output[Mount]{
-		OutputState: i.ToMountOutputWithContext(ctx).OutputState,
-	}
-}
-
 // MountArrayInput is an input type that accepts MountArray and MountArrayOutput values.
 // You can construct a concrete instance of `MountArrayInput` via:
 //
@@ -873,12 +734,6 @@ func (i MountArray) ToMountArrayOutputWithContext(ctx context.Context) MountArra
 	return pulumi.ToOutputWithContext(ctx, i).(MountArrayOutput)
 }
 
-func (i MountArray) ToOutput(ctx context.Context) pulumix.Output[[]Mount] {
-	return pulumix.Output[[]Mount]{
-		OutputState: i.ToMountArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type MountOutput struct{ *pulumi.OutputState }
 
 func (MountOutput) ElementType() reflect.Type {
@@ -891,12 +746,6 @@ func (o MountOutput) ToMountOutput() MountOutput {
 
 func (o MountOutput) ToMountOutputWithContext(ctx context.Context) MountOutput {
 	return o
-}
-
-func (o MountOutput) ToOutput(ctx context.Context) pulumix.Output[Mount] {
-	return pulumix.Output[Mount]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o MountOutput) Disk_name() pulumi.StringOutput {
@@ -919,12 +768,6 @@ func (o MountArrayOutput) ToMountArrayOutput() MountArrayOutput {
 
 func (o MountArrayOutput) ToMountArrayOutputWithContext(ctx context.Context) MountArrayOutput {
 	return o
-}
-
-func (o MountArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]Mount] {
-	return pulumix.Output[[]Mount]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o MountArrayOutput) Index(i pulumi.IntInput) MountOutput {
@@ -964,12 +807,6 @@ func (i QSFSComputedArgs) ToQSFSComputedOutputWithContext(ctx context.Context) Q
 	return pulumi.ToOutputWithContext(ctx, i).(QSFSComputedOutput)
 }
 
-func (i QSFSComputedArgs) ToOutput(ctx context.Context) pulumix.Output[QSFSComputed] {
-	return pulumix.Output[QSFSComputed]{
-		OutputState: i.ToQSFSComputedOutputWithContext(ctx).OutputState,
-	}
-}
-
 // QSFSComputedArrayInput is an input type that accepts QSFSComputedArray and QSFSComputedArrayOutput values.
 // You can construct a concrete instance of `QSFSComputedArrayInput` via:
 //
@@ -995,12 +832,6 @@ func (i QSFSComputedArray) ToQSFSComputedArrayOutputWithContext(ctx context.Cont
 	return pulumi.ToOutputWithContext(ctx, i).(QSFSComputedArrayOutput)
 }
 
-func (i QSFSComputedArray) ToOutput(ctx context.Context) pulumix.Output[[]QSFSComputed] {
-	return pulumix.Output[[]QSFSComputed]{
-		OutputState: i.ToQSFSComputedArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type QSFSComputedOutput struct{ *pulumi.OutputState }
 
 func (QSFSComputedOutput) ElementType() reflect.Type {
@@ -1013,12 +844,6 @@ func (o QSFSComputedOutput) ToQSFSComputedOutput() QSFSComputedOutput {
 
 func (o QSFSComputedOutput) ToQSFSComputedOutputWithContext(ctx context.Context) QSFSComputedOutput {
 	return o
-}
-
-func (o QSFSComputedOutput) ToOutput(ctx context.Context) pulumix.Output[QSFSComputed] {
-	return pulumix.Output[QSFSComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o QSFSComputedOutput) Metrics_endpoint() pulumi.StringOutput {
@@ -1037,12 +862,6 @@ func (o QSFSComputedArrayOutput) ToQSFSComputedArrayOutput() QSFSComputedArrayOu
 
 func (o QSFSComputedArrayOutput) ToQSFSComputedArrayOutputWithContext(ctx context.Context) QSFSComputedArrayOutput {
 	return o
-}
-
-func (o QSFSComputedArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]QSFSComputed] {
-	return pulumix.Output[[]QSFSComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o QSFSComputedArrayOutput) Index(i pulumi.IntInput) QSFSComputedOutput {
@@ -1106,12 +925,6 @@ func (i QSFSInputArgs) ToQSFSInputOutputWithContext(ctx context.Context) QSFSInp
 	return pulumi.ToOutputWithContext(ctx, i).(QSFSInputOutput)
 }
 
-func (i QSFSInputArgs) ToOutput(ctx context.Context) pulumix.Output[QSFSInput] {
-	return pulumix.Output[QSFSInput]{
-		OutputState: i.ToQSFSInputOutputWithContext(ctx).OutputState,
-	}
-}
-
 // QSFSInputArrayInput is an input type that accepts QSFSInputArray and QSFSInputArrayOutput values.
 // You can construct a concrete instance of `QSFSInputArrayInput` via:
 //
@@ -1137,12 +950,6 @@ func (i QSFSInputArray) ToQSFSInputArrayOutputWithContext(ctx context.Context) Q
 	return pulumi.ToOutputWithContext(ctx, i).(QSFSInputArrayOutput)
 }
 
-func (i QSFSInputArray) ToOutput(ctx context.Context) pulumix.Output[[]QSFSInput] {
-	return pulumix.Output[[]QSFSInput]{
-		OutputState: i.ToQSFSInputArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type QSFSInputOutput struct{ *pulumi.OutputState }
 
 func (QSFSInputOutput) ElementType() reflect.Type {
@@ -1155,12 +962,6 @@ func (o QSFSInputOutput) ToQSFSInputOutput() QSFSInputOutput {
 
 func (o QSFSInputOutput) ToQSFSInputOutputWithContext(ctx context.Context) QSFSInputOutput {
 	return o
-}
-
-func (o QSFSInputOutput) ToOutput(ctx context.Context) pulumix.Output[QSFSInput] {
-	return pulumix.Output[QSFSInput]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o QSFSInputOutput) Cache() pulumi.IntOutput {
@@ -1229,12 +1030,6 @@ func (o QSFSInputArrayOutput) ToQSFSInputArrayOutputWithContext(ctx context.Cont
 	return o
 }
 
-func (o QSFSInputArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]QSFSInput] {
-	return pulumix.Output[[]QSFSInput]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o QSFSInputArrayOutput) Index(i pulumi.IntInput) QSFSInputOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) QSFSInput {
 		return vs[0].([]QSFSInput)[vs[1].(int)]
@@ -1280,12 +1075,6 @@ func (i VMComputedArgs) ToVMComputedOutputWithContext(ctx context.Context) VMCom
 	return pulumi.ToOutputWithContext(ctx, i).(VMComputedOutput)
 }
 
-func (i VMComputedArgs) ToOutput(ctx context.Context) pulumix.Output[VMComputed] {
-	return pulumix.Output[VMComputed]{
-		OutputState: i.ToVMComputedOutputWithContext(ctx).OutputState,
-	}
-}
-
 // VMComputedArrayInput is an input type that accepts VMComputedArray and VMComputedArrayOutput values.
 // You can construct a concrete instance of `VMComputedArrayInput` via:
 //
@@ -1311,12 +1100,6 @@ func (i VMComputedArray) ToVMComputedArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(VMComputedArrayOutput)
 }
 
-func (i VMComputedArray) ToOutput(ctx context.Context) pulumix.Output[[]VMComputed] {
-	return pulumix.Output[[]VMComputed]{
-		OutputState: i.ToVMComputedArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type VMComputedOutput struct{ *pulumi.OutputState }
 
 func (VMComputedOutput) ElementType() reflect.Type {
@@ -1329,12 +1112,6 @@ func (o VMComputedOutput) ToVMComputedOutput() VMComputedOutput {
 
 func (o VMComputedOutput) ToVMComputedOutputWithContext(ctx context.Context) VMComputedOutput {
 	return o
-}
-
-func (o VMComputedOutput) ToOutput(ctx context.Context) pulumix.Output[VMComputed] {
-	return pulumix.Output[VMComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o VMComputedOutput) Computed_ip() pulumi.StringOutput {
@@ -1369,12 +1146,6 @@ func (o VMComputedArrayOutput) ToVMComputedArrayOutput() VMComputedArrayOutput {
 
 func (o VMComputedArrayOutput) ToVMComputedArrayOutputWithContext(ctx context.Context) VMComputedArrayOutput {
 	return o
-}
-
-func (o VMComputedArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]VMComputed] {
-	return pulumix.Output[[]VMComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o VMComputedArrayOutput) Index(i pulumi.IntInput) VMComputedOutput {
@@ -1444,12 +1215,6 @@ func (i VMInputArgs) ToVMInputOutputWithContext(ctx context.Context) VMInputOutp
 	return pulumi.ToOutputWithContext(ctx, i).(VMInputOutput)
 }
 
-func (i VMInputArgs) ToOutput(ctx context.Context) pulumix.Output[VMInput] {
-	return pulumix.Output[VMInput]{
-		OutputState: i.ToVMInputOutputWithContext(ctx).OutputState,
-	}
-}
-
 // VMInputArrayInput is an input type that accepts VMInputArray and VMInputArrayOutput values.
 // You can construct a concrete instance of `VMInputArrayInput` via:
 //
@@ -1475,12 +1240,6 @@ func (i VMInputArray) ToVMInputArrayOutputWithContext(ctx context.Context) VMInp
 	return pulumi.ToOutputWithContext(ctx, i).(VMInputArrayOutput)
 }
 
-func (i VMInputArray) ToOutput(ctx context.Context) pulumix.Output[[]VMInput] {
-	return pulumix.Output[[]VMInput]{
-		OutputState: i.ToVMInputArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type VMInputOutput struct{ *pulumi.OutputState }
 
 func (VMInputOutput) ElementType() reflect.Type {
@@ -1493,12 +1252,6 @@ func (o VMInputOutput) ToVMInputOutput() VMInputOutput {
 
 func (o VMInputOutput) ToVMInputOutputWithContext(ctx context.Context) VMInputOutput {
 	return o
-}
-
-func (o VMInputOutput) ToOutput(ctx context.Context) pulumix.Output[VMInput] {
-	return pulumix.Output[VMInput]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o VMInputOutput) Cpu() pulumi.IntOutput {
@@ -1579,12 +1332,6 @@ func (o VMInputArrayOutput) ToVMInputArrayOutputWithContext(ctx context.Context)
 	return o
 }
 
-func (o VMInputArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]VMInput] {
-	return pulumix.Output[[]VMInput]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o VMInputArrayOutput) Index(i pulumi.IntInput) VMInputOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) VMInput {
 		return vs[0].([]VMInput)[vs[1].(int)]
@@ -1626,12 +1373,6 @@ func (i ZDBComputedArgs) ToZDBComputedOutputWithContext(ctx context.Context) ZDB
 	return pulumi.ToOutputWithContext(ctx, i).(ZDBComputedOutput)
 }
 
-func (i ZDBComputedArgs) ToOutput(ctx context.Context) pulumix.Output[ZDBComputed] {
-	return pulumix.Output[ZDBComputed]{
-		OutputState: i.ToZDBComputedOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ZDBComputedArrayInput is an input type that accepts ZDBComputedArray and ZDBComputedArrayOutput values.
 // You can construct a concrete instance of `ZDBComputedArrayInput` via:
 //
@@ -1657,12 +1398,6 @@ func (i ZDBComputedArray) ToZDBComputedArrayOutputWithContext(ctx context.Contex
 	return pulumi.ToOutputWithContext(ctx, i).(ZDBComputedArrayOutput)
 }
 
-func (i ZDBComputedArray) ToOutput(ctx context.Context) pulumix.Output[[]ZDBComputed] {
-	return pulumix.Output[[]ZDBComputed]{
-		OutputState: i.ToZDBComputedArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ZDBComputedOutput struct{ *pulumi.OutputState }
 
 func (ZDBComputedOutput) ElementType() reflect.Type {
@@ -1675,12 +1410,6 @@ func (o ZDBComputedOutput) ToZDBComputedOutput() ZDBComputedOutput {
 
 func (o ZDBComputedOutput) ToZDBComputedOutputWithContext(ctx context.Context) ZDBComputedOutput {
 	return o
-}
-
-func (o ZDBComputedOutput) ToOutput(ctx context.Context) pulumix.Output[ZDBComputed] {
-	return pulumix.Output[ZDBComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ZDBComputedOutput) Ips() pulumi.StringArrayOutput {
@@ -1707,12 +1436,6 @@ func (o ZDBComputedArrayOutput) ToZDBComputedArrayOutput() ZDBComputedArrayOutpu
 
 func (o ZDBComputedArrayOutput) ToZDBComputedArrayOutputWithContext(ctx context.Context) ZDBComputedArrayOutput {
 	return o
-}
-
-func (o ZDBComputedArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ZDBComputed] {
-	return pulumix.Output[[]ZDBComputed]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ZDBComputedArrayOutput) Index(i pulumi.IntInput) ZDBComputedOutput {
@@ -1790,12 +1513,6 @@ func (i ZDBInputArgs) ToZDBInputOutputWithContext(ctx context.Context) ZDBInputO
 	return pulumi.ToOutputWithContext(ctx, i).(ZDBInputOutput)
 }
 
-func (i ZDBInputArgs) ToOutput(ctx context.Context) pulumix.Output[ZDBInput] {
-	return pulumix.Output[ZDBInput]{
-		OutputState: i.ToZDBInputOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ZDBInputArrayInput is an input type that accepts ZDBInputArray and ZDBInputArrayOutput values.
 // You can construct a concrete instance of `ZDBInputArrayInput` via:
 //
@@ -1821,12 +1538,6 @@ func (i ZDBInputArray) ToZDBInputArrayOutputWithContext(ctx context.Context) ZDB
 	return pulumi.ToOutputWithContext(ctx, i).(ZDBInputArrayOutput)
 }
 
-func (i ZDBInputArray) ToOutput(ctx context.Context) pulumix.Output[[]ZDBInput] {
-	return pulumix.Output[[]ZDBInput]{
-		OutputState: i.ToZDBInputArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ZDBInputOutput struct{ *pulumi.OutputState }
 
 func (ZDBInputOutput) ElementType() reflect.Type {
@@ -1839,12 +1550,6 @@ func (o ZDBInputOutput) ToZDBInputOutput() ZDBInputOutput {
 
 func (o ZDBInputOutput) ToZDBInputOutputWithContext(ctx context.Context) ZDBInputOutput {
 	return o
-}
-
-func (o ZDBInputOutput) ToOutput(ctx context.Context) pulumix.Output[ZDBInput] {
-	return pulumix.Output[ZDBInput]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ZDBInputOutput) Description() pulumi.StringPtrOutput {
@@ -1883,12 +1588,6 @@ func (o ZDBInputArrayOutput) ToZDBInputArrayOutput() ZDBInputArrayOutput {
 
 func (o ZDBInputArrayOutput) ToZDBInputArrayOutputWithContext(ctx context.Context) ZDBInputArrayOutput {
 	return o
-}
-
-func (o ZDBInputArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]ZDBInput] {
-	return pulumix.Output[[]ZDBInput]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ZDBInputArrayOutput) Index(i pulumi.IntInput) ZDBInputOutput {
@@ -1930,12 +1629,6 @@ func (i ZlogArgs) ToZlogOutputWithContext(ctx context.Context) ZlogOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(ZlogOutput)
 }
 
-func (i ZlogArgs) ToOutput(ctx context.Context) pulumix.Output[Zlog] {
-	return pulumix.Output[Zlog]{
-		OutputState: i.ToZlogOutputWithContext(ctx).OutputState,
-	}
-}
-
 // ZlogArrayInput is an input type that accepts ZlogArray and ZlogArrayOutput values.
 // You can construct a concrete instance of `ZlogArrayInput` via:
 //
@@ -1961,12 +1654,6 @@ func (i ZlogArray) ToZlogArrayOutputWithContext(ctx context.Context) ZlogArrayOu
 	return pulumi.ToOutputWithContext(ctx, i).(ZlogArrayOutput)
 }
 
-func (i ZlogArray) ToOutput(ctx context.Context) pulumix.Output[[]Zlog] {
-	return pulumix.Output[[]Zlog]{
-		OutputState: i.ToZlogArrayOutputWithContext(ctx).OutputState,
-	}
-}
-
 type ZlogOutput struct{ *pulumi.OutputState }
 
 func (ZlogOutput) ElementType() reflect.Type {
@@ -1979,12 +1666,6 @@ func (o ZlogOutput) ToZlogOutput() ZlogOutput {
 
 func (o ZlogOutput) ToZlogOutputWithContext(ctx context.Context) ZlogOutput {
 	return o
-}
-
-func (o ZlogOutput) ToOutput(ctx context.Context) pulumix.Output[Zlog] {
-	return pulumix.Output[Zlog]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ZlogOutput) Output() pulumi.StringOutput {
@@ -2007,12 +1688,6 @@ func (o ZlogArrayOutput) ToZlogArrayOutput() ZlogArrayOutput {
 
 func (o ZlogArrayOutput) ToZlogArrayOutputWithContext(ctx context.Context) ZlogArrayOutput {
 	return o
-}
-
-func (o ZlogArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]Zlog] {
-	return pulumix.Output[[]Zlog]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o ZlogArrayOutput) Index(i pulumi.IntInput) ZlogOutput {

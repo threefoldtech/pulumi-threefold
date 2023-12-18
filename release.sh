@@ -2,26 +2,29 @@
 
 set -ex 
 
-if [ -z ${VERSION+x} ]
+if [ -z ${RELEASE_VERSION+x} ]
 then
-    echo 'Error! $VERSION is required.'
+    echo 'Error! $RELEASE_VERSION is required.'
     exit 64
 fi
 
-echo $VERSION
+echo $RELEASE_VERSION
 
 make pulumi go_sdk nodejs_sdk python_sdk
+make lint
 goreleaser check
 
 tag_and_push() {
     local component="$1"
-    git tag -a "$component/$VERSION" -m "release $component/$VERSION"
-    git push origin $component/$VERSION
+    git tag -a "$component/$RELEASE_VERSION" -m "release $component/$RELEASE_VERSION"
+    git push origin $component/$RELEASE_VERSION
 }
 
 
 tag_and_push "sdk"
 
 # main
-git tag -a $VERSION -m "release $VERSION"
-git push origin $VERSION
+git tag -a $RELEASE_VERSION -m "release $RELEASE_VERSION"
+git push origin $RELEASE_VERSION
+
+make pulumi go_sdk nodejs_sdk python_sdk

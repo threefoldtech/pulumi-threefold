@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/pulumi/pulumi/sdk/v3/go/pulumix"
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/internal"
 )
 
@@ -156,12 +155,6 @@ func (i *Scheduler) ToSchedulerOutputWithContext(ctx context.Context) SchedulerO
 	return pulumi.ToOutputWithContext(ctx, i).(SchedulerOutput)
 }
 
-func (i *Scheduler) ToOutput(ctx context.Context) pulumix.Output[*Scheduler] {
-	return pulumix.Output[*Scheduler]{
-		OutputState: i.ToSchedulerOutputWithContext(ctx).OutputState,
-	}
-}
-
 // SchedulerArrayInput is an input type that accepts SchedulerArray and SchedulerArrayOutput values.
 // You can construct a concrete instance of `SchedulerArrayInput` via:
 //
@@ -185,12 +178,6 @@ func (i SchedulerArray) ToSchedulerArrayOutput() SchedulerArrayOutput {
 
 func (i SchedulerArray) ToSchedulerArrayOutputWithContext(ctx context.Context) SchedulerArrayOutput {
 	return pulumi.ToOutputWithContext(ctx, i).(SchedulerArrayOutput)
-}
-
-func (i SchedulerArray) ToOutput(ctx context.Context) pulumix.Output[[]*Scheduler] {
-	return pulumix.Output[[]*Scheduler]{
-		OutputState: i.ToSchedulerArrayOutputWithContext(ctx).OutputState,
-	}
 }
 
 // SchedulerMapInput is an input type that accepts SchedulerMap and SchedulerMapOutput values.
@@ -218,12 +205,6 @@ func (i SchedulerMap) ToSchedulerMapOutputWithContext(ctx context.Context) Sched
 	return pulumi.ToOutputWithContext(ctx, i).(SchedulerMapOutput)
 }
 
-func (i SchedulerMap) ToOutput(ctx context.Context) pulumix.Output[map[string]*Scheduler] {
-	return pulumix.Output[map[string]*Scheduler]{
-		OutputState: i.ToSchedulerMapOutputWithContext(ctx).OutputState,
-	}
-}
-
 type SchedulerOutput struct{ *pulumi.OutputState }
 
 func (SchedulerOutput) ElementType() reflect.Type {
@@ -236,12 +217,6 @@ func (o SchedulerOutput) ToSchedulerOutput() SchedulerOutput {
 
 func (o SchedulerOutput) ToSchedulerOutputWithContext(ctx context.Context) SchedulerOutput {
 	return o
-}
-
-func (o SchedulerOutput) ToOutput(ctx context.Context) pulumix.Output[*Scheduler] {
-	return pulumix.Output[*Scheduler]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SchedulerOutput) Certification_type() pulumi.StringPtrOutput {
@@ -354,12 +329,6 @@ func (o SchedulerArrayOutput) ToSchedulerArrayOutputWithContext(ctx context.Cont
 	return o
 }
 
-func (o SchedulerArrayOutput) ToOutput(ctx context.Context) pulumix.Output[[]*Scheduler] {
-	return pulumix.Output[[]*Scheduler]{
-		OutputState: o.OutputState,
-	}
-}
-
 func (o SchedulerArrayOutput) Index(i pulumi.IntInput) SchedulerOutput {
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) *Scheduler {
 		return vs[0].([]*Scheduler)[vs[1].(int)]
@@ -378,12 +347,6 @@ func (o SchedulerMapOutput) ToSchedulerMapOutput() SchedulerMapOutput {
 
 func (o SchedulerMapOutput) ToSchedulerMapOutputWithContext(ctx context.Context) SchedulerMapOutput {
 	return o
-}
-
-func (o SchedulerMapOutput) ToOutput(ctx context.Context) pulumix.Output[map[string]*Scheduler] {
-	return pulumix.Output[map[string]*Scheduler]{
-		OutputState: o.OutputState,
-	}
 }
 
 func (o SchedulerMapOutput) MapIndex(k pulumi.StringInput) SchedulerOutput {
