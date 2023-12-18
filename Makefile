@@ -74,6 +74,11 @@ lint:
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
 	done
 
+tidy:
+	for DIR in "provider" "sdk" "tests" "examples" ; do \
+		cd $$DIR && go mod tidy && cd ../ ; \
+	done
+
 go_sdk:: build
 	rm -rf sdk/go
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
