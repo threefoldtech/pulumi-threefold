@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 
 __all__ = ['ProviderArgs', 'Provider']
@@ -29,45 +29,24 @@ class ProviderArgs:
         :param pulumi.Input[str] rmb_timeout: The timeout duration in seconds for rmb calls
         :param pulumi.Input[str] substrate_url: The substrate url, example: wss://tfchain.dev.grid.tf/ws
         """
-        ProviderArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            key_type=key_type,
-            mnemonic=mnemonic,
-            network=network,
-            relay_url=relay_url,
-            rmb_timeout=rmb_timeout,
-            substrate_url=substrate_url,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             key_type: Optional[pulumi.Input[str]] = None,
-             mnemonic: Optional[pulumi.Input[str]] = None,
-             network: Optional[pulumi.Input[str]] = None,
-             relay_url: Optional[pulumi.Input[str]] = None,
-             rmb_timeout: Optional[pulumi.Input[str]] = None,
-             substrate_url: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-
         if key_type is None:
             key_type = (_utilities.get_env('') or 'sr25519')
         if key_type is not None:
-            _setter("key_type", key_type)
+            pulumi.set(__self__, "key_type", key_type)
         if mnemonic is None:
             mnemonic = (_utilities.get_env('') or '')
         if mnemonic is not None:
-            _setter("mnemonic", mnemonic)
+            pulumi.set(__self__, "mnemonic", mnemonic)
         if network is None:
             network = (_utilities.get_env('') or '')
         if network is not None:
-            _setter("network", network)
+            pulumi.set(__self__, "network", network)
         if relay_url is not None:
-            _setter("relay_url", relay_url)
+            pulumi.set(__self__, "relay_url", relay_url)
         if rmb_timeout is not None:
-            _setter("rmb_timeout", rmb_timeout)
+            pulumi.set(__self__, "rmb_timeout", rmb_timeout)
         if substrate_url is not None:
-            _setter("substrate_url", substrate_url)
+            pulumi.set(__self__, "substrate_url", substrate_url)
 
     @property
     @pulumi.getter
@@ -183,10 +162,6 @@ class Provider(pulumi.ProviderResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            ProviderArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,

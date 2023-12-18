@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 
 __all__ = [
@@ -28,30 +28,9 @@ class BackendArgs:
                  address: pulumi.Input[str],
                  namespace: pulumi.Input[str],
                  password: pulumi.Input[str]):
-        BackendArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            address=address,
-            namespace=namespace,
-            password=password,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             address: Optional[pulumi.Input[str]] = None,
-             namespace: Optional[pulumi.Input[str]] = None,
-             password: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if address is None:
-            raise TypeError("Missing 'address' argument")
-        if namespace is None:
-            raise TypeError("Missing 'namespace' argument")
-        if password is None:
-            raise TypeError("Missing 'password' argument")
-
-        _setter("address", address)
-        _setter("namespace", namespace)
-        _setter("password", password)
+        pulumi.set(__self__, "address", address)
+        pulumi.set(__self__, "namespace", namespace)
+        pulumi.set(__self__, "password", password)
 
     @property
     @pulumi.getter
@@ -87,29 +66,10 @@ class DiskArgs:
                  name: pulumi.Input[str],
                  size: pulumi.Input[int],
                  description: Optional[pulumi.Input[str]] = None):
-        DiskArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            name=name,
-            size=size,
-            description=description,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             name: Optional[pulumi.Input[str]] = None,
-             size: Optional[pulumi.Input[int]] = None,
-             description: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if size is None:
-            raise TypeError("Missing 'size' argument")
-
-        _setter("name", name)
-        _setter("size", size)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "size", size)
         if description is not None:
-            _setter("description", description)
+            pulumi.set(__self__, "description", description)
 
     @property
     @pulumi.getter
@@ -143,19 +103,8 @@ class DiskArgs:
 class GroupArgs:
     def __init__(__self__, *,
                  backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None):
-        GroupArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            backends=backends,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-
         if backends is not None:
-            _setter("backends", backends)
+            pulumi.set(__self__, "backends", backends)
 
     @property
     @pulumi.getter
@@ -180,60 +129,21 @@ class K8sNodeInputArgs:
                  planetary: Optional[pulumi.Input[bool]] = None,
                  public_ip: Optional[pulumi.Input[bool]] = None,
                  public_ip6: Optional[pulumi.Input[bool]] = None):
-        K8sNodeInputArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            cpu=cpu,
-            disk_size=disk_size,
-            memory=memory,
-            name=name,
-            node=node,
-            flist=flist,
-            flist_checksum=flist_checksum,
-            planetary=planetary,
-            public_ip=public_ip,
-            public_ip6=public_ip6,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             cpu: Optional[pulumi.Input[int]] = None,
-             disk_size: Optional[pulumi.Input[int]] = None,
-             memory: Optional[pulumi.Input[int]] = None,
-             name: Optional[pulumi.Input[str]] = None,
-             node: Optional[Any] = None,
-             flist: Optional[pulumi.Input[str]] = None,
-             flist_checksum: Optional[pulumi.Input[str]] = None,
-             planetary: Optional[pulumi.Input[bool]] = None,
-             public_ip: Optional[pulumi.Input[bool]] = None,
-             public_ip6: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if cpu is None:
-            raise TypeError("Missing 'cpu' argument")
-        if disk_size is None:
-            raise TypeError("Missing 'disk_size' argument")
-        if memory is None:
-            raise TypeError("Missing 'memory' argument")
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if node is None:
-            raise TypeError("Missing 'node' argument")
-
-        _setter("cpu", cpu)
-        _setter("disk_size", disk_size)
-        _setter("memory", memory)
-        _setter("name", name)
-        _setter("node", node)
+        pulumi.set(__self__, "cpu", cpu)
+        pulumi.set(__self__, "disk_size", disk_size)
+        pulumi.set(__self__, "memory", memory)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "node", node)
         if flist is not None:
-            _setter("flist", flist)
+            pulumi.set(__self__, "flist", flist)
         if flist_checksum is not None:
-            _setter("flist_checksum", flist_checksum)
+            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if planetary is not None:
-            _setter("planetary", planetary)
+            pulumi.set(__self__, "planetary", planetary)
         if public_ip is not None:
-            _setter("public_ip", public_ip)
+            pulumi.set(__self__, "public_ip", public_ip)
         if public_ip6 is not None:
-            _setter("public_ip6", public_ip6)
+            pulumi.set(__self__, "public_ip6", public_ip6)
 
     @property
     @pulumi.getter
@@ -334,37 +244,14 @@ class MetadataArgs:
                  backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None,
                  encryption_algorithm: Optional[pulumi.Input[str]] = None,
                  type: Optional[pulumi.Input[str]] = None):
-        MetadataArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            encryption_key=encryption_key,
-            prefix=prefix,
-            backends=backends,
-            encryption_algorithm=encryption_algorithm,
-            type=type,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             encryption_key: Optional[pulumi.Input[str]] = None,
-             prefix: Optional[pulumi.Input[str]] = None,
-             backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None,
-             encryption_algorithm: Optional[pulumi.Input[str]] = None,
-             type: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if encryption_key is None:
-            raise TypeError("Missing 'encryption_key' argument")
-        if prefix is None:
-            raise TypeError("Missing 'prefix' argument")
-
-        _setter("encryption_key", encryption_key)
-        _setter("prefix", prefix)
+        pulumi.set(__self__, "encryption_key", encryption_key)
+        pulumi.set(__self__, "prefix", prefix)
         if backends is not None:
-            _setter("backends", backends)
+            pulumi.set(__self__, "backends", backends)
         if encryption_algorithm is not None:
-            _setter("encryption_algorithm", encryption_algorithm)
+            pulumi.set(__self__, "encryption_algorithm", encryption_algorithm)
         if type is not None:
-            _setter("type", type)
+            pulumi.set(__self__, "type", type)
 
     @property
     @pulumi.getter
@@ -417,25 +304,8 @@ class MountArgs:
     def __init__(__self__, *,
                  disk_name: pulumi.Input[str],
                  mount_point: pulumi.Input[str]):
-        MountArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            disk_name=disk_name,
-            mount_point=mount_point,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             disk_name: Optional[pulumi.Input[str]] = None,
-             mount_point: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if disk_name is None:
-            raise TypeError("Missing 'disk_name' argument")
-        if mount_point is None:
-            raise TypeError("Missing 'mount_point' argument")
-
-        _setter("disk_name", disk_name)
-        _setter("mount_point", mount_point)
+        pulumi.set(__self__, "disk_name", disk_name)
+        pulumi.set(__self__, "mount_point", mount_point)
 
     @property
     @pulumi.getter
@@ -472,77 +342,22 @@ class QSFSInputArgs:
                  compression_algorithm: Optional[pulumi.Input[str]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  encryption_algorithm: Optional[pulumi.Input[str]] = None):
-        QSFSInputArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            cache=cache,
-            encryption_key=encryption_key,
-            expected_shards=expected_shards,
-            groups=groups,
-            max_zdb_data_dir_size=max_zdb_data_dir_size,
-            metadata=metadata,
-            minimal_shards=minimal_shards,
-            name=name,
-            redundant_groups=redundant_groups,
-            redundant_nodes=redundant_nodes,
-            compression_algorithm=compression_algorithm,
-            description=description,
-            encryption_algorithm=encryption_algorithm,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             cache: Optional[pulumi.Input[int]] = None,
-             encryption_key: Optional[pulumi.Input[str]] = None,
-             expected_shards: Optional[pulumi.Input[int]] = None,
-             groups: Optional[pulumi.Input[Sequence[pulumi.Input['GroupArgs']]]] = None,
-             max_zdb_data_dir_size: Optional[pulumi.Input[int]] = None,
-             metadata: Optional[pulumi.Input['MetadataArgs']] = None,
-             minimal_shards: Optional[pulumi.Input[int]] = None,
-             name: Optional[pulumi.Input[str]] = None,
-             redundant_groups: Optional[pulumi.Input[int]] = None,
-             redundant_nodes: Optional[pulumi.Input[int]] = None,
-             compression_algorithm: Optional[pulumi.Input[str]] = None,
-             description: Optional[pulumi.Input[str]] = None,
-             encryption_algorithm: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if cache is None:
-            raise TypeError("Missing 'cache' argument")
-        if encryption_key is None:
-            raise TypeError("Missing 'encryption_key' argument")
-        if expected_shards is None:
-            raise TypeError("Missing 'expected_shards' argument")
-        if groups is None:
-            raise TypeError("Missing 'groups' argument")
-        if max_zdb_data_dir_size is None:
-            raise TypeError("Missing 'max_zdb_data_dir_size' argument")
-        if metadata is None:
-            raise TypeError("Missing 'metadata' argument")
-        if minimal_shards is None:
-            raise TypeError("Missing 'minimal_shards' argument")
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if redundant_groups is None:
-            raise TypeError("Missing 'redundant_groups' argument")
-        if redundant_nodes is None:
-            raise TypeError("Missing 'redundant_nodes' argument")
-
-        _setter("cache", cache)
-        _setter("encryption_key", encryption_key)
-        _setter("expected_shards", expected_shards)
-        _setter("groups", groups)
-        _setter("max_zdb_data_dir_size", max_zdb_data_dir_size)
-        _setter("metadata", metadata)
-        _setter("minimal_shards", minimal_shards)
-        _setter("name", name)
-        _setter("redundant_groups", redundant_groups)
-        _setter("redundant_nodes", redundant_nodes)
+        pulumi.set(__self__, "cache", cache)
+        pulumi.set(__self__, "encryption_key", encryption_key)
+        pulumi.set(__self__, "expected_shards", expected_shards)
+        pulumi.set(__self__, "groups", groups)
+        pulumi.set(__self__, "max_zdb_data_dir_size", max_zdb_data_dir_size)
+        pulumi.set(__self__, "metadata", metadata)
+        pulumi.set(__self__, "minimal_shards", minimal_shards)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "redundant_groups", redundant_groups)
+        pulumi.set(__self__, "redundant_nodes", redundant_nodes)
         if compression_algorithm is not None:
-            _setter("compression_algorithm", compression_algorithm)
+            pulumi.set(__self__, "compression_algorithm", compression_algorithm)
         if description is not None:
-            _setter("description", description)
+            pulumi.set(__self__, "description", description)
         if encryption_algorithm is not None:
-            _setter("encryption_algorithm", encryption_algorithm)
+            pulumi.set(__self__, "encryption_algorithm", encryption_algorithm)
 
     @property
     @pulumi.getter
@@ -681,84 +496,33 @@ class VMInputArgs:
                  public_ip6: Optional[pulumi.Input[bool]] = None,
                  rootfs_size: Optional[pulumi.Input[int]] = None,
                  zlogs: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]] = None):
-        VMInputArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            cpu=cpu,
-            flist=flist,
-            memory=memory,
-            name=name,
-            network_name=network_name,
-            description=description,
-            entrypoint=entrypoint,
-            env_vars=env_vars,
-            flist_checksum=flist_checksum,
-            gpus=gpus,
-            mounts=mounts,
-            planetary=planetary,
-            public_ip=public_ip,
-            public_ip6=public_ip6,
-            rootfs_size=rootfs_size,
-            zlogs=zlogs,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             cpu: Optional[pulumi.Input[int]] = None,
-             flist: Optional[pulumi.Input[str]] = None,
-             memory: Optional[pulumi.Input[int]] = None,
-             name: Optional[pulumi.Input[str]] = None,
-             network_name: Optional[pulumi.Input[str]] = None,
-             description: Optional[pulumi.Input[str]] = None,
-             entrypoint: Optional[pulumi.Input[str]] = None,
-             env_vars: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-             flist_checksum: Optional[pulumi.Input[str]] = None,
-             gpus: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-             mounts: Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]] = None,
-             planetary: Optional[pulumi.Input[bool]] = None,
-             public_ip: Optional[pulumi.Input[bool]] = None,
-             public_ip6: Optional[pulumi.Input[bool]] = None,
-             rootfs_size: Optional[pulumi.Input[int]] = None,
-             zlogs: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if cpu is None:
-            raise TypeError("Missing 'cpu' argument")
-        if flist is None:
-            raise TypeError("Missing 'flist' argument")
-        if memory is None:
-            raise TypeError("Missing 'memory' argument")
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if network_name is None:
-            raise TypeError("Missing 'network_name' argument")
-
-        _setter("cpu", cpu)
-        _setter("flist", flist)
-        _setter("memory", memory)
-        _setter("name", name)
-        _setter("network_name", network_name)
+        pulumi.set(__self__, "cpu", cpu)
+        pulumi.set(__self__, "flist", flist)
+        pulumi.set(__self__, "memory", memory)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "network_name", network_name)
         if description is not None:
-            _setter("description", description)
+            pulumi.set(__self__, "description", description)
         if entrypoint is not None:
-            _setter("entrypoint", entrypoint)
+            pulumi.set(__self__, "entrypoint", entrypoint)
         if env_vars is not None:
-            _setter("env_vars", env_vars)
+            pulumi.set(__self__, "env_vars", env_vars)
         if flist_checksum is not None:
-            _setter("flist_checksum", flist_checksum)
+            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if gpus is not None:
-            _setter("gpus", gpus)
+            pulumi.set(__self__, "gpus", gpus)
         if mounts is not None:
-            _setter("mounts", mounts)
+            pulumi.set(__self__, "mounts", mounts)
         if planetary is not None:
-            _setter("planetary", planetary)
+            pulumi.set(__self__, "planetary", planetary)
         if public_ip is not None:
-            _setter("public_ip", public_ip)
+            pulumi.set(__self__, "public_ip", public_ip)
         if public_ip6 is not None:
-            _setter("public_ip6", public_ip6)
+            pulumi.set(__self__, "public_ip6", public_ip6)
         if rootfs_size is not None:
-            _setter("rootfs_size", rootfs_size)
+            pulumi.set(__self__, "rootfs_size", rootfs_size)
         if zlogs is not None:
-            _setter("zlogs", zlogs)
+            pulumi.set(__self__, "zlogs", zlogs)
 
     @property
     @pulumi.getter
@@ -914,44 +678,17 @@ class ZDBInputArgs:
                  description: Optional[pulumi.Input[str]] = None,
                  mode: Optional[pulumi.Input[str]] = None,
                  public: Optional[pulumi.Input[bool]] = None):
-        ZDBInputArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            name=name,
-            password=password,
-            size=size,
-            description=description,
-            mode=mode,
-            public=public,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             name: Optional[pulumi.Input[str]] = None,
-             password: Optional[pulumi.Input[str]] = None,
-             size: Optional[pulumi.Input[int]] = None,
-             description: Optional[pulumi.Input[str]] = None,
-             mode: Optional[pulumi.Input[str]] = None,
-             public: Optional[pulumi.Input[bool]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if password is None:
-            raise TypeError("Missing 'password' argument")
-        if size is None:
-            raise TypeError("Missing 'size' argument")
-
-        _setter("name", name)
-        _setter("password", password)
-        _setter("size", size)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "password", password)
+        pulumi.set(__self__, "size", size)
         if description is not None:
-            _setter("description", description)
+            pulumi.set(__self__, "description", description)
         if mode is None:
             mode = (_utilities.get_env('') or 'user')
         if mode is not None:
-            _setter("mode", mode)
+            pulumi.set(__self__, "mode", mode)
         if public is not None:
-            _setter("public", public)
+            pulumi.set(__self__, "public", public)
 
     @property
     @pulumi.getter
@@ -1013,25 +750,8 @@ class ZlogArgs:
     def __init__(__self__, *,
                  output: pulumi.Input[str],
                  zmachine: pulumi.Input[str]):
-        ZlogArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            output=output,
-            zmachine=zmachine,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             output: Optional[pulumi.Input[str]] = None,
-             zmachine: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if output is None:
-            raise TypeError("Missing 'output' argument")
-        if zmachine is None:
-            raise TypeError("Missing 'zmachine' argument")
-
-        _setter("output", output)
-        _setter("zmachine", zmachine)
+        pulumi.set(__self__, "output", output)
+        pulumi.set(__self__, "zmachine", zmachine)
 
     @property
     @pulumi.getter

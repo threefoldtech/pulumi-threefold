@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 
 __all__ = ['SchedulerArgs', 'Scheduler']
@@ -40,107 +40,52 @@ class SchedulerArgs:
         """
         The set of arguments for constructing a Scheduler resource.
         """
-        SchedulerArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            certification_type=certification_type,
-            city=city,
-            country=country,
-            dedicated=dedicated,
-            domain=domain,
-            farm_ids=farm_ids,
-            farm_name=farm_name,
-            free_ips=free_ips,
-            gpu_available=gpu_available,
-            gpu_device_id=gpu_device_id,
-            gpu_device_name=gpu_device_name,
-            gpu_vendor_id=gpu_vendor_id,
-            gpu_vendor_name=gpu_vendor_name,
-            has_gpu=has_gpu,
-            hru=hru,
-            ipv4=ipv4,
-            ipv6=ipv6,
-            mru=mru,
-            node_id=node_id,
-            rentable=rentable,
-            rented=rented,
-            sru=sru,
-            twin_id=twin_id,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             certification_type: Optional[pulumi.Input[str]] = None,
-             city: Optional[pulumi.Input[str]] = None,
-             country: Optional[pulumi.Input[str]] = None,
-             dedicated: Optional[pulumi.Input[bool]] = None,
-             domain: Optional[pulumi.Input[bool]] = None,
-             farm_ids: Optional[pulumi.Input[Sequence[pulumi.Input[int]]]] = None,
-             farm_name: Optional[pulumi.Input[str]] = None,
-             free_ips: Optional[pulumi.Input[int]] = None,
-             gpu_available: Optional[pulumi.Input[bool]] = None,
-             gpu_device_id: Optional[pulumi.Input[str]] = None,
-             gpu_device_name: Optional[pulumi.Input[str]] = None,
-             gpu_vendor_id: Optional[pulumi.Input[str]] = None,
-             gpu_vendor_name: Optional[pulumi.Input[str]] = None,
-             has_gpu: Optional[pulumi.Input[bool]] = None,
-             hru: Optional[pulumi.Input[int]] = None,
-             ipv4: Optional[pulumi.Input[bool]] = None,
-             ipv6: Optional[pulumi.Input[bool]] = None,
-             mru: Optional[pulumi.Input[int]] = None,
-             node_id: Optional[pulumi.Input[int]] = None,
-             rentable: Optional[pulumi.Input[bool]] = None,
-             rented: Optional[pulumi.Input[bool]] = None,
-             sru: Optional[pulumi.Input[int]] = None,
-             twin_id: Optional[pulumi.Input[int]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-
         if certification_type is not None:
-            _setter("certification_type", certification_type)
+            pulumi.set(__self__, "certification_type", certification_type)
         if city is not None:
-            _setter("city", city)
+            pulumi.set(__self__, "city", city)
         if country is not None:
-            _setter("country", country)
+            pulumi.set(__self__, "country", country)
         if dedicated is not None:
-            _setter("dedicated", dedicated)
+            pulumi.set(__self__, "dedicated", dedicated)
         if domain is not None:
-            _setter("domain", domain)
+            pulumi.set(__self__, "domain", domain)
         if farm_ids is not None:
-            _setter("farm_ids", farm_ids)
+            pulumi.set(__self__, "farm_ids", farm_ids)
         if farm_name is not None:
-            _setter("farm_name", farm_name)
+            pulumi.set(__self__, "farm_name", farm_name)
         if free_ips is not None:
-            _setter("free_ips", free_ips)
+            pulumi.set(__self__, "free_ips", free_ips)
         if gpu_available is not None:
-            _setter("gpu_available", gpu_available)
+            pulumi.set(__self__, "gpu_available", gpu_available)
         if gpu_device_id is not None:
-            _setter("gpu_device_id", gpu_device_id)
+            pulumi.set(__self__, "gpu_device_id", gpu_device_id)
         if gpu_device_name is not None:
-            _setter("gpu_device_name", gpu_device_name)
+            pulumi.set(__self__, "gpu_device_name", gpu_device_name)
         if gpu_vendor_id is not None:
-            _setter("gpu_vendor_id", gpu_vendor_id)
+            pulumi.set(__self__, "gpu_vendor_id", gpu_vendor_id)
         if gpu_vendor_name is not None:
-            _setter("gpu_vendor_name", gpu_vendor_name)
+            pulumi.set(__self__, "gpu_vendor_name", gpu_vendor_name)
         if has_gpu is not None:
-            _setter("has_gpu", has_gpu)
+            pulumi.set(__self__, "has_gpu", has_gpu)
         if hru is not None:
-            _setter("hru", hru)
+            pulumi.set(__self__, "hru", hru)
         if ipv4 is not None:
-            _setter("ipv4", ipv4)
+            pulumi.set(__self__, "ipv4", ipv4)
         if ipv6 is not None:
-            _setter("ipv6", ipv6)
+            pulumi.set(__self__, "ipv6", ipv6)
         if mru is not None:
-            _setter("mru", mru)
+            pulumi.set(__self__, "mru", mru)
         if node_id is not None:
-            _setter("node_id", node_id)
+            pulumi.set(__self__, "node_id", node_id)
         if rentable is not None:
-            _setter("rentable", rentable)
+            pulumi.set(__self__, "rentable", rentable)
         if rented is not None:
-            _setter("rented", rented)
+            pulumi.set(__self__, "rented", rented)
         if sru is not None:
-            _setter("sru", sru)
+            pulumi.set(__self__, "sru", sru)
         if twin_id is not None:
-            _setter("twin_id", twin_id)
+            pulumi.set(__self__, "twin_id", twin_id)
 
     @property
     @pulumi.getter
@@ -402,10 +347,6 @@ class Scheduler(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            SchedulerArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,

@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 from . import outputs
 from ._inputs import *
@@ -25,43 +25,14 @@ class KubernetesArgs:
         """
         The set of arguments for constructing a Kubernetes resource.
         """
-        KubernetesArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            master=master,
-            network_name=network_name,
-            token=token,
-            workers=workers,
-            solution_type=solution_type,
-            ssh_key=ssh_key,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             master: Optional[pulumi.Input['K8sNodeInputArgs']] = None,
-             network_name: Optional[pulumi.Input[str]] = None,
-             token: Optional[pulumi.Input[str]] = None,
-             workers: Optional[pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]]] = None,
-             solution_type: Optional[pulumi.Input[str]] = None,
-             ssh_key: Optional[pulumi.Input[str]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if master is None:
-            raise TypeError("Missing 'master' argument")
-        if network_name is None:
-            raise TypeError("Missing 'network_name' argument")
-        if token is None:
-            raise TypeError("Missing 'token' argument")
-        if workers is None:
-            raise TypeError("Missing 'workers' argument")
-
-        _setter("master", master)
-        _setter("network_name", network_name)
-        _setter("token", token)
-        _setter("workers", workers)
+        pulumi.set(__self__, "master", master)
+        pulumi.set(__self__, "network_name", network_name)
+        pulumi.set(__self__, "token", token)
+        pulumi.set(__self__, "workers", workers)
         if solution_type is not None:
-            _setter("solution_type", solution_type)
+            pulumi.set(__self__, "solution_type", solution_type)
         if ssh_key is not None:
-            _setter("ssh_key", ssh_key)
+            pulumi.set(__self__, "ssh_key", ssh_key)
 
     @property
     @pulumi.getter
@@ -153,10 +124,6 @@ class Kubernetes(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            KubernetesArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
@@ -177,7 +144,6 @@ class Kubernetes(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = KubernetesArgs.__new__(KubernetesArgs)
 
-            master = _utilities.configure(master, K8sNodeInputArgs, True)
             if master is None and not opts.urn:
                 raise TypeError("Missing required property 'master'")
             __props__.__dict__["master"] = master

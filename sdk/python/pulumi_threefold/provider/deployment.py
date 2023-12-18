@@ -6,7 +6,7 @@ import copy
 import warnings
 import pulumi
 import pulumi.runtime
-from typing import Any, Callable, Mapping, Optional, Sequence, Union, overload
+from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 from . import outputs
 from ._inputs import *
@@ -28,53 +28,22 @@ class DeploymentArgs:
         """
         The set of arguments for constructing a Deployment resource.
         """
-        DeploymentArgs._configure(
-            lambda key, value: pulumi.set(__self__, key, value),
-            name=name,
-            node_id=node_id,
-            disks=disks,
-            network_name=network_name,
-            qsfs=qsfs,
-            solution_provider=solution_provider,
-            solution_type=solution_type,
-            vms=vms,
-            zdbs=zdbs,
-        )
-    @staticmethod
-    def _configure(
-             _setter: Callable[[Any, Any], None],
-             name: Optional[pulumi.Input[str]] = None,
-             node_id: Optional[Any] = None,
-             disks: Optional[pulumi.Input[Sequence[pulumi.Input['DiskArgs']]]] = None,
-             network_name: Optional[pulumi.Input[str]] = None,
-             qsfs: Optional[pulumi.Input[Sequence[pulumi.Input['QSFSInputArgs']]]] = None,
-             solution_provider: Optional[pulumi.Input[int]] = None,
-             solution_type: Optional[pulumi.Input[str]] = None,
-             vms: Optional[pulumi.Input[Sequence[pulumi.Input['VMInputArgs']]]] = None,
-             zdbs: Optional[pulumi.Input[Sequence[pulumi.Input['ZDBInputArgs']]]] = None,
-             opts: Optional[pulumi.ResourceOptions] = None,
-             **kwargs):
-        if name is None:
-            raise TypeError("Missing 'name' argument")
-        if node_id is None:
-            raise TypeError("Missing 'node_id' argument")
-
-        _setter("name", name)
-        _setter("node_id", node_id)
+        pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "node_id", node_id)
         if disks is not None:
-            _setter("disks", disks)
+            pulumi.set(__self__, "disks", disks)
         if network_name is not None:
-            _setter("network_name", network_name)
+            pulumi.set(__self__, "network_name", network_name)
         if qsfs is not None:
-            _setter("qsfs", qsfs)
+            pulumi.set(__self__, "qsfs", qsfs)
         if solution_provider is not None:
-            _setter("solution_provider", solution_provider)
+            pulumi.set(__self__, "solution_provider", solution_provider)
         if solution_type is not None:
-            _setter("solution_type", solution_type)
+            pulumi.set(__self__, "solution_type", solution_type)
         if vms is not None:
-            _setter("vms", vms)
+            pulumi.set(__self__, "vms", vms)
         if zdbs is not None:
-            _setter("zdbs", zdbs)
+            pulumi.set(__self__, "zdbs", zdbs)
 
     @property
     @pulumi.getter
@@ -196,10 +165,6 @@ class Deployment(pulumi.CustomResource):
         if resource_args is not None:
             __self__._internal_init(resource_name, opts, **resource_args.__dict__)
         else:
-            kwargs = kwargs or {}
-            def _setter(key, value):
-                kwargs[key] = value
-            DeploymentArgs._configure(_setter, **kwargs)
             __self__._internal_init(resource_name, *args, **kwargs)
 
     def _internal_init(__self__,
