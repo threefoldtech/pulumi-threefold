@@ -536,8 +536,8 @@ github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/deckarep/golang-set v1.8.0 h1:sk9/l/KqpunDwP7pSjUg0keiOOLEnOBHzykLrsPppp4=
 github.com/deckarep/golang-set v1.8.0/go.mod h1:5nI87KwE7wgsBU1F4GKAw2Qod7p5kyS383rP6+o6qqo=
-github.com/deckarep/golang-set/v2 v2.1.0 h1:g47V4Or+DUdzbs8FxCCmgb6VYd+ptPAngjM6dtGktsI=
-github.com/deckarep/golang-set/v2 v2.1.0/go.mod h1:VAky9rY/yGXJOLEDv3OMci+7wtDpOF4IN+y82NBOac4=
+github.com/deckarep/golang-set/v2 v2.5.0 h1:hn6cEZtQ0h3J8kFrHR/NrzyOoTnjgW1+FmNJzQ7y/sA=
+github.com/deckarep/golang-set/v2 v2.5.0/go.mod h1:VAky9rY/yGXJOLEDv3OMci+7wtDpOF4IN+y82NBOac4=
 github.com/decred/base58 v1.0.5 h1:hwcieUM3pfPnE/6p3J100zoRfGkQxBulZHo7GZfOqic=
 github.com/decred/base58 v1.0.5/go.mod h1:s/8lukEHFA6bUQQb/v3rjUySJ2hu+RioCzLukAVkrfw=
 github.com/decred/dcrd/crypto/blake256 v1.0.1 h1:7PltbUIQB7u/FfZ39+DGa/ShuMyJ5ilcvdfma9wOH6Y=
@@ -1526,10 +1526,10 @@ github.com/pulumi/esc v0.6.1-0.20231111193429-44b746a5b3b5 h1:1DJMji9F7XPea46bSu
 github.com/pulumi/esc v0.6.1-0.20231111193429-44b746a5b3b5/go.mod h1:Y6W21yUukvxS2NnS5ae1beMSPhMvj0xNAYcDqDHVj/g=
 github.com/pulumi/pulumi-go-provider v0.14.0 h1:uq0nTfstO/QXV0EYETI4t7Kn/vjJHlYni1Sr+QcsoLg=
 github.com/pulumi/pulumi-go-provider v0.14.0/go.mod h1:+2ZJDPOzZ97nFH2aJAQrH7zOmMrRWYKuA47LuVWhmIc=
-github.com/pulumi/pulumi/pkg/v3 v3.95.0 h1:FBA0EmjRaqUgzleFMpLSAQUojXH2PyIVERzAm53p63U=
-github.com/pulumi/pulumi/pkg/v3 v3.95.0/go.mod h1:4mjOPC8lb49ihR/HbGmid0y9GFlpfP9Orumr0wFOGno=
-github.com/pulumi/pulumi/sdk/v3 v3.95.0 h1:SBpFZYdbVF8DtmiEosut2BRVRjLxPpcQf5bOkyPWosQ=
-github.com/pulumi/pulumi/sdk/v3 v3.95.0/go.mod h1:xzyBCCPSyLSqOVyfwlaXIS7FqxpiGyLcOOWCzBF7ZKY=
+github.com/pulumi/pulumi/pkg/v3 v3.97.0 h1:CU6EwJM+c4NI4HTMx6iHascXJZE6lo6h8qsqeaUAhvQ=
+github.com/pulumi/pulumi/pkg/v3 v3.97.0/go.mod h1:V0jqjdAVFx5Q8SY6Zze4CLX69RvByjan0XH2QXd86tY=
+github.com/pulumi/pulumi/sdk/v3 v3.97.0 h1:GZzsSFMneTEj0207LgG6eoujsLlB5ulHseADQNsn1Ew=
+github.com/pulumi/pulumi/sdk/v3 v3.97.0/go.mod h1:yvD23IIRiqIXuo4kaZNe5zK/uT0nhO99wr6BVEqoi7A=
 github.com/rakyll/embedmd v0.0.0-20171029212350-c8060a0752a2/go.mod h1:7jOTMgqac46PZcF54q6l2hkLEG8op93fZu61KmxWDV4=
 github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
 github.com/rivo/uniseg v0.1.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
