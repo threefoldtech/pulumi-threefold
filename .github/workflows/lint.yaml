@@ -22,7 +22,6 @@ jobs:
       - name: Run provider golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.53.3
           working-directory: ${{ matrix.dir }}
           args: --config=../.golangci.yml
 
