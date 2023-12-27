@@ -905,8 +905,8 @@ github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+
 github.com/google/uuid v1.1.2/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/uuid v1.2.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/google/uuid v1.4.0 h1:MtMxsa51/r9yyhkyLsVeVt0B+BGQZzpQiTQ4eHZ8bc4=
-github.com/google/uuid v1.4.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/google/uuid v1.5.0 h1:1p67kYwdtXjb0gL0BPiP1Av9wiZPo5A8z2cWkTZ+eyU=
+github.com/google/uuid v1.5.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/wire v0.5.0 h1:I7ELFeVBr3yfPIcc8+MWvrjk+3VjbcSzoXm3JVa+jD8=
 github.com/google/wire v0.5.0/go.mod h1:ngWDr9Qvq3yZA10YrxfyGELY/AFWGVpy9c1LTRi1EoU=
 github.com/googleapis/enterprise-certificate-proxy v0.0.0-20220520183353-fd19c99a87aa/go.mod h1:17drOmN3MwGY7t0e+Ei9b45FFGA3fBs3x36SsCg1hq8=
@@ -938,8 +938,8 @@ github.com/gorilla/mux v1.7.3/go.mod h1:1lud6UwP+6orDFRuTfBEV8e9/aOM/c4fVVCaMa2z
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 github.com/gorilla/mux v1.8.1 h1:TuBL49tXwgrFYWhqrNgrUNEY92u81SPhu7sTdzQEiWY=
 github.com/gorilla/mux v1.8.1/go.mod h1:AKf9I4AEqPTmMytcMc0KkNouC66V3BtZ4qD5fmWSiMQ=
-github.com/gorilla/schema v1.2.0 h1:YufUaxZYCKGFuAq3c96BOhjgd5nmXiOY9NGzF247Tsc=
-github.com/gorilla/schema v1.2.0/go.mod h1:kgLaKoK1FELgZqMAVxx/5cbj0kT+57qxUrAlIO2eleU=
+github.com/gorilla/schema v1.2.1 h1:tjDxcmdb+siIqkTNoV+qRH2mjYdr2hHe5MKXbp61ziM=
+github.com/gorilla/schema v1.2.1/go.mod h1:Dg5SSm5PV60mhF2NFaTV1xuYYj8tV8NOPRo4FggUMnM=
 github.com/gorilla/websocket v0.0.0-20170926233335-4201258b820c/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
 github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
@@ -1666,8 +1666,8 @@ github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20231129121046
 github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20231129121046-56ffc1f8f5c6/go.mod h1:dtDKAPiUDxAwIkfHV7xcAFZcOm+xwNIuOI1MLFS+MeQ=
 github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.9 h1:1wdHuSghQEXH1YrkDPk83hLOL7PU7bUdy5Od4zs0b00=
 github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.11.9/go.mod h1:L+dwoqFKzal+h1ZYHMqDjmUu2UBCfRheejQQvPB/zsA=
-github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.11.9 h1:NND3tA3lArWEHN8dxZQzWqewTxxknQBRtWZog10R/U0=
-github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.11.9/go.mod h1:CzLspJFGh6L0j7hoEik61583LSqi7RMTLHF4PEvkg00=
+github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.13.0 h1:ANSYJvsNAlYZW881rQ3uNPNO703OsCpjx2Wq+7GAryQ=
+github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.13.0/go.mod h1:NqlcUOT/uOntAWfnr+LkUsbnfgL54c9o9t4BNhcKs2o=
 github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.11.9 h1:ZD0mpMe0uYVV0FiTbHhQiZkmPVdTanR35orcYvtMZgk=
 github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.11.9/go.mod h1:gNq6NNlNWCAjChEQrB64yvzDCE1801B0UcAAVmjDm0I=
 github.com/threefoldtech/zos v0.5.6-0.20231029102142-baf8d9ee77fe h1:AD5kGlVOObakSq8zGwQ1Wx0WhzpEzw+yZSEM1+fwCr4=
