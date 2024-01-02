@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        network: ["dev"]
+        network: ["dev", "qa", "test", "main"]
 
     steps:
       - name: Checkout code
