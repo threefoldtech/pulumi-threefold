@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/pulumi/pulumi/sdk/v3 v3.99.0
-	github.com/threefoldtech/pulumi-threefold/sdk v0.4.0
+	github.com/threefoldtech/pulumi-threefold/sdk v0.5.0
 )
 
 require (
