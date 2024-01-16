@@ -9,7 +9,7 @@ require (
 	github.com/pulumi/pulumi/sdk/v3 v3.99.0
 	github.com/stretchr/testify v1.8.4
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.13.4
-	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.13.10
+	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.13.12
 	github.com/threefoldtech/zos v0.5.6-0.20231029102142-baf8d9ee77fe
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20230429144221-925a1e7659e6
 )
