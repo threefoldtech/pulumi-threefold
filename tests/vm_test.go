@@ -47,7 +47,7 @@ func TestVM(t *testing.T) {
 					mounts := vms["mounts"].([]interface{})[0].(map[string]interface{})
 
 					yggIP := vmsComputed["ygg_ip"].(string)
-					publicIP := vmsComputed["public_ip"].(string)
+					publicIP := vmsComputed["computed_ip"].(string)
 					mountPoint := mounts["mount_point"].(string)
 					diskSize := disks["size"].(float64)
 
