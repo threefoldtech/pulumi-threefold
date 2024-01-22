@@ -14,6 +14,7 @@ resources:
     properties:
       mru: 256
       sru: 2048
+      IPv4: true
       farm_ids: [1]
 
   network:
@@ -47,6 +48,7 @@ resources:
           cpu: 2
           memory: 256
           planetary: true
+          public_ip: true
           mounts:
             - disk_name: data
               mount_point: /app

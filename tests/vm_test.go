@@ -47,6 +47,7 @@ func TestVM(t *testing.T) {
 					mounts := vms["mounts"].([]interface{})[0].(map[string]interface{})
 
 					yggIP := vmsComputed["ygg_ip"].(string)
+					publicIP := vmsComputed["public_ip"].(string)
 					mountPoint := mounts["mount_point"].(string)
 					diskSize := disks["size"].(float64)
 
@@ -55,7 +56,7 @@ func TestVM(t *testing.T) {
 					assert.True(t, ok)
 
 					// Check that disk has been mounted successfully
-					output, err := remoteRun("root", yggIP, fmt.Sprintf("df -h | grep -w %s", mountPoint), privateKey)
+					output, err := remoteRun("root", publicIP, fmt.Sprintf("df -h | grep -w %s", mountPoint), privateKey)
 					assert.NoError(t, err)
 					assert.Contains(t, output, fmt.Sprintf("%v.0G", diskSize))
 				}
