@@ -41,7 +41,9 @@ jobs:
         run: make install_latest
 
       - name: Run Tests
-        run: go test -v ./tests -run TestVM
+        run: |
+          ufw allow 22/tcp
+          go test -v ./tests -run TestVM
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
           NETWORK: ${{ matrix.network }}
