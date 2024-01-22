@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        network: ["dev"]
+        network: ["main"]
 
     steps:
       - name: Checkout code
@@ -37,5 +37,11 @@ jobs:
           sudo sed -i -- 's/Peers\: \[\]/Peers: [\n'"$PEERS"']/g' /etc/yggdrasil/yggdrasil.conf
           sudo systemctl start yggdrasil
 
-      - name: ssh
-        run: ssh root@185.69.167.86
+      - name: Install provider
+        run: make install_latest
+
+      - name: Run Tests
+        run: go test -v ./tests -run TestVM
+        env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          NETWORK: ${{ matrix.network }}
