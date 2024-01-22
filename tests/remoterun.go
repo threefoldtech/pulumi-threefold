@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"net"
+	"time"
 
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/ssh"
@@ -25,6 +26,7 @@ func remoteRun(user string, addr string, cmd string, privateKey string) (string,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(key),
 		},
+		Timeout: time.Minute,
 	}
 
 	// Connect

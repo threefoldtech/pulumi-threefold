@@ -42,7 +42,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          sudo ufw allow 22/tcp
           go test -v ./tests -run TestVM
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
