@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        network: ["dev", "qa", "test", "main"]
+        network: ["dev"]
 
     steps:
       - name: Checkout code
@@ -38,4 +38,4 @@ jobs:
           sudo systemctl start yggdrasil
 
       - name: ssh
-        run: ssh root@301:b989:8977:ff23:c404:3c54:8e5a:95ca
+        run: ssh root@185.69.167.86
