@@ -56,7 +56,7 @@ type VMInput struct {
 	PublicIP       bool              `pulumi:"public_ip,optional"`
 	PublicIP6      bool              `pulumi:"public_ip6,optional"`
 	Planetary      bool              `pulumi:"planetary,optional"`
-	MyceliumIPSeed []byte            `pulumi:"mycelium_ip_seed"`
+	MyceliumIPSeed string            `pulumi:"mycelium_ip_seed,optional"`
 	Description    string            `pulumi:"description,optional"`
 	GPUs           []zos.GPU         `pulumi:"gpus,optional"`
 	RootfsSize     int               `pulumi:"rootfs_size,optional"`
@@ -187,7 +187,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
 			Planetary:      vm.Planetary,
-			MyceliumIPSeed: vm.MyceliumIPSeed,
+			MyceliumIPSeed: []byte(vm.MyceliumIPSeed),
 			Description:    vm.Description,
 			GPUs:           vm.GPUs,
 			CPU:            vm.CPU,
@@ -319,7 +319,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
 			Planetary:      vm.Planetary,
-			MyceliumIPSeed: vm.MyceliumIPSeed,
+			MyceliumIPSeed: string(vm.MyceliumIPSeed),
 			Description:    vm.Description,
 			GPUs:           vm.GPUs,
 			CPU:            vm.CPU,

@@ -25,6 +25,11 @@ func parseNetworkToState(network workloads.ZNet) NetworkState {
 		nodeDeploymentID[fmt.Sprint(nodeID)] = int64(deploymentID)
 	}
 
+	myceliumKeys := make(map[string]string)
+	for nodeID, myceliumKey := range network.MyceliumKeys {
+		myceliumKeys[fmt.Sprint(nodeID)] = string(myceliumKey)
+	}
+
 	stateArgs := NetworkArgs{
 		Name:         network.Name,
 		Description:  network.Description,
@@ -32,6 +37,7 @@ func parseNetworkToState(network workloads.ZNet) NetworkState {
 		IPRange:      network.IPRange.String(),
 		AddWGAccess:  network.AddWGAccess,
 		SolutionType: network.SolutionType,
+		MyceliumKeys: myceliumKeys,
 	}
 
 	state := NetworkState{
@@ -65,6 +71,15 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 		nodes = append(nodes, uint32(nodeID))
 	}
 
+	myceliumKeys := make(map[uint32][]byte)
+	for nodeID, myceliumKey := range networkArgs.MyceliumKeys {
+		nodeID, err := strconv.Atoi(fmt.Sprint(nodeID))
+		if err != nil {
+			return workloads.ZNet{}, err
+		}
+		myceliumKeys[uint32(nodeID)] = []byte(myceliumKey)
+	}
+
 	network := workloads.ZNet{
 		Name:         networkArgs.Name,
 		Description:  networkArgs.Description,
@@ -72,6 +87,7 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 		IPRange:      ipRange,
 		AddWGAccess:  networkArgs.AddWGAccess,
 		SolutionType: networkArgs.SolutionType,
+		MyceliumKeys: myceliumKeys,
 	}
 
 	return network, nil
