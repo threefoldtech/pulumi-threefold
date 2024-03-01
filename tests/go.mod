@@ -6,7 +6,7 @@ require (
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi/pkg/v3 v3.99.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	golang.org/x/crypto v0.18.0
 )
 
