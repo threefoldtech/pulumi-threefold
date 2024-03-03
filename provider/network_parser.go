@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"encoding/hex"
 	"fmt"
 	"strconv"
 
@@ -27,7 +28,7 @@ func parseNetworkToState(network workloads.ZNet) NetworkState {
 
 	myceliumKeys := make(map[string]string)
 	for nodeID, myceliumKey := range network.MyceliumKeys {
-		myceliumKeys[fmt.Sprint(nodeID)] = string(myceliumKey)
+		myceliumKeys[fmt.Sprint(nodeID)] = hex.EncodeToString(myceliumKey)
 	}
 
 	stateArgs := NetworkArgs{
@@ -77,7 +78,13 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 		if err != nil {
 			return workloads.ZNet{}, err
 		}
-		myceliumKeys[uint32(nodeID)] = []byte(myceliumKey)
+
+		myceliumKey, err := hex.DecodeString(myceliumKey)
+		if err != nil {
+			return workloads.ZNet{}, err
+		}
+
+		myceliumKeys[uint32(nodeID)] = myceliumKey
 	}
 
 	network := workloads.ZNet{

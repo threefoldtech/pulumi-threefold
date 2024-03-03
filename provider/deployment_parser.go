@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"encoding/hex"
 	"fmt"
 	"os"
 	"strconv"
@@ -179,6 +180,11 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 			vm.EnvVars["SSH_KEY"] = sshKey
 		}
 
+		myceliumIPSeed, err := hex.DecodeString(vm.MyceliumIPSeed)
+		if err != nil {
+			return workloads.Deployment{}, err
+		}
+
 		vms = append(vms, workloads.VM{
 			Name:           vm.Name,
 			Flist:          vm.Flist,
@@ -187,7 +193,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
 			Planetary:      vm.Planetary,
-			MyceliumIPSeed: []byte(vm.MyceliumIPSeed),
+			MyceliumIPSeed: myceliumIPSeed,
 			Description:    vm.Description,
 			GPUs:           vm.GPUs,
 			CPU:            vm.CPU,
@@ -319,7 +325,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
 			Planetary:      vm.Planetary,
-			MyceliumIPSeed: string(vm.MyceliumIPSeed),
+			MyceliumIPSeed: hex.EncodeToString(vm.MyceliumIPSeed),
 			Description:    vm.Description,
 			GPUs:           vm.GPUs,
 			CPU:            vm.CPU,
