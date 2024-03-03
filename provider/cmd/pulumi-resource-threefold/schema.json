@@ -138,13 +138,13 @@
         "network_name": {
           "type": "string"
         },
+        "planetary_ip": {
+          "type": "string"
+        },
         "ssh_key": {
           "type": "string"
         },
         "token": {
-          "type": "string"
-        },
-        "ygg_ip": {
           "type": "string"
         }
       },
@@ -155,9 +155,9 @@
         "console_url",
         "ip",
         "network_name",
+        "planetary_ip",
         "ssh_key",
-        "token",
-        "ygg_ip"
+        "token"
       ]
     },
     "threefold:provider:K8sNodeInput": {
@@ -328,7 +328,10 @@
         "ip": {
           "type": "string"
         },
-        "ygg_ip": {
+        "mycelium_ip": {
+          "type": "string"
+        },
+        "planetary_ip": {
           "type": "string"
         }
       },
@@ -337,7 +340,8 @@
         "computed_ip",
         "computed_ip6",
         "console_url",
-        "ygg_ip"
+        "mycelium_ip",
+        "planetary_ip"
       ]
     },
     "threefold:provider:VMInput": {
@@ -377,6 +381,9 @@
           "items": {
             "$ref": "#/types/threefold:provider:Mount"
           }
+        },
+        "mycelium_ip_seed": {
+          "type": "string"
         },
         "name": {
           "type": "string"
@@ -981,6 +988,12 @@
         "ip_range": {
           "type": "string"
         },
+        "mycelium_keys": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
         "name": {
           "type": "string"
         },
@@ -1031,6 +1044,12 @@
         },
         "ip_range": {
           "type": "string"
+        },
+        "mycelium_keys": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "name": {
           "type": "string"

@@ -90,7 +90,7 @@ func (c *Config) Configure(ctx p.Context) error {
 	}
 
 	tfPluginClient, err := deployer.NewTFPluginClient(
-		c.Mnemonic, c.KeyType, c.Network, c.SubstrateURL, c.RelayURL, "", 0, false,
+		c.Mnemonic, c.KeyType, c.Network, c.SubstrateURL, c.RelayURL, "", 0, false, true,
 	)
 	if err != nil {
 		return errors.Wrap(err, "error creating threefold plugin client")

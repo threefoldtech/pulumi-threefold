@@ -37,6 +37,7 @@ export class Network extends pulumi.CustomResource {
     public /*out*/ readonly external_ip!: pulumi.Output<string>;
     public /*out*/ readonly external_sk!: pulumi.Output<string>;
     public readonly ip_range!: pulumi.Output<string>;
+    public readonly mycelium_keys!: pulumi.Output<{[key: string]: string} | undefined>;
     public readonly name!: pulumi.Output<string>;
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
     public readonly nodes!: pulumi.Output<any[]>;
@@ -70,6 +71,7 @@ export class Network extends pulumi.CustomResource {
             resourceInputs["add_wg_access"] = args ? args.add_wg_access : undefined;
             resourceInputs["description"] = args ? args.description : undefined;
             resourceInputs["ip_range"] = args ? args.ip_range : undefined;
+            resourceInputs["mycelium_keys"] = args ? args.mycelium_keys : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["nodes"] = args ? args.nodes : undefined;
             resourceInputs["solution_type"] = args ? args.solution_type : undefined;
@@ -86,6 +88,7 @@ export class Network extends pulumi.CustomResource {
             resourceInputs["external_ip"] = undefined /*out*/;
             resourceInputs["external_sk"] = undefined /*out*/;
             resourceInputs["ip_range"] = undefined /*out*/;
+            resourceInputs["mycelium_keys"] = undefined /*out*/;
             resourceInputs["name"] = undefined /*out*/;
             resourceInputs["node_deployment_id"] = undefined /*out*/;
             resourceInputs["nodes"] = undefined /*out*/;
@@ -105,6 +108,7 @@ export interface NetworkArgs {
     add_wg_access?: pulumi.Input<boolean>;
     description: pulumi.Input<string>;
     ip_range: pulumi.Input<string>;
+    mycelium_keys?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     name: pulumi.Input<string>;
     nodes: pulumi.Input<any[]>;
     solution_type?: pulumi.Input<string>;

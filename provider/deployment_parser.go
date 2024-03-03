@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"encoding/hex"
 	"fmt"
 	"os"
 	"strconv"
@@ -47,29 +48,31 @@ type ZDBComputed struct {
 
 // VMInput is a virtual machine inputs struct
 type VMInput struct {
-	Name          string            `pulumi:"name"`
-	Flist         string            `pulumi:"flist"`
-	NetworkName   string            `pulumi:"network_name"`
-	CPU           int               `pulumi:"cpu"`
-	Memory        int               `pulumi:"memory"`
-	FlistChecksum string            `pulumi:"flist_checksum,optional"`
-	PublicIP      bool              `pulumi:"public_ip,optional"`
-	PublicIP6     bool              `pulumi:"public_ip6,optional"`
-	Planetary     bool              `pulumi:"planetary,optional"`
-	Description   string            `pulumi:"description,optional"`
-	GPUs          []zos.GPU         `pulumi:"gpus,optional"`
-	RootfsSize    int               `pulumi:"rootfs_size,optional"`
-	Entrypoint    string            `pulumi:"entrypoint,optional"`
-	Mounts        []Mount           `pulumi:"mounts,optional"`
-	Zlogs         []Zlog            `pulumi:"zlogs,optional"`
-	EnvVars       map[string]string `pulumi:"env_vars,optional"`
+	Name           string            `pulumi:"name"`
+	Flist          string            `pulumi:"flist"`
+	NetworkName    string            `pulumi:"network_name"`
+	CPU            int               `pulumi:"cpu"`
+	Memory         int               `pulumi:"memory"`
+	FlistChecksum  string            `pulumi:"flist_checksum,optional"`
+	PublicIP       bool              `pulumi:"public_ip,optional"`
+	PublicIP6      bool              `pulumi:"public_ip6,optional"`
+	Planetary      bool              `pulumi:"planetary,optional"`
+	MyceliumIPSeed string            `pulumi:"mycelium_ip_seed,optional"`
+	Description    string            `pulumi:"description,optional"`
+	GPUs           []zos.GPU         `pulumi:"gpus,optional"`
+	RootfsSize     int               `pulumi:"rootfs_size,optional"`
+	Entrypoint     string            `pulumi:"entrypoint,optional"`
+	Mounts         []Mount           `pulumi:"mounts,optional"`
+	Zlogs          []Zlog            `pulumi:"zlogs,optional"`
+	EnvVars        map[string]string `pulumi:"env_vars,optional"`
 }
 
 // VMComputed is a virtual machine computed struct
 type VMComputed struct {
 	ComputedIP  string `pulumi:"computed_ip"`
 	ComputedIP6 string `pulumi:"computed_ip6"`
-	YggIP       string `pulumi:"ygg_ip"`
+	PlanetaryIP string `pulumi:"planetary_ip"`
+	MyceliumIP  string `pulumi:"mycelium_ip"`
 	ConsoleURL  string `pulumi:"console_url"`
 	IP          string `pulumi:"ip,optional"`
 }
@@ -177,23 +180,29 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 			vm.EnvVars["SSH_KEY"] = sshKey
 		}
 
+		myceliumIPSeed, err := hex.DecodeString(vm.MyceliumIPSeed)
+		if err != nil {
+			return workloads.Deployment{}, err
+		}
+
 		vms = append(vms, workloads.VM{
-			Name:          vm.Name,
-			Flist:         vm.Flist,
-			NetworkName:   vm.NetworkName,
-			FlistChecksum: vm.FlistChecksum,
-			PublicIP:      vm.PublicIP,
-			PublicIP6:     vm.PublicIP6,
-			Planetary:     vm.Planetary,
-			Description:   vm.Description,
-			GPUs:          vm.GPUs,
-			CPU:           vm.CPU,
-			Memory:        vm.Memory,
-			RootfsSize:    vm.RootfsSize,
-			Entrypoint:    vm.Entrypoint,
-			Mounts:        mounts,
-			Zlogs:         zlogs,
-			EnvVars:       vm.EnvVars,
+			Name:           vm.Name,
+			Flist:          vm.Flist,
+			NetworkName:    vm.NetworkName,
+			FlistChecksum:  vm.FlistChecksum,
+			PublicIP:       vm.PublicIP,
+			PublicIP6:      vm.PublicIP6,
+			Planetary:      vm.Planetary,
+			MyceliumIPSeed: myceliumIPSeed,
+			Description:    vm.Description,
+			GPUs:           vm.GPUs,
+			CPU:            vm.CPU,
+			Memory:         vm.Memory,
+			RootfsSize:     vm.RootfsSize,
+			Entrypoint:     vm.Entrypoint,
+			Mounts:         mounts,
+			Zlogs:          zlogs,
+			EnvVars:        vm.EnvVars,
 		})
 	}
 
@@ -309,22 +318,23 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 		}
 
 		vms = append(vms, VMInput{
-			Name:          vm.Name,
-			Flist:         vm.Flist,
-			NetworkName:   vm.NetworkName,
-			FlistChecksum: vm.FlistChecksum,
-			PublicIP:      vm.PublicIP,
-			PublicIP6:     vm.PublicIP6,
-			Planetary:     vm.Planetary,
-			Description:   vm.Description,
-			GPUs:          vm.GPUs,
-			CPU:           vm.CPU,
-			Memory:        vm.Memory,
-			RootfsSize:    vm.RootfsSize,
-			Entrypoint:    vm.Entrypoint,
-			Mounts:        mounts,
-			Zlogs:         zlogs,
-			EnvVars:       vm.EnvVars,
+			Name:           vm.Name,
+			Flist:          vm.Flist,
+			NetworkName:    vm.NetworkName,
+			FlistChecksum:  vm.FlistChecksum,
+			PublicIP:       vm.PublicIP,
+			PublicIP6:      vm.PublicIP6,
+			Planetary:      vm.Planetary,
+			MyceliumIPSeed: hex.EncodeToString(vm.MyceliumIPSeed),
+			Description:    vm.Description,
+			GPUs:           vm.GPUs,
+			CPU:            vm.CPU,
+			Memory:         vm.Memory,
+			RootfsSize:     vm.RootfsSize,
+			Entrypoint:     vm.Entrypoint,
+			Mounts:         mounts,
+			Zlogs:          zlogs,
+			EnvVars:        vm.EnvVars,
 		})
 	}
 
@@ -391,7 +401,8 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 		vmsComputed = append(vmsComputed, VMComputed{
 			ComputedIP:  vm.ComputedIP,
 			ComputedIP6: vm.ComputedIP6,
-			YggIP:       vm.YggIP,
+			MyceliumIP:  vm.MyceliumIP,
+			PlanetaryIP: vm.PlanetaryIP,
 			ConsoleURL:  vm.ConsoleURL,
 			IP:          vm.IP,
 		})
@@ -436,7 +447,8 @@ func updateDeploymentFromState(deployment *workloads.Deployment, state Deploymen
 	for i, vm := range state.VmsComputed {
 		deployment.Vms[i].ComputedIP = vm.ComputedIP
 		deployment.Vms[i].ComputedIP6 = vm.ComputedIP6
-		deployment.Vms[i].YggIP = vm.YggIP
+		deployment.Vms[i].PlanetaryIP = vm.PlanetaryIP
+		deployment.Vms[i].MyceliumIP = vm.MyceliumIP
 		deployment.Vms[i].ConsoleURL = vm.ConsoleURL
 		deployment.Vms[i].IP = vm.IP
 	}

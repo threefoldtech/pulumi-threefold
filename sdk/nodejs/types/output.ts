@@ -30,9 +30,9 @@ export namespace provider {
         console_url: string;
         ip: string;
         network_name: string;
+        planetary_ip: string;
         ssh_key: string;
         token: string;
-        ygg_ip: string;
     }
 
     export interface K8sNodeInput {
@@ -86,7 +86,8 @@ export namespace provider {
         computed_ip6: string;
         console_url: string;
         ip?: string;
-        ygg_ip: string;
+        mycelium_ip: string;
+        planetary_ip: string;
     }
 
     export interface VMInput {
@@ -99,6 +100,7 @@ export namespace provider {
         gpus?: string[];
         memory: number;
         mounts?: outputs.provider.Mount[];
+        mycelium_ip_seed?: string;
         name: string;
         network_name: string;
         planetary?: boolean;

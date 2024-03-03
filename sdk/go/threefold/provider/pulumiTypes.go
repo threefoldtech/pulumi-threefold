@@ -325,9 +325,9 @@ type K8sNodeComputed struct {
 	Console_url  string `pulumi:"console_url"`
 	Ip           string `pulumi:"ip"`
 	Network_name string `pulumi:"network_name"`
+	Planetary_ip string `pulumi:"planetary_ip"`
 	Ssh_key      string `pulumi:"ssh_key"`
 	Token        string `pulumi:"token"`
-	Ygg_ip       string `pulumi:"ygg_ip"`
 }
 
 // K8sNodeComputedInput is an input type that accepts K8sNodeComputedArgs and K8sNodeComputedOutput values.
@@ -347,9 +347,9 @@ type K8sNodeComputedArgs struct {
 	Console_url  pulumi.StringInput `pulumi:"console_url"`
 	Ip           pulumi.StringInput `pulumi:"ip"`
 	Network_name pulumi.StringInput `pulumi:"network_name"`
+	Planetary_ip pulumi.StringInput `pulumi:"planetary_ip"`
 	Ssh_key      pulumi.StringInput `pulumi:"ssh_key"`
 	Token        pulumi.StringInput `pulumi:"token"`
-	Ygg_ip       pulumi.StringInput `pulumi:"ygg_ip"`
 }
 
 func (K8sNodeComputedArgs) ElementType() reflect.Type {
@@ -423,16 +423,16 @@ func (o K8sNodeComputedOutput) Network_name() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Network_name }).(pulumi.StringOutput)
 }
 
+func (o K8sNodeComputedOutput) Planetary_ip() pulumi.StringOutput {
+	return o.ApplyT(func(v K8sNodeComputed) string { return v.Planetary_ip }).(pulumi.StringOutput)
+}
+
 func (o K8sNodeComputedOutput) Ssh_key() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Ssh_key }).(pulumi.StringOutput)
 }
 
 func (o K8sNodeComputedOutput) Token() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Token }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Ygg_ip() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Ygg_ip }).(pulumi.StringOutput)
 }
 
 type K8sNodeComputedMapOutput struct{ *pulumi.OutputState }
@@ -1041,7 +1041,8 @@ type VMComputed struct {
 	Computed_ip6 string  `pulumi:"computed_ip6"`
 	Console_url  string  `pulumi:"console_url"`
 	Ip           *string `pulumi:"ip"`
-	Ygg_ip       string  `pulumi:"ygg_ip"`
+	Mycelium_ip  string  `pulumi:"mycelium_ip"`
+	Planetary_ip string  `pulumi:"planetary_ip"`
 }
 
 // VMComputedInput is an input type that accepts VMComputedArgs and VMComputedOutput values.
@@ -1060,7 +1061,8 @@ type VMComputedArgs struct {
 	Computed_ip6 pulumi.StringInput    `pulumi:"computed_ip6"`
 	Console_url  pulumi.StringInput    `pulumi:"console_url"`
 	Ip           pulumi.StringPtrInput `pulumi:"ip"`
-	Ygg_ip       pulumi.StringInput    `pulumi:"ygg_ip"`
+	Mycelium_ip  pulumi.StringInput    `pulumi:"mycelium_ip"`
+	Planetary_ip pulumi.StringInput    `pulumi:"planetary_ip"`
 }
 
 func (VMComputedArgs) ElementType() reflect.Type {
@@ -1130,8 +1132,12 @@ func (o VMComputedOutput) Ip() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VMComputed) *string { return v.Ip }).(pulumi.StringPtrOutput)
 }
 
-func (o VMComputedOutput) Ygg_ip() pulumi.StringOutput {
-	return o.ApplyT(func(v VMComputed) string { return v.Ygg_ip }).(pulumi.StringOutput)
+func (o VMComputedOutput) Mycelium_ip() pulumi.StringOutput {
+	return o.ApplyT(func(v VMComputed) string { return v.Mycelium_ip }).(pulumi.StringOutput)
+}
+
+func (o VMComputedOutput) Planetary_ip() pulumi.StringOutput {
+	return o.ApplyT(func(v VMComputed) string { return v.Planetary_ip }).(pulumi.StringOutput)
 }
 
 type VMComputedArrayOutput struct{ *pulumi.OutputState }
@@ -1155,22 +1161,23 @@ func (o VMComputedArrayOutput) Index(i pulumi.IntInput) VMComputedOutput {
 }
 
 type VMInput struct {
-	Cpu            int               `pulumi:"cpu"`
-	Description    *string           `pulumi:"description"`
-	Entrypoint     *string           `pulumi:"entrypoint"`
-	Env_vars       map[string]string `pulumi:"env_vars"`
-	Flist          string            `pulumi:"flist"`
-	Flist_checksum *string           `pulumi:"flist_checksum"`
-	Gpus           []string          `pulumi:"gpus"`
-	Memory         int               `pulumi:"memory"`
-	Mounts         []Mount           `pulumi:"mounts"`
-	Name           string            `pulumi:"name"`
-	Network_name   string            `pulumi:"network_name"`
-	Planetary      *bool             `pulumi:"planetary"`
-	Public_ip      *bool             `pulumi:"public_ip"`
-	Public_ip6     *bool             `pulumi:"public_ip6"`
-	Rootfs_size    *int              `pulumi:"rootfs_size"`
-	Zlogs          []Zlog            `pulumi:"zlogs"`
+	Cpu              int               `pulumi:"cpu"`
+	Description      *string           `pulumi:"description"`
+	Entrypoint       *string           `pulumi:"entrypoint"`
+	Env_vars         map[string]string `pulumi:"env_vars"`
+	Flist            string            `pulumi:"flist"`
+	Flist_checksum   *string           `pulumi:"flist_checksum"`
+	Gpus             []string          `pulumi:"gpus"`
+	Memory           int               `pulumi:"memory"`
+	Mounts           []Mount           `pulumi:"mounts"`
+	Mycelium_ip_seed *string           `pulumi:"mycelium_ip_seed"`
+	Name             string            `pulumi:"name"`
+	Network_name     string            `pulumi:"network_name"`
+	Planetary        *bool             `pulumi:"planetary"`
+	Public_ip        *bool             `pulumi:"public_ip"`
+	Public_ip6       *bool             `pulumi:"public_ip6"`
+	Rootfs_size      *int              `pulumi:"rootfs_size"`
+	Zlogs            []Zlog            `pulumi:"zlogs"`
 }
 
 // VMInputInput is an input type that accepts VMInputArgs and VMInputOutput values.
@@ -1185,22 +1192,23 @@ type VMInputInput interface {
 }
 
 type VMInputArgs struct {
-	Cpu            pulumi.IntInput         `pulumi:"cpu"`
-	Description    pulumi.StringPtrInput   `pulumi:"description"`
-	Entrypoint     pulumi.StringPtrInput   `pulumi:"entrypoint"`
-	Env_vars       pulumi.StringMapInput   `pulumi:"env_vars"`
-	Flist          pulumi.StringInput      `pulumi:"flist"`
-	Flist_checksum pulumi.StringPtrInput   `pulumi:"flist_checksum"`
-	Gpus           pulumi.StringArrayInput `pulumi:"gpus"`
-	Memory         pulumi.IntInput         `pulumi:"memory"`
-	Mounts         MountArrayInput         `pulumi:"mounts"`
-	Name           pulumi.StringInput      `pulumi:"name"`
-	Network_name   pulumi.StringInput      `pulumi:"network_name"`
-	Planetary      pulumi.BoolPtrInput     `pulumi:"planetary"`
-	Public_ip      pulumi.BoolPtrInput     `pulumi:"public_ip"`
-	Public_ip6     pulumi.BoolPtrInput     `pulumi:"public_ip6"`
-	Rootfs_size    pulumi.IntPtrInput      `pulumi:"rootfs_size"`
-	Zlogs          ZlogArrayInput          `pulumi:"zlogs"`
+	Cpu              pulumi.IntInput         `pulumi:"cpu"`
+	Description      pulumi.StringPtrInput   `pulumi:"description"`
+	Entrypoint       pulumi.StringPtrInput   `pulumi:"entrypoint"`
+	Env_vars         pulumi.StringMapInput   `pulumi:"env_vars"`
+	Flist            pulumi.StringInput      `pulumi:"flist"`
+	Flist_checksum   pulumi.StringPtrInput   `pulumi:"flist_checksum"`
+	Gpus             pulumi.StringArrayInput `pulumi:"gpus"`
+	Memory           pulumi.IntInput         `pulumi:"memory"`
+	Mounts           MountArrayInput         `pulumi:"mounts"`
+	Mycelium_ip_seed pulumi.StringPtrInput   `pulumi:"mycelium_ip_seed"`
+	Name             pulumi.StringInput      `pulumi:"name"`
+	Network_name     pulumi.StringInput      `pulumi:"network_name"`
+	Planetary        pulumi.BoolPtrInput     `pulumi:"planetary"`
+	Public_ip        pulumi.BoolPtrInput     `pulumi:"public_ip"`
+	Public_ip6       pulumi.BoolPtrInput     `pulumi:"public_ip6"`
+	Rootfs_size      pulumi.IntPtrInput      `pulumi:"rootfs_size"`
+	Zlogs            ZlogArrayInput          `pulumi:"zlogs"`
 }
 
 func (VMInputArgs) ElementType() reflect.Type {
@@ -1288,6 +1296,10 @@ func (o VMInputOutput) Memory() pulumi.IntOutput {
 
 func (o VMInputOutput) Mounts() MountArrayOutput {
 	return o.ApplyT(func(v VMInput) []Mount { return v.Mounts }).(MountArrayOutput)
+}
+
+func (o VMInputOutput) Mycelium_ip_seed() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VMInput) *string { return v.Mycelium_ip_seed }).(pulumi.StringPtrOutput)
 }
 
 func (o VMInputOutput) Name() pulumi.StringOutput {
