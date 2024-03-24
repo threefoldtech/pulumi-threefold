@@ -391,7 +391,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 		vmsComputed = append(vmsComputed, VMComputed{
 			ComputedIP:  vm.ComputedIP,
 			ComputedIP6: vm.ComputedIP6,
-			YggIP:       vm.YggIP,
+			YggIP:       vm.PlanetaryIP,
 			ConsoleURL:  vm.ConsoleURL,
 			IP:          vm.IP,
 		})
@@ -436,7 +436,7 @@ func updateDeploymentFromState(deployment *workloads.Deployment, state Deploymen
 	for i, vm := range state.VmsComputed {
 		deployment.Vms[i].ComputedIP = vm.ComputedIP
 		deployment.Vms[i].ComputedIP6 = vm.ComputedIP6
-		deployment.Vms[i].YggIP = vm.YggIP
+		deployment.Vms[i].PlanetaryIP = vm.YggIP
 		deployment.Vms[i].ConsoleURL = vm.ConsoleURL
 		deployment.Vms[i].IP = vm.IP
 	}
