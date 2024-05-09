@@ -3,8 +3,8 @@ runtime: yaml
 
 plugins:
   providers:
-    - name: pulumi-resource-threefold
-      path: ..
+    - name: threefold
+      path: ../../../bin
 
 resources:
   provider:

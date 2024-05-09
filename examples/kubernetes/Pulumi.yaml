@@ -62,4 +62,4 @@ resources:
 
 outputs:
   node_deployment_id: ${kubernetes.node_deployment_id}
-  ygg_ip: ${kubernetes.master_computed.ygg_ip}
+  planetary_ip: ${kubernetes.master_computed.planetary_ip}

@@ -43,7 +43,7 @@ test:
 	@echo "Running Tests"
 	cd provider && go test -v ./...
 
-integration:
+integration: build
 	@echo "Running integration tests"
 	go test -v ./tests
 

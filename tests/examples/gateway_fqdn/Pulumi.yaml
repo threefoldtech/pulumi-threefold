@@ -3,8 +3,8 @@ runtime: yaml
 
 plugins:
   providers:
-    - name: pulumi-resource-threefold
-      path: ..
+    - name: threefold
+      path: ../../../bin
 
 resources:
   provider:
@@ -64,4 +64,4 @@ resources:
       node_id: 14
       fqdn: remote.omar.grid.tf
       backends:
-        - http://[${deployment.vms_computed[0].ygg_ip}]:9000
+        - http://[${deployment.vms_computed[0].planetary_ip}]:9000
