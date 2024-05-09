@@ -35,9 +35,9 @@ func TestSchedulerParser(t *testing.T) {
 
 	t.Run("parsing input success", func(t *testing.T) {
 		filter, _, _ := parseSchedulerInput(schedulerInput)
-		assert.Equal(t, filter.FreeMRU, ref(uint64(schedulerInput.MRU)))
-		assert.Equal(t, filter.FreeSRU, ref(uint64(schedulerInput.SRU)))
-		assert.Equal(t, filter.FreeHRU, ref(uint64(schedulerInput.HRU)))
+		assert.Equal(t, filter.FreeMRU, convertGBToBytes(uint64(schedulerInput.MRU)))
+		assert.Equal(t, filter.FreeSRU, convertGBToBytes(uint64(schedulerInput.SRU)))
+		assert.Equal(t, filter.FreeHRU, convertGBToBytes(uint64(schedulerInput.HRU)))
 		assert.Equal(t, filter.Country, &schedulerInput.Country)
 		assert.Equal(t, filter.City, &schedulerInput.City)
 	})
