@@ -118,7 +118,8 @@ func writeNodeJSClient(pkg *schema.Package, outDir string) {
 	}
 
 	overlays := map[string][]byte{}
-	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays)
+	localDependencies := map[string]string{}
+	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, localDependencies)
 	if err != nil {
 		panic(err)
 	}
@@ -148,7 +149,8 @@ func writeDotnetClient(pkg *schema.Package, outDir string) {
 	}
 
 	overlays := map[string][]byte{}
-	files, err := dotnetgen.GeneratePackage("pulumigen", pkg, overlays)
+	localDependencies := map[string]string{}
+	files, err := dotnetgen.GeneratePackage("pulumigen", pkg, overlays, localDependencies)
 	if err != nil {
 		panic(err)
 	}

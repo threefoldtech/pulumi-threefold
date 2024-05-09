@@ -6,7 +6,6 @@ linters:
     - govet
     - ineffassign
     - lll
-    - megacheck
     - misspell
     - nakedret
     - unconvert
@@ -20,8 +19,9 @@ linters-settings:
         arguments:
           - disableStutteringCheck
 
-run:
-  skip-files:
+issues:
+  exclude-files:
     - schema.go
     - pulumiManifest.go
+run:
   timeout: 20m
