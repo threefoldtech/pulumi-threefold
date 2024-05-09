@@ -3,8 +3,8 @@ runtime: yaml
 
 plugins:
   providers:
-    - name: pulumi-resource-threefold
-      path: ..
+    - name: threefold
+      path: ../../../bin
 
 resources:
   provider:
@@ -17,8 +17,8 @@ resources:
     options:
       provider: ${provider}
     properties:
-      mru: 2048
-      sru: 6144
+      mru: 6
+      sru: 6
       farm_ids: [1]
 
   network:

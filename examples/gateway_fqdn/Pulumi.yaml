@@ -12,7 +12,7 @@ resources:
     options:
       provider: ${provider}
     properties:
-      mru: 256
+      mru: 0.25 # 256 megabytes
       farm_ids: [1]
       ipv4: true
       free_ips: 1
@@ -59,7 +59,7 @@ resources:
       node_id: 14
       fqdn: remote.omar.grid.tf
       backends:
-        - http://[${deployment.vms_computed[0].ygg_ip}]:9000
+        - http://[${deployment.vms_computed[0].planetary_ip}]:9000
 
 outputs:
   node_deployment_id: ${gatewayFQDN.node_deployment_id}

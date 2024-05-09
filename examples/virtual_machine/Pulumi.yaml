@@ -12,8 +12,8 @@ resources:
     options:
       provider: ${provider}
     properties:
-      mru: 256
-      sru: 2048
+      mru: 0.25 # 256 megabytes
+      sru: 2
       farm_ids: [1]
 
   network:
@@ -28,6 +28,8 @@ resources:
       nodes:
         - ${scheduler.nodes[0]}
       ip_range: 10.1.0.0/16
+      # mycelium_keys:
+      #   ${scheduler.nodes[0]}: 9751c596c7c951aedad1a5f78f18b59515064adf660e0d55abead65e6fbbd627 # hex encoded 32 bytes
 
   deployment:
     type: threefold:provider:Deployment
@@ -47,6 +49,7 @@ resources:
           cpu: 2
           memory: 256
           planetary: true
+          # mycelium_ip_seed: b60f2b7ec39c # hex encoded 6 bytes
           mounts:
             - disk_name: data
               mount_point: /app
@@ -59,4 +62,5 @@ resources:
 
 outputs:
   node_deployment_id: ${deployment.node_deployment_id}
-  ygg_ip: ${deployment.vms_computed[0].ygg_ip}
+  planetary_ip: ${deployment.vms_computed[0].planetary_ip}
+  # mycelium_ip: ${deployment.vms_computed[0].mycelium_ip}

@@ -19,6 +19,11 @@ func TestVM(t *testing.T) {
 		network = devNetwork
 	}
 
+	examplesDir := os.Getenv("EXAMPLES")
+	if examplesDir == "" {
+		examplesDir = examplesTestDir
+	}
+
 	publicKey, privateKey, err := generateSSHKeyPair()
 	assert.NoError(t, err)
 
@@ -31,7 +36,7 @@ func TestVM(t *testing.T) {
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "examples/virtual_machine"),
+		Dir:              path.Join(cwd, fmt.Sprintf("%s/virtual_machine", examplesDir)),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,
@@ -46,7 +51,7 @@ func TestVM(t *testing.T) {
 					disks := res.Outputs["disks"].([]interface{})[0].(map[string]interface{})
 					mounts := vms["mounts"].([]interface{})[0].(map[string]interface{})
 
-					yggIP := vmsComputed["ygg_ip"].(string)
+					yggIP := vmsComputed["planetary_ip"].(string)
 					mountPoint := mounts["mount_point"].(string)
 					diskSize := disks["size"].(float64)
 

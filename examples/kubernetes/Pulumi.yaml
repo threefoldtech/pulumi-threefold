@@ -12,8 +12,8 @@ resources:
     options:
       provider: ${provider}
     properties:
-      mru: 2048
-      sru: 6144
+      mru: 6
+      sru: 6
       farm_ids: [1]
 
   network:
@@ -62,4 +62,4 @@ resources:
 
 outputs:
   node_deployment_id: ${kubernetes.node_deployment_id}
-  ygg_ip: ${kubernetes.master_computed.ygg_ip}
+  planetary_ip: ${kubernetes.master_computed.planetary_ip}
