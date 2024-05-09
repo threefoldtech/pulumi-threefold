@@ -17,8 +17,8 @@ resources:
     options:
       provider: ${provider}
     properties:
-      mru: 256
-      sru: 2048
+      mru: 0.25 # 256 megabytes
+      sru: 2
       farm_ids: [1]
 
   network:
