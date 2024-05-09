@@ -23,17 +23,17 @@ func parseSchedulerInput(input SchedulerArgs) (types.NodeFilter, []uint64, []uin
 	}
 
 	if input.MRU != 0 {
-		filter.FreeMRU = ref(uint64(input.MRU))
+		filter.FreeMRU = convertGBToBytes(uint64(input.MRU))
 	}
 
 	if input.HRU != 0 {
-		filter.FreeHRU = ref(uint64(input.HRU))
-		hdds = append(hdds, *convertGBToBytes(*filter.FreeHRU))
+		filter.FreeHRU = convertGBToBytes(uint64(input.HRU))
+		hdds = append(hdds, *filter.FreeHRU)
 	}
 
 	if input.SRU != 0 {
-		filter.FreeSRU = ref(uint64(input.SRU))
-		ssds = append(ssds, *convertGBToBytes(*filter.FreeSRU))
+		filter.FreeSRU = convertGBToBytes(uint64(input.SRU))
+		ssds = append(ssds, *filter.FreeSRU)
 	}
 
 	if input.FreeIPs != 0 {

@@ -12,7 +12,6 @@ resources:
     options:
       provider: ${provider}
     properties:
-      mru: 256
       farm_ids: [1]
       ipv4: true
       free_ips: 1
