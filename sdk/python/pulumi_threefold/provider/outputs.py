@@ -101,17 +101,17 @@ class K8sNodeComputed(dict):
                  console_url: str,
                  ip: str,
                  network_name: str,
+                 planetary_ip: str,
                  ssh_key: str,
-                 token: str,
-                 ygg_ip: str):
+                 token: str):
         pulumi.set(__self__, "computed_ip", computed_ip)
         pulumi.set(__self__, "computed_ip6", computed_ip6)
         pulumi.set(__self__, "console_url", console_url)
         pulumi.set(__self__, "ip", ip)
         pulumi.set(__self__, "network_name", network_name)
+        pulumi.set(__self__, "planetary_ip", planetary_ip)
         pulumi.set(__self__, "ssh_key", ssh_key)
         pulumi.set(__self__, "token", token)
-        pulumi.set(__self__, "ygg_ip", ygg_ip)
 
     @property
     @pulumi.getter
@@ -140,6 +140,11 @@ class K8sNodeComputed(dict):
 
     @property
     @pulumi.getter
+    def planetary_ip(self) -> str:
+        return pulumi.get(self, "planetary_ip")
+
+    @property
+    @pulumi.getter
     def ssh_key(self) -> str:
         return pulumi.get(self, "ssh_key")
 
@@ -147,11 +152,6 @@ class K8sNodeComputed(dict):
     @pulumi.getter
     def token(self) -> str:
         return pulumi.get(self, "token")
-
-    @property
-    @pulumi.getter
-    def ygg_ip(self) -> str:
-        return pulumi.get(self, "ygg_ip")
 
 
 @pulumi.output_type
@@ -413,12 +413,14 @@ class VMComputed(dict):
                  computed_ip: str,
                  computed_ip6: str,
                  console_url: str,
-                 ygg_ip: str,
+                 mycelium_ip: str,
+                 planetary_ip: str,
                  ip: Optional[str] = None):
         pulumi.set(__self__, "computed_ip", computed_ip)
         pulumi.set(__self__, "computed_ip6", computed_ip6)
         pulumi.set(__self__, "console_url", console_url)
-        pulumi.set(__self__, "ygg_ip", ygg_ip)
+        pulumi.set(__self__, "mycelium_ip", mycelium_ip)
+        pulumi.set(__self__, "planetary_ip", planetary_ip)
         if ip is not None:
             pulumi.set(__self__, "ip", ip)
 
@@ -439,8 +441,13 @@ class VMComputed(dict):
 
     @property
     @pulumi.getter
-    def ygg_ip(self) -> str:
-        return pulumi.get(self, "ygg_ip")
+    def mycelium_ip(self) -> str:
+        return pulumi.get(self, "mycelium_ip")
+
+    @property
+    @pulumi.getter
+    def planetary_ip(self) -> str:
+        return pulumi.get(self, "planetary_ip")
 
     @property
     @pulumi.getter
@@ -462,6 +469,7 @@ class VMInput(dict):
                  flist_checksum: Optional[str] = None,
                  gpus: Optional[Sequence[str]] = None,
                  mounts: Optional[Sequence['outputs.Mount']] = None,
+                 mycelium_ip_seed: Optional[str] = None,
                  planetary: Optional[bool] = None,
                  public_ip: Optional[bool] = None,
                  public_ip6: Optional[bool] = None,
@@ -484,6 +492,8 @@ class VMInput(dict):
             pulumi.set(__self__, "gpus", gpus)
         if mounts is not None:
             pulumi.set(__self__, "mounts", mounts)
+        if mycelium_ip_seed is not None:
+            pulumi.set(__self__, "mycelium_ip_seed", mycelium_ip_seed)
         if planetary is not None:
             pulumi.set(__self__, "planetary", planetary)
         if public_ip is not None:
@@ -549,6 +559,11 @@ class VMInput(dict):
     @pulumi.getter
     def mounts(self) -> Optional[Sequence['outputs.Mount']]:
         return pulumi.get(self, "mounts")
+
+    @property
+    @pulumi.getter
+    def mycelium_ip_seed(self) -> Optional[str]:
+        return pulumi.get(self, "mycelium_ip_seed")
 
     @property
     @pulumi.getter
