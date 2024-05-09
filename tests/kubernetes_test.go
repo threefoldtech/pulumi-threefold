@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"strings"
@@ -11,6 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const examplesTestDir = "examples"
+
 func TestKubernetes(t *testing.T) {
 	mnemonic := os.Getenv("MNEMONIC")
 	assert.NotEmpty(t, mnemonic)
@@ -18,6 +21,11 @@ func TestKubernetes(t *testing.T) {
 	network := os.Getenv("NETWORK")
 	if network == "" {
 		network = devNetwork
+	}
+
+	examplesDir := os.Getenv("EXAMPLES")
+	if examplesDir == "" {
+		examplesDir = examplesTestDir
 	}
 
 	publicKey, privateKey, err := generateSSHKeyPair()
@@ -32,7 +40,7 @@ func TestKubernetes(t *testing.T) {
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "examples/kubernetes"),
+		Dir:              path.Join(cwd, fmt.Sprintf("%s/kubernetes", examplesDir)),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,
@@ -42,7 +50,7 @@ func TestKubernetes(t *testing.T) {
 				if res.Type == "threefold:provider:Kubernetes" {
 					assert.NotEmpty(t, res.Outputs["node_deployment_id"])
 
-					yggIP := res.Outputs["master_computed"].(map[string]interface{})["ygg_ip"].(string)
+					yggIP := res.Outputs["master_computed"].(map[string]interface{})["planetary_ip"].(string)
 					assert.NotEmpty(t, yggIP)
 					AssertNodesAreReady(t, yggIP, privateKey, 3)
 				}

@@ -20,13 +20,18 @@ func TestZDB(t *testing.T) {
 		network = devNetwork
 	}
 
+	examplesDir := os.Getenv("EXAMPLES")
+	if examplesDir == "" {
+		examplesDir = examplesTestDir
+	}
+
 	cwd, _ := os.Getwd()
 
 	integration.ProgramTest(t, &integration.ProgramTestOptions{
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "examples/zdb"),
+		Dir:              path.Join(cwd, fmt.Sprintf("%s/zdb", examplesDir)),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,

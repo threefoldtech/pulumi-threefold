@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"testing"
@@ -18,13 +19,18 @@ func TestNetwork(t *testing.T) {
 		network = devNetwork
 	}
 
+	examplesDir := os.Getenv("EXAMPLES")
+	if examplesDir == "" {
+		examplesDir = examplesTestDir
+	}
+
 	cwd, _ := os.Getwd()
 
 	integration.ProgramTest(t, &integration.ProgramTestOptions{
 		Quick:            true,
 		SkipRefresh:      true,
 		DestroyOnCleanup: true,
-		Dir:              path.Join(cwd, "examples/network"),
+		Dir:              path.Join(cwd, fmt.Sprintf("%s/network", examplesDir)),
 		Config: map[string]string{
 			"MNEMONIC": mnemonic,
 			"NETWORK":  network,
