@@ -19,6 +19,7 @@ class NetworkArgs:
                  name: pulumi.Input[str],
                  nodes: pulumi.Input[Sequence[Any]],
                  add_wg_access: Optional[pulumi.Input[bool]] = None,
+                 mycelium_keys: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  solution_type: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Network resource.
@@ -29,6 +30,8 @@ class NetworkArgs:
         pulumi.set(__self__, "nodes", nodes)
         if add_wg_access is not None:
             pulumi.set(__self__, "add_wg_access", add_wg_access)
+        if mycelium_keys is not None:
+            pulumi.set(__self__, "mycelium_keys", mycelium_keys)
         if solution_type is not None:
             pulumi.set(__self__, "solution_type", solution_type)
 
@@ -79,6 +82,15 @@ class NetworkArgs:
 
     @property
     @pulumi.getter
+    def mycelium_keys(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        return pulumi.get(self, "mycelium_keys")
+
+    @mycelium_keys.setter
+    def mycelium_keys(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "mycelium_keys", value)
+
+    @property
+    @pulumi.getter
     def solution_type(self) -> Optional[pulumi.Input[str]]:
         return pulumi.get(self, "solution_type")
 
@@ -95,6 +107,7 @@ class Network(pulumi.CustomResource):
                  add_wg_access: Optional[pulumi.Input[bool]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  ip_range: Optional[pulumi.Input[str]] = None,
+                 mycelium_keys: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  nodes: Optional[pulumi.Input[Sequence[Any]]] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
@@ -130,6 +143,7 @@ class Network(pulumi.CustomResource):
                  add_wg_access: Optional[pulumi.Input[bool]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  ip_range: Optional[pulumi.Input[str]] = None,
+                 mycelium_keys: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  nodes: Optional[pulumi.Input[Sequence[Any]]] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
@@ -149,6 +163,7 @@ class Network(pulumi.CustomResource):
             if ip_range is None and not opts.urn:
                 raise TypeError("Missing required property 'ip_range'")
             __props__.__dict__["ip_range"] = ip_range
+            __props__.__dict__["mycelium_keys"] = mycelium_keys
             if name is None and not opts.urn:
                 raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
@@ -190,6 +205,7 @@ class Network(pulumi.CustomResource):
         __props__.__dict__["external_ip"] = None
         __props__.__dict__["external_sk"] = None
         __props__.__dict__["ip_range"] = None
+        __props__.__dict__["mycelium_keys"] = None
         __props__.__dict__["name"] = None
         __props__.__dict__["node_deployment_id"] = None
         __props__.__dict__["nodes"] = None
@@ -227,6 +243,11 @@ class Network(pulumi.CustomResource):
     @pulumi.getter
     def ip_range(self) -> pulumi.Output[str]:
         return pulumi.get(self, "ip_range")
+
+    @property
+    @pulumi.getter
+    def mycelium_keys(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
+        return pulumi.get(self, "mycelium_keys")
 
     @property
     @pulumi.getter

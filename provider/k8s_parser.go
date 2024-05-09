@@ -28,7 +28,7 @@ type K8sNodeComputed struct {
 	ComputedIP  string `pulumi:"computed_ip"`
 	ComputedIP6 string `pulumi:"computed_ip6"`
 	IP          string `pulumi:"ip"`
-	YggIP       string `pulumi:"ygg_ip"`
+	PlanetaryIP string `pulumi:"planetary_ip"`
 	ConsoleURL  string `pulumi:"console_url"`
 	SSHKey      string `pulumi:"ssh_key"`
 	Token       string `pulumi:"token"`
@@ -53,7 +53,7 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 	masterComputed := &K8sNodeComputed{
 		ComputedIP:  k8sCluster.Master.ComputedIP,
 		ComputedIP6: k8sCluster.Master.ComputedIP6,
-		YggIP:       k8sCluster.Master.YggIP,
+		PlanetaryIP: k8sCluster.Master.PlanetaryIP,
 		IP:          k8sCluster.Master.IP,
 		NetworkName: k8sCluster.Master.NetworkName,
 		Token:       k8sCluster.Master.Token,
@@ -82,7 +82,7 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 		newWorkerComputed := K8sNodeComputed{
 			ComputedIP:  w.ComputedIP,
 			ComputedIP6: w.ComputedIP6,
-			YggIP:       w.YggIP,
+			PlanetaryIP: w.PlanetaryIP,
 			IP:          w.IP,
 			NetworkName: w.NetworkName,
 			Token:       w.Token,
@@ -232,7 +232,7 @@ func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState)
 	k8sCluster.Master.ComputedIP = state.MasterComputed.ComputedIP
 	k8sCluster.Master.ComputedIP6 = state.MasterComputed.ComputedIP6
 	k8sCluster.Master.IP = state.MasterComputed.IP
-	k8sCluster.Master.YggIP = state.MasterComputed.YggIP
+	k8sCluster.Master.PlanetaryIP = state.MasterComputed.PlanetaryIP
 	k8sCluster.Master.ConsoleURL = state.MasterComputed.ConsoleURL
 	k8sCluster.Master.SSHKey = state.MasterComputed.SSHKey
 	k8sCluster.Master.Token = state.MasterComputed.Token
@@ -246,7 +246,7 @@ func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState)
 			v.ComputedIP = workerComputed.ComputedIP
 			v.ComputedIP6 = workerComputed.ComputedIP6
 			v.IP = workerComputed.IP
-			v.YggIP = workerComputed.YggIP
+			v.PlanetaryIP = workerComputed.PlanetaryIP
 			v.ConsoleURL = workerComputed.ConsoleURL
 			v.SSHKey = workerComputed.SSHKey
 			v.Token = workerComputed.Token
