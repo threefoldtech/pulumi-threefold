@@ -184,8 +184,8 @@ github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsT
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/texttheater/golang-levenshtein v1.0.1 h1:+cRNoVrfiwufQPhoMzB6N0Yf/Mqajr6t1lOv8GyGE2U=
 github.com/texttheater/golang-levenshtein v1.0.1/go.mod h1:PYAKrbF5sAiq9wd+H82hs7gNaen0CplQ9uvm6+enD/8=
-github.com/threefoldtech/pulumi-threefold/sdk v0.5.0 h1:teAtljBGG90CpTs+56eZ5dInUJixnjpJd70wMoQFzV4=
-github.com/threefoldtech/pulumi-threefold/sdk v0.5.0/go.mod h1:xmcS4VAeTOefkVgGiFej6f8FUKxE1KTw0RuFAP2GqH8=
+github.com/threefoldtech/pulumi-threefold/sdk v0.6.0 h1:UBe7wMHk/KL3ESmfICJ6RbQ8oA98Aoy32IKVdwxujN8=
+github.com/threefoldtech/pulumi-threefold/sdk v0.6.0/go.mod h1:5qoFuBcNAk2sajT9s2DTR1zvKrdTnTg++RCzPndAOtg=
 github.com/tweekmonster/luser v0.0.0-20161003172636-3fa38070dbd7 h1:X9dsIWPuuEJlPX//UmRKophhOKCGXc46RVIGuttks68=
 github.com/tweekmonster/luser v0.0.0-20161003172636-3fa38070dbd7/go.mod h1:UxoP3EypF8JfGEjAII8jx1q8rQyDnX8qdTCs/UQBVIE=
 github.com/uber/jaeger-client-go v2.30.0+incompatible h1:D6wyKGCecFaSRUpo8lCVbaOOb6ThwMmTEbhRwtKR97o=
