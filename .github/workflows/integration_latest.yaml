@@ -1,4 +1,4 @@
-name: integration tests
+name: integration tests for latest version
 
 on:
   schedule:
@@ -40,8 +40,13 @@ jobs:
           sudo systemctl stop yggdrasil
           sudo systemctl start yggdrasil
 
+      - name: Install provider
+        run: make install_latest
+
       - name: Run Tests
-        run: make integration
+        run: go test -v ./tests
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
           NETWORK: ${{ matrix.network }}
+          EXAMPLES: ../../../examples
+
