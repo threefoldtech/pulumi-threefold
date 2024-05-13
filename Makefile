@@ -20,7 +20,7 @@ all: prepare lint build schema test
 
 prepare:
 	go work sync
-	for DIR in "provider" "sdk" "tests" "examples" ; do \
+	for DIR in "provider" "sdk" "tests" ; do \
 		cd $$DIR && go mod tidy && cd ../ ; \
 	done
 
@@ -69,12 +69,12 @@ clean:
 
 lint:
 	@echo "Installing golangci-lint" && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
-	for DIR in "provider" "sdk" "tests" "examples" ; do \
+	for DIR in "provider" "sdk" "tests" ; do \
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
 	done
 
 tidy:
-	for DIR in "provider" "sdk" "tests" "examples" ; do \
+	for DIR in "provider" "sdk" "tests" ; do \
 		cd $$DIR && go mod tidy && cd ../ ; \
 	done
 
@@ -116,3 +116,25 @@ install_python_sdk::
 
 install_go_sdk::
 	#target intentionally blank
+
+gen_examples: gen_go_example \
+	gen_nodejs_example \
+	gen_python_example \
+	gen_dotnet_example
+
+exmaple := virtual_machine #gateway_fqdn #gateway_name #zdb #kubernetes #virtual_machine #network
+
+gen_%_example:
+	rm -rf ${WORKING_DIR}/examples/$*/${exmaple}
+	pulumi convert \
+		--cwd ${WORKING_DIR}/examples/yaml/${exmaple} \
+		--logtostderr \
+		--generate-only \
+		--non-interactive \
+		--language $* \
+		--out ${WORKING_DIR}/examples/$*/${exmaple}
+
+define pulumi_login
+    export PULUMI_CONFIG_PASSPHRASE=asdfqwerty1234; \
+    pulumi login --local;
+endef
