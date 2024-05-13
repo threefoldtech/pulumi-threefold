@@ -1,7 +1,8 @@
 package provider
 
 import (
-	p "github.com/pulumi/pulumi-go-provider"
+	"context"
+
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -32,7 +33,7 @@ type NetworkState struct {
 }
 
 // Create creates network and deploy it
-func (*Network) Create(ctx p.Context, id string, input NetworkArgs, preview bool) (string, NetworkState, error) {
+func (*Network) Create(ctx context.Context, id string, input NetworkArgs, preview bool) (string, NetworkState, error) {
 	state := NetworkState{NetworkArgs: input}
 	if preview {
 		return id, state, nil
@@ -56,7 +57,7 @@ func (*Network) Create(ctx p.Context, id string, input NetworkArgs, preview bool
 
 // Update updates the arguments of the network resource
 func (*Network) Update(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	oldState NetworkState,
 	input NetworkArgs,
@@ -87,7 +88,7 @@ func (*Network) Update(
 }
 
 // Read get the state of the network resource
-func (*Network) Read(ctx p.Context, id string, oldState NetworkState) (string, NetworkState, error) {
+func (*Network) Read(ctx context.Context, id string, oldState NetworkState) (string, NetworkState, error) {
 	network, err := parseToZNet(oldState.NetworkArgs)
 	if err != nil {
 		return id, oldState, err
@@ -115,7 +116,7 @@ func (*Network) Read(ctx p.Context, id string, oldState NetworkState) (string, N
 }
 
 // Delete deletes the network resource
-func (*Network) Delete(ctx p.Context, id string, oldState NetworkState) error {
+func (*Network) Delete(ctx context.Context, id string, oldState NetworkState) error {
 	network, err := parseToZNet(oldState.NetworkArgs)
 	if err != nil {
 		return err

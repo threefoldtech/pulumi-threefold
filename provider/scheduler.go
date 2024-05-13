@@ -1,7 +1,8 @@
 package provider
 
 import (
-	p "github.com/pulumi/pulumi-go-provider"
+	"context"
+
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
@@ -44,7 +45,12 @@ type SchedulerState struct {
 }
 
 // Create creates scheduler
-func (*Scheduler) Create(ctx p.Context, id string, input SchedulerArgs, preview bool) (string, SchedulerState, error) {
+func (*Scheduler) Create(
+	ctx context.Context,
+	id string,
+	input SchedulerArgs,
+	preview bool,
+) (string, SchedulerState, error) {
 	state := SchedulerState{SchedulerArgs: input}
 	if preview {
 		return id, state, nil
@@ -68,7 +74,7 @@ func (*Scheduler) Create(ctx p.Context, id string, input SchedulerArgs, preview 
 
 // Update updates the arguments of the scheduler resource
 func (*Scheduler) Update(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	oldState SchedulerState,
 	input SchedulerArgs,
@@ -94,11 +100,11 @@ func (*Scheduler) Update(
 }
 
 // Read get the state of the scheduler resource
-func (*Scheduler) Read(ctx p.Context, id string, oldState SchedulerState) (string, SchedulerState, error) {
+func (*Scheduler) Read(ctx context.Context, id string, oldState SchedulerState) (string, SchedulerState, error) {
 	return id, oldState, nil
 }
 
 // Delete deletes the scheduler resource
-func (*Scheduler) Delete(ctx p.Context, id string, oldState SchedulerState) error {
+func (*Scheduler) Delete(ctx context.Context, id string, oldState SchedulerState) error {
 	return nil
 }

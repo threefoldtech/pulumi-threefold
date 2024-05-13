@@ -1,7 +1,8 @@
 package provider
 
 import (
-	p "github.com/pulumi/pulumi-go-provider"
+	"context"
+
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/threefoldtech/zos/pkg/gridtypes/zos"
 )
@@ -31,7 +32,7 @@ type GatewayFQDNState struct {
 
 // Create creates a fqdn gateway
 func (*GatewayFQDN) Create(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	input GatewayFQDNArgs,
 	preview bool) (string, GatewayFQDNState, error) {
@@ -63,7 +64,7 @@ func (*GatewayFQDN) Create(
 
 // Update updates the arguments of a fqdn gateway resource
 func (*GatewayFQDN) Update(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	oldState GatewayFQDNState,
 	input GatewayFQDNArgs,
@@ -100,7 +101,7 @@ func (*GatewayFQDN) Update(
 }
 
 // Read gets the state of the fqdn gateway resource
-func (*GatewayFQDN) Read(ctx p.Context, id string, oldState GatewayFQDNState) (string, GatewayFQDNState, error) {
+func (*GatewayFQDN) Read(ctx context.Context, id string, oldState GatewayFQDNState) (string, GatewayFQDNState, error) {
 	fqdnGateway, err := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
 	if err != nil {
 		return id, oldState, err
@@ -123,7 +124,7 @@ func (*GatewayFQDN) Read(ctx p.Context, id string, oldState GatewayFQDNState) (s
 }
 
 // Delete deletes a fqdn gateway resource
-func (*GatewayFQDN) Delete(ctx p.Context, id string, oldState GatewayFQDNState) error {
+func (*GatewayFQDN) Delete(ctx context.Context, id string, oldState GatewayFQDNState) error {
 	fqdnGateway, err := parseToGatewayFQDN(oldState.GatewayFQDNArgs)
 	if err != nil {
 		return err
