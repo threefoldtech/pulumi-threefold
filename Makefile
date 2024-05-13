@@ -116,3 +116,25 @@ install_python_sdk::
 
 install_go_sdk::
 	#target intentionally blank
+
+gen_examples: gen_go_example \
+	gen_nodejs_example \
+	gen_python_example \
+	gen_dotnet_example
+
+exmaple := kubernetes#virtual_machine #network
+
+gen_%_example:
+	# rm -rf ${WORKING_DIR}/examples/$*
+	pulumi convert \
+		--cwd ${WORKING_DIR}/examples/yaml/${exmaple} \
+		--logtostderr \
+		--generate-only \
+		--non-interactive \
+		--language $* \
+		--out ${WORKING_DIR}/examples/$*/${exmaple}
+
+define pulumi_login
+    export PULUMI_CONFIG_PASSPHRASE=asdfqwerty1234; \
+    pulumi login --local;
+endef
