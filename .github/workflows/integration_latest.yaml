@@ -43,10 +43,16 @@ jobs:
       - name: Install provider
         run: make install_latest
 
-      - name: Run Tests
+      - name: Run Tests for yaml examples
         run: go test -v ./tests
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
           NETWORK: ${{ matrix.network }}
           EXAMPLES: ../examples/yaml
 
+      - name: Run Tests for go examples
+        run: go test -v ./tests
+        env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          NETWORK: ${{ matrix.network }}
+          EXAMPLES: ../examples/go
