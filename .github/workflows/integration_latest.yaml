@@ -48,5 +48,5 @@ jobs:
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
           NETWORK: ${{ matrix.network }}
-          EXAMPLES: ../../../examples
+          EXAMPLES: examples
 
