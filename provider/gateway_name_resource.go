@@ -1,7 +1,8 @@
 package provider
 
 import (
-	p "github.com/pulumi/pulumi-go-provider"
+	"context"
+
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -31,7 +32,7 @@ type GatewayNameState struct {
 
 // Create creates GatewayName and deploy it
 func (*GatewayName) Create(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	input GatewayNameArgs,
 	preview bool) (string, GatewayNameState, error) {
@@ -62,7 +63,7 @@ func (*GatewayName) Create(
 
 // Update updates the GatewayName resource
 func (*GatewayName) Update(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	oldState GatewayNameState,
 	input GatewayNameArgs,
@@ -97,7 +98,7 @@ func (*GatewayName) Update(
 }
 
 // Read gets the state of the GatewayName resource
-func (*GatewayName) Read(ctx p.Context, id string, oldState GatewayNameState) (string, GatewayNameState, error) {
+func (*GatewayName) Read(ctx context.Context, id string, oldState GatewayNameState) (string, GatewayNameState, error) {
 	gw, err := parseToGWName(oldState.GatewayNameArgs)
 	if err != nil {
 		return id, oldState, err
@@ -119,7 +120,7 @@ func (*GatewayName) Read(ctx p.Context, id string, oldState GatewayNameState) (s
 }
 
 // Delete deletes the GatewayName resource
-func (*GatewayName) Delete(ctx p.Context, id string, oldState GatewayNameState) error {
+func (*GatewayName) Delete(ctx context.Context, id string, oldState GatewayNameState) error {
 	gw, err := parseToGWName(oldState.GatewayNameArgs)
 	if err != nil {
 		return err
