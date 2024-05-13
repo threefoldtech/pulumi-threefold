@@ -1,7 +1,8 @@
 package provider
 
 import (
-	p "github.com/pulumi/pulumi-go-provider"
+	"context"
+
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -30,7 +31,7 @@ type KubernetesState struct {
 
 // Create creates Kubernetes cluster and deploy it
 func (*Kubernetes) Create(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	input KubernetesArgs,
 	preview bool) (string, KubernetesState, error) {
@@ -61,7 +62,7 @@ func (*Kubernetes) Create(
 
 // Update updates the arguments of the Kubernetes resource
 func (*Kubernetes) Update(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	oldState KubernetesState,
 	input KubernetesArgs,
@@ -96,7 +97,7 @@ func (*Kubernetes) Update(
 }
 
 // Read get the state of the Kubernetes resource
-func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (string, KubernetesState, error) {
+func (*Kubernetes) Read(ctx context.Context, id string, oldState KubernetesState) (string, KubernetesState, error) {
 	k8sCluster, err := parseToK8sCluster(oldState.KubernetesArgs)
 	if err != nil {
 		return id, oldState, err
@@ -126,7 +127,7 @@ func (*Kubernetes) Read(ctx p.Context, id string, oldState KubernetesState) (str
 }
 
 // Delete deletes the Kubernetes resource
-func (*Kubernetes) Delete(ctx p.Context, id string, oldState KubernetesState) error {
+func (*Kubernetes) Delete(ctx context.Context, id string, oldState KubernetesState) error {
 	k8sCluster, err := parseToK8sCluster(oldState.KubernetesArgs)
 	if err != nil {
 		return err

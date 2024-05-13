@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"context"
 	"os"
 	"strings"
 
@@ -8,7 +9,6 @@ import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/diag"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
 
@@ -80,7 +80,7 @@ func (c *Config) Annotate(a infer.Annotator) {
 var _ = (infer.CustomConfigure)((*Config)(nil))
 
 // Configure checks configuration for the provider
-func (c *Config) Configure(ctx p.Context) error {
+func (c *Config) Configure(ctx context.Context) error {
 	if len(strings.TrimSpace(c.Mnemonic)) == 0 {
 		return errors.New("mnemonic is required")
 	}
@@ -112,7 +112,7 @@ func (c *Config) Configure(ctx p.Context) error {
 
 	c.TFPluginClient = tfPluginClient
 
-	ctx.Log(diag.Info, "threefold grid provider setup")
+	p.GetLogger(ctx).Info("threefold grid provider setup")
 
 	return nil
 }

@@ -4,6 +4,8 @@ runtime: yaml
 resources:
   provider:
     type: pulumi:providers:threefold
+    options:
+      pluginDownloadURL: github://api.github.com/threefoldtech/pulumi-threefold # optional
     properties:
       mnemonic:
 

@@ -1,7 +1,8 @@
 package provider
 
 import (
-	p "github.com/pulumi/pulumi-go-provider"
+	"context"
+
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
 
@@ -40,7 +41,7 @@ func (z *ZDBInput) Annotate(a infer.Annotator) {
 
 // Create creates a deployment
 func (*Deployment) Create(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	input DeploymentArgs,
 	preview bool) (string, DeploymentState, error) {
@@ -71,7 +72,7 @@ func (*Deployment) Create(
 
 // Update updates the arguments of the deployment resource
 func (*Deployment) Update(
-	ctx p.Context,
+	ctx context.Context,
 	id string,
 	oldState DeploymentState,
 	input DeploymentArgs,
@@ -106,7 +107,7 @@ func (*Deployment) Update(
 }
 
 // Read gets the state of the deployment resource
-func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (string, DeploymentState, error) {
+func (*Deployment) Read(ctx context.Context, id string, oldState DeploymentState) (string, DeploymentState, error) {
 	deployment, err := parseInputToDeployment(oldState.DeploymentArgs)
 	if err != nil {
 		return id, oldState, err
@@ -128,7 +129,7 @@ func (*Deployment) Read(ctx p.Context, id string, oldState DeploymentState) (str
 }
 
 // Delete deletes a deployment resource
-func (*Deployment) Delete(ctx p.Context, id string, oldState DeploymentState) error {
+func (*Deployment) Delete(ctx context.Context, id string, oldState DeploymentState) error {
 	deployment, err := parseInputToDeployment(oldState.DeploymentArgs)
 	if err != nil {
 		return err
