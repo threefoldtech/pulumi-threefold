@@ -22,7 +22,7 @@ make install_latest
 - You can try to run examples:
 
 ```bash
-cd examples/virtual_machine
+cd examples/go/virtual_machine
 
 export MNEMONIC="mnemonic words"
 export NETWORK="network" # dev, qa, test, main -> default is dev
@@ -51,6 +51,6 @@ export NETWORK="network" # dev, qa, test, main -> default is dev
 
 - ### Integration tests
 
-  ```bash
-  make integration
-  ```
+```bash
+make integration
+```
