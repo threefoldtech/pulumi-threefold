@@ -7,7 +7,7 @@ The provider is available at [pulumi registry](https://www.pulumi.com/registry/p
 
 ## Requirements
 
-- [`Pulumi`](https://www.pulumi.com/docs/install/) >= 3.84.0
+- [`Pulumi`](https://www.pulumi.com/docs/install/) >= 3.116.0
 - [`pulumictl`](https://github.com/pulumi/pulumictl#installation)
 - [`Go`](https://golang.org/doc/install) >= 1.21
 
@@ -22,7 +22,7 @@ make install_latest
 - You can try to run examples:
 
 ```bash
-cd examples/virtual_machine
+cd examples/go/virtual_machine
 
 export MNEMONIC="mnemonic words"
 export NETWORK="network" # dev, qa, test, main -> default is dev
@@ -51,6 +51,6 @@ export NETWORK="network" # dev, qa, test, main -> default is dev
 
 - ### Integration tests
 
-  ```bash
-  make integration
-  ```
+```bash
+make integration
+```
