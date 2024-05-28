@@ -49,6 +49,9 @@ func NewNetwork(ctx *pulumi.Context,
 	if args.Nodes == nil {
 		return nil, errors.New("invalid value for required argument 'Nodes'")
 	}
+	if args.Solution_type == nil {
+		args.Solution_type = pulumi.StringPtr("Network")
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Network
 	err := ctx.RegisterResource("threefold:provider:Network", name, args, &resource, opts...)

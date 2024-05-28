@@ -50,7 +50,7 @@ func GetNetwork(ctx *pulumi.Context) string {
 	return value
 }
 
-// The relay url, example: wss://relay.dev.grid.tf
+// The relay urls, example: wss://relay.dev.grid.tf
 func GetRelay_url(ctx *pulumi.Context) string {
 	return config.Get(ctx, "threefold:relay_url")
 }

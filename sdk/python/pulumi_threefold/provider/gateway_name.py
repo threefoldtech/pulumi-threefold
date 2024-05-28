@@ -31,6 +31,8 @@ class GatewayNameArgs:
             pulumi.set(__self__, "description", description)
         if network is not None:
             pulumi.set(__self__, "network", network)
+        if solution_type is None:
+            solution_type = ''
         if solution_type is not None:
             pulumi.set(__self__, "solution_type", solution_type)
         if tls_passthrough is not None:
@@ -168,6 +170,8 @@ class GatewayName(pulumi.CustomResource):
             if node_id is None and not opts.urn:
                 raise TypeError("Missing required property 'node_id'")
             __props__.__dict__["node_id"] = node_id
+            if solution_type is None:
+                solution_type = ''
             __props__.__dict__["solution_type"] = solution_type
             __props__.__dict__["tls_passthrough"] = tls_passthrough
             __props__.__dict__["contract_id"] = None

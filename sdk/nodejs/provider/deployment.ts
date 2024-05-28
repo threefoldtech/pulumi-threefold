@@ -72,7 +72,7 @@ export class Deployment extends pulumi.CustomResource {
             resourceInputs["node_id"] = args ? args.node_id : undefined;
             resourceInputs["qsfs"] = args ? args.qsfs : undefined;
             resourceInputs["solution_provider"] = args ? args.solution_provider : undefined;
-            resourceInputs["solution_type"] = args ? args.solution_type : undefined;
+            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "vm/";
             resourceInputs["vms"] = args ? args.vms : undefined;
             resourceInputs["zdbs"] = args ? args.zdbs : undefined;
             resourceInputs["contract_id"] = undefined /*out*/;

@@ -45,6 +45,9 @@ func NewDeployment(ctx *pulumi.Context,
 	if args.Node_id == nil {
 		return nil, errors.New("invalid value for required argument 'Node_id'")
 	}
+	if args.Solution_type == nil {
+		args.Solution_type = pulumi.StringPtr("vm/")
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Deployment
 	err := ctx.RegisterResource("threefold:provider:Deployment", name, args, &resource, opts...)

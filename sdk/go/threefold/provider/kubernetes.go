@@ -46,6 +46,9 @@ func NewKubernetes(ctx *pulumi.Context,
 	if args.Workers == nil {
 		return nil, errors.New("invalid value for required argument 'Workers'")
 	}
+	if args.Solution_type == nil {
+		args.Solution_type = pulumi.StringPtr("kubernetes/")
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Kubernetes
 	err := ctx.RegisterResource("threefold:provider:Kubernetes", name, args, &resource, opts...)

@@ -69,7 +69,7 @@ export class Kubernetes extends pulumi.CustomResource {
             }
             resourceInputs["master"] = args ? args.master : undefined;
             resourceInputs["network_name"] = args ? args.network_name : undefined;
-            resourceInputs["solution_type"] = args ? args.solution_type : undefined;
+            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "kubernetes/";
             resourceInputs["ssh_key"] = args ? args.ssh_key : undefined;
             resourceInputs["token"] = args ? args.token : undefined;
             resourceInputs["workers"] = args ? args.workers : undefined;

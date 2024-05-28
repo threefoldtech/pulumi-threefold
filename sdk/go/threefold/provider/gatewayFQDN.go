@@ -46,6 +46,9 @@ func NewGatewayFQDN(ctx *pulumi.Context,
 	if args.Node_id == nil {
 		return nil, errors.New("invalid value for required argument 'Node_id'")
 	}
+	if args.Solution_type == nil {
+		args.Solution_type = pulumi.StringPtr("")
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource GatewayFQDN
 	err := ctx.RegisterResource("threefold:provider:GatewayFQDN", name, args, &resource, opts...)

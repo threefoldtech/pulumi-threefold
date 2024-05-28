@@ -38,6 +38,8 @@ class DeploymentArgs:
             pulumi.set(__self__, "qsfs", qsfs)
         if solution_provider is not None:
             pulumi.set(__self__, "solution_provider", solution_provider)
+        if solution_type is None:
+            solution_type = 'vm/'
         if solution_type is not None:
             pulumi.set(__self__, "solution_type", solution_type)
         if vms is not None:
@@ -198,6 +200,8 @@ class Deployment(pulumi.CustomResource):
             __props__.__dict__["node_id"] = node_id
             __props__.__dict__["qsfs"] = qsfs
             __props__.__dict__["solution_provider"] = solution_provider
+            if solution_type is None:
+                solution_type = 'vm/'
             __props__.__dict__["solution_type"] = solution_type
             __props__.__dict__["vms"] = vms
             __props__.__dict__["zdbs"] = zdbs

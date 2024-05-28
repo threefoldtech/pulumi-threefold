@@ -41,12 +41,12 @@ Object.defineProperty(exports, "network", {
 });
 
 /**
- * The relay url, example: wss://relay.dev.grid.tf
+ * The relay urls, example: wss://relay.dev.grid.tf
  */
-export declare const relay_url: string | undefined;
+export declare const relay_url: string[] | undefined;
 Object.defineProperty(exports, "relay_url", {
     get() {
-        return __config.get("relay_url");
+        return __config.getObject<string[]>("relay_url");
     },
     enumerable: true,
 });

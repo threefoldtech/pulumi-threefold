@@ -32,6 +32,8 @@ class NetworkArgs:
             pulumi.set(__self__, "add_wg_access", add_wg_access)
         if mycelium_keys is not None:
             pulumi.set(__self__, "mycelium_keys", mycelium_keys)
+        if solution_type is None:
+            solution_type = 'Network'
         if solution_type is not None:
             pulumi.set(__self__, "solution_type", solution_type)
 
@@ -170,6 +172,8 @@ class Network(pulumi.CustomResource):
             if nodes is None and not opts.urn:
                 raise TypeError("Missing required property 'nodes'")
             __props__.__dict__["nodes"] = nodes
+            if solution_type is None:
+                solution_type = 'Network'
             __props__.__dict__["solution_type"] = solution_type
             __props__.__dict__["access_wg_config"] = None
             __props__.__dict__["external_ip"] = None
