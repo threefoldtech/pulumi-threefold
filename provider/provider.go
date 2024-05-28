@@ -34,12 +34,12 @@ func Provider() p.Provider {
 			},
 		},
 		Resources: []infer.InferredResource{
-			infer.Resource[*Scheduler, SchedulerArgs, SchedulerState](),
-			infer.Resource[*Network, NetworkArgs, NetworkState](),
-			infer.Resource[*Deployment, DeploymentArgs, DeploymentState](),
-			infer.Resource[*Kubernetes, KubernetesArgs, KubernetesState](),
-			infer.Resource[*GatewayName, GatewayNameArgs, GatewayNameState](),
-			infer.Resource[*GatewayFQDN, GatewayFQDNArgs, GatewayFQDNState](),
+			infer.Resource[*Scheduler](),
+			infer.Resource[*Network](),
+			infer.Resource[*Deployment](),
+			infer.Resource[*Kubernetes](),
+			infer.Resource[*GatewayName](),
+			infer.Resource[*GatewayFQDN](),
 		},
 		Config: infer.Config[*Config](),
 	})
@@ -52,12 +52,12 @@ func RunProvider(providerName, Version string) error {
 
 // Config struct holds the configuration fields for the provider
 type Config struct {
-	Mnemonic     string `pulumi:"mnemonic,optional"  provider:"secret"`
-	Network      string `pulumi:"network,optional"`
-	KeyType      string `pulumi:"key_type,optional"`
-	SubstrateURL string `pulumi:"substrate_url,optional"`
-	RelayURL     string `pulumi:"relay_url,optional"`
-	RmbTimeout   string `pulumi:"rmb_timeout,optional"`
+	Mnemonic     string   `pulumi:"mnemonic,optional"  provider:"secret"`
+	Network      string   `pulumi:"network,optional"`
+	KeyType      string   `pulumi:"key_type,optional"`
+	SubstrateURL string   `pulumi:"substrate_url,optional"`
+	RelayURLs    []string `pulumi:"relay_url,optional"`
+	RmbTimeout   string   `pulumi:"rmb_timeout,optional"`
 
 	TFPluginClient deployer.TFPluginClient
 }
@@ -70,7 +70,7 @@ func (c *Config) Annotate(a infer.Annotator) {
 	a.Describe(&c.Network, "The network to deploy on.")
 	a.Describe(&c.KeyType, "The key type registered on substrate (ed25519 or sr25519).")
 	a.Describe(&c.SubstrateURL, "The substrate url, example: wss://tfchain.dev.grid.tf/ws")
-	a.Describe(&c.RelayURL, "The relay url, example: wss://relay.dev.grid.tf")
+	a.Describe(&c.RelayURLs, "The relay urls, example: wss://relay.dev.grid.tf")
 	a.Describe(&c.RmbTimeout, "The timeout duration in seconds for rmb calls")
 	a.SetDefault(&c.Mnemonic, os.Getenv("MNEMONIC"), "")
 	a.SetDefault(&c.Network, os.Getenv("NETWORK"), "")
@@ -98,8 +98,8 @@ func (c *Config) Configure(ctx context.Context) error {
 		opts = append(opts, deployer.WithSubstrateURL(c.SubstrateURL))
 	}
 
-	if c.RelayURL != "" {
-		opts = append(opts, deployer.WithRelayURL(c.RelayURL))
+	if len(c.RelayURLs) > 0 {
+		opts = append(opts, deployer.WithRelayURL(c.RelayURLs...))
 	}
 
 	tfPluginClient, err := deployer.NewTFPluginClient(

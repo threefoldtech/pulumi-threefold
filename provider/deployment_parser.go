@@ -36,7 +36,7 @@ type ZDBInput struct {
 	Password    string `pulumi:"password"`
 	Public      bool   `pulumi:"public,optional"`
 	Description string `pulumi:"description,optional"`
-	Mode        string `pulumi:"mode"`
+	Mode        string `pulumi:"mode,optional"`
 }
 
 // ZDBComputed is the ZDB workload Computed struct
