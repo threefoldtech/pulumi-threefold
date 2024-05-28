@@ -32,6 +32,12 @@ type NetworkState struct {
 	NodeDeploymentID map[string]int64  `pulumi:"node_deployment_id"`
 }
 
+var _ = (infer.Annotated)((*NetworkArgs)(nil))
+
+func (n *NetworkArgs) Annotate(a infer.Annotator) {
+	a.SetDefault(&n.SolutionType, "Network")
+}
+
 // Create creates network and deploy it
 func (*Network) Create(ctx context.Context, id string, input NetworkArgs, preview bool) (string, NetworkState, error) {
 	state := NetworkState{NetworkArgs: input}
