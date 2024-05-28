@@ -41,6 +41,11 @@ func (d *DeploymentArgs) Annotate(a infer.Annotator) {
 	a.SetDefault(&d.SolutionType, fmt.Sprintf("vm/%s", d.Name))
 }
 
+// Annotate sets defaults and descriptions for zdb resource
+func (z *ZDBInput) Annotate(a infer.Annotator) {
+	a.SetDefault(&z.Mode, "user", "")
+}
+
 // Create creates a deployment
 func (*Deployment) Create(
 	ctx context.Context,
