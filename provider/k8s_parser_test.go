@@ -28,7 +28,7 @@ func TestK8sParser(t *testing.T) {
 	k8sWorkerInput2.Name = "worker2"
 
 	k8sInput := KubernetesArgs{
-		Master:       &k8sNodeInput,
+		Master:       k8sNodeInput,
 		Workers:      []K8sNodeInput{k8sWorkerInput1, k8sWorkerInput2},
 		Token:        "token",
 		NetworkName:  "network",

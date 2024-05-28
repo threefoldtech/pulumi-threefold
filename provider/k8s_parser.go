@@ -50,7 +50,7 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 	}
 
 	// parse master computed
-	masterComputed := &K8sNodeComputed{
+	masterComputed := K8sNodeComputed{
 		ComputedIP:  k8sCluster.Master.ComputedIP,
 		ComputedIP6: k8sCluster.Master.ComputedIP6,
 		PlanetaryIP: k8sCluster.Master.PlanetaryIP,
@@ -62,7 +62,7 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 	}
 
 	// parse master input
-	masterInput := &K8sNodeInput{
+	masterInput := K8sNodeInput{
 		Name:          k8sCluster.Master.Name,
 		Node:          int32(k8sCluster.Master.Node),
 		DiskSize:      k8sCluster.Master.DiskSize,
