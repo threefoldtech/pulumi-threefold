@@ -20,8 +20,6 @@ type Provider struct {
 	Mnemonic pulumi.StringPtrOutput `pulumi:"mnemonic"`
 	// The network to deploy on.
 	Network pulumi.StringPtrOutput `pulumi:"network"`
-	// The relay url, example: wss://relay.dev.grid.tf
-	Relay_url pulumi.StringPtrOutput `pulumi:"relay_url"`
 	// The timeout duration in seconds for rmb calls
 	Rmb_timeout pulumi.StringPtrOutput `pulumi:"rmb_timeout"`
 	// The substrate url, example: wss://tfchain.dev.grid.tf/ws
@@ -73,8 +71,8 @@ type providerArgs struct {
 	Mnemonic *string `pulumi:"mnemonic"`
 	// The network to deploy on.
 	Network *string `pulumi:"network"`
-	// The relay url, example: wss://relay.dev.grid.tf
-	Relay_url *string `pulumi:"relay_url"`
+	// The relay urls, example: wss://relay.dev.grid.tf
+	Relay_url []string `pulumi:"relay_url"`
 	// The timeout duration in seconds for rmb calls
 	Rmb_timeout *string `pulumi:"rmb_timeout"`
 	// The substrate url, example: wss://tfchain.dev.grid.tf/ws
@@ -89,8 +87,8 @@ type ProviderArgs struct {
 	Mnemonic pulumi.StringPtrInput
 	// The network to deploy on.
 	Network pulumi.StringPtrInput
-	// The relay url, example: wss://relay.dev.grid.tf
-	Relay_url pulumi.StringPtrInput
+	// The relay urls, example: wss://relay.dev.grid.tf
+	Relay_url pulumi.StringArrayInput
 	// The timeout duration in seconds for rmb calls
 	Rmb_timeout pulumi.StringPtrInput
 	// The substrate url, example: wss://tfchain.dev.grid.tf/ws
@@ -147,11 +145,6 @@ func (o ProviderOutput) Mnemonic() pulumi.StringPtrOutput {
 // The network to deploy on.
 func (o ProviderOutput) Network() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Network }).(pulumi.StringPtrOutput)
-}
-
-// The relay url, example: wss://relay.dev.grid.tf
-func (o ProviderOutput) Relay_url() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Relay_url }).(pulumi.StringPtrOutput)
 }
 
 // The timeout duration in seconds for rmb calls

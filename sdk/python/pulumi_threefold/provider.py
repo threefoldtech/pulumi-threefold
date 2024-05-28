@@ -17,7 +17,7 @@ class ProviderArgs:
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
-                 relay_url: Optional[pulumi.Input[str]] = None,
+                 relay_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
                  substrate_url: Optional[pulumi.Input[str]] = None):
         """
@@ -25,7 +25,7 @@ class ProviderArgs:
         :param pulumi.Input[str] key_type: The key type registered on substrate (ed25519 or sr25519).
         :param pulumi.Input[str] mnemonic: The mnemonic of the user. It is very secret.
         :param pulumi.Input[str] network: The network to deploy on.
-        :param pulumi.Input[str] relay_url: The relay url, example: wss://relay.dev.grid.tf
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] relay_url: The relay urls, example: wss://relay.dev.grid.tf
         :param pulumi.Input[str] rmb_timeout: The timeout duration in seconds for rmb calls
         :param pulumi.Input[str] substrate_url: The substrate url, example: wss://tfchain.dev.grid.tf/ws
         """
@@ -86,14 +86,14 @@ class ProviderArgs:
 
     @property
     @pulumi.getter
-    def relay_url(self) -> Optional[pulumi.Input[str]]:
+    def relay_url(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        The relay url, example: wss://relay.dev.grid.tf
+        The relay urls, example: wss://relay.dev.grid.tf
         """
         return pulumi.get(self, "relay_url")
 
     @relay_url.setter
-    def relay_url(self, value: Optional[pulumi.Input[str]]):
+    def relay_url(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "relay_url", value)
 
     @property
@@ -129,7 +129,7 @@ class Provider(pulumi.ProviderResource):
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
-                 relay_url: Optional[pulumi.Input[str]] = None,
+                 relay_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
                  substrate_url: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -140,7 +140,7 @@ class Provider(pulumi.ProviderResource):
         :param pulumi.Input[str] key_type: The key type registered on substrate (ed25519 or sr25519).
         :param pulumi.Input[str] mnemonic: The mnemonic of the user. It is very secret.
         :param pulumi.Input[str] network: The network to deploy on.
-        :param pulumi.Input[str] relay_url: The relay url, example: wss://relay.dev.grid.tf
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] relay_url: The relay urls, example: wss://relay.dev.grid.tf
         :param pulumi.Input[str] rmb_timeout: The timeout duration in seconds for rmb calls
         :param pulumi.Input[str] substrate_url: The substrate url, example: wss://tfchain.dev.grid.tf/ws
         """
@@ -170,7 +170,7 @@ class Provider(pulumi.ProviderResource):
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
-                 relay_url: Optional[pulumi.Input[str]] = None,
+                 relay_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
                  substrate_url: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -191,7 +191,7 @@ class Provider(pulumi.ProviderResource):
             if network is None:
                 network = (_utilities.get_env('') or '')
             __props__.__dict__["network"] = network
-            __props__.__dict__["relay_url"] = relay_url
+            __props__.__dict__["relay_url"] = pulumi.Output.from_input(relay_url).apply(pulumi.runtime.to_json) if relay_url is not None else None
             __props__.__dict__["rmb_timeout"] = rmb_timeout
             __props__.__dict__["substrate_url"] = substrate_url
         secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["mnemonic"])
@@ -225,14 +225,6 @@ class Provider(pulumi.ProviderResource):
         The network to deploy on.
         """
         return pulumi.get(self, "network")
-
-    @property
-    @pulumi.getter
-    def relay_url(self) -> pulumi.Output[Optional[str]]:
-        """
-        The relay url, example: wss://relay.dev.grid.tf
-        """
-        return pulumi.get(self, "relay_url")
 
     @property
     @pulumi.getter

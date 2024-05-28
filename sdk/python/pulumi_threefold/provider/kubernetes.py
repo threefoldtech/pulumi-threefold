@@ -29,6 +29,8 @@ class KubernetesArgs:
         pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "token", token)
         pulumi.set(__self__, "workers", workers)
+        if solution_type is None:
+            solution_type = 'kubernetes/'
         if solution_type is not None:
             pulumi.set(__self__, "solution_type", solution_type)
         if ssh_key is not None:
@@ -150,6 +152,8 @@ class Kubernetes(pulumi.CustomResource):
             if network_name is None and not opts.urn:
                 raise TypeError("Missing required property 'network_name'")
             __props__.__dict__["network_name"] = network_name
+            if solution_type is None:
+                solution_type = 'kubernetes/'
             __props__.__dict__["solution_type"] = solution_type
             __props__.__dict__["ssh_key"] = ssh_key
             if token is None and not opts.urn:

@@ -32,10 +32,6 @@ export class Provider extends pulumi.ProviderResource {
      */
     public readonly network!: pulumi.Output<string | undefined>;
     /**
-     * The relay url, example: wss://relay.dev.grid.tf
-     */
-    public readonly relay_url!: pulumi.Output<string | undefined>;
-    /**
      * The timeout duration in seconds for rmb calls
      */
     public readonly rmb_timeout!: pulumi.Output<string | undefined>;
@@ -58,7 +54,7 @@ export class Provider extends pulumi.ProviderResource {
             resourceInputs["key_type"] = (args ? args.key_type : undefined) ?? (utilities.getEnv("") || "sr25519");
             resourceInputs["mnemonic"] = (args?.mnemonic ? pulumi.secret(args.mnemonic) : undefined) ?? (utilities.getEnv("") || "");
             resourceInputs["network"] = (args ? args.network : undefined) ?? (utilities.getEnv("") || "");
-            resourceInputs["relay_url"] = args ? args.relay_url : undefined;
+            resourceInputs["relay_url"] = pulumi.output(args ? args.relay_url : undefined).apply(JSON.stringify);
             resourceInputs["rmb_timeout"] = args ? args.rmb_timeout : undefined;
             resourceInputs["substrate_url"] = args ? args.substrate_url : undefined;
         }
@@ -86,9 +82,9 @@ export interface ProviderArgs {
      */
     network?: pulumi.Input<string>;
     /**
-     * The relay url, example: wss://relay.dev.grid.tf
+     * The relay urls, example: wss://relay.dev.grid.tf
      */
-    relay_url?: pulumi.Input<string>;
+    relay_url?: pulumi.Input<pulumi.Input<string>[]>;
     /**
      * The timeout duration in seconds for rmb calls
      */

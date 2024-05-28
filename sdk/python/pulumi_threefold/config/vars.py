@@ -39,7 +39,7 @@ class _ExportableConfig(types.ModuleType):
     @property
     def relay_url(self) -> Optional[str]:
         """
-        The relay url, example: wss://relay.dev.grid.tf
+        The relay urls, example: wss://relay.dev.grid.tf
         """
         return __config__.get('relay_url')
 

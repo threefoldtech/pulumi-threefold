@@ -71,7 +71,7 @@ export class GatewayFQDN extends pulumi.CustomResource {
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["network_name"] = args ? args.network_name : undefined;
             resourceInputs["node_id"] = args ? args.node_id : undefined;
-            resourceInputs["solution_type"] = args ? args.solution_type : undefined;
+            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "";
             resourceInputs["tls_pass_through"] = args ? args.tls_pass_through : undefined;
             resourceInputs["contract_id"] = undefined /*out*/;
             resourceInputs["node_deployment_id"] = undefined /*out*/;

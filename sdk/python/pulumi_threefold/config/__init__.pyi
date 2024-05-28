@@ -26,7 +26,7 @@ The network to deploy on.
 
 relay_url: Optional[str]
 """
-The relay url, example: wss://relay.dev.grid.tf
+The relay urls, example: wss://relay.dev.grid.tf
 """
 
 rmb_timeout: Optional[str]

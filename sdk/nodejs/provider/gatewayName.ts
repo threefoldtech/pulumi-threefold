@@ -68,7 +68,7 @@ export class GatewayName extends pulumi.CustomResource {
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["network"] = args ? args.network : undefined;
             resourceInputs["node_id"] = args ? args.node_id : undefined;
-            resourceInputs["solution_type"] = args ? args.solution_type : undefined;
+            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "";
             resourceInputs["tls_passthrough"] = args ? args.tls_passthrough : undefined;
             resourceInputs["contract_id"] = undefined /*out*/;
             resourceInputs["fqdn"] = undefined /*out*/;

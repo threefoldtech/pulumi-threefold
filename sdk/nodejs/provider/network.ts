@@ -74,7 +74,7 @@ export class Network extends pulumi.CustomResource {
             resourceInputs["mycelium_keys"] = args ? args.mycelium_keys : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["nodes"] = args ? args.nodes : undefined;
-            resourceInputs["solution_type"] = args ? args.solution_type : undefined;
+            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "Network";
             resourceInputs["access_wg_config"] = undefined /*out*/;
             resourceInputs["external_ip"] = undefined /*out*/;
             resourceInputs["external_sk"] = undefined /*out*/;
