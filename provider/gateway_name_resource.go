@@ -30,6 +30,12 @@ type GatewayNameState struct {
 	ContractID       int64            `pulumi:"contract_id"`
 }
 
+var _ = (infer.Annotated)((*GatewayNameArgs)(nil))
+
+func (g *GatewayNameArgs) Annotate(a infer.Annotator) {
+	a.SetDefault(&g.SolutionType, g.Name)
+}
+
 // Create creates GatewayName and deploy it
 func (*GatewayName) Create(
 	ctx context.Context,

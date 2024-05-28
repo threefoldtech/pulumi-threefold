@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
@@ -11,7 +12,7 @@ type Kubernetes struct{}
 
 // KubernetesArgs is defining what arguments it accepts
 type KubernetesArgs struct {
-	Master       *K8sNodeInput  `pulumi:"master"`
+	Master       K8sNodeInput   `pulumi:"master"`
 	Workers      []K8sNodeInput `pulumi:"workers"`
 	Token        string         `pulumi:"token"`
 	NetworkName  string         `pulumi:"network_name"`
@@ -23,10 +24,16 @@ type KubernetesArgs struct {
 type KubernetesState struct {
 	KubernetesArgs
 
-	MasterComputed   *K8sNodeComputed           `pulumi:"master_computed"`
+	MasterComputed   K8sNodeComputed            `pulumi:"master_computed"`
 	WorkersComputed  map[string]K8sNodeComputed `pulumi:"workers_computed"`
 	NodesIPRange     map[string]string          `pulumi:"nodes_ip_range"`
 	NodeDeploymentID map[string]int64           `pulumi:"node_deployment_id"`
+}
+
+var _ = (infer.Annotated)((*KubernetesArgs)(nil))
+
+func (k *KubernetesArgs) Annotate(a infer.Annotator) {
+	a.SetDefault(&k.SolutionType, fmt.Sprintf("kubernetes/%s", k.Master.Name))
 }
 
 // Create creates Kubernetes cluster and deploy it
