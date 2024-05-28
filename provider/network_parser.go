@@ -26,7 +26,10 @@ func parseNetworkToState(network workloads.ZNet) NetworkState {
 		nodeDeploymentID[fmt.Sprint(nodeID)] = int64(deploymentID)
 	}
 
-	myceliumKeys := make(map[string]string)
+	var myceliumKeys map[string]string
+	if len(network.MyceliumKeys) > 0 {
+		myceliumKeys = make(map[string]string)
+	}
 	for nodeID, myceliumKey := range network.MyceliumKeys {
 		myceliumKeys[fmt.Sprint(nodeID)] = hex.EncodeToString(myceliumKey)
 	}
