@@ -239,18 +239,18 @@ func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState)
 	k8sCluster.Master.NetworkName = state.MasterComputed.NetworkName
 
 	// update workers computed
-	for _, v := range k8sCluster.Workers {
+	for i, worker := range k8sCluster.Workers {
 		// update every worker in k8sCluster if it has computed data in the state
 
-		if workerComputed, ok := state.WorkersComputed[v.Name]; ok {
-			v.ComputedIP = workerComputed.ComputedIP
-			v.ComputedIP6 = workerComputed.ComputedIP6
-			v.IP = workerComputed.IP
-			v.PlanetaryIP = workerComputed.PlanetaryIP
-			v.ConsoleURL = workerComputed.ConsoleURL
-			v.SSHKey = workerComputed.SSHKey
-			v.Token = workerComputed.Token
-			v.NetworkName = workerComputed.NetworkName
+		if workerComputed, ok := state.WorkersComputed[worker.Name]; ok {
+			k8sCluster.Workers[i].ComputedIP = workerComputed.ComputedIP
+			k8sCluster.Workers[i].ComputedIP6 = workerComputed.ComputedIP6
+			k8sCluster.Workers[i].IP = workerComputed.IP
+			k8sCluster.Workers[i].PlanetaryIP = workerComputed.PlanetaryIP
+			k8sCluster.Workers[i].ConsoleURL = workerComputed.ConsoleURL
+			k8sCluster.Workers[i].SSHKey = workerComputed.SSHKey
+			k8sCluster.Workers[i].Token = workerComputed.Token
+			k8sCluster.Workers[i].NetworkName = workerComputed.NetworkName
 		}
 	}
 
