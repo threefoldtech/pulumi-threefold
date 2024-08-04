@@ -74,35 +74,35 @@ func (*GatewayFQDN) Update(
 	id string,
 	oldState GatewayFQDNState,
 	input GatewayFQDNArgs,
-	preview bool) (string, GatewayFQDNState, error) {
+	preview bool) (GatewayFQDNState, error) {
 
 	state := GatewayFQDNState{GatewayFQDNArgs: input}
 	if preview {
-		return id, state, nil
+		return state, nil
 	}
 
 	fqdnGateway, err := parseToGatewayFQDN(input)
 	if err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	if err := updateGatewayFQDNFromState(&fqdnGateway, oldState); err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.GatewayFQDNDeployer.Deploy(ctx, &fqdnGateway); err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	if err := config.TFPluginClient.GatewayFQDNDeployer.Sync(ctx, &fqdnGateway); err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	state = parseToGatewayFQDNState(fqdnGateway)
 
-	return id, state, nil
+	return state, nil
 
 }
 
