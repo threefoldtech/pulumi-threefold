@@ -90,6 +90,8 @@ func (*Kubernetes) Update(
 
 	config := infer.GetConfig[Config](ctx)
 
+	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(k8sCluster.NetworkName, k8sCluster.NodesIPRange)
+
 	if err := config.TFPluginClient.K8sDeployer.Deploy(ctx, &k8sCluster); err != nil {
 		return state, err
 	}
