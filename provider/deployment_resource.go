@@ -83,34 +83,37 @@ func (*Deployment) Update(
 	id string,
 	oldState DeploymentState,
 	input DeploymentArgs,
-	preview bool) (string, DeploymentState, error) {
+	preview bool) (DeploymentState, error) {
 	state := DeploymentState{DeploymentArgs: input}
 	if preview {
-		return id, state, nil
+		return state, nil
 	}
 
 	deployment, err := parseInputToDeployment(input)
 	if err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
+	dl_network := config.TFPluginClient.State.Networks.GetNetwork(deployment.NetworkName)
+	dl_network.SetNodeSubnet(deployment.NodeID, deployment.IPrange)
+
 	if err := config.TFPluginClient.DeploymentDeployer.Deploy(ctx, &deployment); err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Sync(ctx, &deployment); err != nil {
-		return id, state, err
+		return state, err
 	}
 
 	state = parseDeploymentToState(deployment)
 
-	return id, state, nil
+	return state, nil
 }
 
 // Read gets the state of the deployment resource
