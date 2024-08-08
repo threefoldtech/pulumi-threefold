@@ -18,6 +18,7 @@ type NetworkArgs struct {
 	AddWGAccess  bool              `pulumi:"add_wg_access,optional"`
 	SolutionType string            `pulumi:"solution_type,optional"`
 	MyceliumKeys map[string]string `pulumi:"mycelium_keys,optional"`
+	Mycelium     bool              `pulumi:"mycelium,optional"`
 }
 
 // NetworkState is describing the fields that exist on the created resource.

@@ -1170,6 +1170,7 @@ type VMInput struct {
 	Gpus             []string          `pulumi:"gpus"`
 	Memory           int               `pulumi:"memory"`
 	Mounts           []Mount           `pulumi:"mounts"`
+	Mycelium         *bool             `pulumi:"mycelium"`
 	Mycelium_ip_seed *string           `pulumi:"mycelium_ip_seed"`
 	Name             string            `pulumi:"name"`
 	Network_name     string            `pulumi:"network_name"`
@@ -1201,6 +1202,7 @@ type VMInputArgs struct {
 	Gpus             pulumi.StringArrayInput `pulumi:"gpus"`
 	Memory           pulumi.IntInput         `pulumi:"memory"`
 	Mounts           MountArrayInput         `pulumi:"mounts"`
+	Mycelium         pulumi.BoolPtrInput     `pulumi:"mycelium"`
 	Mycelium_ip_seed pulumi.StringPtrInput   `pulumi:"mycelium_ip_seed"`
 	Name             pulumi.StringInput      `pulumi:"name"`
 	Network_name     pulumi.StringInput      `pulumi:"network_name"`
@@ -1296,6 +1298,10 @@ func (o VMInputOutput) Memory() pulumi.IntOutput {
 
 func (o VMInputOutput) Mounts() MountArrayOutput {
 	return o.ApplyT(func(v VMInput) []Mount { return v.Mounts }).(MountArrayOutput)
+}
+
+func (o VMInputOutput) Mycelium() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v VMInput) *bool { return v.Mycelium }).(pulumi.BoolPtrOutput)
 }
 
 func (o VMInputOutput) Mycelium_ip_seed() pulumi.StringPtrOutput {

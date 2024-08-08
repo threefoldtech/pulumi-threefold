@@ -90,6 +90,17 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 		myceliumKeys[uint32(nodeID)] = myceliumKey
 	}
 
+	if networkArgs.Mycelium && len(myceliumKeys) == 0 {
+		for _, nodeID := range nodes {
+			myceliumKey, err := workloads.RandomMyceliumKey()
+			if err != nil {
+				return workloads.ZNet{}, err
+			}
+
+			myceliumKeys[nodeID] = myceliumKey
+		}
+	}
+
 	network := workloads.ZNet{
 		Name:         networkArgs.Name,
 		Description:  networkArgs.Description,
