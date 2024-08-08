@@ -21,6 +21,7 @@ type Network struct {
 	External_ip        pulumi.StringOutput    `pulumi:"external_ip"`
 	External_sk        pulumi.StringOutput    `pulumi:"external_sk"`
 	Ip_range           pulumi.StringOutput    `pulumi:"ip_range"`
+	Mycelium           pulumi.BoolPtrOutput   `pulumi:"mycelium"`
 	Mycelium_keys      pulumi.StringMapOutput `pulumi:"mycelium_keys"`
 	Name               pulumi.StringOutput    `pulumi:"name"`
 	Node_deployment_id pulumi.IntMapOutput    `pulumi:"node_deployment_id"`
@@ -88,6 +89,7 @@ type networkArgs struct {
 	Add_wg_access *bool             `pulumi:"add_wg_access"`
 	Description   string            `pulumi:"description"`
 	Ip_range      string            `pulumi:"ip_range"`
+	Mycelium      *bool             `pulumi:"mycelium"`
 	Mycelium_keys map[string]string `pulumi:"mycelium_keys"`
 	Name          string            `pulumi:"name"`
 	Nodes         []interface{}     `pulumi:"nodes"`
@@ -99,6 +101,7 @@ type NetworkArgs struct {
 	Add_wg_access pulumi.BoolPtrInput
 	Description   pulumi.StringInput
 	Ip_range      pulumi.StringInput
+	Mycelium      pulumi.BoolPtrInput
 	Mycelium_keys pulumi.StringMapInput
 	Name          pulumi.StringInput
 	Nodes         pulumi.ArrayInput
@@ -214,6 +217,10 @@ func (o NetworkOutput) External_sk() pulumi.StringOutput {
 
 func (o NetworkOutput) Ip_range() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.Ip_range }).(pulumi.StringOutput)
+}
+
+func (o NetworkOutput) Mycelium() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Network) pulumi.BoolPtrOutput { return v.Mycelium }).(pulumi.BoolPtrOutput)
 }
 
 func (o NetworkOutput) Mycelium_keys() pulumi.StringMapOutput {
