@@ -159,7 +159,8 @@ func writeDotnetClient(pkg *schema.Package, outDir string) {
 }
 
 func writeGoClient(pkg *schema.Package, outDir string) {
-	files, err := gogen.GeneratePackage("pulumigen", pkg)
+	localDependencies := map[string]string{}
+	files, err := gogen.GeneratePackage("pulumigen", pkg, localDependencies)
 	if err != nil {
 		panic(err)
 	}
