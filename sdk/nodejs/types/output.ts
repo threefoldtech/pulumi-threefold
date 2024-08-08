@@ -100,6 +100,7 @@ export namespace provider {
         gpus?: string[];
         memory: number;
         mounts?: outputs.provider.Mount[];
+        mycelium?: boolean;
         mycelium_ip_seed?: string;
         name: string;
         network_name: string;

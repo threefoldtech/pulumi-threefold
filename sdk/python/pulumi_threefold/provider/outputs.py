@@ -469,6 +469,7 @@ class VMInput(dict):
                  flist_checksum: Optional[str] = None,
                  gpus: Optional[Sequence[str]] = None,
                  mounts: Optional[Sequence['outputs.Mount']] = None,
+                 mycelium: Optional[bool] = None,
                  mycelium_ip_seed: Optional[str] = None,
                  planetary: Optional[bool] = None,
                  public_ip: Optional[bool] = None,
@@ -492,6 +493,8 @@ class VMInput(dict):
             pulumi.set(__self__, "gpus", gpus)
         if mounts is not None:
             pulumi.set(__self__, "mounts", mounts)
+        if mycelium is not None:
+            pulumi.set(__self__, "mycelium", mycelium)
         if mycelium_ip_seed is not None:
             pulumi.set(__self__, "mycelium_ip_seed", mycelium_ip_seed)
         if planetary is not None:
@@ -559,6 +562,11 @@ class VMInput(dict):
     @pulumi.getter
     def mounts(self) -> Optional[Sequence['outputs.Mount']]:
         return pulumi.get(self, "mounts")
+
+    @property
+    @pulumi.getter
+    def mycelium(self) -> Optional[bool]:
+        return pulumi.get(self, "mycelium")
 
     @property
     @pulumi.getter
