@@ -76,6 +76,7 @@ export namespace provider {
         gpus?: pulumi.Input<pulumi.Input<string>[]>;
         memory: pulumi.Input<number>;
         mounts?: pulumi.Input<pulumi.Input<inputs.provider.MountArgs>[]>;
+        mycelium?: pulumi.Input<boolean>;
         mycelium_ip_seed?: pulumi.Input<string>;
         name: pulumi.Input<string>;
         network_name: pulumi.Input<string>;
