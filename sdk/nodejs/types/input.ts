@@ -30,6 +30,8 @@ export namespace provider {
         flist?: pulumi.Input<string>;
         flist_checksum?: pulumi.Input<string>;
         memory: pulumi.Input<number>;
+        mycelium?: pulumi.Input<boolean>;
+        mycelium_ip_seed?: pulumi.Input<string>;
         name: pulumi.Input<string>;
         node: any;
         planetary?: pulumi.Input<boolean>;
