@@ -324,6 +324,7 @@ type K8sNodeComputed struct {
 	Computed_ip6 string `pulumi:"computed_ip6"`
 	Console_url  string `pulumi:"console_url"`
 	Ip           string `pulumi:"ip"`
+	Mycelium_ip  string `pulumi:"mycelium_ip"`
 	Network_name string `pulumi:"network_name"`
 	Planetary_ip string `pulumi:"planetary_ip"`
 	Ssh_key      string `pulumi:"ssh_key"`
@@ -346,6 +347,7 @@ type K8sNodeComputedArgs struct {
 	Computed_ip6 pulumi.StringInput `pulumi:"computed_ip6"`
 	Console_url  pulumi.StringInput `pulumi:"console_url"`
 	Ip           pulumi.StringInput `pulumi:"ip"`
+	Mycelium_ip  pulumi.StringInput `pulumi:"mycelium_ip"`
 	Network_name pulumi.StringInput `pulumi:"network_name"`
 	Planetary_ip pulumi.StringInput `pulumi:"planetary_ip"`
 	Ssh_key      pulumi.StringInput `pulumi:"ssh_key"`
@@ -419,6 +421,10 @@ func (o K8sNodeComputedOutput) Ip() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Ip }).(pulumi.StringOutput)
 }
 
+func (o K8sNodeComputedOutput) Mycelium_ip() pulumi.StringOutput {
+	return o.ApplyT(func(v K8sNodeComputed) string { return v.Mycelium_ip }).(pulumi.StringOutput)
+}
+
 func (o K8sNodeComputedOutput) Network_name() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Network_name }).(pulumi.StringOutput)
 }
@@ -456,16 +462,18 @@ func (o K8sNodeComputedMapOutput) MapIndex(k pulumi.StringInput) K8sNodeComputed
 }
 
 type K8sNodeInput struct {
-	Cpu            int         `pulumi:"cpu"`
-	Disk_size      int         `pulumi:"disk_size"`
-	Flist          *string     `pulumi:"flist"`
-	Flist_checksum *string     `pulumi:"flist_checksum"`
-	Memory         int         `pulumi:"memory"`
-	Name           string      `pulumi:"name"`
-	Node           interface{} `pulumi:"node"`
-	Planetary      *bool       `pulumi:"planetary"`
-	Public_ip      *bool       `pulumi:"public_ip"`
-	Public_ip6     *bool       `pulumi:"public_ip6"`
+	Cpu              int         `pulumi:"cpu"`
+	Disk_size        int         `pulumi:"disk_size"`
+	Flist            *string     `pulumi:"flist"`
+	Flist_checksum   *string     `pulumi:"flist_checksum"`
+	Memory           int         `pulumi:"memory"`
+	Mycelium         *bool       `pulumi:"mycelium"`
+	Mycelium_ip_seed *string     `pulumi:"mycelium_ip_seed"`
+	Name             string      `pulumi:"name"`
+	Node             interface{} `pulumi:"node"`
+	Planetary        *bool       `pulumi:"planetary"`
+	Public_ip        *bool       `pulumi:"public_ip"`
+	Public_ip6       *bool       `pulumi:"public_ip6"`
 }
 
 // K8sNodeInputInput is an input type that accepts K8sNodeInputArgs and K8sNodeInputOutput values.
@@ -480,16 +488,18 @@ type K8sNodeInputInput interface {
 }
 
 type K8sNodeInputArgs struct {
-	Cpu            pulumi.IntInput       `pulumi:"cpu"`
-	Disk_size      pulumi.IntInput       `pulumi:"disk_size"`
-	Flist          pulumi.StringPtrInput `pulumi:"flist"`
-	Flist_checksum pulumi.StringPtrInput `pulumi:"flist_checksum"`
-	Memory         pulumi.IntInput       `pulumi:"memory"`
-	Name           pulumi.StringInput    `pulumi:"name"`
-	Node           pulumi.Input          `pulumi:"node"`
-	Planetary      pulumi.BoolPtrInput   `pulumi:"planetary"`
-	Public_ip      pulumi.BoolPtrInput   `pulumi:"public_ip"`
-	Public_ip6     pulumi.BoolPtrInput   `pulumi:"public_ip6"`
+	Cpu              pulumi.IntInput       `pulumi:"cpu"`
+	Disk_size        pulumi.IntInput       `pulumi:"disk_size"`
+	Flist            pulumi.StringPtrInput `pulumi:"flist"`
+	Flist_checksum   pulumi.StringPtrInput `pulumi:"flist_checksum"`
+	Memory           pulumi.IntInput       `pulumi:"memory"`
+	Mycelium         pulumi.BoolPtrInput   `pulumi:"mycelium"`
+	Mycelium_ip_seed pulumi.StringPtrInput `pulumi:"mycelium_ip_seed"`
+	Name             pulumi.StringInput    `pulumi:"name"`
+	Node             pulumi.Input          `pulumi:"node"`
+	Planetary        pulumi.BoolPtrInput   `pulumi:"planetary"`
+	Public_ip        pulumi.BoolPtrInput   `pulumi:"public_ip"`
+	Public_ip6       pulumi.BoolPtrInput   `pulumi:"public_ip6"`
 }
 
 func (K8sNodeInputArgs) ElementType() reflect.Type {
@@ -561,6 +571,14 @@ func (o K8sNodeInputOutput) Flist_checksum() pulumi.StringPtrOutput {
 
 func (o K8sNodeInputOutput) Memory() pulumi.IntOutput {
 	return o.ApplyT(func(v K8sNodeInput) int { return v.Memory }).(pulumi.IntOutput)
+}
+
+func (o K8sNodeInputOutput) Mycelium() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v K8sNodeInput) *bool { return v.Mycelium }).(pulumi.BoolPtrOutput)
+}
+
+func (o K8sNodeInputOutput) Mycelium_ip_seed() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v K8sNodeInput) *string { return v.Mycelium_ip_seed }).(pulumi.StringPtrOutput)
 }
 
 func (o K8sNodeInputOutput) Name() pulumi.StringOutput {

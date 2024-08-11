@@ -126,6 +126,8 @@ class K8sNodeInputArgs:
                  node: Any,
                  flist: Optional[pulumi.Input[str]] = None,
                  flist_checksum: Optional[pulumi.Input[str]] = None,
+                 mycelium: Optional[pulumi.Input[bool]] = None,
+                 mycelium_ip_seed: Optional[pulumi.Input[str]] = None,
                  planetary: Optional[pulumi.Input[bool]] = None,
                  public_ip: Optional[pulumi.Input[bool]] = None,
                  public_ip6: Optional[pulumi.Input[bool]] = None):
@@ -138,6 +140,10 @@ class K8sNodeInputArgs:
             pulumi.set(__self__, "flist", flist)
         if flist_checksum is not None:
             pulumi.set(__self__, "flist_checksum", flist_checksum)
+        if mycelium is not None:
+            pulumi.set(__self__, "mycelium", mycelium)
+        if mycelium_ip_seed is not None:
+            pulumi.set(__self__, "mycelium_ip_seed", mycelium_ip_seed)
         if planetary is not None:
             pulumi.set(__self__, "planetary", planetary)
         if public_ip is not None:
@@ -207,6 +213,24 @@ class K8sNodeInputArgs:
     @flist_checksum.setter
     def flist_checksum(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "flist_checksum", value)
+
+    @property
+    @pulumi.getter
+    def mycelium(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "mycelium")
+
+    @mycelium.setter
+    def mycelium(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "mycelium", value)
+
+    @property
+    @pulumi.getter
+    def mycelium_ip_seed(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "mycelium_ip_seed")
+
+    @mycelium_ip_seed.setter
+    def mycelium_ip_seed(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "mycelium_ip_seed", value)
 
     @property
     @pulumi.getter

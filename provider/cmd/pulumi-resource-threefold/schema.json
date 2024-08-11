@@ -138,6 +138,9 @@
         "ip": {
           "type": "string"
         },
+        "mycelium_ip": {
+          "type": "string"
+        },
         "network_name": {
           "type": "string"
         },
@@ -157,6 +160,7 @@
         "computed_ip6",
         "console_url",
         "ip",
+        "mycelium_ip",
         "network_name",
         "planetary_ip",
         "ssh_key",
@@ -179,6 +183,12 @@
         },
         "memory": {
           "type": "integer"
+        },
+        "mycelium": {
+          "type": "boolean"
+        },
+        "mycelium_ip_seed": {
+          "type": "string"
         },
         "name": {
           "type": "string"
