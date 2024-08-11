@@ -19,22 +19,20 @@ The provider is available at [pulumi registry](https://www.pulumi.com/registry/p
 make install_latest
 ```
 
-- You can try to run examples:
+### Running the examples
+
+To run examples, make sure you have a mnemonic and a network set.
 
 ```bash
-cd examples/go/virtual_machine
 
 export MNEMONIC="mnemonic words"
 export NETWORK="network" # dev, qa, test, main -> default is dev
 
-make run
 ```
+- Go to the examples directory `cd examples/go/virtual_machine`
+- Run the example `make run` 
+- To cleanup the resources that you created `make destroy`
 
-- to destroy the resources you created:
-
-```bash
-make destroy
-```
 
 ## Building The Provider (for development only)
 
@@ -49,7 +47,7 @@ export MNEMONIC="mnemonic words"
 export NETWORK="network" # dev, qa, test, main -> default is dev
 ```
 
-- ### Integration tests
+### Integration tests
 
 ```bash
 make integration
