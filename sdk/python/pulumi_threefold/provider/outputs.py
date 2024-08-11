@@ -100,6 +100,7 @@ class K8sNodeComputed(dict):
                  computed_ip6: str,
                  console_url: str,
                  ip: str,
+                 mycelium_ip: str,
                  network_name: str,
                  planetary_ip: str,
                  ssh_key: str,
@@ -108,6 +109,7 @@ class K8sNodeComputed(dict):
         pulumi.set(__self__, "computed_ip6", computed_ip6)
         pulumi.set(__self__, "console_url", console_url)
         pulumi.set(__self__, "ip", ip)
+        pulumi.set(__self__, "mycelium_ip", mycelium_ip)
         pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "planetary_ip", planetary_ip)
         pulumi.set(__self__, "ssh_key", ssh_key)
@@ -132,6 +134,11 @@ class K8sNodeComputed(dict):
     @pulumi.getter
     def ip(self) -> str:
         return pulumi.get(self, "ip")
+
+    @property
+    @pulumi.getter
+    def mycelium_ip(self) -> str:
+        return pulumi.get(self, "mycelium_ip")
 
     @property
     @pulumi.getter
@@ -164,6 +171,8 @@ class K8sNodeInput(dict):
                  node: Any,
                  flist: Optional[str] = None,
                  flist_checksum: Optional[str] = None,
+                 mycelium: Optional[bool] = None,
+                 mycelium_ip_seed: Optional[str] = None,
                  planetary: Optional[bool] = None,
                  public_ip: Optional[bool] = None,
                  public_ip6: Optional[bool] = None):
@@ -176,6 +185,10 @@ class K8sNodeInput(dict):
             pulumi.set(__self__, "flist", flist)
         if flist_checksum is not None:
             pulumi.set(__self__, "flist_checksum", flist_checksum)
+        if mycelium is not None:
+            pulumi.set(__self__, "mycelium", mycelium)
+        if mycelium_ip_seed is not None:
+            pulumi.set(__self__, "mycelium_ip_seed", mycelium_ip_seed)
         if planetary is not None:
             pulumi.set(__self__, "planetary", planetary)
         if public_ip is not None:
@@ -217,6 +230,16 @@ class K8sNodeInput(dict):
     @pulumi.getter
     def flist_checksum(self) -> Optional[str]:
         return pulumi.get(self, "flist_checksum")
+
+    @property
+    @pulumi.getter
+    def mycelium(self) -> Optional[bool]:
+        return pulumi.get(self, "mycelium")
+
+    @property
+    @pulumi.getter
+    def mycelium_ip_seed(self) -> Optional[str]:
+        return pulumi.get(self, "mycelium_ip_seed")
 
     @property
     @pulumi.getter

@@ -29,6 +29,7 @@ export namespace provider {
         computed_ip6: string;
         console_url: string;
         ip: string;
+        mycelium_ip: string;
         network_name: string;
         planetary_ip: string;
         ssh_key: string;
@@ -41,6 +42,8 @@ export namespace provider {
         flist?: string;
         flist_checksum?: string;
         memory: number;
+        mycelium?: boolean;
+        mycelium_ip_seed?: string;
         name: string;
         node: any;
         planetary?: boolean;
