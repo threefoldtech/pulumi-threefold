@@ -28,15 +28,16 @@ type K8sNodeInput struct {
 
 // K8sNodeComputed struct of computed data
 type K8sNodeComputed struct {
-	ComputedIP  string `pulumi:"computed_ip"`
-	ComputedIP6 string `pulumi:"computed_ip6"`
-	IP          string `pulumi:"ip"`
-	PlanetaryIP string `pulumi:"planetary_ip"`
-	MyceliumIP  string `pulumi:"mycelium_ip"`
-	ConsoleURL  string `pulumi:"console_url"`
-	SSHKey      string `pulumi:"ssh_key"`
-	Token       string `pulumi:"token"`
-	NetworkName string `pulumi:"network_name"`
+	MyceliumIPSeed string `pulumi:"mycelium_ip_seed"`
+	ComputedIP     string `pulumi:"computed_ip"`
+	ComputedIP6    string `pulumi:"computed_ip6"`
+	IP             string `pulumi:"ip"`
+	PlanetaryIP    string `pulumi:"planetary_ip"`
+	MyceliumIP     string `pulumi:"mycelium_ip"`
+	ConsoleURL     string `pulumi:"console_url"`
+	SSHKey         string `pulumi:"ssh_key"`
+	Token          string `pulumi:"token"`
+	NetworkName    string `pulumi:"network_name"`
 }
 
 func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
@@ -54,15 +55,16 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 
 	// parse master computed
 	masterComputed := K8sNodeComputed{
-		ComputedIP:  k8sCluster.Master.ComputedIP,
-		ComputedIP6: k8sCluster.Master.ComputedIP6,
-		PlanetaryIP: k8sCluster.Master.PlanetaryIP,
-		MyceliumIP:  k8sCluster.Master.MyceliumIP,
-		IP:          k8sCluster.Master.IP,
-		NetworkName: k8sCluster.Master.NetworkName,
-		Token:       k8sCluster.Master.Token,
-		SSHKey:      k8sCluster.Master.SSHKey,
-		ConsoleURL:  k8sCluster.Master.ConsoleURL,
+		MyceliumIPSeed: hex.EncodeToString(k8sCluster.Master.MyceliumIPSeed),
+		ComputedIP:     k8sCluster.Master.ComputedIP,
+		ComputedIP6:    k8sCluster.Master.ComputedIP6,
+		PlanetaryIP:    k8sCluster.Master.PlanetaryIP,
+		MyceliumIP:     k8sCluster.Master.MyceliumIP,
+		IP:             k8sCluster.Master.IP,
+		NetworkName:    k8sCluster.Master.NetworkName,
+		Token:          k8sCluster.Master.Token,
+		SSHKey:         k8sCluster.Master.SSHKey,
+		ConsoleURL:     k8sCluster.Master.ConsoleURL,
 	}
 
 	// parse master input
@@ -85,15 +87,16 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 	workersInput := []K8sNodeInput{}
 	for _, w := range k8sCluster.Workers {
 		newWorkerComputed := K8sNodeComputed{
-			ComputedIP:  w.ComputedIP,
-			ComputedIP6: w.ComputedIP6,
-			PlanetaryIP: w.PlanetaryIP,
-			MyceliumIP:  w.MyceliumIP,
-			IP:          w.IP,
-			NetworkName: w.NetworkName,
-			Token:       w.Token,
-			SSHKey:      w.SSHKey,
-			ConsoleURL:  w.ConsoleURL,
+			MyceliumIPSeed: hex.EncodeToString(w.MyceliumIPSeed),
+			ComputedIP:     w.ComputedIP,
+			ComputedIP6:    w.ComputedIP6,
+			PlanetaryIP:    w.PlanetaryIP,
+			MyceliumIP:     w.MyceliumIP,
+			IP:             w.IP,
+			NetworkName:    w.NetworkName,
+			Token:          w.Token,
+			SSHKey:         w.SSHKey,
+			ConsoleURL:     w.ConsoleURL,
 		}
 		workersComputed[w.Name] = newWorkerComputed
 
@@ -260,6 +263,11 @@ func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState)
 	// update NodeDeploymentID
 	k8sCluster.NodeDeploymentID = nodeDeploymentID
 
+	myceliumIPSeed, err := hex.DecodeString(state.MasterComputed.MyceliumIPSeed)
+	if err != nil {
+		return err
+	}
+
 	// update master computed
 	k8sCluster.Master.ComputedIP = state.MasterComputed.ComputedIP
 	k8sCluster.Master.ComputedIP6 = state.MasterComputed.ComputedIP6
@@ -270,12 +278,17 @@ func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState)
 	k8sCluster.Master.SSHKey = state.MasterComputed.SSHKey
 	k8sCluster.Master.Token = state.MasterComputed.Token
 	k8sCluster.Master.NetworkName = state.MasterComputed.NetworkName
+	k8sCluster.Master.MyceliumIPSeed = myceliumIPSeed
 
 	// update workers computed
 	for i, worker := range k8sCluster.Workers {
 		// update every worker in k8sCluster if it has computed data in the state
-
 		if workerComputed, ok := state.WorkersComputed[worker.Name]; ok {
+			myceliumIPSeed, err := hex.DecodeString(workerComputed.MyceliumIPSeed)
+			if err != nil {
+				return err
+			}
+
 			k8sCluster.Workers[i].ComputedIP = workerComputed.ComputedIP
 			k8sCluster.Workers[i].ComputedIP6 = workerComputed.ComputedIP6
 			k8sCluster.Workers[i].IP = workerComputed.IP
@@ -285,6 +298,7 @@ func updateK8sFromState(k8sCluster *workloads.K8sCluster, state KubernetesState)
 			k8sCluster.Workers[i].SSHKey = workerComputed.SSHKey
 			k8sCluster.Workers[i].Token = workerComputed.Token
 			k8sCluster.Workers[i].NetworkName = workerComputed.NetworkName
+			k8sCluster.Workers[i].MyceliumIPSeed = myceliumIPSeed
 		}
 	}
 
