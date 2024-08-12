@@ -51,6 +51,7 @@ func parseNetworkToState(network workloads.ZNet) NetworkState {
 		PublicNodeID:     int32(network.PublicNodeID),
 		NodesIPRange:     nodesIPRange,
 		NodeDeploymentID: nodeDeploymentID,
+		MyceliumKeys:     myceliumKeys,
 	}
 
 	if network.ExternalIP != nil {
@@ -149,12 +150,28 @@ func updateNetworkFromState(network *workloads.ZNet, state NetworkState) error {
 		nodeDeploymentID[uint32(node)] = uint64(deploymentID)
 	}
 
+	myceliumKeys := make(map[uint32][]byte)
+	for nodeID, myceliumKey := range state.MyceliumKeys {
+		nodeID, err := strconv.Atoi(fmt.Sprint(nodeID))
+		if err != nil {
+			return err
+		}
+
+		myceliumKey, err := hex.DecodeString(myceliumKey)
+		if err != nil {
+			return err
+		}
+
+		myceliumKeys[uint32(nodeID)] = myceliumKey
+	}
+
 	network.AccessWGConfig = state.AccessWGConfig
 	network.ExternalIP = &externalIP
 	network.ExternalSK = externalSk
 	network.PublicNodeID = uint32(state.PublicNodeID)
 	network.NodesIPRange = nodesIPRange
 	network.NodeDeploymentID = nodeDeploymentID
+	network.MyceliumKeys = myceliumKeys
 
 	return nil
 }
