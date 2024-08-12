@@ -70,12 +70,13 @@ type VMInput struct {
 
 // VMComputed is a virtual machine computed struct
 type VMComputed struct {
-	ComputedIP  string `pulumi:"computed_ip"`
-	ComputedIP6 string `pulumi:"computed_ip6"`
-	PlanetaryIP string `pulumi:"planetary_ip"`
-	MyceliumIP  string `pulumi:"mycelium_ip"`
-	ConsoleURL  string `pulumi:"console_url"`
-	IP          string `pulumi:"ip,optional"`
+	MyceliumIPSeed string `pulumi:"mycelium_ip_seed"`
+	ComputedIP     string `pulumi:"computed_ip"`
+	ComputedIP6    string `pulumi:"computed_ip6"`
+	PlanetaryIP    string `pulumi:"planetary_ip"`
+	MyceliumIP     string `pulumi:"mycelium_ip"`
+	ConsoleURL     string `pulumi:"console_url"`
+	IP             string `pulumi:"ip,optional"`
 }
 
 // QSFSInput is the QSFS input struct
@@ -407,12 +408,13 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 	vmsComputed := make([]VMComputed, 0)
 	for _, vm := range deployment.Vms {
 		vmsComputed = append(vmsComputed, VMComputed{
-			ComputedIP:  vm.ComputedIP,
-			ComputedIP6: vm.ComputedIP6,
-			MyceliumIP:  vm.MyceliumIP,
-			PlanetaryIP: vm.PlanetaryIP,
-			ConsoleURL:  vm.ConsoleURL,
-			IP:          vm.IP,
+			MyceliumIPSeed: hex.EncodeToString(vm.MyceliumIPSeed),
+			ComputedIP:     vm.ComputedIP,
+			ComputedIP6:    vm.ComputedIP6,
+			MyceliumIP:     vm.MyceliumIP,
+			PlanetaryIP:    vm.PlanetaryIP,
+			ConsoleURL:     vm.ConsoleURL,
+			IP:             vm.IP,
 		})
 	}
 
@@ -447,22 +449,34 @@ func updateDeploymentFromState(deployment *workloads.Deployment, state Deploymen
 	}
 
 	for i, zdb := range state.ZdbsComputed {
-		deployment.Zdbs[i].IPs = zdb.IPs
-		deployment.Zdbs[i].Port = uint32(zdb.Port)
-		deployment.Zdbs[i].Namespace = zdb.Namespace
+		if len(deployment.Zdbs) > i {
+			deployment.Zdbs[i].IPs = zdb.IPs
+			deployment.Zdbs[i].Port = uint32(zdb.Port)
+			deployment.Zdbs[i].Namespace = zdb.Namespace
+		}
 	}
 
 	for i, vm := range state.VmsComputed {
-		deployment.Vms[i].ComputedIP = vm.ComputedIP
-		deployment.Vms[i].ComputedIP6 = vm.ComputedIP6
-		deployment.Vms[i].PlanetaryIP = vm.PlanetaryIP
-		deployment.Vms[i].MyceliumIP = vm.MyceliumIP
-		deployment.Vms[i].ConsoleURL = vm.ConsoleURL
-		deployment.Vms[i].IP = vm.IP
+		if len(deployment.Vms) > i {
+			myceliumIPSeed, err := hex.DecodeString(vm.MyceliumIPSeed)
+			if err != nil {
+				return err
+			}
+
+			deployment.Vms[i].MyceliumIPSeed = myceliumIPSeed
+			deployment.Vms[i].ComputedIP = vm.ComputedIP
+			deployment.Vms[i].ComputedIP6 = vm.ComputedIP6
+			deployment.Vms[i].PlanetaryIP = vm.PlanetaryIP
+			deployment.Vms[i].MyceliumIP = vm.MyceliumIP
+			deployment.Vms[i].ConsoleURL = vm.ConsoleURL
+			deployment.Vms[i].IP = vm.IP
+		}
 	}
 
 	for i, qsfs := range state.QsfsComputed {
-		deployment.QSFS[i].MetricsEndpoint = qsfs.MetricsEndpoint
+		if len(deployment.QSFS) > i {
+			deployment.QSFS[i].MetricsEndpoint = qsfs.MetricsEndpoint
+		}
 	}
 
 	deployment.NodeDeploymentID = nodeDeploymentID
