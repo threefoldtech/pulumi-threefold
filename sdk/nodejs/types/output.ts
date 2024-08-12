@@ -30,6 +30,7 @@ export namespace provider {
         console_url: string;
         ip: string;
         mycelium_ip: string;
+        mycelium_ip_seed: string;
         network_name: string;
         planetary_ip: string;
         ssh_key: string;
@@ -90,6 +91,7 @@ export namespace provider {
         console_url: string;
         ip?: string;
         mycelium_ip: string;
+        mycelium_ip_seed: string;
         planetary_ip: string;
     }
 

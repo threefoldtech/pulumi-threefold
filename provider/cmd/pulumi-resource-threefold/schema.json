@@ -141,6 +141,9 @@
         "mycelium_ip": {
           "type": "string"
         },
+        "mycelium_ip_seed": {
+          "type": "string"
+        },
         "network_name": {
           "type": "string"
         },
@@ -161,6 +164,7 @@
         "console_url",
         "ip",
         "mycelium_ip",
+        "mycelium_ip_seed",
         "network_name",
         "planetary_ip",
         "ssh_key",
@@ -344,6 +348,9 @@
         "mycelium_ip": {
           "type": "string"
         },
+        "mycelium_ip_seed": {
+          "type": "string"
+        },
         "planetary_ip": {
           "type": "string"
         }
@@ -354,6 +361,7 @@
         "computed_ip6",
         "console_url",
         "mycelium_ip",
+        "mycelium_ip_seed",
         "planetary_ip"
       ]
     },
@@ -1056,6 +1064,7 @@
         "external_ip",
         "external_sk",
         "ip_range",
+        "mycelium_keys",
         "name",
         "node_deployment_id",
         "nodes",
