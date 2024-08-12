@@ -101,6 +101,7 @@ class K8sNodeComputed(dict):
                  console_url: str,
                  ip: str,
                  mycelium_ip: str,
+                 mycelium_ip_seed: str,
                  network_name: str,
                  planetary_ip: str,
                  ssh_key: str,
@@ -110,6 +111,7 @@ class K8sNodeComputed(dict):
         pulumi.set(__self__, "console_url", console_url)
         pulumi.set(__self__, "ip", ip)
         pulumi.set(__self__, "mycelium_ip", mycelium_ip)
+        pulumi.set(__self__, "mycelium_ip_seed", mycelium_ip_seed)
         pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "planetary_ip", planetary_ip)
         pulumi.set(__self__, "ssh_key", ssh_key)
@@ -139,6 +141,11 @@ class K8sNodeComputed(dict):
     @pulumi.getter
     def mycelium_ip(self) -> str:
         return pulumi.get(self, "mycelium_ip")
+
+    @property
+    @pulumi.getter
+    def mycelium_ip_seed(self) -> str:
+        return pulumi.get(self, "mycelium_ip_seed")
 
     @property
     @pulumi.getter
@@ -437,12 +444,14 @@ class VMComputed(dict):
                  computed_ip6: str,
                  console_url: str,
                  mycelium_ip: str,
+                 mycelium_ip_seed: str,
                  planetary_ip: str,
                  ip: Optional[str] = None):
         pulumi.set(__self__, "computed_ip", computed_ip)
         pulumi.set(__self__, "computed_ip6", computed_ip6)
         pulumi.set(__self__, "console_url", console_url)
         pulumi.set(__self__, "mycelium_ip", mycelium_ip)
+        pulumi.set(__self__, "mycelium_ip_seed", mycelium_ip_seed)
         pulumi.set(__self__, "planetary_ip", planetary_ip)
         if ip is not None:
             pulumi.set(__self__, "ip", ip)
@@ -466,6 +475,11 @@ class VMComputed(dict):
     @pulumi.getter
     def mycelium_ip(self) -> str:
         return pulumi.get(self, "mycelium_ip")
+
+    @property
+    @pulumi.getter
+    def mycelium_ip_seed(self) -> str:
+        return pulumi.get(self, "mycelium_ip_seed")
 
     @property
     @pulumi.getter

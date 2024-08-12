@@ -320,15 +320,16 @@ func (o GroupArrayOutput) Index(i pulumi.IntInput) GroupOutput {
 }
 
 type K8sNodeComputed struct {
-	Computed_ip  string `pulumi:"computed_ip"`
-	Computed_ip6 string `pulumi:"computed_ip6"`
-	Console_url  string `pulumi:"console_url"`
-	Ip           string `pulumi:"ip"`
-	Mycelium_ip  string `pulumi:"mycelium_ip"`
-	Network_name string `pulumi:"network_name"`
-	Planetary_ip string `pulumi:"planetary_ip"`
-	Ssh_key      string `pulumi:"ssh_key"`
-	Token        string `pulumi:"token"`
+	Computed_ip      string `pulumi:"computed_ip"`
+	Computed_ip6     string `pulumi:"computed_ip6"`
+	Console_url      string `pulumi:"console_url"`
+	Ip               string `pulumi:"ip"`
+	Mycelium_ip      string `pulumi:"mycelium_ip"`
+	Mycelium_ip_seed string `pulumi:"mycelium_ip_seed"`
+	Network_name     string `pulumi:"network_name"`
+	Planetary_ip     string `pulumi:"planetary_ip"`
+	Ssh_key          string `pulumi:"ssh_key"`
+	Token            string `pulumi:"token"`
 }
 
 // K8sNodeComputedInput is an input type that accepts K8sNodeComputedArgs and K8sNodeComputedOutput values.
@@ -343,15 +344,16 @@ type K8sNodeComputedInput interface {
 }
 
 type K8sNodeComputedArgs struct {
-	Computed_ip  pulumi.StringInput `pulumi:"computed_ip"`
-	Computed_ip6 pulumi.StringInput `pulumi:"computed_ip6"`
-	Console_url  pulumi.StringInput `pulumi:"console_url"`
-	Ip           pulumi.StringInput `pulumi:"ip"`
-	Mycelium_ip  pulumi.StringInput `pulumi:"mycelium_ip"`
-	Network_name pulumi.StringInput `pulumi:"network_name"`
-	Planetary_ip pulumi.StringInput `pulumi:"planetary_ip"`
-	Ssh_key      pulumi.StringInput `pulumi:"ssh_key"`
-	Token        pulumi.StringInput `pulumi:"token"`
+	Computed_ip      pulumi.StringInput `pulumi:"computed_ip"`
+	Computed_ip6     pulumi.StringInput `pulumi:"computed_ip6"`
+	Console_url      pulumi.StringInput `pulumi:"console_url"`
+	Ip               pulumi.StringInput `pulumi:"ip"`
+	Mycelium_ip      pulumi.StringInput `pulumi:"mycelium_ip"`
+	Mycelium_ip_seed pulumi.StringInput `pulumi:"mycelium_ip_seed"`
+	Network_name     pulumi.StringInput `pulumi:"network_name"`
+	Planetary_ip     pulumi.StringInput `pulumi:"planetary_ip"`
+	Ssh_key          pulumi.StringInput `pulumi:"ssh_key"`
+	Token            pulumi.StringInput `pulumi:"token"`
 }
 
 func (K8sNodeComputedArgs) ElementType() reflect.Type {
@@ -423,6 +425,10 @@ func (o K8sNodeComputedOutput) Ip() pulumi.StringOutput {
 
 func (o K8sNodeComputedOutput) Mycelium_ip() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Mycelium_ip }).(pulumi.StringOutput)
+}
+
+func (o K8sNodeComputedOutput) Mycelium_ip_seed() pulumi.StringOutput {
+	return o.ApplyT(func(v K8sNodeComputed) string { return v.Mycelium_ip_seed }).(pulumi.StringOutput)
 }
 
 func (o K8sNodeComputedOutput) Network_name() pulumi.StringOutput {
@@ -1055,12 +1061,13 @@ func (o QSFSInputArrayOutput) Index(i pulumi.IntInput) QSFSInputOutput {
 }
 
 type VMComputed struct {
-	Computed_ip  string  `pulumi:"computed_ip"`
-	Computed_ip6 string  `pulumi:"computed_ip6"`
-	Console_url  string  `pulumi:"console_url"`
-	Ip           *string `pulumi:"ip"`
-	Mycelium_ip  string  `pulumi:"mycelium_ip"`
-	Planetary_ip string  `pulumi:"planetary_ip"`
+	Computed_ip      string  `pulumi:"computed_ip"`
+	Computed_ip6     string  `pulumi:"computed_ip6"`
+	Console_url      string  `pulumi:"console_url"`
+	Ip               *string `pulumi:"ip"`
+	Mycelium_ip      string  `pulumi:"mycelium_ip"`
+	Mycelium_ip_seed string  `pulumi:"mycelium_ip_seed"`
+	Planetary_ip     string  `pulumi:"planetary_ip"`
 }
 
 // VMComputedInput is an input type that accepts VMComputedArgs and VMComputedOutput values.
@@ -1075,12 +1082,13 @@ type VMComputedInput interface {
 }
 
 type VMComputedArgs struct {
-	Computed_ip  pulumi.StringInput    `pulumi:"computed_ip"`
-	Computed_ip6 pulumi.StringInput    `pulumi:"computed_ip6"`
-	Console_url  pulumi.StringInput    `pulumi:"console_url"`
-	Ip           pulumi.StringPtrInput `pulumi:"ip"`
-	Mycelium_ip  pulumi.StringInput    `pulumi:"mycelium_ip"`
-	Planetary_ip pulumi.StringInput    `pulumi:"planetary_ip"`
+	Computed_ip      pulumi.StringInput    `pulumi:"computed_ip"`
+	Computed_ip6     pulumi.StringInput    `pulumi:"computed_ip6"`
+	Console_url      pulumi.StringInput    `pulumi:"console_url"`
+	Ip               pulumi.StringPtrInput `pulumi:"ip"`
+	Mycelium_ip      pulumi.StringInput    `pulumi:"mycelium_ip"`
+	Mycelium_ip_seed pulumi.StringInput    `pulumi:"mycelium_ip_seed"`
+	Planetary_ip     pulumi.StringInput    `pulumi:"planetary_ip"`
 }
 
 func (VMComputedArgs) ElementType() reflect.Type {
@@ -1152,6 +1160,10 @@ func (o VMComputedOutput) Ip() pulumi.StringPtrOutput {
 
 func (o VMComputedOutput) Mycelium_ip() pulumi.StringOutput {
 	return o.ApplyT(func(v VMComputed) string { return v.Mycelium_ip }).(pulumi.StringOutput)
+}
+
+func (o VMComputedOutput) Mycelium_ip_seed() pulumi.StringOutput {
+	return o.ApplyT(func(v VMComputed) string { return v.Mycelium_ip_seed }).(pulumi.StringOutput)
 }
 
 func (o VMComputedOutput) Planetary_ip() pulumi.StringOutput {
