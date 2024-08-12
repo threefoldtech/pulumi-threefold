@@ -9,6 +9,7 @@ import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
 
@@ -42,6 +43,9 @@ func Provider() p.Provider {
 			infer.Resource[*GatewayFQDN](),
 		},
 		Config: infer.Config[*Config](),
+		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
+			"provider": "index",
+		},
 	})
 }
 
