@@ -7,7 +7,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from .. import _utilities
+from . import _utilities
 
 __all__ = ['SchedulerArgs', 'Scheduler']
 
@@ -409,7 +409,7 @@ class Scheduler(pulumi.CustomResource):
             __props__.__dict__["twin_id"] = twin_id
             __props__.__dict__["nodes"] = None
         super(Scheduler, __self__).__init__(
-            'threefold:provider:Scheduler',
+            'threefold:index:Scheduler',
             resource_name,
             __props__,
             opts)

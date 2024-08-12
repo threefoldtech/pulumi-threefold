@@ -7,7 +7,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from .. import _utilities
+from . import _utilities
 from . import outputs
 from ._inputs import *
 
@@ -167,7 +167,7 @@ class Kubernetes(pulumi.CustomResource):
             __props__.__dict__["nodes_ip_range"] = None
             __props__.__dict__["workers_computed"] = None
         super(Kubernetes, __self__).__init__(
-            'threefold:provider:Kubernetes',
+            'threefold:index:Kubernetes',
             resource_name,
             __props__,
             opts)
