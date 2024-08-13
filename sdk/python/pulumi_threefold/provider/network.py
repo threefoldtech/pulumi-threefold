@@ -271,7 +271,7 @@ class Network(pulumi.CustomResource):
 
     @property
     @pulumi.getter
-    def mycelium_keys(self) -> pulumi.Output[Mapping[str, str]]:
+    def mycelium_keys(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
         return pulumi.get(self, "mycelium_keys")
 
     @property

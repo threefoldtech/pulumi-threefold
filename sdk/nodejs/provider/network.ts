@@ -38,7 +38,7 @@ export class Network extends pulumi.CustomResource {
     public /*out*/ readonly external_sk!: pulumi.Output<string>;
     public readonly ip_range!: pulumi.Output<string>;
     public readonly mycelium!: pulumi.Output<boolean | undefined>;
-    public readonly mycelium_keys!: pulumi.Output<{[key: string]: string}>;
+    public readonly mycelium_keys!: pulumi.Output<{[key: string]: string} | undefined>;
     public readonly name!: pulumi.Output<string>;
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
     public readonly nodes!: pulumi.Output<any[]>;
