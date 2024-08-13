@@ -34,11 +34,11 @@ class ProviderArgs:
         if key_type is not None:
             pulumi.set(__self__, "key_type", key_type)
         if mnemonic is None:
-            mnemonic = (_utilities.get_env('') or '')
+            mnemonic = (_utilities.get_env('') or 'session curtain motor attitude machine mutual normal lion excess dignity holiday coast')
         if mnemonic is not None:
             pulumi.set(__self__, "mnemonic", mnemonic)
         if network is None:
-            network = (_utilities.get_env('') or '')
+            network = (_utilities.get_env('') or 'main')
         if network is not None:
             pulumi.set(__self__, "network", network)
         if relay_url is not None:
@@ -186,10 +186,10 @@ class Provider(pulumi.ProviderResource):
                 key_type = (_utilities.get_env('') or 'sr25519')
             __props__.__dict__["key_type"] = key_type
             if mnemonic is None:
-                mnemonic = (_utilities.get_env('') or '')
+                mnemonic = (_utilities.get_env('') or 'session curtain motor attitude machine mutual normal lion excess dignity holiday coast')
             __props__.__dict__["mnemonic"] = None if mnemonic is None else pulumi.Output.secret(mnemonic)
             if network is None:
-                network = (_utilities.get_env('') or '')
+                network = (_utilities.get_env('') or 'main')
             __props__.__dict__["network"] = network
             __props__.__dict__["relay_url"] = pulumi.Output.from_input(relay_url).apply(pulumi.runtime.to_json) if relay_url is not None else None
             __props__.__dict__["rmb_timeout"] = rmb_timeout
