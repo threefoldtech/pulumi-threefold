@@ -25,7 +25,7 @@ type NetworkArgs struct {
 type NetworkState struct {
 	NetworkArgs
 
-	MyceliumKeys     map[string]string `pulumi:"mycelium_keys"`
+	MyceliumKeys     map[string]string `pulumi:"mycelium_keys,optional"`
 	AccessWGConfig   string            `pulumi:"access_wg_config"`
 	ExternalIP       string            `pulumi:"external_ip"`
 	ExternalSK       string            `pulumi:"external_sk"`
