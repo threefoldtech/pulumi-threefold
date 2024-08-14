@@ -10,10 +10,8 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
       fail-fast: false
       matrix:
-        network: ["dev", "qa", "test", "main"]
         lang: ["yaml", "go", "python"]
 
     steps:
@@ -45,9 +43,30 @@ jobs:
       - name: Install provider
         run: make install_latest
 
-      - name: Run Tests for ${{ matrix.lang }} examples
+      - name: Run Tests for devnet
         run: go test -v ./tests
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
-          NETWORK: ${{ matrix.network }}
+          NETWORK: dev
+          EXAMPLES: ../examples/${{ matrix.lang }}
+
+      - name: Run Tests for qanet
+        run: go test -v ./tests
+        env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          NETWORK: qa
+          EXAMPLES: ../examples/${{ matrix.lang }}
+
+      - name: Run Tests for testnet
+        run: go test -v ./tests
+        env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          NETWORK: test
+          EXAMPLES: ../examples/${{ matrix.lang }}
+
+      - name: Run Tests for mainnet
+        run: go test -v ./tests
+        env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          NETWORK: main
           EXAMPLES: ../examples/${{ matrix.lang }}
