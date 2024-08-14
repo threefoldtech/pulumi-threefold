@@ -22,7 +22,6 @@ import (
 
   "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
   "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-  "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -34,7 +33,7 @@ func main() {
       return err
     }
 
-    scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+    scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
       Farm_ids: pulumi.IntArray{
         pulumi.Int(1),
       },
@@ -43,7 +42,7 @@ func main() {
       return err
     }
 
-    network, err := provider.NewNetwork(ctx, "network", &provider.NetworkArgs{
+    network, err := threefold.NewNetwork(ctx, "network", &threefold.NetworkArgs{
       Name:        pulumi.String("testing"),
       Description: pulumi.String("test network"),
       Nodes: pulumi.Array{
@@ -123,7 +122,6 @@ import (
 
   "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
   "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-  "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -134,7 +132,7 @@ func main() {
     if err != nil {
       return err
     }
-    scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+    scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
       Mru: pulumi.Int(1),
       Sru: pulumi.Int(2),
       Farm_ids: pulumi.IntArray{
@@ -144,7 +142,7 @@ func main() {
     if err != nil {
       return err
     }
-    network, err := provider.NewNetwork(ctx, "network", &provider.NetworkArgs{
+    network, err := threefold.NewNetwork(ctx, "network", &threefold.NetworkArgs{
       Name:        pulumi.String("test"),
       Description: pulumi.String("test network"),
       Nodes: pulumi.Array{
@@ -159,14 +157,14 @@ func main() {
     if err != nil {
       return err
     }
-    deployment, err := provider.NewDeployment(ctx, "deployment", &provider.DeploymentArgs{
+    deployment, err := threefold.NewDeployment(ctx, "deployment", &threefold.DeploymentArgs{
       Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
         return nodes[0], nil
       }).(pulumi.IntOutput),
       Name:         pulumi.String("deployment"),
       Network_name: pulumi.String("test"),
-      Vms: provider.VMInputArray{
-        &provider.VMInputArgs{
+      Vms: threefold.VMInputArray{
+        &threefold.VMInputArgs{
           Name:         pulumi.String("vm"),
           Flist:        pulumi.String("https://hub.grid.tf/tf-official-apps/base:latest.flist"),
           Entrypoint:   pulumi.String("/sbin/zinit init"),
@@ -174,8 +172,8 @@ func main() {
           Cpu:          pulumi.Int(2),
           Memory:       pulumi.Int(256),
           Planetary:    pulumi.Bool(true),
-          Mounts: provider.MountArray{
-            &provider.MountArgs{
+          Mounts: threefold.MountArray{
+            &threefold.MountArgs{
               Disk_name:   pulumi.String("data"),
               Mount_point: pulumi.String("/app"),
             },
@@ -185,8 +183,8 @@ func main() {
           },
         },
       },
-      Disks: provider.DiskArray{
-        &provider.DiskArgs{
+      Disks: threefold.DiskArray{
+        &threefold.DiskArgs{
           Name: pulumi.String("data"),
           Size: pulumi.Int(2),
         },
@@ -198,7 +196,7 @@ func main() {
       return err
     }
     ctx.Export("node_deployment_id", deployment.Node_deployment_id)
-    ctx.Export("planetary_ip", deployment.Vms_computed.ApplyT(func(vms_computed []provider.VMComputed) (*string, error) {
+    ctx.Export("planetary_ip", deployment.Vms_computed.ApplyT(func(vms_computed []threefold.VMComputed) (*string, error) {
       return &vms_computed[0].Planetary_ip, nil
     }).(pulumi.StringPtrOutput))
     return nil
@@ -298,7 +296,6 @@ import (
 
   "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
   "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-  "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -309,7 +306,7 @@ func main() {
     if err != nil {
       return err
     }
-    scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+    scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
       Mru: pulumi.Int(6),
       Sru: pulumi.Int(6),
       Farm_ids: pulumi.IntArray{
@@ -319,7 +316,7 @@ func main() {
     if err != nil {
       return err
     }
-    network, err := provider.NewNetwork(ctx, "network", &provider.NetworkArgs{
+    network, err := threefold.NewNetwork(ctx, "network", &threefold.NetworkArgs{
       Name:        pulumi.String("test"),
       Description: pulumi.String("test network"),
       Nodes: pulumi.Array{
@@ -334,8 +331,8 @@ func main() {
     if err != nil {
       return err
     }
-    kubernetes, err := provider.NewKubernetes(ctx, "kubernetes", &provider.KubernetesArgs{
-      Master: &provider.K8sNodeInputArgs{
+    kubernetes, err := threefold.NewKubernetes(ctx, "kubernetes", &threefold.KubernetesArgs{
+      Master: &threefold.K8sNodeInputArgs{
         Name: pulumi.String("kubernetes"),
         Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
           return nodes[0], nil
@@ -345,8 +342,8 @@ func main() {
         Cpu:       pulumi.Int(2),
         Memory:    pulumi.Int(2048),
       },
-      Workers: provider.K8sNodeInputArray{
-        &provider.K8sNodeInputArgs{
+      Workers: threefold.K8sNodeInputArray{
+        &threefold.K8sNodeInputArgs{
           Name: pulumi.String("worker1"),
           Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
             return nodes[0], nil
@@ -355,7 +352,7 @@ func main() {
           Cpu:       pulumi.Int(2),
           Memory:    pulumi.Int(2048),
         },
-        &provider.K8sNodeInputArgs{
+        &threefold.K8sNodeInputArgs{
           Name: pulumi.String("worker2"),
           Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
             return nodes[0], nil
@@ -375,7 +372,7 @@ func main() {
       return err
     }
     ctx.Export("node_deployment_id", kubernetes.Node_deployment_id)
-    ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed provider.K8sNodeComputed) (*string, error) {
+    ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
       return &master_computed.Planetary_ip, nil
     }).(pulumi.StringPtrOutput))
     return nil
@@ -475,7 +472,6 @@ import (
 
   "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
   "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-  "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -486,7 +482,7 @@ func main() {
     if err != nil {
       return err
     }
-    scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+    scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
       Farm_ids: pulumi.IntArray{
         pulumi.Int(1),
       },
@@ -496,7 +492,7 @@ func main() {
     if err != nil {
       return err
     }
-    gatewayName, err := provider.NewGatewayName(ctx, "gatewayName", &provider.GatewayNameArgs{
+    gatewayName, err := threefold.NewGatewayName(ctx, "gatewayName", &threefold.GatewayNameArgs{
       Name: pulumi.String("pulumi"),
       Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
         return nodes[0], nil
@@ -578,7 +574,6 @@ import (
 
   "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
   "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-  "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -589,7 +584,7 @@ func main() {
     if err != nil {
       return err
     }
-    scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+    scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
       Mru: pulumi.Int(1),
       Farm_ids: pulumi.IntArray{
         pulumi.Int(1),
@@ -600,7 +595,7 @@ func main() {
     if err != nil {
       return err
     }
-    network, err := provider.NewNetwork(ctx, "network", &provider.NetworkArgs{
+    network, err := threefold.NewNetwork(ctx, "network", &threefold.NetworkArgs{
       Name:        pulumi.String("test"),
       Description: pulumi.String("test network"),
       Nodes: pulumi.Array{
@@ -615,14 +610,14 @@ func main() {
     if err != nil {
       return err
     }
-    deployment, err := provider.NewDeployment(ctx, "deployment", &provider.DeploymentArgs{
+    deployment, err := threefold.NewDeployment(ctx, "deployment", &threefold.DeploymentArgs{
       Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
         return nodes[0], nil
       }).(pulumi.IntOutput),
       Name:         pulumi.String("deployment"),
       Network_name: pulumi.String("test"),
-      Vms: provider.VMInputArray{
-        &provider.VMInputArgs{
+      Vms: threefold.VMInputArray{
+        &threefold.VMInputArgs{
           Name:         pulumi.String("vm"),
           Flist:        pulumi.String("https://hub.grid.tf/tf-official-apps/base:latest.flist"),
           Network_name: pulumi.String("test"),
@@ -637,12 +632,12 @@ func main() {
     if err != nil {
       return err
     }
-    gatewayFQDN, err := provider.NewGatewayFQDN(ctx, "gatewayFQDN", &provider.GatewayFQDNArgs{
+    gatewayFQDN, err := threefold.NewGatewayFQDN(ctx, "gatewayFQDN", &threefold.GatewayFQDNArgs{
       Name:    pulumi.String("testing"),
       Node_id: pulumi.Any(14),
       Fqdn:    pulumi.String("remote.omar.grid.tf"),
       Backends: pulumi.StringArray{
-        deployment.Vms_computed.ApplyT(func(vms_computed []provider.VMComputed) (string, error) {
+        deployment.Vms_computed.ApplyT(func(vms_computed []threefold.VMComputed) (string, error) {
           return fmt.Sprintf("http://[%v]:9000", vms_computed[0].Planetary_ip), nil
         }).(pulumi.StringOutput),
       },
@@ -753,7 +748,6 @@ import (
 
   "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
   "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-  "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -764,7 +758,7 @@ func main() {
     if err != nil {
       return err
     }
-    scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+    scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
       Mru: pulumi.Int(1),
       Sru: pulumi.Int(2),
       Farm_ids: pulumi.IntArray{
@@ -774,13 +768,13 @@ func main() {
     if err != nil {
       return err
     }
-    deployment, err := provider.NewDeployment(ctx, "deployment", &provider.DeploymentArgs{
+    deployment, err := threefold.NewDeployment(ctx, "deployment", &threefold.DeploymentArgs{
       Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
         return nodes[0], nil
       }).(pulumi.IntOutput),
       Name: pulumi.String("zdb"),
-      Zdbs: provider.ZDBInputArray{
-        &provider.ZDBInputArgs{
+      Zdbs: threefold.ZDBInputArray{
+        &threefold.ZDBInputArgs{
           Name:     pulumi.String("zdbsTest"),
           Size:     pulumi.Int(2),
           Password: pulumi.String("123456"),
@@ -792,11 +786,11 @@ func main() {
     }
     ctx.Export("node_deployment_id", deployment.Node_deployment_id)
     ctx.Export("zdb_endpoint", pulumi.All(deployment.Zdbs_computed, deployment.Zdbs_computed).ApplyT(func(_args []interface{}) (string, error) {
-      deploymentZdbs_computed := _args[0].([]provider.ZDBComputed)
-      deploymentZdbs_computed1 := _args[1].([]provider.ZDBComputed)
+      deploymentZdbs_computed := _args[0].([]threefold.ZDBComputed)
+      deploymentZdbs_computed1 := _args[1].([]threefold.ZDBComputed)
       return fmt.Sprintf("[%v]:%v", deploymentZdbs_computed[0].Ips[1], deploymentZdbs_computed1[0].Port), nil
     }).(pulumi.StringOutput))
-    ctx.Export("zdb_namespace", deployment.Zdbs_computed.ApplyT(func(zdbs_computed []provider.ZDBComputed) (*string, error) {
+    ctx.Export("zdb_namespace", deployment.Zdbs_computed.ApplyT(func(zdbs_computed []threefold.ZDBComputed) (*string, error) {
       return &zdbs_computed[0].Namespace, nil
     }).(pulumi.StringPtrOutput))
     return nil

@@ -5,7 +5,6 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -16,7 +15,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+		scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
 			Farm_ids: pulumi.IntArray{
 				pulumi.Int(1),
 			},
@@ -26,7 +25,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		gatewayName, err := provider.NewGatewayName(ctx, "gatewayName", &provider.GatewayNameArgs{
+		gatewayName, err := threefold.NewGatewayName(ctx, "gatewayName", &threefold.GatewayNameArgs{
 			Name: pulumi.String("pulumi"),
 			Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 				return nodes[0], nil

@@ -5,7 +5,6 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -16,7 +15,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+		scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
 			Mru: pulumi.Int(6),
 			Sru: pulumi.Int(6),
 			Farm_ids: pulumi.IntArray{
@@ -26,7 +25,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		network, err := provider.NewNetwork(ctx, "network", &provider.NetworkArgs{
+		network, err := threefold.NewNetwork(ctx, "network", &threefold.NetworkArgs{
 			Name:        pulumi.String("test"),
 			Description: pulumi.String("test network"),
 			Nodes: pulumi.Array{
@@ -41,8 +40,8 @@ func main() {
 		if err != nil {
 			return err
 		}
-		kubernetes, err := provider.NewKubernetes(ctx, "kubernetes", &provider.KubernetesArgs{
-			Master: &provider.K8sNodeInputArgs{
+		kubernetes, err := threefold.NewKubernetes(ctx, "kubernetes", &threefold.KubernetesArgs{
+			Master: &threefold.K8sNodeInputArgs{
 				Name: pulumi.String("kubernetes"),
 				Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 					return nodes[0], nil
@@ -52,8 +51,8 @@ func main() {
 				Cpu:       pulumi.Int(2),
 				Memory:    pulumi.Int(2048),
 			},
-			Workers: provider.K8sNodeInputArray{
-				&provider.K8sNodeInputArgs{
+			Workers: threefold.K8sNodeInputArray{
+				&threefold.K8sNodeInputArgs{
 					Name: pulumi.String("worker1"),
 					Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 						return nodes[0], nil
@@ -62,7 +61,7 @@ func main() {
 					Cpu:       pulumi.Int(2),
 					Memory:    pulumi.Int(2048),
 				},
-				&provider.K8sNodeInputArgs{
+				&threefold.K8sNodeInputArgs{
 					Name: pulumi.String("worker2"),
 					Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 						return nodes[0], nil
@@ -82,7 +81,7 @@ func main() {
 			return err
 		}
 		ctx.Export("node_deployment_id", kubernetes.Node_deployment_id)
-		ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed provider.K8sNodeComputed) (*string, error) {
+		ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
 			return &master_computed.Planetary_ip, nil
 		}).(pulumi.StringPtrOutput))
 		return nil

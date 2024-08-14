@@ -5,7 +5,6 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
-	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/provider"
 )
 
 func main() {
@@ -16,7 +15,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		scheduler, err := provider.NewScheduler(ctx, "scheduler", &provider.SchedulerArgs{
+		scheduler, err := threefold.NewScheduler(ctx, "scheduler", &threefold.SchedulerArgs{
 			Mru: pulumi.Int(1),
 			Sru: pulumi.Int(2),
 			Farm_ids: pulumi.IntArray{
@@ -26,7 +25,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		network, err := provider.NewNetwork(ctx, "network", &provider.NetworkArgs{
+		network, err := threefold.NewNetwork(ctx, "network", &threefold.NetworkArgs{
 			Name:        pulumi.String("test"),
 			Description: pulumi.String("test network"),
 			Nodes: pulumi.Array{
@@ -41,14 +40,14 @@ func main() {
 		if err != nil {
 			return err
 		}
-		deployment, err := provider.NewDeployment(ctx, "deployment", &provider.DeploymentArgs{
+		deployment, err := threefold.NewDeployment(ctx, "deployment", &threefold.DeploymentArgs{
 			Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 				return nodes[0], nil
 			}).(pulumi.IntOutput),
 			Name:         pulumi.String("deployment"),
 			Network_name: pulumi.String("test"),
-			Vms: provider.VMInputArray{
-				&provider.VMInputArgs{
+			Vms: threefold.VMInputArray{
+				&threefold.VMInputArgs{
 					Name:         pulumi.String("vm"),
 					Flist:        pulumi.String("https://hub.grid.tf/tf-official-apps/base:latest.flist"),
 					Entrypoint:   pulumi.String("/sbin/zinit init"),
@@ -56,8 +55,8 @@ func main() {
 					Cpu:          pulumi.Int(2),
 					Memory:       pulumi.Int(256),
 					Planetary:    pulumi.Bool(true),
-					Mounts: provider.MountArray{
-						&provider.MountArgs{
+					Mounts: threefold.MountArray{
+						&threefold.MountArgs{
 							Disk_name:   pulumi.String("data"),
 							Mount_point: pulumi.String("/app"),
 						},
@@ -67,8 +66,8 @@ func main() {
 					},
 				},
 			},
-			Disks: provider.DiskArray{
-				&provider.DiskArgs{
+			Disks: threefold.DiskArray{
+				&threefold.DiskArgs{
 					Name: pulumi.String("data"),
 					Size: pulumi.Int(2),
 				},
@@ -80,7 +79,7 @@ func main() {
 			return err
 		}
 		ctx.Export("node_deployment_id", deployment.Node_deployment_id)
-		ctx.Export("planetary_ip", deployment.Vms_computed.ApplyT(func(vms_computed []provider.VMComputed) (*string, error) {
+		ctx.Export("planetary_ip", deployment.Vms_computed.ApplyT(func(vms_computed []threefold.VMComputed) (*string, error) {
 			return &vms_computed[0].Planetary_ip, nil
 		}).(pulumi.StringPtrOutput))
 		return nil
