@@ -5,32 +5,37 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from .deployment import *
+from .gateway_fqdn import *
+from .gateway_name import *
+from .kubernetes import *
+from .network import *
 from .provider import *
+from .scheduler import *
+from ._inputs import *
+from . import outputs
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
     import pulumi_threefold.config as __config
     config = __config
-    import pulumi_threefold.provider as __provider
-    provider = __provider
 else:
     config = _utilities.lazy_import('pulumi_threefold.config')
-    provider = _utilities.lazy_import('pulumi_threefold.provider')
 
 _utilities.register(
     resource_modules="""
 [
  {
   "pkg": "threefold",
-  "mod": "provider",
-  "fqn": "pulumi_threefold.provider",
+  "mod": "index",
+  "fqn": "pulumi_threefold",
   "classes": {
-   "threefold:provider:Deployment": "Deployment",
-   "threefold:provider:GatewayFQDN": "GatewayFQDN",
-   "threefold:provider:GatewayName": "GatewayName",
-   "threefold:provider:Kubernetes": "Kubernetes",
-   "threefold:provider:Network": "Network",
-   "threefold:provider:Scheduler": "Scheduler"
+   "threefold:index:Deployment": "Deployment",
+   "threefold:index:GatewayFQDN": "GatewayFQDN",
+   "threefold:index:GatewayName": "GatewayName",
+   "threefold:index:Kubernetes": "Kubernetes",
+   "threefold:index:Network": "Network",
+   "threefold:index:Scheduler": "Scheduler"
   }
  }
 ]

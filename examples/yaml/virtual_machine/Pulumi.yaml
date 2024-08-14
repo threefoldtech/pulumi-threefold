@@ -10,7 +10,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -19,7 +19,7 @@ resources:
       farm_ids: [1]
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -35,7 +35,7 @@ resources:
       #   manual_nodeID: 9751c596c7c951aedad1a5f78f18b59515064adf660e0d55abead65e6fbbd627 # hex encoded 32 bytes [example]
 
   deployment:
-    type: threefold:provider:Deployment
+    type: threefold:Deployment
     options:
       provider: ${provider}
       dependsOn:

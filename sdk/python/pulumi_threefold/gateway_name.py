@@ -7,7 +7,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from .. import _utilities
+from . import _utilities
 
 __all__ = ['GatewayNameArgs', 'GatewayName']
 
@@ -179,7 +179,7 @@ class GatewayName(pulumi.CustomResource):
             __props__.__dict__["name_contract_id"] = None
             __props__.__dict__["node_deployment_id"] = None
         super(GatewayName, __self__).__init__(
-            'threefold:provider:GatewayName',
+            'threefold:index:GatewayName',
             resource_name,
             __props__,
             opts)

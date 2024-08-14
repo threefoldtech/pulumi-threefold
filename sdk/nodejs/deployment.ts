@@ -2,9 +2,9 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "../types/input";
-import * as outputs from "../types/output";
-import * as utilities from "../utilities";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as utilities from "./utilities";
 
 export class Deployment extends pulumi.CustomResource {
     /**
@@ -20,7 +20,7 @@ export class Deployment extends pulumi.CustomResource {
     }
 
     /** @internal */
-    public static readonly __pulumiType = 'threefold:provider:Deployment';
+    public static readonly __pulumiType = 'threefold:index:Deployment';
 
     /**
      * Returns true if the given object is an instance of Deployment.  This is designed to work even
@@ -34,20 +34,20 @@ export class Deployment extends pulumi.CustomResource {
     }
 
     public /*out*/ readonly contract_id!: pulumi.Output<number>;
-    public readonly disks!: pulumi.Output<outputs.provider.Disk[] | undefined>;
+    public readonly disks!: pulumi.Output<outputs.Disk[] | undefined>;
     public /*out*/ readonly ip_range!: pulumi.Output<string>;
     public readonly name!: pulumi.Output<string>;
     public readonly network_name!: pulumi.Output<string | undefined>;
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
     public readonly node_id!: pulumi.Output<any>;
-    public readonly qsfs!: pulumi.Output<outputs.provider.QSFSInput[] | undefined>;
-    public /*out*/ readonly qsfs_computed!: pulumi.Output<outputs.provider.QSFSComputed[]>;
+    public readonly qsfs!: pulumi.Output<outputs.QSFSInput[] | undefined>;
+    public /*out*/ readonly qsfs_computed!: pulumi.Output<outputs.QSFSComputed[]>;
     public readonly solution_provider!: pulumi.Output<number | undefined>;
     public readonly solution_type!: pulumi.Output<string | undefined>;
-    public readonly vms!: pulumi.Output<outputs.provider.VMInput[] | undefined>;
-    public /*out*/ readonly vms_computed!: pulumi.Output<outputs.provider.VMComputed[]>;
-    public readonly zdbs!: pulumi.Output<outputs.provider.ZDBInput[] | undefined>;
-    public /*out*/ readonly zdbs_computed!: pulumi.Output<outputs.provider.ZDBComputed[]>;
+    public readonly vms!: pulumi.Output<outputs.VMInput[] | undefined>;
+    public /*out*/ readonly vms_computed!: pulumi.Output<outputs.VMComputed[]>;
+    public readonly zdbs!: pulumi.Output<outputs.ZDBInput[] | undefined>;
+    public /*out*/ readonly zdbs_computed!: pulumi.Output<outputs.ZDBComputed[]>;
 
     /**
      * Create a Deployment resource with the given unique name, arguments, and options.
@@ -107,13 +107,13 @@ export class Deployment extends pulumi.CustomResource {
  * The set of arguments for constructing a Deployment resource.
  */
 export interface DeploymentArgs {
-    disks?: pulumi.Input<pulumi.Input<inputs.provider.DiskArgs>[]>;
+    disks?: pulumi.Input<pulumi.Input<inputs.DiskArgs>[]>;
     name: pulumi.Input<string>;
     network_name?: pulumi.Input<string>;
     node_id: any;
-    qsfs?: pulumi.Input<pulumi.Input<inputs.provider.QSFSInputArgs>[]>;
+    qsfs?: pulumi.Input<pulumi.Input<inputs.QSFSInputArgs>[]>;
     solution_provider?: pulumi.Input<number>;
     solution_type?: pulumi.Input<string>;
-    vms?: pulumi.Input<pulumi.Input<inputs.provider.VMInputArgs>[]>;
-    zdbs?: pulumi.Input<pulumi.Input<inputs.provider.ZDBInputArgs>[]>;
+    vms?: pulumi.Input<pulumi.Input<inputs.VMInputArgs>[]>;
+    zdbs?: pulumi.Input<pulumi.Input<inputs.ZDBInputArgs>[]>;
 }

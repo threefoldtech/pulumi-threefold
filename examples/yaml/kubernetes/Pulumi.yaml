@@ -1,6 +1,12 @@
 name: pulumi-threefold
 runtime: yaml
 
+# # local build
+# plugins:
+#   providers:
+#     - name: threefold
+#       path: ../../../bin
+
 resources:
   provider:
     type: pulumi:providers:threefold
@@ -10,7 +16,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -19,7 +25,7 @@ resources:
       farm_ids: [1]
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -32,7 +38,7 @@ resources:
       ip_range: 10.1.0.0/16
 
   kubernetes:
-    type: threefold:provider:Kubernetes
+    type: threefold:Kubernetes
     options:
       provider: ${provider}
       dependsOn:
