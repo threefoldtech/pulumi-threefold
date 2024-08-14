@@ -119,7 +119,7 @@ func writeNodeJSClient(pkg *schema.Package, outDir string) {
 
 	overlays := map[string][]byte{}
 	localDependencies := map[string]string{}
-	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, localDependencies)
+	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, localDependencies, false)
 	if err != nil {
 		panic(err)
 	}
