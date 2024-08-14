@@ -5,8 +5,8 @@ go 1.21
 require (
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-go-provider v0.21.0
-	github.com/pulumi/pulumi/pkg/v3 v3.128.0
-	github.com/pulumi/pulumi/sdk/v3 v3.128.0
+	github.com/pulumi/pulumi/pkg/v3 v3.129.0
+	github.com/pulumi/pulumi/sdk/v3 v3.129.0
 	github.com/stretchr/testify v1.9.0
 	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.12-0.20240808132902-35c65194fa3c
 	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.12-0.20240808132902-35c65194fa3c
@@ -194,7 +194,7 @@ require (
 	golang.org/x/crypto v0.26.0 // indirect
 	golang.org/x/exp v0.0.0-20240604190554-fc45aab8b7f8 // indirect
 	golang.org/x/mod v0.18.0 // indirect
-	golang.org/x/net v0.26.0 // indirect
+	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/oauth2 v0.18.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.23.0 // indirect
