@@ -2,9 +2,9 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "../types/input";
-import * as outputs from "../types/output";
-import * as utilities from "../utilities";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as utilities from "./utilities";
 
 export class Kubernetes extends pulumi.CustomResource {
     /**
@@ -20,7 +20,7 @@ export class Kubernetes extends pulumi.CustomResource {
     }
 
     /** @internal */
-    public static readonly __pulumiType = 'threefold:provider:Kubernetes';
+    public static readonly __pulumiType = 'threefold:index:Kubernetes';
 
     /**
      * Returns true if the given object is an instance of Kubernetes.  This is designed to work even
@@ -33,16 +33,16 @@ export class Kubernetes extends pulumi.CustomResource {
         return obj['__pulumiType'] === Kubernetes.__pulumiType;
     }
 
-    public readonly master!: pulumi.Output<outputs.provider.K8sNodeInput>;
-    public /*out*/ readonly master_computed!: pulumi.Output<outputs.provider.K8sNodeComputed>;
+    public readonly master!: pulumi.Output<outputs.K8sNodeInput>;
+    public /*out*/ readonly master_computed!: pulumi.Output<outputs.K8sNodeComputed>;
     public readonly network_name!: pulumi.Output<string>;
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
     public /*out*/ readonly nodes_ip_range!: pulumi.Output<{[key: string]: string}>;
     public readonly solution_type!: pulumi.Output<string | undefined>;
     public readonly ssh_key!: pulumi.Output<string | undefined>;
     public readonly token!: pulumi.Output<string>;
-    public readonly workers!: pulumi.Output<outputs.provider.K8sNodeInput[]>;
-    public /*out*/ readonly workers_computed!: pulumi.Output<{[key: string]: outputs.provider.K8sNodeComputed}>;
+    public readonly workers!: pulumi.Output<outputs.K8sNodeInput[]>;
+    public /*out*/ readonly workers_computed!: pulumi.Output<{[key: string]: outputs.K8sNodeComputed}>;
 
     /**
      * Create a Kubernetes resource with the given unique name, arguments, and options.
@@ -98,10 +98,10 @@ export class Kubernetes extends pulumi.CustomResource {
  * The set of arguments for constructing a Kubernetes resource.
  */
 export interface KubernetesArgs {
-    master: pulumi.Input<inputs.provider.K8sNodeInputArgs>;
+    master: pulumi.Input<inputs.K8sNodeInputArgs>;
     network_name: pulumi.Input<string>;
     solution_type?: pulumi.Input<string>;
     ssh_key?: pulumi.Input<string>;
     token: pulumi.Input<string>;
-    workers: pulumi.Input<pulumi.Input<inputs.provider.K8sNodeInputArgs>[]>;
+    workers: pulumi.Input<pulumi.Input<inputs.K8sNodeInputArgs>[]>;
 }

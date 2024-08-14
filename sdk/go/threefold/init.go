@@ -11,6 +11,36 @@ import (
 	"github.com/threefoldtech/pulumi-threefold/sdk/go/threefold/internal"
 )
 
+type module struct {
+	version semver.Version
+}
+
+func (m *module) Version() semver.Version {
+	return m.version
+}
+
+func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
+	switch typ {
+	case "threefold:index:Deployment":
+		r = &Deployment{}
+	case "threefold:index:GatewayFQDN":
+		r = &GatewayFQDN{}
+	case "threefold:index:GatewayName":
+		r = &GatewayName{}
+	case "threefold:index:Kubernetes":
+		r = &Kubernetes{}
+	case "threefold:index:Network":
+		r = &Network{}
+	case "threefold:index:Scheduler":
+		r = &Scheduler{}
+	default:
+		return nil, fmt.Errorf("unknown resource type: %s", typ)
+	}
+
+	err = ctx.RegisterResource(typ, name, nil, r, pulumi.URN_(urn))
+	return
+}
+
 type pkg struct {
 	version semver.Version
 }
@@ -34,6 +64,11 @@ func init() {
 	if err != nil {
 		version = semver.Version{Major: 1}
 	}
+	pulumi.RegisterResourceModule(
+		"threefold",
+		"index",
+		&module{version},
+	)
 	pulumi.RegisterResourcePackage(
 		"threefold",
 		&pkg{version},

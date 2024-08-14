@@ -7,7 +7,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from .. import _utilities
+from . import _utilities
 
 __all__ = ['NetworkArgs', 'Network']
 
@@ -197,7 +197,7 @@ class Network(pulumi.CustomResource):
             __props__.__dict__["nodes_ip_range"] = None
             __props__.__dict__["public_node_id"] = None
         super(Network, __self__).__init__(
-            'threefold:provider:Network',
+            'threefold:index:Network',
             resource_name,
             __props__,
             opts)

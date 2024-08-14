@@ -7,7 +7,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from .. import _utilities
+from . import _utilities
 
 __all__ = ['GatewayFQDNArgs', 'GatewayFQDN']
 
@@ -193,7 +193,7 @@ class GatewayFQDN(pulumi.CustomResource):
             __props__.__dict__["contract_id"] = None
             __props__.__dict__["node_deployment_id"] = None
         super(GatewayFQDN, __self__).__init__(
-            'threefold:provider:GatewayFQDN',
+            'threefold:index:GatewayFQDN',
             resource_name,
             __props__,
             opts)

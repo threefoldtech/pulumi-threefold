@@ -7,142 +7,140 @@ import * as outputs from "../types/output";
 
 import * as utilities from "../utilities";
 
-export namespace provider {
-    export interface Backend {
-        address: string;
-        namespace: string;
-        password: string;
-    }
-
-    export interface Disk {
-        description?: string;
-        name: string;
-        size: number;
-    }
-
-    export interface Group {
-        backends?: outputs.provider.Backend[];
-    }
-
-    export interface K8sNodeComputed {
-        computed_ip: string;
-        computed_ip6: string;
-        console_url: string;
-        ip: string;
-        mycelium_ip: string;
-        mycelium_ip_seed: string;
-        network_name: string;
-        planetary_ip: string;
-        ssh_key: string;
-        token: string;
-    }
-
-    export interface K8sNodeInput {
-        cpu: number;
-        disk_size: number;
-        flist?: string;
-        flist_checksum?: string;
-        memory: number;
-        mycelium?: boolean;
-        mycelium_ip_seed?: string;
-        name: string;
-        node: any;
-        planetary?: boolean;
-        public_ip?: boolean;
-        public_ip6?: boolean;
-    }
-
-    export interface Metadata {
-        backends?: outputs.provider.Backend[];
-        encryption_algorithm?: string;
-        encryption_key: string;
-        prefix: string;
-        type?: string;
-    }
-
-    export interface Mount {
-        disk_name: string;
-        mount_point: string;
-    }
-
-    export interface QSFSComputed {
-        metrics_endpoint: string;
-    }
-
-    export interface QSFSInput {
-        cache: number;
-        compression_algorithm?: string;
-        description?: string;
-        encryption_algorithm?: string;
-        encryption_key: string;
-        expected_shards: number;
-        groups: outputs.provider.Group[];
-        max_zdb_data_dir_size: number;
-        metadata: outputs.provider.Metadata;
-        minimal_shards: number;
-        name: string;
-        redundant_groups: number;
-        redundant_nodes: number;
-    }
-
-    export interface VMComputed {
-        computed_ip: string;
-        computed_ip6: string;
-        console_url: string;
-        ip?: string;
-        mycelium_ip: string;
-        mycelium_ip_seed: string;
-        planetary_ip: string;
-    }
-
-    export interface VMInput {
-        cpu: number;
-        description?: string;
-        entrypoint?: string;
-        env_vars?: {[key: string]: string};
-        flist: string;
-        flist_checksum?: string;
-        gpus?: string[];
-        memory: number;
-        mounts?: outputs.provider.Mount[];
-        mycelium?: boolean;
-        mycelium_ip_seed?: string;
-        name: string;
-        network_name: string;
-        planetary?: boolean;
-        public_ip?: boolean;
-        public_ip6?: boolean;
-        rootfs_size?: number;
-        zlogs?: outputs.provider.Zlog[];
-    }
-
-    export interface ZDBComputed {
-        ips: string[];
-        namespace: string;
-        port: number;
-    }
-
-    export interface ZDBInput {
-        description?: string;
-        mode?: string;
-        name: string;
-        password: string;
-        public?: boolean;
-        size: number;
-    }
-    /**
-     * zdbinputProvideDefaults sets the appropriate defaults for ZDBInput
-     */
-    export function zdbinputProvideDefaults(val: ZDBInput): ZDBInput {
-        return {
-            ...val,
-            mode: (val.mode) ?? (utilities.getEnv("") || "user"),
-        };
-    }
-
-    export interface Zlog {
-        output: string;
-        zmachine: string;
-    }
-
+export interface Backend {
+    address: string;
+    namespace: string;
+    password: string;
 }
+
+export interface Disk {
+    description?: string;
+    name: string;
+    size: number;
+}
+
+export interface Group {
+    backends?: outputs.Backend[];
+}
+
+export interface K8sNodeComputed {
+    computed_ip: string;
+    computed_ip6: string;
+    console_url: string;
+    ip: string;
+    mycelium_ip: string;
+    mycelium_ip_seed: string;
+    network_name: string;
+    planetary_ip: string;
+    ssh_key: string;
+    token: string;
+}
+
+export interface K8sNodeInput {
+    cpu: number;
+    disk_size: number;
+    flist?: string;
+    flist_checksum?: string;
+    memory: number;
+    mycelium?: boolean;
+    mycelium_ip_seed?: string;
+    name: string;
+    node: any;
+    planetary?: boolean;
+    public_ip?: boolean;
+    public_ip6?: boolean;
+}
+
+export interface Metadata {
+    backends?: outputs.Backend[];
+    encryption_algorithm?: string;
+    encryption_key: string;
+    prefix: string;
+    type?: string;
+}
+
+export interface Mount {
+    disk_name: string;
+    mount_point: string;
+}
+
+export interface QSFSComputed {
+    metrics_endpoint: string;
+}
+
+export interface QSFSInput {
+    cache: number;
+    compression_algorithm?: string;
+    description?: string;
+    encryption_algorithm?: string;
+    encryption_key: string;
+    expected_shards: number;
+    groups: outputs.Group[];
+    max_zdb_data_dir_size: number;
+    metadata: outputs.Metadata;
+    minimal_shards: number;
+    name: string;
+    redundant_groups: number;
+    redundant_nodes: number;
+}
+
+export interface VMComputed {
+    computed_ip: string;
+    computed_ip6: string;
+    console_url: string;
+    ip?: string;
+    mycelium_ip: string;
+    mycelium_ip_seed: string;
+    planetary_ip: string;
+}
+
+export interface VMInput {
+    cpu: number;
+    description?: string;
+    entrypoint?: string;
+    env_vars?: {[key: string]: string};
+    flist: string;
+    flist_checksum?: string;
+    gpus?: string[];
+    memory: number;
+    mounts?: outputs.Mount[];
+    mycelium?: boolean;
+    mycelium_ip_seed?: string;
+    name: string;
+    network_name: string;
+    planetary?: boolean;
+    public_ip?: boolean;
+    public_ip6?: boolean;
+    rootfs_size?: number;
+    zlogs?: outputs.Zlog[];
+}
+
+export interface ZDBComputed {
+    ips: string[];
+    namespace: string;
+    port: number;
+}
+
+export interface ZDBInput {
+    description?: string;
+    mode?: string;
+    name: string;
+    password: string;
+    public?: boolean;
+    size: number;
+}
+/**
+ * zdbinputProvideDefaults sets the appropriate defaults for ZDBInput
+ */
+export function zdbinputProvideDefaults(val: ZDBInput): ZDBInput {
+    return {
+        ...val,
+        mode: (val.mode) ?? (utilities.getEnv("") || "user"),
+    };
+}
+
+export interface Zlog {
+    output: string;
+    zmachine: string;
+}
+

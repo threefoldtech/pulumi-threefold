@@ -7,7 +7,7 @@ import warnings
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
-from .. import _utilities
+from . import _utilities
 from . import outputs
 from ._inputs import *
 
@@ -212,7 +212,7 @@ class Deployment(pulumi.CustomResource):
             __props__.__dict__["vms_computed"] = None
             __props__.__dict__["zdbs_computed"] = None
         super(Deployment, __self__).__init__(
-            'threefold:provider:Deployment',
+            'threefold:index:Deployment',
             resource_name,
             __props__,
             opts)
