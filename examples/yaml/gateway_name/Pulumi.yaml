@@ -10,7 +10,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -19,7 +19,7 @@ resources:
       free_ips: 1
 
   gatewayName:
-    type: threefold:provider:GatewayName
+    type: threefold:GatewayName
     options:
       provider: ${provider}
       dependsOn:

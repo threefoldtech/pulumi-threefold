@@ -76,7 +76,7 @@
     }
   },
   "types": {
-    "threefold:provider:Backend": {
+    "threefold:index:Backend": {
       "properties": {
         "address": {
           "type": "string"
@@ -95,7 +95,7 @@
         "password"
       ]
     },
-    "threefold:provider:Disk": {
+    "threefold:index:Disk": {
       "properties": {
         "description": {
           "type": "string"
@@ -113,18 +113,18 @@
         "size"
       ]
     },
-    "threefold:provider:Group": {
+    "threefold:index:Group": {
       "properties": {
         "backends": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:Backend"
+            "$ref": "#/types/threefold:index:Backend"
           }
         }
       },
       "type": "object"
     },
-    "threefold:provider:K8sNodeComputed": {
+    "threefold:index:K8sNodeComputed": {
       "properties": {
         "computed_ip": {
           "type": "string"
@@ -171,7 +171,7 @@
         "token"
       ]
     },
-    "threefold:provider:K8sNodeInput": {
+    "threefold:index:K8sNodeInput": {
       "properties": {
         "cpu": {
           "type": "integer"
@@ -219,12 +219,12 @@
         "node"
       ]
     },
-    "threefold:provider:Metadata": {
+    "threefold:index:Metadata": {
       "properties": {
         "backends": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:Backend"
+            "$ref": "#/types/threefold:index:Backend"
           }
         },
         "encryption_algorithm": {
@@ -246,7 +246,7 @@
         "prefix"
       ]
     },
-    "threefold:provider:Mount": {
+    "threefold:index:Mount": {
       "properties": {
         "disk_name": {
           "type": "string"
@@ -261,7 +261,7 @@
         "mount_point"
       ]
     },
-    "threefold:provider:QSFSComputed": {
+    "threefold:index:QSFSComputed": {
       "properties": {
         "metrics_endpoint": {
           "type": "string"
@@ -272,7 +272,7 @@
         "metrics_endpoint"
       ]
     },
-    "threefold:provider:QSFSInput": {
+    "threefold:index:QSFSInput": {
       "properties": {
         "cache": {
           "type": "integer"
@@ -295,14 +295,14 @@
         "groups": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:Group"
+            "$ref": "#/types/threefold:index:Group"
           }
         },
         "max_zdb_data_dir_size": {
           "type": "integer"
         },
         "metadata": {
-          "$ref": "#/types/threefold:provider:Metadata"
+          "$ref": "#/types/threefold:index:Metadata"
         },
         "minimal_shards": {
           "type": "integer"
@@ -331,7 +331,7 @@
         "redundant_nodes"
       ]
     },
-    "threefold:provider:VMComputed": {
+    "threefold:index:VMComputed": {
       "properties": {
         "computed_ip": {
           "type": "string"
@@ -365,7 +365,7 @@
         "planetary_ip"
       ]
     },
-    "threefold:provider:VMInput": {
+    "threefold:index:VMInput": {
       "properties": {
         "cpu": {
           "type": "integer"
@@ -400,7 +400,7 @@
         "mounts": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:Mount"
+            "$ref": "#/types/threefold:index:Mount"
           }
         },
         "mycelium": {
@@ -430,7 +430,7 @@
         "zlogs": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:Zlog"
+            "$ref": "#/types/threefold:index:Zlog"
           }
         }
       },
@@ -443,7 +443,7 @@
         "network_name"
       ]
     },
-    "threefold:provider:ZDBComputed": {
+    "threefold:index:ZDBComputed": {
       "properties": {
         "ips": {
           "type": "array",
@@ -465,7 +465,7 @@
         "port"
       ]
     },
-    "threefold:provider:ZDBInput": {
+    "threefold:index:ZDBInput": {
       "properties": {
         "description": {
           "type": "string"
@@ -499,7 +499,7 @@
         "size"
       ]
     },
-    "threefold:provider:Zlog": {
+    "threefold:index:Zlog": {
       "properties": {
         "output": {
           "type": "string"
@@ -608,7 +608,7 @@
     }
   },
   "resources": {
-    "threefold:provider:Deployment": {
+    "threefold:index:Deployment": {
       "properties": {
         "contract_id": {
           "type": "integer"
@@ -616,7 +616,7 @@
         "disks": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:Disk"
+            "$ref": "#/types/threefold:index:Disk"
           }
         },
         "ip_range": {
@@ -640,13 +640,13 @@
         "qsfs": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:QSFSInput"
+            "$ref": "#/types/threefold:index:QSFSInput"
           }
         },
         "qsfs_computed": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:QSFSComputed"
+            "$ref": "#/types/threefold:index:QSFSComputed"
           }
         },
         "solution_provider": {
@@ -659,25 +659,25 @@
         "vms": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:VMInput"
+            "$ref": "#/types/threefold:index:VMInput"
           }
         },
         "vms_computed": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:VMComputed"
+            "$ref": "#/types/threefold:index:VMComputed"
           }
         },
         "zdbs": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:ZDBInput"
+            "$ref": "#/types/threefold:index:ZDBInput"
           }
         },
         "zdbs_computed": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:ZDBComputed"
+            "$ref": "#/types/threefold:index:ZDBComputed"
           }
         }
       },
@@ -696,7 +696,7 @@
         "disks": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:Disk"
+            "$ref": "#/types/threefold:index:Disk"
           }
         },
         "name": {
@@ -711,7 +711,7 @@
         "qsfs": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:QSFSInput"
+            "$ref": "#/types/threefold:index:QSFSInput"
           }
         },
         "solution_provider": {
@@ -724,13 +724,13 @@
         "vms": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:VMInput"
+            "$ref": "#/types/threefold:index:VMInput"
           }
         },
         "zdbs": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:ZDBInput"
+            "$ref": "#/types/threefold:index:ZDBInput"
           }
         }
       },
@@ -739,7 +739,7 @@
         "node_id"
       ]
     },
-    "threefold:provider:GatewayFQDN": {
+    "threefold:index:GatewayFQDN": {
       "properties": {
         "backends": {
           "type": "array",
@@ -825,7 +825,7 @@
         "node_id"
       ]
     },
-    "threefold:provider:GatewayName": {
+    "threefold:index:GatewayName": {
       "properties": {
         "backends": {
           "type": "array",
@@ -911,13 +911,13 @@
         "node_id"
       ]
     },
-    "threefold:provider:Kubernetes": {
+    "threefold:index:Kubernetes": {
       "properties": {
         "master": {
-          "$ref": "#/types/threefold:provider:K8sNodeInput"
+          "$ref": "#/types/threefold:index:K8sNodeInput"
         },
         "master_computed": {
-          "$ref": "#/types/threefold:provider:K8sNodeComputed"
+          "$ref": "#/types/threefold:index:K8sNodeComputed"
         },
         "network_name": {
           "type": "string"
@@ -947,13 +947,13 @@
         "workers": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:K8sNodeInput"
+            "$ref": "#/types/threefold:index:K8sNodeInput"
           }
         },
         "workers_computed": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/types/threefold:provider:K8sNodeComputed"
+            "$ref": "#/types/threefold:index:K8sNodeComputed"
           }
         }
       },
@@ -970,7 +970,7 @@
       ],
       "inputProperties": {
         "master": {
-          "$ref": "#/types/threefold:provider:K8sNodeInput"
+          "$ref": "#/types/threefold:index:K8sNodeInput"
         },
         "network_name": {
           "type": "string"
@@ -988,7 +988,7 @@
         "workers": {
           "type": "array",
           "items": {
-            "$ref": "#/types/threefold:provider:K8sNodeInput"
+            "$ref": "#/types/threefold:index:K8sNodeInput"
           }
         }
       },
@@ -999,7 +999,7 @@
         "workers"
       ]
     },
-    "threefold:provider:Network": {
+    "threefold:index:Network": {
       "properties": {
         "access_wg_config": {
           "type": "string"
@@ -1064,7 +1064,6 @@
         "external_ip",
         "external_sk",
         "ip_range",
-        "mycelium_keys",
         "name",
         "node_deployment_id",
         "nodes",
@@ -1111,7 +1110,7 @@
         "nodes"
       ]
     },
-    "threefold:provider:Scheduler": {
+    "threefold:index:Scheduler": {
       "properties": {
         "certification_type": {
           "type": "string"

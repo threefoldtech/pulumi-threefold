@@ -81,14 +81,14 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
       farm_ids: [1]
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -223,7 +223,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -232,7 +232,7 @@ resources:
       farm_ids: [1]
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -246,7 +246,7 @@ resources:
       mycelium: true
 
   deployment:
-    type: threefold:provider:Deployment
+    type: threefold:Deployment
     options:
       provider: ${provider}
       dependsOn:
@@ -400,7 +400,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -409,7 +409,7 @@ resources:
       farm_ids: [1]
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -422,7 +422,7 @@ resources:
       ip_range: 10.1.0.0/16
 
   kubernetes:
-    type: threefold:provider:Kubernetes
+    type: threefold:Kubernetes
     options:
       provider: ${provider}
       dependsOn:
@@ -534,7 +534,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -543,7 +543,7 @@ resources:
       free_ips: 1
 
   gatewayName:
-    type: threefold:provider:GatewayName
+    type: threefold:GatewayName
     options:
       provider: ${provider}
       dependsOn:
@@ -676,7 +676,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -686,7 +686,7 @@ resources:
       free_ips: 1
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -699,7 +699,7 @@ resources:
       ip_range: 10.1.0.0/16
 
   deployment:
-    type: threefold:provider:Deployment
+    type: threefold:Deployment
     options:
       provider: ${provider}
       dependsOn:
@@ -717,7 +717,7 @@ resources:
           planetary: true
 
   gatewayFQDN:
-    type: threefold:provider:GatewayFQDN
+    type: threefold:GatewayFQDN
     options:
       provider: ${provider}
       dependsOn:
@@ -821,7 +821,7 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
@@ -830,7 +830,7 @@ resources:
       farm_ids: [1]
 
   deployment:
-    type: threefold:provider:Deployment
+    type: threefold:Deployment
     options:
       provider: ${provider}
     properties:
