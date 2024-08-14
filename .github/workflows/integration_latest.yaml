@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lang: ["yaml", "go", "python"]
+        network: ["dev", "qa", "test", "main"]
 
     steps:
       - name: Checkout code
@@ -43,30 +43,23 @@ jobs:
       - name: Install provider
         run: make install_latest
 
-      - name: Run Tests for devnet
+      - name: Run Tests for yaml examples
         run: go test -v ./tests
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
-          NETWORK: dev
-          EXAMPLES: ../examples/${{ matrix.lang }}
+          NETWORK: ${{ matrix.network }}
+          EXAMPLES: ../examples/yaml
 
-      - name: Run Tests for qanet
+      - name: Run Tests for go examples
         run: go test -v ./tests
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
-          NETWORK: qa
-          EXAMPLES: ../examples/${{ matrix.lang }}
+          NETWORK: ${{ matrix.network }}
+          EXAMPLES: ../examples/go
 
-      - name: Run Tests for testnet
+      - name: Run Tests for python examples
         run: go test -v ./tests
         env:
           MNEMONIC: ${{ secrets.MNEMONIC }}
-          NETWORK: test
-          EXAMPLES: ../examples/${{ matrix.lang }}
-
-      - name: Run Tests for mainnet
-        run: go test -v ./tests
-        env:
-          MNEMONIC: ${{ secrets.MNEMONIC }}
-          NETWORK: main
-          EXAMPLES: ../examples/${{ matrix.lang }}
+          NETWORK: ${{ matrix.network }}
+          EXAMPLES: ../examples/python
