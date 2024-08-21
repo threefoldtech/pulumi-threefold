@@ -42,7 +42,8 @@ func main() {
 		}
 		kubernetes, err := threefold.NewKubernetes(ctx, "kubernetes", &threefold.KubernetesArgs{
 			Master: &threefold.K8sNodeInputArgs{
-				Name: pulumi.String("kubernetes"),
+				Name:         pulumi.String("kubernetes"),
+				Network_name: pulumi.String("test"),
 				Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 					return nodes[0], nil
 				}).(pulumi.IntOutput),
@@ -53,7 +54,8 @@ func main() {
 			},
 			Workers: threefold.K8sNodeInputArray{
 				&threefold.K8sNodeInputArgs{
-					Name: pulumi.String("worker1"),
+					Name:         pulumi.String("worker1"),
+					Network_name: pulumi.String("test"),
 					Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 						return nodes[0], nil
 					}).(pulumi.IntOutput),
@@ -62,7 +64,8 @@ func main() {
 					Memory:    pulumi.Int(2048),
 				},
 				&threefold.K8sNodeInputArgs{
-					Name: pulumi.String("worker2"),
+					Name:         pulumi.String("worker2"),
+					Network_name: pulumi.String("test"),
 					Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 						return nodes[0], nil
 					}).(pulumi.IntOutput),

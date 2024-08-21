@@ -3,7 +3,9 @@ package provider
 import (
 	"context"
 
+	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
 
 // Network controlling struct
@@ -38,6 +40,32 @@ var _ = (infer.Annotated)((*NetworkArgs)(nil))
 
 func (n *NetworkArgs) Annotate(a infer.Annotator) {
 	a.SetDefault(&n.SolutionType, "Network")
+}
+
+// Check validates the network
+func (*Network) Check(
+	ctx context.Context,
+	name string, oldInputs,
+	newInputs resource.PropertyMap,
+) (NetworkArgs, []p.CheckFailure, error) {
+	args, checkFailures, err := infer.DefaultCheck[NetworkArgs](ctx, newInputs)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	// TODO: bypass validation of empty nodes (will be assigned from schedular)
+	for i, node := range args.Nodes {
+		if nodeID, ok := node.(string); ok && len(nodeID) == 0 {
+			args.Nodes[i] = i + 1
+		}
+	}
+
+	network, err := parseToZNet(args)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	return args, checkFailures, network.Validate()
 }
 
 // Create creates network and deploy it

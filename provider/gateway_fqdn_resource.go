@@ -3,7 +3,9 @@ package provider
 import (
 	"context"
 
+	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/threefoldtech/zos/pkg/gridtypes/zos"
 )
 
@@ -34,6 +36,30 @@ var _ = (infer.Annotated)((*GatewayFQDNArgs)(nil))
 
 func (g *GatewayFQDNArgs) Annotate(a infer.Annotator) {
 	a.SetDefault(&g.SolutionType, g.Name)
+}
+
+// Check validates fqdn gateway data
+func (*GatewayFQDN) Check(
+	ctx context.Context,
+	name string, oldInputs,
+	newInputs resource.PropertyMap,
+) (GatewayFQDNArgs, []p.CheckFailure, error) {
+	args, checkFailures, err := infer.DefaultCheck[GatewayFQDNArgs](ctx, newInputs)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	// TODO: bypass validation of empty node (will be assigned from schedular)
+	if nodeID, ok := args.NodeID.(string); ok && len(nodeID) == 0 {
+		args.NodeID = 1
+	}
+
+	gw, err := parseToGatewayFQDN(args)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	return args, checkFailures, gw.Validate()
 }
 
 // Create creates a fqdn gateway

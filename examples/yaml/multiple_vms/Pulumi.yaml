@@ -1,0 +1,104 @@
+name: pulumi-threefold
+runtime: yaml
+
+resources:
+  provider:
+    type: pulumi:providers:threefold
+    options:
+      pluginDownloadURL: github://api.github.com/threefoldtech/pulumi-threefold # optional
+    properties:
+      mnemonic:
+
+  scheduler:
+    type: threefold:provider:Scheduler
+    options:
+      provider: ${provider}
+    properties:
+      mru: 4 # 4gb ram
+      sru: 100 # 100gb storage
+      farm_ids: [71,73, 74, 76, 77]
+
+  network:
+    type: threefold:provider:Network
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${scheduler}
+    properties:
+      name: test
+      description: test network
+      nodes:
+        - ${scheduler.nodes[0]}
+      ip_range: 10.1.0.0/16
+      mycelium: true
+      # mycelium_keys:
+      #   manual_nodeID: 9751c596c7c951aedad1a5f78f18b59515064adf660e0d55abead65e6fbbd627 # hex encoded 32 bytes [example]
+
+  deployment:
+    type: threefold:provider:Deployment
+    options:
+      provider: ${provider}
+      dependsOn:
+        - ${network}
+    properties:
+      node_id: ${scheduler.nodes[0]}
+      name: deployment
+      network_name: test
+      vms:
+        - name: vm
+          flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
+          entrypoint: "/sbin/zinit init"
+          network_name: test
+          cpu: 2
+          memory: 4000
+          planetary: true
+          mycelium: true
+          # mycelium_ip_seed: b60f2b7ec39c # hex encoded 6 bytes [example]
+          mounts:
+            - disk_name: data
+              mount_point: /app
+          env_vars:
+            SSH_KEY:
+
+        - name: vm2
+          flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
+          entrypoint: "/sbin/zinit init"
+          network_name: test
+          cpu: 2
+          memory: 4000
+          planetary: true
+          mycelium: true
+          # mycelium_ip_seed: b60f2b7ec39c # hex encoded 6 bytes [example]
+          mounts:
+            - disk_name: data
+              mount_point: /app
+          env_vars:
+            SSH_KEY:
+
+        - name: vm3
+          flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
+          entrypoint: "/sbin/zinit init"
+          network_name: test
+          cpu: 2
+          memory: 4000
+          planetary: true
+          mycelium: true
+          # mycelium_ip_seed: b60f2b7ec39c # hex encoded 6 bytes [example]
+          mounts:
+            - disk_name: data
+              mount_point: /app
+          env_vars:
+            SSH_KEY:
+
+      disks:
+        - name: data
+          size: 2
+
+outputs:
+  node_deployment_id: ${deployment.node_deployment_id}
+  planetary_ip1: ${deployment.vms_computed[0].planetary_ip}
+  mycelium_ip1: ${deployment.vms_computed[0].mycelium_ip}
+  planetary_ip2: ${deployment.vms_computed[1].planetary_ip}
+  mycelium_ip2: ${deployment.vms_computed[1].mycelium_ip}
+  planetary_ip3: ${deployment.vms_computed[2].planetary_ip}
+  mycelium_ip3: ${deployment.vms_computed[2].mycelium_ip}  

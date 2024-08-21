@@ -43,6 +43,7 @@ resources:
     properties:
       master:
         name: kubernetes
+        network_name: test
         node: ${scheduler.nodes[0]}
         disk_size: 2
         planetary: true
@@ -51,11 +52,13 @@ resources:
 
       workers:
         - name: worker1
+          network_name: test
           node: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
         - name: worker2
+          network_name: test
           node: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2

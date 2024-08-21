@@ -32,6 +32,7 @@ export interface K8sNodeInputArgs {
     mycelium?: pulumi.Input<boolean>;
     mycelium_ip_seed?: pulumi.Input<string>;
     name: pulumi.Input<string>;
+    network_name: pulumi.Input<string>;
     node: any;
     planetary?: pulumi.Input<boolean>;
     public_ip?: pulumi.Input<boolean>;
@@ -81,6 +82,7 @@ export interface VMInputArgs {
     mycelium_ip_seed?: pulumi.Input<string>;
     name: pulumi.Input<string>;
     network_name: pulumi.Input<string>;
+    node_id: any;
     planetary?: pulumi.Input<boolean>;
     public_ip?: pulumi.Input<boolean>;
     public_ip6?: pulumi.Input<boolean>;

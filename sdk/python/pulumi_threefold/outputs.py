@@ -102,20 +102,14 @@ class K8sNodeComputed(dict):
                  ip: str,
                  mycelium_ip: str,
                  mycelium_ip_seed: str,
-                 network_name: str,
-                 planetary_ip: str,
-                 ssh_key: str,
-                 token: str):
+                 planetary_ip: str):
         pulumi.set(__self__, "computed_ip", computed_ip)
         pulumi.set(__self__, "computed_ip6", computed_ip6)
         pulumi.set(__self__, "console_url", console_url)
         pulumi.set(__self__, "ip", ip)
         pulumi.set(__self__, "mycelium_ip", mycelium_ip)
         pulumi.set(__self__, "mycelium_ip_seed", mycelium_ip_seed)
-        pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "planetary_ip", planetary_ip)
-        pulumi.set(__self__, "ssh_key", ssh_key)
-        pulumi.set(__self__, "token", token)
 
     @property
     @pulumi.getter
@@ -149,23 +143,8 @@ class K8sNodeComputed(dict):
 
     @property
     @pulumi.getter
-    def network_name(self) -> str:
-        return pulumi.get(self, "network_name")
-
-    @property
-    @pulumi.getter
     def planetary_ip(self) -> str:
         return pulumi.get(self, "planetary_ip")
-
-    @property
-    @pulumi.getter
-    def ssh_key(self) -> str:
-        return pulumi.get(self, "ssh_key")
-
-    @property
-    @pulumi.getter
-    def token(self) -> str:
-        return pulumi.get(self, "token")
 
 
 @pulumi.output_type
@@ -175,6 +154,7 @@ class K8sNodeInput(dict):
                  disk_size: int,
                  memory: int,
                  name: str,
+                 network_name: str,
                  node: Any,
                  flist: Optional[str] = None,
                  flist_checksum: Optional[str] = None,
@@ -187,6 +167,7 @@ class K8sNodeInput(dict):
         pulumi.set(__self__, "disk_size", disk_size)
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "node", node)
         if flist is not None:
             pulumi.set(__self__, "flist", flist)
@@ -222,6 +203,11 @@ class K8sNodeInput(dict):
     @pulumi.getter
     def name(self) -> str:
         return pulumi.get(self, "name")
+
+    @property
+    @pulumi.getter
+    def network_name(self) -> str:
+        return pulumi.get(self, "network_name")
 
     @property
     @pulumi.getter
@@ -500,6 +486,7 @@ class VMInput(dict):
                  memory: int,
                  name: str,
                  network_name: str,
+                 node_id: Any,
                  description: Optional[str] = None,
                  entrypoint: Optional[str] = None,
                  env_vars: Optional[Mapping[str, str]] = None,
@@ -518,6 +505,7 @@ class VMInput(dict):
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "network_name", network_name)
+        pulumi.set(__self__, "node_id", node_id)
         if description is not None:
             pulumi.set(__self__, "description", description)
         if entrypoint is not None:
@@ -569,6 +557,11 @@ class VMInput(dict):
     @pulumi.getter
     def network_name(self) -> str:
         return pulumi.get(self, "network_name")
+
+    @property
+    @pulumi.getter
+    def node_id(self) -> Any:
+        return pulumi.get(self, "node_id")
 
     @property
     @pulumi.getter

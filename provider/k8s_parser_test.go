@@ -9,16 +9,15 @@ import (
 
 func TestK8sParser(t *testing.T) {
 	k8sNodeInput := K8sNodeInput{
-		Name:          "master",
-		Node:          1,
-		DiskSize:      1,
-		Flist:         "",
-		CPU:           1,
-		Memory:        1,
-		PublicIP:      false,
-		PublicIP6:     false,
-		Planetary:     false,
-		FlistChecksum: "checksum",
+		Name:      "master",
+		Node:      1,
+		DiskSize:  1,
+		Flist:     "",
+		CPU:       1,
+		Memory:    1,
+		PublicIP:  false,
+		PublicIP6: false,
+		Planetary: false,
 	}
 
 	k8sWorkerInput1 := k8sNodeInput

@@ -326,10 +326,7 @@ type K8sNodeComputed struct {
 	Ip               string `pulumi:"ip"`
 	Mycelium_ip      string `pulumi:"mycelium_ip"`
 	Mycelium_ip_seed string `pulumi:"mycelium_ip_seed"`
-	Network_name     string `pulumi:"network_name"`
 	Planetary_ip     string `pulumi:"planetary_ip"`
-	Ssh_key          string `pulumi:"ssh_key"`
-	Token            string `pulumi:"token"`
 }
 
 // K8sNodeComputedInput is an input type that accepts K8sNodeComputedArgs and K8sNodeComputedOutput values.
@@ -350,10 +347,7 @@ type K8sNodeComputedArgs struct {
 	Ip               pulumi.StringInput `pulumi:"ip"`
 	Mycelium_ip      pulumi.StringInput `pulumi:"mycelium_ip"`
 	Mycelium_ip_seed pulumi.StringInput `pulumi:"mycelium_ip_seed"`
-	Network_name     pulumi.StringInput `pulumi:"network_name"`
 	Planetary_ip     pulumi.StringInput `pulumi:"planetary_ip"`
-	Ssh_key          pulumi.StringInput `pulumi:"ssh_key"`
-	Token            pulumi.StringInput `pulumi:"token"`
 }
 
 func (K8sNodeComputedArgs) ElementType() reflect.Type {
@@ -431,20 +425,8 @@ func (o K8sNodeComputedOutput) Mycelium_ip_seed() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Mycelium_ip_seed }).(pulumi.StringOutput)
 }
 
-func (o K8sNodeComputedOutput) Network_name() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Network_name }).(pulumi.StringOutput)
-}
-
 func (o K8sNodeComputedOutput) Planetary_ip() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeComputed) string { return v.Planetary_ip }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Ssh_key() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Ssh_key }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Token() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Token }).(pulumi.StringOutput)
 }
 
 type K8sNodeComputedMapOutput struct{ *pulumi.OutputState }
@@ -476,6 +458,7 @@ type K8sNodeInput struct {
 	Mycelium         *bool       `pulumi:"mycelium"`
 	Mycelium_ip_seed *string     `pulumi:"mycelium_ip_seed"`
 	Name             string      `pulumi:"name"`
+	Network_name     string      `pulumi:"network_name"`
 	Node             interface{} `pulumi:"node"`
 	Planetary        *bool       `pulumi:"planetary"`
 	Public_ip        *bool       `pulumi:"public_ip"`
@@ -502,6 +485,7 @@ type K8sNodeInputArgs struct {
 	Mycelium         pulumi.BoolPtrInput   `pulumi:"mycelium"`
 	Mycelium_ip_seed pulumi.StringPtrInput `pulumi:"mycelium_ip_seed"`
 	Name             pulumi.StringInput    `pulumi:"name"`
+	Network_name     pulumi.StringInput    `pulumi:"network_name"`
 	Node             pulumi.Input          `pulumi:"node"`
 	Planetary        pulumi.BoolPtrInput   `pulumi:"planetary"`
 	Public_ip        pulumi.BoolPtrInput   `pulumi:"public_ip"`
@@ -589,6 +573,10 @@ func (o K8sNodeInputOutput) Mycelium_ip_seed() pulumi.StringPtrOutput {
 
 func (o K8sNodeInputOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeInput) string { return v.Name }).(pulumi.StringOutput)
+}
+
+func (o K8sNodeInputOutput) Network_name() pulumi.StringOutput {
+	return o.ApplyT(func(v K8sNodeInput) string { return v.Network_name }).(pulumi.StringOutput)
 }
 
 func (o K8sNodeInputOutput) Node() pulumi.AnyOutput {
@@ -1204,6 +1192,7 @@ type VMInput struct {
 	Mycelium_ip_seed *string           `pulumi:"mycelium_ip_seed"`
 	Name             string            `pulumi:"name"`
 	Network_name     string            `pulumi:"network_name"`
+	Node_id          interface{}       `pulumi:"node_id"`
 	Planetary        *bool             `pulumi:"planetary"`
 	Public_ip        *bool             `pulumi:"public_ip"`
 	Public_ip6       *bool             `pulumi:"public_ip6"`
@@ -1236,6 +1225,7 @@ type VMInputArgs struct {
 	Mycelium_ip_seed pulumi.StringPtrInput   `pulumi:"mycelium_ip_seed"`
 	Name             pulumi.StringInput      `pulumi:"name"`
 	Network_name     pulumi.StringInput      `pulumi:"network_name"`
+	Node_id          pulumi.Input            `pulumi:"node_id"`
 	Planetary        pulumi.BoolPtrInput     `pulumi:"planetary"`
 	Public_ip        pulumi.BoolPtrInput     `pulumi:"public_ip"`
 	Public_ip6       pulumi.BoolPtrInput     `pulumi:"public_ip6"`
@@ -1344,6 +1334,10 @@ func (o VMInputOutput) Name() pulumi.StringOutput {
 
 func (o VMInputOutput) Network_name() pulumi.StringOutput {
 	return o.ApplyT(func(v VMInput) string { return v.Network_name }).(pulumi.StringOutput)
+}
+
+func (o VMInputOutput) Node_id() pulumi.AnyOutput {
+	return o.ApplyT(func(v VMInput) interface{} { return v.Node_id }).(pulumi.AnyOutput)
 }
 
 func (o VMInputOutput) Planetary() pulumi.BoolPtrOutput {
