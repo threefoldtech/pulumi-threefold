@@ -30,10 +30,7 @@ export interface K8sNodeComputed {
     ip: string;
     mycelium_ip: string;
     mycelium_ip_seed: string;
-    network_name: string;
     planetary_ip: string;
-    ssh_key: string;
-    token: string;
 }
 
 export interface K8sNodeInput {
@@ -45,6 +42,7 @@ export interface K8sNodeInput {
     mycelium?: boolean;
     mycelium_ip_seed?: string;
     name: string;
+    network_name: string;
     node: any;
     planetary?: boolean;
     public_ip?: boolean;
@@ -108,6 +106,7 @@ export interface VMInput {
     mycelium_ip_seed?: string;
     name: string;
     network_name: string;
+    node_id: any;
     planetary?: boolean;
     public_ip?: boolean;
     public_ip6?: boolean;

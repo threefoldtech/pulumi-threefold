@@ -123,6 +123,7 @@ class K8sNodeInputArgs:
                  disk_size: pulumi.Input[int],
                  memory: pulumi.Input[int],
                  name: pulumi.Input[str],
+                 network_name: pulumi.Input[str],
                  node: Any,
                  flist: Optional[pulumi.Input[str]] = None,
                  flist_checksum: Optional[pulumi.Input[str]] = None,
@@ -135,6 +136,7 @@ class K8sNodeInputArgs:
         pulumi.set(__self__, "disk_size", disk_size)
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "node", node)
         if flist is not None:
             pulumi.set(__self__, "flist", flist)
@@ -186,6 +188,15 @@ class K8sNodeInputArgs:
     @name.setter
     def name(self, value: pulumi.Input[str]):
         pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def network_name(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "network_name")
+
+    @network_name.setter
+    def network_name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "network_name", value)
 
     @property
     @pulumi.getter
@@ -509,6 +520,7 @@ class VMInputArgs:
                  memory: pulumi.Input[int],
                  name: pulumi.Input[str],
                  network_name: pulumi.Input[str],
+                 node_id: Any,
                  description: Optional[pulumi.Input[str]] = None,
                  entrypoint: Optional[pulumi.Input[str]] = None,
                  env_vars: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
@@ -527,6 +539,7 @@ class VMInputArgs:
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "network_name", network_name)
+        pulumi.set(__self__, "node_id", node_id)
         if description is not None:
             pulumi.set(__self__, "description", description)
         if entrypoint is not None:
@@ -598,6 +611,15 @@ class VMInputArgs:
     @network_name.setter
     def network_name(self, value: pulumi.Input[str]):
         pulumi.set(self, "network_name", value)
+
+    @property
+    @pulumi.getter
+    def node_id(self) -> Any:
+        return pulumi.get(self, "node_id")
+
+    @node_id.setter
+    def node_id(self, value: Any):
+        pulumi.set(self, "node_id", value)
 
     @property
     @pulumi.getter
