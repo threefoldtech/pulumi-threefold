@@ -49,11 +49,11 @@ type ZDBComputed struct {
 // VMInput is a virtual machine inputs struct
 type VMInput struct {
 	Name           string            `pulumi:"name"`
+	NodeID         interface{}       `pulumi:"node_id"`
 	Flist          string            `pulumi:"flist"`
 	NetworkName    string            `pulumi:"network_name"`
 	CPU            int               `pulumi:"cpu"`
 	Memory         int               `pulumi:"memory"`
-	FlistChecksum  string            `pulumi:"flist_checksum,optional"`
 	PublicIP       bool              `pulumi:"public_ip,optional"`
 	PublicIP6      bool              `pulumi:"public_ip6,optional"`
 	Planetary      bool              `pulumi:"planetary,optional"`
@@ -163,7 +163,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 		var mounts []workloads.Mount
 		for _, mount := range vm.Mounts {
 			mounts = append(mounts, workloads.Mount{
-				DiskName:   mount.DiskName,
+				Name:       mount.DiskName,
 				MountPoint: mount.MountPoint,
 			})
 		}
@@ -196,18 +196,18 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 
 		vms = append(vms, workloads.VM{
 			Name:           vm.Name,
+			NodeID:         uint32(nodeID),
 			Flist:          vm.Flist,
 			NetworkName:    vm.NetworkName,
-			FlistChecksum:  vm.FlistChecksum,
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
 			Planetary:      vm.Planetary,
 			MyceliumIPSeed: myceliumIPSeed,
 			Description:    vm.Description,
 			GPUs:           vm.GPUs,
-			CPU:            vm.CPU,
-			Memory:         vm.Memory,
-			RootfsSize:     vm.RootfsSize,
+			CPU:            uint8(vm.CPU),
+			MemoryMB:       uint64(vm.Memory),
+			RootfsSizeMB:   uint64(vm.RootfsSize),
 			Entrypoint:     vm.Entrypoint,
 			Mounts:         mounts,
 			Zlogs:          zlogs,
@@ -219,7 +219,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 	for _, disk := range deploymentArgs.Disks {
 		disks = append(disks, workloads.Disk{
 			Name:        disk.Name,
-			SizeGB:      disk.Size,
+			SizeGB:      uint64(disk.Size),
 			Description: disk.Description,
 		})
 	}
@@ -228,7 +228,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 	for _, zdb := range deploymentArgs.ZdbsInputs {
 		zdbs = append(zdbs, workloads.ZDB{
 			Name:        zdb.Name,
-			Size:        zdb.Size,
+			SizeGB:      uint64(zdb.Size),
 			Password:    zdb.Password,
 			Public:      zdb.Public,
 			Description: zdb.Description,
@@ -291,7 +291,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 	for _, disk := range deployment.Disks {
 		disks = append(disks, Disk{
 			Name:        disk.Name,
-			Size:        disk.SizeGB,
+			Size:        int(disk.SizeGB),
 			Description: disk.Description,
 		})
 	}
@@ -300,7 +300,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 	for _, zdb := range deployment.Zdbs {
 		zdbs = append(zdbs, ZDBInput{
 			Name:        zdb.Name,
-			Size:        zdb.Size,
+			Size:        int(zdb.SizeGB),
 			Password:    zdb.Password,
 			Public:      zdb.Public,
 			Description: zdb.Description,
@@ -321,25 +321,29 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 		var mounts []Mount
 		for _, mount := range vm.Mounts {
 			mounts = append(mounts, Mount{
-				DiskName:   mount.DiskName,
+				DiskName:   mount.Name,
 				MountPoint: mount.MountPoint,
 			})
 		}
 
+		if vm.NodeID == 0 {
+			vm.NodeID = deployment.NodeID
+		}
+
 		vms = append(vms, VMInput{
 			Name:           vm.Name,
+			NodeID:         vm.NodeID,
 			Flist:          vm.Flist,
 			NetworkName:    vm.NetworkName,
-			FlistChecksum:  vm.FlistChecksum,
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
 			Planetary:      vm.Planetary,
 			MyceliumIPSeed: hex.EncodeToString(vm.MyceliumIPSeed),
 			Description:    vm.Description,
 			GPUs:           vm.GPUs,
-			CPU:            vm.CPU,
-			Memory:         vm.Memory,
-			RootfsSize:     vm.RootfsSize,
+			CPU:            int(vm.CPU),
+			Memory:         int(vm.MemoryMB),
+			RootfsSize:     int(vm.RootfsSizeMB),
 			Entrypoint:     vm.Entrypoint,
 			Mounts:         mounts,
 			Zlogs:          zlogs,
@@ -380,7 +384,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 	}
 
 	stateArgs := DeploymentArgs{
-		NodeID:           deployment.NodeID,
+		NodeID:           int(deployment.NodeID),
 		Name:             deployment.Name,
 		SolutionType:     deployment.SolutionType,
 		SolutionProvider: solutionProvider,

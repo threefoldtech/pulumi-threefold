@@ -123,9 +123,9 @@ class K8sNodeInputArgs:
                  disk_size: pulumi.Input[int],
                  memory: pulumi.Input[int],
                  name: pulumi.Input[str],
+                 network_name: pulumi.Input[str],
                  node: Any,
                  flist: Optional[pulumi.Input[str]] = None,
-                 flist_checksum: Optional[pulumi.Input[str]] = None,
                  mycelium: Optional[pulumi.Input[bool]] = None,
                  mycelium_ip_seed: Optional[pulumi.Input[str]] = None,
                  planetary: Optional[pulumi.Input[bool]] = None,
@@ -135,11 +135,10 @@ class K8sNodeInputArgs:
         pulumi.set(__self__, "disk_size", disk_size)
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
+        pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "node", node)
         if flist is not None:
             pulumi.set(__self__, "flist", flist)
-        if flist_checksum is not None:
-            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if mycelium is not None:
             pulumi.set(__self__, "mycelium", mycelium)
         if mycelium_ip_seed is not None:
@@ -189,6 +188,15 @@ class K8sNodeInputArgs:
 
     @property
     @pulumi.getter
+    def network_name(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "network_name")
+
+    @network_name.setter
+    def network_name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "network_name", value)
+
+    @property
+    @pulumi.getter
     def node(self) -> Any:
         return pulumi.get(self, "node")
 
@@ -204,15 +212,6 @@ class K8sNodeInputArgs:
     @flist.setter
     def flist(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "flist", value)
-
-    @property
-    @pulumi.getter
-    def flist_checksum(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "flist_checksum")
-
-    @flist_checksum.setter
-    def flist_checksum(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "flist_checksum", value)
 
     @property
     @pulumi.getter
@@ -509,10 +508,10 @@ class VMInputArgs:
                  memory: pulumi.Input[int],
                  name: pulumi.Input[str],
                  network_name: pulumi.Input[str],
+                 node_id: Any,
                  description: Optional[pulumi.Input[str]] = None,
                  entrypoint: Optional[pulumi.Input[str]] = None,
                  env_vars: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
-                 flist_checksum: Optional[pulumi.Input[str]] = None,
                  gpus: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]] = None,
                  mycelium: Optional[pulumi.Input[bool]] = None,
@@ -527,14 +526,13 @@ class VMInputArgs:
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "network_name", network_name)
+        pulumi.set(__self__, "node_id", node_id)
         if description is not None:
             pulumi.set(__self__, "description", description)
         if entrypoint is not None:
             pulumi.set(__self__, "entrypoint", entrypoint)
         if env_vars is not None:
             pulumi.set(__self__, "env_vars", env_vars)
-        if flist_checksum is not None:
-            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if gpus is not None:
             pulumi.set(__self__, "gpus", gpus)
         if mounts is not None:
@@ -601,6 +599,15 @@ class VMInputArgs:
 
     @property
     @pulumi.getter
+    def node_id(self) -> Any:
+        return pulumi.get(self, "node_id")
+
+    @node_id.setter
+    def node_id(self, value: Any):
+        pulumi.set(self, "node_id", value)
+
+    @property
+    @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
         return pulumi.get(self, "description")
 
@@ -625,15 +632,6 @@ class VMInputArgs:
     @env_vars.setter
     def env_vars(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "env_vars", value)
-
-    @property
-    @pulumi.getter
-    def flist_checksum(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "flist_checksum")
-
-    @flist_checksum.setter
-    def flist_checksum(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "flist_checksum", value)
 
     @property
     @pulumi.getter

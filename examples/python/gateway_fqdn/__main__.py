@@ -25,6 +25,7 @@ deployment = threefold.Deployment("deployment",
     network_name="example",
     vms=[threefold.VMInputArgs(
         name="vm",
+        node_id=scheduler.nodes[0],
         flist="https://hub.grid.tf/tf-official-apps/base:latest.flist",
         network_name="example",
         cpu=2,

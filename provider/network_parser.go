@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
 	"github.com/threefoldtech/zos/pkg/gridtypes"
@@ -69,6 +70,10 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 
 	nodes := []uint32{}
 	for _, nodeID := range networkArgs.Nodes {
+		if len(strings.TrimSpace(fmt.Sprint(nodeID))) == 0 {
+			continue
+		}
+
 		nodeID, err := strconv.Atoi(fmt.Sprint(nodeID))
 		if err != nil {
 			return workloads.ZNet{}, err
@@ -78,7 +83,11 @@ func parseToZNet(networkArgs NetworkArgs) (workloads.ZNet, error) {
 
 	myceliumKeys := make(map[uint32][]byte)
 	for nodeID, myceliumKey := range networkArgs.MyceliumKeys {
-		nodeID, err := strconv.Atoi(fmt.Sprint(nodeID))
+		if len(strings.TrimSpace(nodeID)) == 0 {
+			continue
+		}
+
+		nodeID, err := strconv.Atoi(nodeID)
 		if err != nil {
 			return workloads.ZNet{}, err
 		}

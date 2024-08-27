@@ -50,7 +50,10 @@ func main() {
 			Network_name: pulumi.String("test"),
 			Vms: threefold.VMInputArray{
 				&threefold.VMInputArgs{
-					Name:         pulumi.String("vm"),
+					Name: pulumi.String("vm"),
+					Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+						return nodes[0], nil
+					}).(pulumi.IntOutput),
 					Flist:        pulumi.String("https://hub.grid.tf/tf-official-apps/base:latest.flist"),
 					Network_name: pulumi.String("test"),
 					Cpu:          pulumi.Int(2),

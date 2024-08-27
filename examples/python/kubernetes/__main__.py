@@ -21,6 +21,7 @@ network = threefold.Network("network",
 kubernetes = threefold.Kubernetes("kubernetes",
     master=threefold.K8sNodeInputArgs(
         name="kubernetes",
+        network_name="test",
         node=scheduler.nodes[0],
         disk_size=2,
         planetary=True,
@@ -30,6 +31,7 @@ kubernetes = threefold.Kubernetes("kubernetes",
     workers=[
         threefold.K8sNodeInputArgs(
             name="worker1",
+            network_name="test",
             node=scheduler.nodes[0],
             disk_size=2,
             cpu=2,
@@ -37,6 +39,7 @@ kubernetes = threefold.Kubernetes("kubernetes",
         ),
         threefold.K8sNodeInputArgs(
             name="worker2",
+            network_name="test",
             node=scheduler.nodes[0],
             disk_size=2,
             cpu=2,

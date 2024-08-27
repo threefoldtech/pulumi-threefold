@@ -30,21 +30,18 @@ export interface K8sNodeComputed {
     ip: string;
     mycelium_ip: string;
     mycelium_ip_seed: string;
-    network_name: string;
     planetary_ip: string;
-    ssh_key: string;
-    token: string;
 }
 
 export interface K8sNodeInput {
     cpu: number;
     disk_size: number;
     flist?: string;
-    flist_checksum?: string;
     memory: number;
     mycelium?: boolean;
     mycelium_ip_seed?: string;
     name: string;
+    network_name: string;
     node: any;
     planetary?: boolean;
     public_ip?: boolean;
@@ -100,7 +97,6 @@ export interface VMInput {
     entrypoint?: string;
     env_vars?: {[key: string]: string};
     flist: string;
-    flist_checksum?: string;
     gpus?: string[];
     memory: number;
     mounts?: outputs.Mount[];
@@ -108,6 +104,7 @@ export interface VMInput {
     mycelium_ip_seed?: string;
     name: string;
     network_name: string;
+    node_id: any;
     planetary?: boolean;
     public_ip?: boolean;
     public_ip6?: boolean;

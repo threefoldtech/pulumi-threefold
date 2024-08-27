@@ -28,7 +28,7 @@ func TestNetworkParser(t *testing.T) {
 	})
 
 	t.Run("parsing input failed: wrong node id type", func(t *testing.T) {
-		networkInput.Nodes[0] = ""
+		networkInput.Nodes[0] = "node"
 		_, err := parseToZNet(networkInput)
 		assert.Error(t, err)
 		networkInput.Nodes[0] = 1

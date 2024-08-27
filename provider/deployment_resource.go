@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
 
 // Deployment controlling struct
@@ -44,6 +46,36 @@ func (d *DeploymentArgs) Annotate(a infer.Annotator) {
 // Annotate sets defaults and descriptions for zdb resource
 func (z *ZDBInput) Annotate(a infer.Annotator) {
 	a.SetDefault(&z.Mode, "user", "")
+}
+
+// Check validates the Deployment
+func (*Deployment) Check(
+	ctx context.Context,
+	name string, oldInputs,
+	newInputs resource.PropertyMap,
+) (DeploymentArgs, []p.CheckFailure, error) {
+	args, checkFailures, err := infer.DefaultCheck[DeploymentArgs](ctx, newInputs)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	// TODO: bypass validation of empty node (will be assigned from schedular)
+	if nodeID, ok := args.NodeID.(string); ok && len(nodeID) == 0 {
+		args.NodeID = 1
+	}
+
+	for i := range args.VmsInputs {
+		if nodeID, ok := args.VmsInputs[i].NodeID.(string); ok && len(nodeID) == 0 {
+			args.VmsInputs[i].NodeID = 1
+		}
+	}
+
+	deployment, err := parseInputToDeployment(args)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	return args, checkFailures, deployment.Validate()
 }
 
 // Create creates a deployment
