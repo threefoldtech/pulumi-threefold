@@ -126,6 +126,7 @@ class K8sNodeInputArgs:
                  network_name: pulumi.Input[str],
                  node: Any,
                  flist: Optional[pulumi.Input[str]] = None,
+                 flist_checksum: Optional[pulumi.Input[str]] = None,
                  mycelium: Optional[pulumi.Input[bool]] = None,
                  mycelium_ip_seed: Optional[pulumi.Input[str]] = None,
                  planetary: Optional[pulumi.Input[bool]] = None,
@@ -139,6 +140,8 @@ class K8sNodeInputArgs:
         pulumi.set(__self__, "node", node)
         if flist is not None:
             pulumi.set(__self__, "flist", flist)
+        if flist_checksum is not None:
+            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if mycelium is not None:
             pulumi.set(__self__, "mycelium", mycelium)
         if mycelium_ip_seed is not None:
@@ -212,6 +215,15 @@ class K8sNodeInputArgs:
     @flist.setter
     def flist(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "flist", value)
+
+    @property
+    @pulumi.getter
+    def flist_checksum(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "flist_checksum")
+
+    @flist_checksum.setter
+    def flist_checksum(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "flist_checksum", value)
 
     @property
     @pulumi.getter
@@ -512,6 +524,7 @@ class VMInputArgs:
                  description: Optional[pulumi.Input[str]] = None,
                  entrypoint: Optional[pulumi.Input[str]] = None,
                  env_vars: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 flist_checksum: Optional[pulumi.Input[str]] = None,
                  gpus: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  mounts: Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]] = None,
                  mycelium: Optional[pulumi.Input[bool]] = None,
@@ -533,6 +546,8 @@ class VMInputArgs:
             pulumi.set(__self__, "entrypoint", entrypoint)
         if env_vars is not None:
             pulumi.set(__self__, "env_vars", env_vars)
+        if flist_checksum is not None:
+            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if gpus is not None:
             pulumi.set(__self__, "gpus", gpus)
         if mounts is not None:
@@ -632,6 +647,15 @@ class VMInputArgs:
     @env_vars.setter
     def env_vars(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
         pulumi.set(self, "env_vars", value)
+
+    @property
+    @pulumi.getter
+    def flist_checksum(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "flist_checksum")
+
+    @flist_checksum.setter
+    def flist_checksum(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "flist_checksum", value)
 
     @property
     @pulumi.getter

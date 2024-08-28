@@ -27,6 +27,7 @@ export interface K8sNodeInputArgs {
     cpu: pulumi.Input<number>;
     disk_size: pulumi.Input<number>;
     flist?: pulumi.Input<string>;
+    flist_checksum?: pulumi.Input<string>;
     memory: pulumi.Input<number>;
     mycelium?: pulumi.Input<boolean>;
     mycelium_ip_seed?: pulumi.Input<string>;
@@ -73,6 +74,7 @@ export interface VMInputArgs {
     entrypoint?: pulumi.Input<string>;
     env_vars?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     flist: pulumi.Input<string>;
+    flist_checksum?: pulumi.Input<string>;
     gpus?: pulumi.Input<pulumi.Input<string>[]>;
     memory: pulumi.Input<number>;
     mounts?: pulumi.Input<pulumi.Input<inputs.MountArgs>[]>;

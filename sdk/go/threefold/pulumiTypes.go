@@ -453,6 +453,7 @@ type K8sNodeInput struct {
 	Cpu              int         `pulumi:"cpu"`
 	Disk_size        int         `pulumi:"disk_size"`
 	Flist            *string     `pulumi:"flist"`
+	Flist_checksum   *string     `pulumi:"flist_checksum"`
 	Memory           int         `pulumi:"memory"`
 	Mycelium         *bool       `pulumi:"mycelium"`
 	Mycelium_ip_seed *string     `pulumi:"mycelium_ip_seed"`
@@ -479,6 +480,7 @@ type K8sNodeInputArgs struct {
 	Cpu              pulumi.IntInput       `pulumi:"cpu"`
 	Disk_size        pulumi.IntInput       `pulumi:"disk_size"`
 	Flist            pulumi.StringPtrInput `pulumi:"flist"`
+	Flist_checksum   pulumi.StringPtrInput `pulumi:"flist_checksum"`
 	Memory           pulumi.IntInput       `pulumi:"memory"`
 	Mycelium         pulumi.BoolPtrInput   `pulumi:"mycelium"`
 	Mycelium_ip_seed pulumi.StringPtrInput `pulumi:"mycelium_ip_seed"`
@@ -551,6 +553,10 @@ func (o K8sNodeInputOutput) Disk_size() pulumi.IntOutput {
 
 func (o K8sNodeInputOutput) Flist() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v K8sNodeInput) *string { return v.Flist }).(pulumi.StringPtrOutput)
+}
+
+func (o K8sNodeInputOutput) Flist_checksum() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v K8sNodeInput) *string { return v.Flist_checksum }).(pulumi.StringPtrOutput)
 }
 
 func (o K8sNodeInputOutput) Memory() pulumi.IntOutput {
@@ -1178,6 +1184,7 @@ type VMInput struct {
 	Entrypoint       *string           `pulumi:"entrypoint"`
 	Env_vars         map[string]string `pulumi:"env_vars"`
 	Flist            string            `pulumi:"flist"`
+	Flist_checksum   *string           `pulumi:"flist_checksum"`
 	Gpus             []string          `pulumi:"gpus"`
 	Memory           int               `pulumi:"memory"`
 	Mounts           []Mount           `pulumi:"mounts"`
@@ -1210,6 +1217,7 @@ type VMInputArgs struct {
 	Entrypoint       pulumi.StringPtrInput   `pulumi:"entrypoint"`
 	Env_vars         pulumi.StringMapInput   `pulumi:"env_vars"`
 	Flist            pulumi.StringInput      `pulumi:"flist"`
+	Flist_checksum   pulumi.StringPtrInput   `pulumi:"flist_checksum"`
 	Gpus             pulumi.StringArrayInput `pulumi:"gpus"`
 	Memory           pulumi.IntInput         `pulumi:"memory"`
 	Mounts           MountArrayInput         `pulumi:"mounts"`
@@ -1294,6 +1302,10 @@ func (o VMInputOutput) Env_vars() pulumi.StringMapOutput {
 
 func (o VMInputOutput) Flist() pulumi.StringOutput {
 	return o.ApplyT(func(v VMInput) string { return v.Flist }).(pulumi.StringOutput)
+}
+
+func (o VMInputOutput) Flist_checksum() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VMInput) *string { return v.Flist_checksum }).(pulumi.StringPtrOutput)
 }
 
 func (o VMInputOutput) Gpus() pulumi.StringArrayOutput {

@@ -17,6 +17,7 @@ type K8sNodeInput struct {
 	Node           interface{} `pulumi:"node"`
 	DiskSize       int         `pulumi:"disk_size"`
 	Flist          string      `pulumi:"flist,optional"`
+	FlistChecksum  string      `pulumi:"flist_checksum,optional"`
 	CPU            int         `pulumi:"cpu"`
 	Memory         int         `pulumi:"memory"`
 	PublicIP       bool        `pulumi:"public_ip,optional"`
@@ -72,6 +73,7 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 		Planetary:      k8sCluster.Master.Planetary,
 		MyceliumIPSeed: hex.EncodeToString(k8sCluster.Master.MyceliumIPSeed),
 		Flist:          k8sCluster.Master.Flist,
+		FlistChecksum:  k8sCluster.Master.FlistChecksum,
 		CPU:            int(k8sCluster.Master.CPU),
 		Memory:         int(k8sCluster.Master.MemoryMB),
 	}
@@ -101,6 +103,7 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 			Planetary:      w.Planetary,
 			MyceliumIPSeed: hex.EncodeToString(w.MyceliumIPSeed),
 			Flist:          w.Flist,
+			FlistChecksum:  w.FlistChecksum,
 			CPU:            int(w.CPU),
 			Memory:         int(w.MemoryMB),
 		}
@@ -162,6 +165,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 			Planetary:      kubernetesArgs.Master.Planetary,
 			MyceliumIPSeed: myceliumIPSeed,
 			Flist:          kubernetesArgs.Master.Flist,
+			FlistChecksum:  kubernetesArgs.Master.FlistChecksum,
 			CPU:            uint8(kubernetesArgs.Master.CPU),
 			MemoryMB:       uint64(kubernetesArgs.Master.Memory),
 		},
@@ -207,6 +211,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 				Planetary:      w.Planetary,
 				MyceliumIPSeed: myceliumIPSeed,
 				Flist:          w.Flist,
+				FlistChecksum:  w.FlistChecksum,
 				CPU:            uint8(w.CPU),
 				MemoryMB:       uint64(w.Memory),
 			},

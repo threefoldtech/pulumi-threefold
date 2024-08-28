@@ -37,6 +37,7 @@ export interface K8sNodeInput {
     cpu: number;
     disk_size: number;
     flist?: string;
+    flist_checksum?: string;
     memory: number;
     mycelium?: boolean;
     mycelium_ip_seed?: string;
@@ -97,6 +98,7 @@ export interface VMInput {
     entrypoint?: string;
     env_vars?: {[key: string]: string};
     flist: string;
+    flist_checksum?: string;
     gpus?: string[];
     memory: number;
     mounts?: outputs.Mount[];

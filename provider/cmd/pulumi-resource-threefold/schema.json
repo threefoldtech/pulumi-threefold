@@ -170,6 +170,9 @@
         "flist": {
           "type": "string"
         },
+        "flist_checksum": {
+          "type": "string"
+        },
         "memory": {
           "type": "integer"
         },
@@ -204,6 +207,7 @@
         "disk_size",
         "memory",
         "name",
+        "network_name",
         "node"
       ]
     },
@@ -373,6 +377,9 @@
         "flist": {
           "type": "string"
         },
+        "flist_checksum": {
+          "type": "string"
+        },
         "gpus": {
           "type": "array",
           "items": {
@@ -428,7 +435,8 @@
         "flist",
         "memory",
         "name",
-        "network_name"
+        "network_name",
+        "node_id"
       ]
     },
     "threefold:index:ZDBComputed": {

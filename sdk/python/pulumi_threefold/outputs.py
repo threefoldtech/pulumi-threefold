@@ -157,6 +157,7 @@ class K8sNodeInput(dict):
                  network_name: str,
                  node: Any,
                  flist: Optional[str] = None,
+                 flist_checksum: Optional[str] = None,
                  mycelium: Optional[bool] = None,
                  mycelium_ip_seed: Optional[str] = None,
                  planetary: Optional[bool] = None,
@@ -170,6 +171,8 @@ class K8sNodeInput(dict):
         pulumi.set(__self__, "node", node)
         if flist is not None:
             pulumi.set(__self__, "flist", flist)
+        if flist_checksum is not None:
+            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if mycelium is not None:
             pulumi.set(__self__, "mycelium", mycelium)
         if mycelium_ip_seed is not None:
@@ -215,6 +218,11 @@ class K8sNodeInput(dict):
     @pulumi.getter
     def flist(self) -> Optional[str]:
         return pulumi.get(self, "flist")
+
+    @property
+    @pulumi.getter
+    def flist_checksum(self) -> Optional[str]:
+        return pulumi.get(self, "flist_checksum")
 
     @property
     @pulumi.getter
@@ -482,6 +490,7 @@ class VMInput(dict):
                  description: Optional[str] = None,
                  entrypoint: Optional[str] = None,
                  env_vars: Optional[Mapping[str, str]] = None,
+                 flist_checksum: Optional[str] = None,
                  gpus: Optional[Sequence[str]] = None,
                  mounts: Optional[Sequence['outputs.Mount']] = None,
                  mycelium: Optional[bool] = None,
@@ -503,6 +512,8 @@ class VMInput(dict):
             pulumi.set(__self__, "entrypoint", entrypoint)
         if env_vars is not None:
             pulumi.set(__self__, "env_vars", env_vars)
+        if flist_checksum is not None:
+            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if gpus is not None:
             pulumi.set(__self__, "gpus", gpus)
         if mounts is not None:
@@ -566,6 +577,11 @@ class VMInput(dict):
     @pulumi.getter
     def env_vars(self) -> Optional[Mapping[str, str]]:
         return pulumi.get(self, "env_vars")
+
+    @property
+    @pulumi.getter
+    def flist_checksum(self) -> Optional[str]:
+        return pulumi.get(self, "flist_checksum")
 
     @property
     @pulumi.getter

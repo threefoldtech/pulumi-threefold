@@ -51,6 +51,7 @@ type VMInput struct {
 	Name           string            `pulumi:"name"`
 	NodeID         interface{}       `pulumi:"node_id"`
 	Flist          string            `pulumi:"flist"`
+	FlistChecksum  string            `pulumi:"flist_checksum,optional"`
 	NetworkName    string            `pulumi:"network_name"`
 	CPU            int               `pulumi:"cpu"`
 	Memory         int               `pulumi:"memory"`
@@ -198,6 +199,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 			Name:           vm.Name,
 			NodeID:         uint32(nodeID),
 			Flist:          vm.Flist,
+			FlistChecksum:  vm.FlistChecksum,
 			NetworkName:    vm.NetworkName,
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
@@ -334,6 +336,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 			Name:           vm.Name,
 			NodeID:         vm.NodeID,
 			Flist:          vm.Flist,
+			FlistChecksum:  vm.FlistChecksum,
 			NetworkName:    vm.NetworkName,
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
