@@ -25,4 +25,4 @@ tag_and_push "sdk"
 git tag -a $RELEASE_VERSION -m "release $RELEASE_VERSION"
 git push origin $RELEASE_VERSION
 
-make pulumi go_sdk nodejs_sdk python_sdk
+# make pulumi go_sdk nodejs_sdk python_sdk
