@@ -59,7 +59,7 @@ func (*Deployment) Check(
 		return args, checkFailures, err
 	}
 
-	// TODO: bypass validation of empty node (will be assigned from schedular)
+	// TODO: bypass validation of empty node (will be assigned from scheduler)
 	if nodeID, ok := args.NodeID.(string); ok && len(nodeID) == 0 {
 		args.NodeID = 1
 	}

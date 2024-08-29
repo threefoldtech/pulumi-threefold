@@ -53,7 +53,7 @@ func (*Network) Check(
 		return args, checkFailures, err
 	}
 
-	// TODO: bypass validation of empty nodes (will be assigned from schedular)
+	// TODO: bypass validation of empty nodes (will be assigned from scheduler)
 	for i, node := range args.Nodes {
 		if nodeID, ok := node.(string); ok && len(nodeID) == 0 {
 			args.Nodes[i] = i + 1
