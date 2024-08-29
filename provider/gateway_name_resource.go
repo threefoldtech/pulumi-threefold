@@ -3,7 +3,9 @@ package provider
 import (
 	"context"
 
+	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
 
 // GatewayName controlling struct
@@ -34,6 +36,30 @@ var _ = (infer.Annotated)((*GatewayNameArgs)(nil))
 
 func (g *GatewayNameArgs) Annotate(a infer.Annotator) {
 	a.SetDefault(&g.SolutionType, g.Name)
+}
+
+// Check validates name gateway data
+func (*GatewayName) Check(
+	ctx context.Context,
+	name string, oldInputs,
+	newInputs resource.PropertyMap,
+) (GatewayNameArgs, []p.CheckFailure, error) {
+	args, checkFailures, err := infer.DefaultCheck[GatewayNameArgs](ctx, newInputs)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	// TODO: bypass validation of empty node (will be assigned from scheduler)
+	if nodeID, ok := args.NodeID.(string); ok && len(nodeID) == 0 {
+		args.NodeID = 1
+	}
+
+	gw, err := parseToGWName(args)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	return args, checkFailures, gw.Validate()
 }
 
 // Create creates GatewayName and deploy it

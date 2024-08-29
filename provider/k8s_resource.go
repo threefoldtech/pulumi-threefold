@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 )
 
 // Kubernetes controlling struct
@@ -34,6 +36,36 @@ var _ = (infer.Annotated)((*KubernetesArgs)(nil))
 
 func (k *KubernetesArgs) Annotate(a infer.Annotator) {
 	a.SetDefault(&k.SolutionType, fmt.Sprintf("kubernetes/%s", k.Master.Name))
+}
+
+// Check validates kubernetes data
+func (*Kubernetes) Check(
+	ctx context.Context,
+	name string, oldInputs,
+	newInputs resource.PropertyMap,
+) (KubernetesArgs, []p.CheckFailure, error) {
+	args, checkFailures, err := infer.DefaultCheck[KubernetesArgs](ctx, newInputs)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	// TODO: bypass validation of empty node (will be assigned from scheduler)
+	if nodeID, ok := args.Master.Node.(string); ok && len(nodeID) == 0 {
+		args.Master.Node = 1
+	}
+
+	for i := range args.Workers {
+		if nodeID, ok := args.Workers[i].Node.(string); ok && len(nodeID) == 0 {
+			args.Workers[i].Node = 1
+		}
+	}
+
+	Kubernetes, err := parseToK8sCluster(args)
+	if err != nil {
+		return args, checkFailures, err
+	}
+
+	return args, checkFailures, Kubernetes.Validate()
 }
 
 // Create creates Kubernetes cluster and deploy it

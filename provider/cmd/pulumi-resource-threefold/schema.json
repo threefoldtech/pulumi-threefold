@@ -144,16 +144,7 @@
         "mycelium_ip_seed": {
           "type": "string"
         },
-        "network_name": {
-          "type": "string"
-        },
         "planetary_ip": {
-          "type": "string"
-        },
-        "ssh_key": {
-          "type": "string"
-        },
-        "token": {
           "type": "string"
         }
       },
@@ -165,10 +156,7 @@
         "ip",
         "mycelium_ip",
         "mycelium_ip_seed",
-        "network_name",
-        "planetary_ip",
-        "ssh_key",
-        "token"
+        "planetary_ip"
       ]
     },
     "threefold:index:K8sNodeInput": {
@@ -197,6 +185,9 @@
         "name": {
           "type": "string"
         },
+        "network_name": {
+          "type": "string"
+        },
         "node": {
           "$ref": "pulumi.json#/Any"
         },
@@ -216,6 +207,7 @@
         "disk_size",
         "memory",
         "name",
+        "network_name",
         "node"
       ]
     },
@@ -415,6 +407,9 @@
         "network_name": {
           "type": "string"
         },
+        "node_id": {
+          "$ref": "pulumi.json#/Any"
+        },
         "planetary": {
           "type": "boolean"
         },
@@ -440,7 +435,8 @@
         "flist",
         "memory",
         "name",
-        "network_name"
+        "network_name",
+        "node_id"
       ]
     },
     "threefold:index:ZDBComputed": {

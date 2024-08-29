@@ -23,6 +23,7 @@ deployment = threefold.Deployment("deployment",
     network_name="test",
     vms=[threefold.VMInputArgs(
         name="vm",
+        node_id=scheduler.nodes[0],
         flist="https://hub.grid.tf/tf-official-apps/base:latest.flist",
         entrypoint="/sbin/zinit init",
         network_name="test",

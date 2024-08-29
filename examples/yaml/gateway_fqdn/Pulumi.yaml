@@ -44,6 +44,7 @@ resources:
       network_name: test
       vms:
         - name: vm
+          node_id: ${scheduler.nodes[0]}
           flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
           network_name: test
           cpu: 2
