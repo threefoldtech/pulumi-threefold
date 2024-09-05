@@ -54,6 +54,13 @@ func (*GatewayFQDN) Check(
 		args.NodeID = 1
 	}
 
+	// TODO: bypass validation of empty backend (will be assigned from vm)
+	for i, backend := range args.Backends {
+		if len(backend) == 0 {
+			args.Backends[i] = "http://0.0.0.0"
+		}
+	}
+
 	gw, err := parseToGatewayFQDN(args)
 	if err != nil {
 		return args, checkFailures, err
