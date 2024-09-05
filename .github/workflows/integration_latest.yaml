@@ -63,3 +63,10 @@ jobs:
           MNEMONIC: ${{ secrets.MNEMONIC }}
           NETWORK: ${{ matrix.network }}
           EXAMPLES: ../examples/python
+
+      - name: Run Tests for nodejs examples
+        run: go test -v ./tests
+        env:
+          MNEMONIC: ${{ secrets.MNEMONIC }}
+          NETWORK: ${{ matrix.network }}
+          EXAMPLES: ../examples/nodejs
