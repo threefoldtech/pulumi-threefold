@@ -1,5 +1,5 @@
 {
-    "name": "@pulumi/threefold",
+    "name": "@threefold/pulumi",
     "version": "${VERSION}",
     "keywords": [
         "pulumi",
