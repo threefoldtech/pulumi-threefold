@@ -20,9 +20,12 @@
   },
   "language": {
     "go": {
-      "generateExtraInputTypes": true,
+      "importBasePath": "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold",
       "generateResourceContainerTypes": true,
-      "importBasePath": "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold"
+      "generateExtraInputTypes": true
+    },
+    "nodejs": {
+      "packageName": "@threefold/pulumi"
     }
   },
   "config": {

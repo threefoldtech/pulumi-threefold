@@ -9,6 +9,8 @@ import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi-go-provider/middleware/schema"
+	goGen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
+	nodejsGen "github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
 )
@@ -27,10 +29,13 @@ func Provider() p.Provider {
 			License:           "Apache-2.0",
 			PluginDownloadURL: "github://api.github.com/threefoldtech/pulumi-threefold",
 			LanguageMap: map[string]any{
-				"go": map[string]any{
-					"generateExtraInputTypes":        true,
-					"generateResourceContainerTypes": true,
-					"importBasePath":                 "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold",
+				"go": goGen.GoPackageInfo{
+					GenerateExtraInputTypes:        true,
+					GenerateResourceContainerTypes: true,
+					ImportBasePath:                 "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold",
+				},
+				"nodejs": nodejsGen.NodePackageInfo{
+					PackageName: "@threefold/pulumi",
 				},
 			},
 		},
