@@ -33,6 +33,7 @@ resources:
       nodes:
         - ${scheduler.nodes[0]}
       ip_range: 10.1.0.0/16
+      mycelium: true
 
   deployment:
     type: threefold:Deployment
@@ -53,6 +54,7 @@ resources:
           cpu: 2
           memory: 256
           planetary: true
+          mycelium: true
           mounts:
             - disk_name: data
               mount_point: /app

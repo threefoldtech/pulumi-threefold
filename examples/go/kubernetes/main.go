@@ -34,6 +34,7 @@ func main() {
 				}).(pulumi.IntOutput),
 			},
 			Ip_range: pulumi.String("10.1.0.0/16"),
+			Mycelium: pulumi.Bool(true),
 		}, pulumi.Provider(tfProvider), pulumi.DependsOn([]pulumi.Resource{
 			scheduler,
 		}))
@@ -49,6 +50,7 @@ func main() {
 				}).(pulumi.IntOutput),
 				Disk_size: pulumi.Int(2),
 				Planetary: pulumi.Bool(true),
+				Mycelium:  pulumi.Bool(true),
 				Cpu:       pulumi.Int(2),
 				Memory:    pulumi.Int(2048),
 			},
@@ -86,6 +88,9 @@ func main() {
 		ctx.Export("node_deployment_id", kubernetes.Node_deployment_id)
 		ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
 			return &master_computed.Planetary_ip, nil
+		}).(pulumi.StringPtrOutput))
+		ctx.Export("mycelium_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
+			return &master_computed.Mycelium_ip, nil
 		}).(pulumi.StringPtrOutput))
 		return nil
 	})

@@ -13,6 +13,7 @@ const network = new threefold.Network("network", {
     description: "test network",
     nodes: [scheduler.nodes[0]],
     ip_range: "10.1.0.0/16",
+    mycelium: true,
 }, {
     provider: provider,
     dependsOn: [scheduler],
@@ -24,6 +25,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
         node: scheduler.nodes[0],
         disk_size: 2,
         planetary: true,
+        mycelium: true,
         cpu: 2,
         memory: 2048,
     },
@@ -53,4 +55,5 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
     dependsOn: [network],
 });
 export const nodeDeploymentId = kubernetes.node_deployment_id;
-export const planetaryIp = kubernetes.master_computed.apply(master_computed => master_computed.planetary_ip);
+export const planetaryIP = kubernetes.master_computed.apply(master_computed => master_computed.planetary_ip);
+export const myceliumIP = kubernetes.master_computed.apply(master_computed => master_computed.mycelium_ip);

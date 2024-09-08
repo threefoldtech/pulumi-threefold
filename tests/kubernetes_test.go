@@ -50,22 +50,22 @@ func TestKubernetes(t *testing.T) {
 				if res.Type == "threefold:Kubernetes" {
 					assert.NotEmpty(t, res.Outputs["node_deployment_id"])
 
-					yggIP := res.Outputs["master_computed"].(map[string]interface{})["planetary_ip"].(string)
-					assert.NotEmpty(t, yggIP)
-					AssertNodesAreReady(t, yggIP, privateKey, 3)
+					myceliumIP := res.Outputs["master_computed"].(map[string]interface{})["mycelium_ip"].(string)
+					assert.NotEmpty(t, myceliumIP)
+					AssertNodesAreReady(t, myceliumIP, privateKey, 3)
 				}
 			}
 		},
 	})
 }
 
-func AssertNodesAreReady(t *testing.T, masterYggIP, privateKey string, nodesNumber int) {
+func AssertNodesAreReady(t *testing.T, masterPlanetaryIP, privateKey string, nodesNumber int) {
 	t.Helper()
 
 	time.Sleep(60 * time.Second)
 	output, err := remoteRun(
 		"root",
-		masterYggIP,
+		masterPlanetaryIP,
 		"export KUBECONFIG=/etc/rancher/k3s/k3s.yaml && kubectl get node",
 		privateKey,
 	)

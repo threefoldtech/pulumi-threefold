@@ -34,6 +34,7 @@ func main() {
 				}).(pulumi.IntOutput),
 			},
 			Ip_range: pulumi.String("10.1.0.0/16"),
+			Mycelium: pulumi.Bool(true),
 		}, pulumi.Provider(tfProvider), pulumi.DependsOn([]pulumi.Resource{
 			scheduler,
 		}))
@@ -58,6 +59,7 @@ func main() {
 					Cpu:          pulumi.Int(2),
 					Memory:       pulumi.Int(256),
 					Planetary:    pulumi.Bool(true),
+					Mycelium:     pulumi.Bool(true),
 					Mounts: threefold.MountArray{
 						&threefold.MountArgs{
 							Disk_name:   pulumi.String("data"),
@@ -84,6 +86,9 @@ func main() {
 		ctx.Export("node_deployment_id", deployment.Node_deployment_id)
 		ctx.Export("planetary_ip", deployment.Vms_computed.ApplyT(func(vms_computed []threefold.VMComputed) (*string, error) {
 			return &vms_computed[0].Planetary_ip, nil
+		}).(pulumi.StringPtrOutput))
+		ctx.Export("mycelium_ip", deployment.Vms_computed.ApplyT(func(vms_computed []threefold.VMComputed) (*string, error) {
+			return &vms_computed[0].Mycelium_ip, nil
 		}).(pulumi.StringPtrOutput))
 		return nil
 	})
