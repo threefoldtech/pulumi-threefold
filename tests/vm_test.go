@@ -51,16 +51,16 @@ func TestVM(t *testing.T) {
 					disks := res.Outputs["disks"].([]interface{})[0].(map[string]interface{})
 					mounts := vms["mounts"].([]interface{})[0].(map[string]interface{})
 
-					yggIP := vmsComputed["planetary_ip"].(string)
+					myceliumIP := vmsComputed["mycelium_ip"].(string)
 					mountPoint := mounts["mount_point"].(string)
 					diskSize := disks["size"].(float64)
 
 					// testing connection
-					ok := testConnection(yggIP, "22")
+					ok := testConnection(myceliumIP, "22")
 					assert.True(t, ok)
 
 					// Check that disk has been mounted successfully
-					output, err := remoteRun("root", yggIP, fmt.Sprintf("df -h | grep -w %s", mountPoint), privateKey)
+					output, err := remoteRun("root", myceliumIP, fmt.Sprintf("df -h | grep -w %s", mountPoint), privateKey)
 					assert.NoError(t, err)
 					assert.Contains(t, output, fmt.Sprintf("%v.0G", diskSize))
 				}

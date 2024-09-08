@@ -36,6 +36,7 @@ resources:
       nodes:
         - ${scheduler.nodes[0]}
       ip_range: 10.1.0.0/16
+      mycelium: true
 
   kubernetes:
     type: threefold:Kubernetes
@@ -50,6 +51,7 @@ resources:
         node: ${scheduler.nodes[0]}
         disk_size: 2
         planetary: true
+        mycelium: true
         cpu: 2
         memory: 2048
 
@@ -60,12 +62,14 @@ resources:
           disk_size: 2
           cpu: 2
           memory: 2048
+          mycelium: true
         - name: worker2
           network_name: test
           node: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
+          mycelium: true
 
       token: t123456789
       network_name: test
@@ -74,3 +78,4 @@ resources:
 outputs:
   node_deployment_id: ${kubernetes.node_deployment_id}
   planetary_ip: ${kubernetes.master_computed.planetary_ip}
+  mycelium_ip: ${kubernetes.master_computed.mycelium_ip}

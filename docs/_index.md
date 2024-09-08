@@ -201,6 +201,7 @@ func main() {
         }).(pulumi.IntOutput),
       },
       Ip_range: pulumi.String("10.1.0.0/16"),
+      Mycelium: pulumi.Bool(true),
     }, pulumi.Provider(tfProvider), pulumi.DependsOn([]pulumi.Resource{
       scheduler,
     }))
@@ -225,6 +226,7 @@ func main() {
           Cpu:          pulumi.Int(2),
           Memory:       pulumi.Int(256),
           Planetary:    pulumi.Bool(true),
+          Mycelium:     pulumi.Bool(true),
           Mounts: threefold.MountArray{
             &threefold.MountArgs{
               Disk_name:   pulumi.String("data"),
@@ -251,6 +253,9 @@ func main() {
     ctx.Export("node_deployment_id", deployment.Node_deployment_id)
     ctx.Export("planetary_ip", deployment.Vms_computed.ApplyT(func(vms_computed []threefold.VMComputed) (*string, error) {
       return &vms_computed[0].Planetary_ip, nil
+    }).(pulumi.StringPtrOutput))
+    ctx.Export("mycelium_ip", deployment.Vms_computed.ApplyT(func(vms_computed []threefold.VMComputed) (*string, error) {
+      return &vms_computed[0].Mycelium_ip, nil
     }).(pulumi.StringPtrOutput))
     return nil
   })
@@ -496,6 +501,7 @@ func main() {
         }).(pulumi.IntOutput),
       },
       Ip_range: pulumi.String("10.1.0.0/16"),
+      Mycelium: pulumi.Bool(true),
     }, pulumi.Provider(tfProvider), pulumi.DependsOn([]pulumi.Resource{
       scheduler,
     }))
@@ -511,6 +517,7 @@ func main() {
         }).(pulumi.IntOutput),
         Disk_size: pulumi.Int(2),
         Planetary: pulumi.Bool(true),
+        Mycelium:  pulumi.Bool(true),
         Cpu:       pulumi.Int(2),
         Memory:    pulumi.Int(2048),
       },
@@ -549,6 +556,9 @@ func main() {
     ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
       return &master_computed.Planetary_ip, nil
     }).(pulumi.StringPtrOutput))
+    ctx.Export("mycelium_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
+      return &master_computed.Mycelium_ip, nil
+    }).(pulumi.StringPtrOutput))
     return nil
   })
 }
@@ -577,6 +587,7 @@ network = threefold.Network("network",
     description="example network",
     nodes=[scheduler.nodes[0]],
     ip_range="10.1.0.0/16",
+    mycelium=True,
     opts = pulumi.ResourceOptions(provider=provider,
         depends_on=[scheduler]))
 kubernetes = threefold.Kubernetes("kubernetes",
@@ -586,6 +597,7 @@ kubernetes = threefold.Kubernetes("kubernetes",
         node=scheduler.nodes[0],
         disk_size=2,
         planetary=True,
+        mycelium=True,
         cpu=2,
         memory=2048,
     ),
@@ -654,6 +666,7 @@ resources:
       nodes:
         - ${scheduler.nodes[0]}
       ip_range: 10.1.0.0/16
+      mycelium: true
 
   kubernetes:
     type: threefold:Kubernetes
@@ -668,6 +681,7 @@ resources:
         node: ${scheduler.nodes[0]}
         disk_size: 2
         planetary: true
+        mycelium: true
         cpu: 2
         memory: 2048
 
@@ -678,12 +692,14 @@ resources:
           disk_size: 2
           cpu: 2
           memory: 2048
+          mycelium: true
         - name: worker2
           network_name: test
           node: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
+          mycelium: true
 
       token: t123456789
       network_name: test
@@ -692,6 +708,7 @@ resources:
 outputs:
   node_deployment_id: ${kubernetes.node_deployment_id}
   planetary_ip: ${kubernetes.master_computed.planetary_ip}
+  mycelium_ip: ${kubernetes.master_computed.mycelium_ip}
 ```
 
 {{% /choosable %}}
@@ -714,6 +731,7 @@ const network = new threefold.Network("network", {
     description: "test network",
     nodes: [scheduler.nodes[0]],
     ip_range: "10.1.0.0/16",
+    mycelium: true,
 }, {
     provider: provider,
     dependsOn: [scheduler],
@@ -725,6 +743,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
         node: scheduler.nodes[0],
         disk_size: 2,
         planetary: true,
+        mycelium: true,
         cpu: 2,
         memory: 2048,
     },
@@ -736,6 +755,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
             disk_size: 2,
             cpu: 2,
             memory: 2048,
+            mycelium: true,
         },
         {
             name: "worker2",
@@ -744,6 +764,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
             disk_size: 2,
             cpu: 2,
             memory: 2048,
+            mycelium: true,
         },
     ],
     token: "t123456789",
@@ -755,6 +776,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
 });
 export const nodeDeploymentId = kubernetes.node_deployment_id;
 export const planetaryIp = kubernetes.master_computed.apply(master_computed => master_computed.planetary_ip);
+export const myceliumIp = kubernetes.master_computed.apply(master_computed => master_computed.mycelium_ip);
 ```
 
 {{% /choosable %}}
