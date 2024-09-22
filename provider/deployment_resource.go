@@ -2,7 +2,6 @@ package provider
 
 import (
 	"context"
-	"fmt"
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -35,17 +34,6 @@ type DeploymentState struct {
 	ZdbsComputed     []ZDBComputed    `pulumi:"zdbs_computed"`
 	VmsComputed      []VMComputed     `pulumi:"vms_computed"`
 	QsfsComputed     []QSFSComputed   `pulumi:"qsfs_computed"`
-}
-
-var _ = (infer.Annotated)((*DeploymentArgs)(nil))
-
-func (d *DeploymentArgs) Annotate(a infer.Annotator) {
-	a.SetDefault(&d.SolutionType, fmt.Sprintf("vm/%s", d.Name))
-}
-
-// Annotate sets defaults and descriptions for zdb resource
-func (z *ZDBInput) Annotate(a infer.Annotator) {
-	a.SetDefault(&z.Mode, "user", "")
 }
 
 // Check validates the Deployment

@@ -14,21 +14,27 @@ __all__ = ['ProviderArgs', 'Provider']
 @pulumi.input_type
 class ProviderArgs:
     def __init__(__self__, *,
+                 graphql_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
+                 proxy_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  relay_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
-                 substrate_url: Optional[pulumi.Input[str]] = None):
+                 substrate_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         The set of arguments for constructing a Provider resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] graphql_url: The graphql urls, example: https://graphql.grid.tf/graphql
         :param pulumi.Input[str] key_type: The key type registered on substrate (ed25519 or sr25519).
         :param pulumi.Input[str] mnemonic: The mnemonic of the user. It is very secret.
         :param pulumi.Input[str] network: The network to deploy on.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] relay_url: The relay urls, example: wss://relay.dev.grid.tf
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] proxy_url: The proxy urls, example: https://gridproxy.grid.tf/
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] relay_url: The relay urls, example: wss://relay.grid.tf
         :param pulumi.Input[str] rmb_timeout: The timeout duration in seconds for rmb calls
-        :param pulumi.Input[str] substrate_url: The substrate url, example: wss://tfchain.dev.grid.tf/ws
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] substrate_url: The substrate url, example: wss://tfchain.grid.tf/ws
         """
+        if graphql_url is not None:
+            pulumi.set(__self__, "graphql_url", graphql_url)
         if key_type is None:
             key_type = (_utilities.get_env('') or 'sr25519')
         if key_type is not None:
@@ -41,12 +47,26 @@ class ProviderArgs:
             network = (_utilities.get_env('') or '')
         if network is not None:
             pulumi.set(__self__, "network", network)
+        if proxy_url is not None:
+            pulumi.set(__self__, "proxy_url", proxy_url)
         if relay_url is not None:
             pulumi.set(__self__, "relay_url", relay_url)
         if rmb_timeout is not None:
             pulumi.set(__self__, "rmb_timeout", rmb_timeout)
         if substrate_url is not None:
             pulumi.set(__self__, "substrate_url", substrate_url)
+
+    @property
+    @pulumi.getter
+    def graphql_url(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The graphql urls, example: https://graphql.grid.tf/graphql
+        """
+        return pulumi.get(self, "graphql_url")
+
+    @graphql_url.setter
+    def graphql_url(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "graphql_url", value)
 
     @property
     @pulumi.getter
@@ -86,9 +106,21 @@ class ProviderArgs:
 
     @property
     @pulumi.getter
+    def proxy_url(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        The proxy urls, example: https://gridproxy.grid.tf/
+        """
+        return pulumi.get(self, "proxy_url")
+
+    @proxy_url.setter
+    def proxy_url(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "proxy_url", value)
+
+    @property
+    @pulumi.getter
     def relay_url(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        The relay urls, example: wss://relay.dev.grid.tf
+        The relay urls, example: wss://relay.grid.tf
         """
         return pulumi.get(self, "relay_url")
 
@@ -110,14 +142,14 @@ class ProviderArgs:
 
     @property
     @pulumi.getter
-    def substrate_url(self) -> Optional[pulumi.Input[str]]:
+    def substrate_url(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
         """
-        The substrate url, example: wss://tfchain.dev.grid.tf/ws
+        The substrate url, example: wss://tfchain.grid.tf/ws
         """
         return pulumi.get(self, "substrate_url")
 
     @substrate_url.setter
-    def substrate_url(self, value: Optional[pulumi.Input[str]]):
+    def substrate_url(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
         pulumi.set(self, "substrate_url", value)
 
 
@@ -126,23 +158,27 @@ class Provider(pulumi.ProviderResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 graphql_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
+                 proxy_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  relay_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
-                 substrate_url: Optional[pulumi.Input[str]] = None,
+                 substrate_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         """
         Create a Threefold resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] graphql_url: The graphql urls, example: https://graphql.grid.tf/graphql
         :param pulumi.Input[str] key_type: The key type registered on substrate (ed25519 or sr25519).
         :param pulumi.Input[str] mnemonic: The mnemonic of the user. It is very secret.
         :param pulumi.Input[str] network: The network to deploy on.
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] relay_url: The relay urls, example: wss://relay.dev.grid.tf
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] proxy_url: The proxy urls, example: https://gridproxy.grid.tf/
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] relay_url: The relay urls, example: wss://relay.grid.tf
         :param pulumi.Input[str] rmb_timeout: The timeout duration in seconds for rmb calls
-        :param pulumi.Input[str] substrate_url: The substrate url, example: wss://tfchain.dev.grid.tf/ws
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] substrate_url: The substrate url, example: wss://tfchain.grid.tf/ws
         """
         ...
     @overload
@@ -167,12 +203,14 @@ class Provider(pulumi.ProviderResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 graphql_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  key_type: Optional[pulumi.Input[str]] = None,
                  mnemonic: Optional[pulumi.Input[str]] = None,
                  network: Optional[pulumi.Input[str]] = None,
+                 proxy_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  relay_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  rmb_timeout: Optional[pulumi.Input[str]] = None,
-                 substrate_url: Optional[pulumi.Input[str]] = None,
+                 substrate_url: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -182,6 +220,7 @@ class Provider(pulumi.ProviderResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ProviderArgs.__new__(ProviderArgs)
 
+            __props__.__dict__["graphql_url"] = pulumi.Output.from_input(graphql_url).apply(pulumi.runtime.to_json) if graphql_url is not None else None
             if key_type is None:
                 key_type = (_utilities.get_env('') or 'sr25519')
             __props__.__dict__["key_type"] = key_type
@@ -191,9 +230,10 @@ class Provider(pulumi.ProviderResource):
             if network is None:
                 network = (_utilities.get_env('') or '')
             __props__.__dict__["network"] = network
+            __props__.__dict__["proxy_url"] = pulumi.Output.from_input(proxy_url).apply(pulumi.runtime.to_json) if proxy_url is not None else None
             __props__.__dict__["relay_url"] = pulumi.Output.from_input(relay_url).apply(pulumi.runtime.to_json) if relay_url is not None else None
             __props__.__dict__["rmb_timeout"] = rmb_timeout
-            __props__.__dict__["substrate_url"] = substrate_url
+            __props__.__dict__["substrate_url"] = pulumi.Output.from_input(substrate_url).apply(pulumi.runtime.to_json) if substrate_url is not None else None
         secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["mnemonic"])
         opts = pulumi.ResourceOptions.merge(opts, secret_opts)
         super(Provider, __self__).__init__(
@@ -233,12 +273,4 @@ class Provider(pulumi.ProviderResource):
         The timeout duration in seconds for rmb calls
         """
         return pulumi.get(self, "rmb_timeout")
-
-    @property
-    @pulumi.getter
-    def substrate_url(self) -> pulumi.Output[Optional[str]]:
-        """
-        The substrate url, example: wss://tfchain.dev.grid.tf/ws
-        """
-        return pulumi.get(self, "substrate_url")
 

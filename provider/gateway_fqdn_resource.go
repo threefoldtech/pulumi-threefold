@@ -32,12 +32,6 @@ type GatewayFQDNState struct {
 	NodeDeploymentID map[string]int64 `pulumi:"node_deployment_id"`
 }
 
-var _ = (infer.Annotated)((*GatewayFQDNArgs)(nil))
-
-func (g *GatewayFQDNArgs) Annotate(a infer.Annotator) {
-	a.SetDefault(&g.SolutionType, g.Name)
-}
-
 // Check validates fqdn gateway data
 func (*GatewayFQDN) Check(
 	ctx context.Context,

@@ -31,7 +31,7 @@ deployment = threefold.Deployment("deployment",
         memory=256, #MB
         mycelium=True,
         mounts=[threefold.MountArgs(
-            disk_name="data",
+            name="data",
             mount_point="/app",
         )],
         env_vars={

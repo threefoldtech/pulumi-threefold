@@ -24,6 +24,14 @@ class NetworkArgs:
                  solution_type: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Network resource.
+        :param pulumi.Input[str] description: The description of the network workload, optional with no restrictions
+        :param pulumi.Input[str] ip_range: The IP range for the network, subnet should be 16
+        :param pulumi.Input[str] name: The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[Sequence[Any]] nodes: The nodes used to deploy the network on, shouldn't be empty
+        :param pulumi.Input[bool] add_wg_access: A flag to support wireguard in the network
+        :param pulumi.Input[bool] mycelium: A flag to generate a random mycelium key to support mycelium in the network
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] mycelium_keys: A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
+        :param pulumi.Input[str] solution_type: The solution type of the network, displayed as project name in contract metadata
         """
         pulumi.set(__self__, "description", description)
         pulumi.set(__self__, "ip_range", ip_range)
@@ -43,6 +51,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def description(self) -> pulumi.Input[str]:
+        """
+        The description of the network workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -52,6 +63,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def ip_range(self) -> pulumi.Input[str]:
+        """
+        The IP range for the network, subnet should be 16
+        """
         return pulumi.get(self, "ip_range")
 
     @ip_range.setter
@@ -61,6 +75,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -70,6 +87,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def nodes(self) -> pulumi.Input[Sequence[Any]]:
+        """
+        The nodes used to deploy the network on, shouldn't be empty
+        """
         return pulumi.get(self, "nodes")
 
     @nodes.setter
@@ -79,6 +99,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def add_wg_access(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to support wireguard in the network
+        """
         return pulumi.get(self, "add_wg_access")
 
     @add_wg_access.setter
@@ -88,6 +111,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def mycelium(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to generate a random mycelium key to support mycelium in the network
+        """
         return pulumi.get(self, "mycelium")
 
     @mycelium.setter
@@ -97,6 +123,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def mycelium_keys(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
+        """
         return pulumi.get(self, "mycelium_keys")
 
     @mycelium_keys.setter
@@ -106,6 +135,9 @@ class NetworkArgs:
     @property
     @pulumi.getter
     def solution_type(self) -> Optional[pulumi.Input[str]]:
+        """
+        The solution type of the network, displayed as project name in contract metadata
+        """
         return pulumi.get(self, "solution_type")
 
     @solution_type.setter
@@ -131,6 +163,14 @@ class Network(pulumi.CustomResource):
         Create a Network resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[bool] add_wg_access: A flag to support wireguard in the network
+        :param pulumi.Input[str] description: The description of the network workload, optional with no restrictions
+        :param pulumi.Input[str] ip_range: The IP range for the network, subnet should be 16
+        :param pulumi.Input[bool] mycelium: A flag to generate a random mycelium key to support mycelium in the network
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] mycelium_keys: A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
+        :param pulumi.Input[str] name: The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[Sequence[Any]] nodes: The nodes used to deploy the network on, shouldn't be empty
+        :param pulumi.Input[str] solution_type: The solution type of the network, displayed as project name in contract metadata
         """
         ...
     @overload
@@ -237,70 +277,112 @@ class Network(pulumi.CustomResource):
     @property
     @pulumi.getter
     def access_wg_config(self) -> pulumi.Output[str]:
+        """
+        Generated wireguard configuration for external user access to the network
+        """
         return pulumi.get(self, "access_wg_config")
 
     @property
     @pulumi.getter
     def add_wg_access(self) -> pulumi.Output[Optional[bool]]:
+        """
+        A flag to support wireguard in the network
+        """
         return pulumi.get(self, "add_wg_access")
 
     @property
     @pulumi.getter
     def description(self) -> pulumi.Output[str]:
+        """
+        The description of the network workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @property
     @pulumi.getter
     def external_ip(self) -> pulumi.Output[str]:
+        """
+        Wireguard IP assigned for external user access
+        """
         return pulumi.get(self, "external_ip")
 
     @property
     @pulumi.getter
     def external_sk(self) -> pulumi.Output[str]:
+        """
+        External user private key used in encryption while communicating through Wireguard network
+        """
         return pulumi.get(self, "external_sk")
 
     @property
     @pulumi.getter
     def ip_range(self) -> pulumi.Output[str]:
+        """
+        The IP range for the network, subnet should be 16
+        """
         return pulumi.get(self, "ip_range")
 
     @property
     @pulumi.getter
     def mycelium(self) -> pulumi.Output[Optional[bool]]:
+        """
+        A flag to generate a random mycelium key to support mycelium in the network
+        """
         return pulumi.get(self, "mycelium")
 
     @property
     @pulumi.getter
     def mycelium_keys(self) -> pulumi.Output[Optional[Mapping[str, str]]]:
+        """
+        A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
+        """
         return pulumi.get(self, "mycelium_keys")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def node_deployment_id(self) -> pulumi.Output[Mapping[str, int]]:
+        """
+        Mapping from each node to its deployment id
+        """
         return pulumi.get(self, "node_deployment_id")
 
     @property
     @pulumi.getter
     def nodes(self) -> pulumi.Output[Sequence[Any]]:
+        """
+        The nodes used to deploy the network on, shouldn't be empty
+        """
         return pulumi.get(self, "nodes")
 
     @property
     @pulumi.getter
     def nodes_ip_range(self) -> pulumi.Output[Mapping[str, str]]:
+        """
+        Computed values of nodes' IP ranges after deployment
+        """
         return pulumi.get(self, "nodes_ip_range")
 
     @property
     @pulumi.getter
     def public_node_id(self) -> pulumi.Output[int]:
+        """
+        Public node id (in case it's added). Used for wireguard access and supporting hidden nodes
+        """
         return pulumi.get(self, "public_node_id")
 
     @property
     @pulumi.getter
     def solution_type(self) -> pulumi.Output[Optional[str]]:
+        """
+        The solution type of the network, displayed as project name in contract metadata
+        """
         return pulumi.get(self, "solution_type")
 

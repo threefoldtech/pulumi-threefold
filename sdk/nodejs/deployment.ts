@@ -33,19 +33,55 @@ export class Deployment extends pulumi.CustomResource {
         return obj['__pulumiType'] === Deployment.__pulumiType;
     }
 
+    /**
+     * The deployment ID
+     */
     public /*out*/ readonly contract_id!: pulumi.Output<number>;
+    /**
+     * The disks requested to be included in the deployment
+     */
     public readonly disks!: pulumi.Output<outputs.Disk[] | undefined>;
+    /**
+     * IP range of the node for the wireguard network (e.g. 10.1.2.0/24). Has to have a subnet mask of 24
+     */
     public /*out*/ readonly ip_range!: pulumi.Output<string>;
+    /**
+     * The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     public readonly name!: pulumi.Output<string>;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     public readonly network_name!: pulumi.Output<string | undefined>;
+    /**
+     * Mapping from each node to its deployment ID
+     */
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
+    /**
+     * The node ID to deploy on, required and should match the requested resources
+     */
     public readonly node_id!: pulumi.Output<any>;
+    /**
+     * The qsfs output instances requested to be included in the deployment
+     */
     public readonly qsfs!: pulumi.Output<outputs.QSFSInput[] | undefined>;
     public /*out*/ readonly qsfs_computed!: pulumi.Output<outputs.QSFSComputed[]>;
+    /**
+     * ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+     */
     public readonly solution_provider!: pulumi.Output<number | undefined>;
+    /**
+     * The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+     */
     public readonly solution_type!: pulumi.Output<string | undefined>;
+    /**
+     * The vms output requested to be included in the deployment
+     */
     public readonly vms!: pulumi.Output<outputs.VMInput[] | undefined>;
     public /*out*/ readonly vms_computed!: pulumi.Output<outputs.VMComputed[]>;
+    /**
+     * The zdbs output requested to be included in the deployment
+     */
     public readonly zdbs!: pulumi.Output<outputs.ZDBInput[] | undefined>;
     public /*out*/ readonly zdbs_computed!: pulumi.Output<outputs.ZDBComputed[]>;
 
@@ -107,13 +143,40 @@ export class Deployment extends pulumi.CustomResource {
  * The set of arguments for constructing a Deployment resource.
  */
 export interface DeploymentArgs {
+    /**
+     * The disks requested to be included in the deployment
+     */
     disks?: pulumi.Input<pulumi.Input<inputs.DiskArgs>[]>;
+    /**
+     * The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: pulumi.Input<string>;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     network_name?: pulumi.Input<string>;
+    /**
+     * The node ID to deploy on, required and should match the requested resources
+     */
     node_id: any;
+    /**
+     * The qsfs instances requested to be included in the deployment
+     */
     qsfs?: pulumi.Input<pulumi.Input<inputs.QSFSInputArgs>[]>;
+    /**
+     * ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+     */
     solution_provider?: pulumi.Input<number>;
+    /**
+     * The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+     */
     solution_type?: pulumi.Input<string>;
+    /**
+     * The vms requested to be included in the deployment
+     */
     vms?: pulumi.Input<pulumi.Input<inputs.VMInputArgs>[]>;
+    /**
+     * The zdbs requested to be included in the deployment
+     */
     zdbs?: pulumi.Input<pulumi.Input<inputs.ZDBInputArgs>[]>;
 }

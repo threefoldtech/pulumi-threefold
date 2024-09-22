@@ -55,7 +55,7 @@ resources:
           mycelium: true
           # mycelium_ip_seed: b60f2b7ec39c # hex encoded 6 bytes [example]
           mounts:
-            - disk_name: data
+            - name: data
               mount_point: /app
           env_vars:
             SSH_KEY:
@@ -70,7 +70,7 @@ resources:
           mycelium: true
           # mycelium_ip_seed: b60f2b7ec39c # hex encoded 6 bytes [example]
           mounts:
-            - disk_name: data
+            - name: data
               mount_point: /app
           env_vars:
             SSH_KEY:
@@ -85,7 +85,7 @@ resources:
           mycelium: true
           # mycelium_ip_seed: b60f2b7ec39c # hex encoded 6 bytes [example]
           mounts:
-            - disk_name: data
+            - name: data
               mount_point: /app
           env_vars:
             SSH_KEY:

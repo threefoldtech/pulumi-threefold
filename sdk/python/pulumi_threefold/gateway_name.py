@@ -18,19 +18,26 @@ class GatewayNameArgs:
                  name: pulumi.Input[str],
                  node_id: Any,
                  description: Optional[pulumi.Input[str]] = None,
-                 network: Optional[pulumi.Input[str]] = None,
+                 network_name: Optional[pulumi.Input[str]] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
                  tls_passthrough: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a GatewayName resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] backends: The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        :param pulumi.Input[str] name: Domain prefix. The fqdn will be <name>.<gateway-domain>. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        :param Any node_id: The gateway's node ID
+        :param pulumi.Input[str] description: The description of the virtual machine workload, optional with no restrictions
+        :param pulumi.Input[str] network_name: Network name to join, if backend IP is private
+        :param pulumi.Input[str] solution_type: The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        :param pulumi.Input[bool] tls_passthrough: TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
         """
         pulumi.set(__self__, "backends", backends)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "node_id", node_id)
         if description is not None:
             pulumi.set(__self__, "description", description)
-        if network is not None:
-            pulumi.set(__self__, "network", network)
+        if network_name is not None:
+            pulumi.set(__self__, "network_name", network_name)
         if solution_type is None:
             solution_type = ''
         if solution_type is not None:
@@ -41,6 +48,9 @@ class GatewayNameArgs:
     @property
     @pulumi.getter
     def backends(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        """
         return pulumi.get(self, "backends")
 
     @backends.setter
@@ -50,6 +60,9 @@ class GatewayNameArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        Domain prefix. The fqdn will be <name>.<gateway-domain>. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -59,6 +72,9 @@ class GatewayNameArgs:
     @property
     @pulumi.getter
     def node_id(self) -> Any:
+        """
+        The gateway's node ID
+        """
         return pulumi.get(self, "node_id")
 
     @node_id.setter
@@ -68,6 +84,9 @@ class GatewayNameArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -76,16 +95,22 @@ class GatewayNameArgs:
 
     @property
     @pulumi.getter
-    def network(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "network")
+    def network_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Network name to join, if backend IP is private
+        """
+        return pulumi.get(self, "network_name")
 
-    @network.setter
-    def network(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "network", value)
+    @network_name.setter
+    def network_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "network_name", value)
 
     @property
     @pulumi.getter
     def solution_type(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        """
         return pulumi.get(self, "solution_type")
 
     @solution_type.setter
@@ -95,6 +120,9 @@ class GatewayNameArgs:
     @property
     @pulumi.getter
     def tls_passthrough(self) -> Optional[pulumi.Input[bool]]:
+        """
+        TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+        """
         return pulumi.get(self, "tls_passthrough")
 
     @tls_passthrough.setter
@@ -110,7 +138,7 @@ class GatewayName(pulumi.CustomResource):
                  backends: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 network: Optional[pulumi.Input[str]] = None,
+                 network_name: Optional[pulumi.Input[str]] = None,
                  node_id: Optional[Any] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
                  tls_passthrough: Optional[pulumi.Input[bool]] = None,
@@ -119,6 +147,13 @@ class GatewayName(pulumi.CustomResource):
         Create a GatewayName resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] backends: The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        :param pulumi.Input[str] description: The description of the virtual machine workload, optional with no restrictions
+        :param pulumi.Input[str] name: Domain prefix. The fqdn will be <name>.<gateway-domain>. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        :param pulumi.Input[str] network_name: Network name to join, if backend IP is private
+        :param Any node_id: The gateway's node ID
+        :param pulumi.Input[str] solution_type: The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        :param pulumi.Input[bool] tls_passthrough: TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
         """
         ...
     @overload
@@ -146,7 +181,7 @@ class GatewayName(pulumi.CustomResource):
                  backends: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  name: Optional[pulumi.Input[str]] = None,
-                 network: Optional[pulumi.Input[str]] = None,
+                 network_name: Optional[pulumi.Input[str]] = None,
                  node_id: Optional[Any] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
                  tls_passthrough: Optional[pulumi.Input[bool]] = None,
@@ -166,7 +201,7 @@ class GatewayName(pulumi.CustomResource):
             if name is None and not opts.urn:
                 raise TypeError("Missing required property 'name'")
             __props__.__dict__["name"] = name
-            __props__.__dict__["network"] = network
+            __props__.__dict__["network_name"] = network_name
             if node_id is None and not opts.urn:
                 raise TypeError("Missing required property 'node_id'")
             __props__.__dict__["node_id"] = node_id
@@ -206,7 +241,7 @@ class GatewayName(pulumi.CustomResource):
         __props__.__dict__["fqdn"] = None
         __props__.__dict__["name"] = None
         __props__.__dict__["name_contract_id"] = None
-        __props__.__dict__["network"] = None
+        __props__.__dict__["network_name"] = None
         __props__.__dict__["node_deployment_id"] = None
         __props__.__dict__["node_id"] = None
         __props__.__dict__["solution_type"] = None
@@ -216,55 +251,88 @@ class GatewayName(pulumi.CustomResource):
     @property
     @pulumi.getter
     def backends(self) -> pulumi.Output[Sequence[str]]:
+        """
+        The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        """
         return pulumi.get(self, "backends")
 
     @property
     @pulumi.getter
     def contract_id(self) -> pulumi.Output[int]:
+        """
+        The deployment ID
+        """
         return pulumi.get(self, "contract_id")
 
     @property
     @pulumi.getter
     def description(self) -> pulumi.Output[Optional[str]]:
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @property
     @pulumi.getter
     def fqdn(self) -> pulumi.Output[str]:
+        """
+        The computed fully qualified domain name of the deployed workload
+        """
         return pulumi.get(self, "fqdn")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        Domain prefix. The fqdn will be <name>.<gateway-domain>. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def name_contract_id(self) -> pulumi.Output[int]:
+        """
+        The reserved name contract ID
+        """
         return pulumi.get(self, "name_contract_id")
 
     @property
     @pulumi.getter
-    def network(self) -> pulumi.Output[Optional[str]]:
-        return pulumi.get(self, "network")
+    def network_name(self) -> pulumi.Output[Optional[str]]:
+        """
+        Network name to join, if backend IP is private
+        """
+        return pulumi.get(self, "network_name")
 
     @property
     @pulumi.getter
     def node_deployment_id(self) -> pulumi.Output[Mapping[str, int]]:
+        """
+        Mapping from each node to its deployment ID
+        """
         return pulumi.get(self, "node_deployment_id")
 
     @property
     @pulumi.getter
     def node_id(self) -> pulumi.Output[Any]:
+        """
+        The gateway's node ID
+        """
         return pulumi.get(self, "node_id")
 
     @property
     @pulumi.getter
     def solution_type(self) -> pulumi.Output[Optional[str]]:
+        """
+        The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        """
         return pulumi.get(self, "solution_type")
 
     @property
     @pulumi.getter
     def tls_passthrough(self) -> pulumi.Output[Optional[bool]]:
+        """
+        TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+        """
         return pulumi.get(self, "tls_passthrough")
 

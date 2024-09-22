@@ -16,6 +16,13 @@ __config__ = pulumi.Config('threefold')
 
 class _ExportableConfig(types.ModuleType):
     @property
+    def graphql_url(self) -> Optional[str]:
+        """
+        The graphql urls, example: https://graphql.grid.tf/graphql
+        """
+        return __config__.get('graphql_url')
+
+    @property
     def key_type(self) -> str:
         """
         The key type registered on substrate (ed25519 or sr25519).
@@ -37,9 +44,16 @@ class _ExportableConfig(types.ModuleType):
         return __config__.get('network') or (_utilities.get_env('') or '')
 
     @property
+    def proxy_url(self) -> Optional[str]:
+        """
+        The proxy urls, example: https://gridproxy.grid.tf/
+        """
+        return __config__.get('proxy_url')
+
+    @property
     def relay_url(self) -> Optional[str]:
         """
-        The relay urls, example: wss://relay.dev.grid.tf
+        The relay urls, example: wss://relay.grid.tf
         """
         return __config__.get('relay_url')
 
@@ -53,7 +67,7 @@ class _ExportableConfig(types.ModuleType):
     @property
     def substrate_url(self) -> Optional[str]:
         """
-        The substrate url, example: wss://tfchain.dev.grid.tf/ws
+        The substrate url, example: wss://tfchain.grid.tf/ws
         """
         return __config__.get('substrate_url')
 

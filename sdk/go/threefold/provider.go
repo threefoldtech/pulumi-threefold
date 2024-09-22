@@ -22,8 +22,6 @@ type Provider struct {
 	Network pulumi.StringPtrOutput `pulumi:"network"`
 	// The timeout duration in seconds for rmb calls
 	Rmb_timeout pulumi.StringPtrOutput `pulumi:"rmb_timeout"`
-	// The substrate url, example: wss://tfchain.dev.grid.tf/ws
-	Substrate_url pulumi.StringPtrOutput `pulumi:"substrate_url"`
 }
 
 // NewProvider registers a new resource with the given unique name, arguments, and options.
@@ -65,34 +63,42 @@ func NewProvider(ctx *pulumi.Context,
 }
 
 type providerArgs struct {
+	// The graphql urls, example: https://graphql.grid.tf/graphql
+	Graphql_url []string `pulumi:"graphql_url"`
 	// The key type registered on substrate (ed25519 or sr25519).
 	Key_type *string `pulumi:"key_type"`
 	// The mnemonic of the user. It is very secret.
 	Mnemonic *string `pulumi:"mnemonic"`
 	// The network to deploy on.
 	Network *string `pulumi:"network"`
-	// The relay urls, example: wss://relay.dev.grid.tf
+	// The proxy urls, example: https://gridproxy.grid.tf/
+	Proxy_url []string `pulumi:"proxy_url"`
+	// The relay urls, example: wss://relay.grid.tf
 	Relay_url []string `pulumi:"relay_url"`
 	// The timeout duration in seconds for rmb calls
 	Rmb_timeout *string `pulumi:"rmb_timeout"`
-	// The substrate url, example: wss://tfchain.dev.grid.tf/ws
-	Substrate_url *string `pulumi:"substrate_url"`
+	// The substrate url, example: wss://tfchain.grid.tf/ws
+	Substrate_url []string `pulumi:"substrate_url"`
 }
 
 // The set of arguments for constructing a Provider resource.
 type ProviderArgs struct {
+	// The graphql urls, example: https://graphql.grid.tf/graphql
+	Graphql_url pulumi.StringArrayInput
 	// The key type registered on substrate (ed25519 or sr25519).
 	Key_type pulumi.StringPtrInput
 	// The mnemonic of the user. It is very secret.
 	Mnemonic pulumi.StringPtrInput
 	// The network to deploy on.
 	Network pulumi.StringPtrInput
-	// The relay urls, example: wss://relay.dev.grid.tf
+	// The proxy urls, example: https://gridproxy.grid.tf/
+	Proxy_url pulumi.StringArrayInput
+	// The relay urls, example: wss://relay.grid.tf
 	Relay_url pulumi.StringArrayInput
 	// The timeout duration in seconds for rmb calls
 	Rmb_timeout pulumi.StringPtrInput
-	// The substrate url, example: wss://tfchain.dev.grid.tf/ws
-	Substrate_url pulumi.StringPtrInput
+	// The substrate url, example: wss://tfchain.grid.tf/ws
+	Substrate_url pulumi.StringArrayInput
 }
 
 func (ProviderArgs) ElementType() reflect.Type {
@@ -150,11 +156,6 @@ func (o ProviderOutput) Network() pulumi.StringPtrOutput {
 // The timeout duration in seconds for rmb calls
 func (o ProviderOutput) Rmb_timeout() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Rmb_timeout }).(pulumi.StringPtrOutput)
-}
-
-// The substrate url, example: wss://tfchain.dev.grid.tf/ws
-func (o ProviderOutput) Substrate_url() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Substrate_url }).(pulumi.StringPtrOutput)
 }
 
 func init() {

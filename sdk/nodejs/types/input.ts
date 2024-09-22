@@ -8,94 +8,317 @@ import * as outputs from "../types/output";
 import * as utilities from "../utilities";
 
 export interface BackendArgs {
+    /**
+     * Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
+     */
     address: pulumi.Input<string>;
+    /**
+     * ZDB namespace
+     */
     namespace: pulumi.Input<string>;
+    /**
+     * Namespace password
+     */
     password: pulumi.Input<string>;
 }
 
 export interface DiskArgs {
+    /**
+     * The description of the disk workload, optional with no restrictions
+     */
     description?: pulumi.Input<string>;
+    /**
+     * The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: pulumi.Input<string>;
+    /**
+     * The disk size in GB (type SSD)
+     */
     size: pulumi.Input<number>;
 }
 
 export interface GroupArgs {
+    /**
+     * List of ZDB backends configurations
+     */
     backends?: pulumi.Input<pulumi.Input<inputs.BackendArgs>[]>;
 }
 
 export interface K8sNodeInputArgs {
+    /**
+     * The cpu units needed for the virtual machine. Range in [1: 32]
+     */
     cpu: pulumi.Input<number>;
+    /**
+     * The description of the virtual machine workload, optional with no restrictions
+     */
+    description?: pulumi.Input<string>;
+    /**
+     * Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
+     */
     disk_size: pulumi.Input<number>;
-    flist?: pulumi.Input<string>;
+    /**
+     * The entry point for the flist. Example: /sbin/zinit init
+     */
+    entrypoint?: pulumi.Input<string>;
+    /**
+     * The environment variables to be passed to the virtual machine. Example: SSH_KEY
+     */
+    env_vars?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+     */
+    flist: pulumi.Input<string>;
+    /**
+     * The checksum of the flist which should match the checksum of the given flist, optional
+     */
     flist_checksum?: pulumi.Input<string>;
+    /**
+     * A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+     */
+    gpus?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The memory capacity for the virtual machine in MB. Min is 250 MB
+     */
     memory: pulumi.Input<number>;
+    /**
+     * A list of mounted disks or volumes
+     */
+    mounts?: pulumi.Input<pulumi.Input<inputs.MountArgs>[]>;
+    /**
+     * A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+     */
     mycelium?: pulumi.Input<boolean>;
+    /**
+     * The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+     */
     mycelium_ip_seed?: pulumi.Input<string>;
+    /**
+     * The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: pulumi.Input<string>;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     network_name: pulumi.Input<string>;
-    node: any;
+    /**
+     * The node ID to deploy the virtual machine on, required and should match the requested resources
+     */
+    node_id: any;
+    /**
+     * A flag to enable generating a yggdrasil IP for the virtual machine
+     */
     planetary?: pulumi.Input<boolean>;
+    /**
+     * A flag to enable generating a public IP for the virtual machine, public node is required for it
+     */
     public_ip?: pulumi.Input<boolean>;
+    /**
+     * A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+     */
     public_ip6?: pulumi.Input<boolean>;
+    /**
+     * The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+     */
+    rootfs_size?: pulumi.Input<number>;
+    /**
+     * A list of virtual machine loggers
+     */
+    zlogs?: pulumi.Input<pulumi.Input<inputs.ZlogArgs>[]>;
 }
 
 export interface MetadataArgs {
+    /**
+     * List of ZDB backends configurations
+     */
     backends?: pulumi.Input<pulumi.Input<inputs.BackendArgs>[]>;
+    /**
+     * configuration to use for the encryption stage. Currently only AES is supported
+     */
     encryption_algorithm?: pulumi.Input<string>;
+    /**
+     * 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+     */
     encryption_key: pulumi.Input<string>;
+    /**
+     * Data stored on the remote metadata is prefixed with
+     */
     prefix: pulumi.Input<string>;
+    /**
+     * configuration for the metadata store to use, currently only ZDB is supported
+     */
     type?: pulumi.Input<string>;
 }
 
 export interface MountArgs {
-    disk_name: pulumi.Input<string>;
+    /**
+     * The mount point of the disk/volume
+     */
     mount_point: pulumi.Input<string>;
+    /**
+     * The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
+    name: pulumi.Input<string>;
 }
 
 export interface QSFSInputArgs {
+    /**
+     * The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
+     */
     cache: pulumi.Input<number>;
+    /**
+     * configuration to use for the compression stage. Currently only snappy is supported
+     */
     compression_algorithm?: pulumi.Input<string>;
+    /**
+     * The description of the qsfs workload, optional with no restrictions
+     */
     description?: pulumi.Input<string>;
+    /**
+     * configuration to use for the encryption stage. Currently only AES is supported
+     */
     encryption_algorithm?: pulumi.Input<string>;
+    /**
+     * 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+     */
     encryption_key: pulumi.Input<string>;
+    /**
+     * The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
+     */
     expected_shards: pulumi.Input<number>;
+    /**
+     * The backend groups to write the data to
+     */
     groups: pulumi.Input<pulumi.Input<inputs.GroupArgs>[]>;
+    /**
+     * Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
+     */
     max_zdb_data_dir_size: pulumi.Input<number>;
+    /**
+     * List of ZDB backends configurations
+     */
     metadata: pulumi.Input<inputs.MetadataArgs>;
+    /**
+     * The minimum amount of shards which are needed to recover the original data
+     */
     minimal_shards: pulumi.Input<number>;
+    /**
+     * The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: pulumi.Input<string>;
+    /**
+     * The amount of groups which one should be able to loose while still being able to recover the original data
+     */
     redundant_groups: pulumi.Input<number>;
+    /**
+     * The amount of nodes that can be lost in every group while still being able to recover the original data
+     */
     redundant_nodes: pulumi.Input<number>;
 }
 
 export interface VMInputArgs {
+    /**
+     * The cpu units needed for the virtual machine. Range in [1: 32]
+     */
     cpu: pulumi.Input<number>;
+    /**
+     * The description of the virtual machine workload, optional with no restrictions
+     */
     description?: pulumi.Input<string>;
+    /**
+     * The entry point for the flist. Example: /sbin/zinit init
+     */
     entrypoint?: pulumi.Input<string>;
+    /**
+     * The environment variables to be passed to the virtual machine. Example: SSH_KEY
+     */
     env_vars?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+     */
     flist: pulumi.Input<string>;
+    /**
+     * The checksum of the flist which should match the checksum of the given flist, optional
+     */
     flist_checksum?: pulumi.Input<string>;
+    /**
+     * A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+     */
     gpus?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The memory capacity for the virtual machine in MB. Min is 250 MB
+     */
     memory: pulumi.Input<number>;
+    /**
+     * A list of mounted disks or volumes
+     */
     mounts?: pulumi.Input<pulumi.Input<inputs.MountArgs>[]>;
+    /**
+     * A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+     */
     mycelium?: pulumi.Input<boolean>;
+    /**
+     * The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+     */
     mycelium_ip_seed?: pulumi.Input<string>;
+    /**
+     * The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: pulumi.Input<string>;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     network_name: pulumi.Input<string>;
+    /**
+     * The node ID to deploy the virtual machine on, required and should match the requested resources
+     */
     node_id: any;
+    /**
+     * A flag to enable generating a yggdrasil IP for the virtual machine
+     */
     planetary?: pulumi.Input<boolean>;
+    /**
+     * A flag to enable generating a public IP for the virtual machine, public node is required for it
+     */
     public_ip?: pulumi.Input<boolean>;
+    /**
+     * A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+     */
     public_ip6?: pulumi.Input<boolean>;
+    /**
+     * The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+     */
     rootfs_size?: pulumi.Input<number>;
+    /**
+     * A list of virtual machine loggers
+     */
     zlogs?: pulumi.Input<pulumi.Input<inputs.ZlogArgs>[]>;
 }
 
 export interface ZDBInputArgs {
+    /**
+     * The description of the 0-db workload, optional with no restrictions
+     */
     description?: pulumi.Input<string>;
+    /**
+     * the enumeration of the modes 0-db can operate in (default user)
+     */
     mode?: pulumi.Input<string>;
+    /**
+     * The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: pulumi.Input<string>;
+    /**
+     * The 0-db password
+     */
     password: pulumi.Input<string>;
+    /**
+     * A flag to make 0-db namespace public - readable by anyone
+     */
     public?: pulumi.Input<boolean>;
+    /**
+     * The 0-db size in GB (type HDD)
+     */
     size: pulumi.Input<number>;
 }
 /**
@@ -109,6 +332,12 @@ export function zdbinputArgsProvideDefaults(val: ZDBInputArgs): ZDBInputArgs {
 }
 
 export interface ZlogArgs {
+    /**
+     * The output logs URL, should be a valid url
+     */
     output: pulumi.Input<string>;
+    /**
+     * The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     zmachine: pulumi.Input<string>;
 }

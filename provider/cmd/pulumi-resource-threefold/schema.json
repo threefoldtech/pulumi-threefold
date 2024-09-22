@@ -30,6 +30,13 @@
   },
   "config": {
     "variables": {
+      "graphql_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The graphql urls, example: https://graphql.grid.tf/graphql"
+      },
       "key_type": {
         "type": "string",
         "description": "The key type registered on substrate (ed25519 or sr25519).",
@@ -61,20 +68,30 @@
           ]
         }
       },
+      "proxy_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The proxy urls, example: https://gridproxy.grid.tf/"
+      },
       "relay_url": {
         "type": "array",
         "items": {
           "type": "string"
         },
-        "description": "The relay urls, example: wss://relay.dev.grid.tf"
+        "description": "The relay urls, example: wss://relay.grid.tf"
       },
       "rmb_timeout": {
         "type": "string",
         "description": "The timeout duration in seconds for rmb calls"
       },
       "substrate_url": {
-        "type": "string",
-        "description": "The substrate url, example: wss://tfchain.dev.grid.tf/ws"
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The substrate url, example: wss://tfchain.grid.tf/ws"
       }
     }
   },
@@ -82,13 +99,16 @@
     "threefold:index:Backend": {
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "description": "Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "description": "ZDB namespace"
         },
         "password": {
-          "type": "string"
+          "type": "string",
+          "description": "Namespace password"
         }
       },
       "type": "object",
@@ -101,13 +121,16 @@
     "threefold:index:Disk": {
       "properties": {
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the disk workload, optional with no restrictions"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "size": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The disk size in GB (type SSD)"
         }
       },
       "type": "object",
@@ -122,96 +145,116 @@
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:Backend"
-          }
+          },
+          "description": "List of ZDB backends configurations"
         }
       },
       "type": "object"
     },
-    "threefold:index:K8sNodeComputed": {
-      "properties": {
-        "computed_ip": {
-          "type": "string"
-        },
-        "computed_ip6": {
-          "type": "string"
-        },
-        "console_url": {
-          "type": "string"
-        },
-        "ip": {
-          "type": "string"
-        },
-        "mycelium_ip": {
-          "type": "string"
-        },
-        "mycelium_ip_seed": {
-          "type": "string"
-        },
-        "planetary_ip": {
-          "type": "string"
-        }
-      },
-      "type": "object",
-      "required": [
-        "computed_ip",
-        "computed_ip6",
-        "console_url",
-        "ip",
-        "mycelium_ip",
-        "mycelium_ip_seed",
-        "planetary_ip"
-      ]
-    },
     "threefold:index:K8sNodeInput": {
       "properties": {
         "cpu": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The cpu units needed for the virtual machine. Range in [1: 32]"
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the virtual machine workload, optional with no restrictions"
         },
         "disk_size": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)"
+        },
+        "entrypoint": {
+          "type": "string",
+          "description": "The entry point for the flist. Example: /sbin/zinit init"
+        },
+        "env_vars": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The environment variables to be passed to the virtual machine. Example: SSH_KEY"
         },
         "flist": {
-          "type": "string"
+          "type": "string",
+          "description": "The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist"
         },
         "flist_checksum": {
-          "type": "string"
+          "type": "string",
+          "description": "The checksum of the flist which should match the checksum of the given flist, optional"
+        },
+        "gpus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "A list of gpu IDs to be used in the virtual machine. GPU ID format: \u003cslot\u003e/\u003cvendor\u003e/\u003cdevice\u003e. Example: 0000:28:00.0/1002/731f"
         },
         "memory": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The memory capacity for the virtual machine in MB. Min is 250 MB"
+        },
+        "mounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/threefold:index:Mount"
+          },
+          "description": "A list of mounted disks or volumes"
         },
         "mycelium": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to generate a random mycelium IP seed to support mycelium in the virtual machine"
         },
         "mycelium_ip_seed": {
-          "type": "string"
+          "type": "string",
+          "description": "The seed used for mycelium IP generated for the virtual machine. It's length should be 6"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist"
         },
-        "node": {
-          "$ref": "pulumi.json#/Any"
+        "node_id": {
+          "$ref": "pulumi.json#/Any",
+          "description": "The node ID to deploy the virtual machine on, required and should match the requested resources"
         },
         "planetary": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to enable generating a yggdrasil IP for the virtual machine"
         },
         "public_ip": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to enable generating a public IP for the virtual machine, public node is required for it"
         },
         "public_ip6": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to enable generating a public IPv6 for the virtual machine, public node is required for it"
+        },
+        "rootfs_size": {
+          "type": "integer",
+          "description": "The root fs size in GB (type SSD). Can be set as 0 to get the default minimum"
+        },
+        "zlogs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/threefold:index:Zlog"
+          },
+          "description": "A list of virtual machine loggers"
         }
       },
       "type": "object",
       "required": [
         "cpu",
         "disk_size",
+        "flist",
         "memory",
         "name",
         "network_name",
-        "node"
+        "node_id"
       ]
     },
     "threefold:index:Metadata": {
@@ -220,19 +263,24 @@
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:Backend"
-          }
+          },
+          "description": "List of ZDB backends configurations"
         },
         "encryption_algorithm": {
-          "type": "string"
+          "type": "string",
+          "description": "configuration to use for the encryption stage. Currently only AES is supported"
         },
         "encryption_key": {
-          "type": "string"
+          "type": "string",
+          "description": "64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)"
         },
         "prefix": {
-          "type": "string"
+          "type": "string",
+          "description": "Data stored on the remote metadata is prefixed with"
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "description": "configuration for the metadata store to use, currently only ZDB is supported"
         }
       },
       "type": "object",
@@ -243,23 +291,26 @@
     },
     "threefold:index:Mount": {
       "properties": {
-        "disk_name": {
-          "type": "string"
-        },
         "mount_point": {
-          "type": "string"
+          "type": "string",
+          "description": "The mount point of the disk/volume"
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         }
       },
       "type": "object",
       "required": [
-        "disk_name",
-        "mount_point"
+        "mount_point",
+        "name"
       ]
     },
     "threefold:index:QSFSComputed": {
       "properties": {
         "metrics_endpoint": {
-          "type": "string"
+          "type": "string",
+          "description": "Exposed metrics endpoint"
         }
       },
       "type": "object",
@@ -270,46 +321,59 @@
     "threefold:index:QSFSInput": {
       "properties": {
         "cache": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)"
         },
         "compression_algorithm": {
-          "type": "string"
+          "type": "string",
+          "description": "configuration to use for the compression stage. Currently only snappy is supported"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the qsfs workload, optional with no restrictions"
         },
         "encryption_algorithm": {
-          "type": "string"
+          "type": "string",
+          "description": "configuration to use for the encryption stage. Currently only AES is supported"
         },
         "encryption_key": {
-          "type": "string"
+          "type": "string",
+          "description": "64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)"
         },
         "expected_shards": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards"
         },
         "groups": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:Group"
-          }
+          },
+          "description": "The backend groups to write the data to"
         },
         "max_zdb_data_dir_size": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed"
         },
         "metadata": {
-          "$ref": "#/types/threefold:index:Metadata"
+          "$ref": "#/types/threefold:index:Metadata",
+          "description": "List of ZDB backends configurations"
         },
         "minimal_shards": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The minimum amount of shards which are needed to recover the original data"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "redundant_groups": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The amount of groups which one should be able to loose while still being able to recover the original data"
         },
         "redundant_nodes": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The amount of nodes that can be lost in every group while still being able to recover the original data"
         }
       },
       "type": "object",
@@ -329,25 +393,32 @@
     "threefold:index:VMComputed": {
       "properties": {
         "computed_ip": {
-          "type": "string"
+          "type": "string",
+          "description": "The reserved public ipv4 if any"
         },
         "computed_ip6": {
-          "type": "string"
+          "type": "string",
+          "description": "The reserved public ipv6 if any"
         },
         "console_url": {
-          "type": "string"
+          "type": "string",
+          "description": "The url to access the vm via cloud console on private interface using wireguard"
         },
         "ip": {
-          "type": "string"
+          "type": "string",
+          "description": "The private wireguard IP of the vm"
         },
         "mycelium_ip": {
-          "type": "string"
+          "type": "string",
+          "description": "The allocated mycelium IP"
         },
         "mycelium_ip_seed": {
-          "type": "string"
+          "type": "string",
+          "description": "The seed used for mycelium IP generated for the virtual machine. It's length should be 6"
         },
         "planetary_ip": {
-          "type": "string"
+          "type": "string",
+          "description": "The allocated Yggdrasil IP"
         }
       },
       "type": "object",
@@ -363,73 +434,92 @@
     "threefold:index:VMInput": {
       "properties": {
         "cpu": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The cpu units needed for the virtual machine. Range in [1: 32]"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the virtual machine workload, optional with no restrictions"
         },
         "entrypoint": {
-          "type": "string"
+          "type": "string",
+          "description": "The entry point for the flist. Example: /sbin/zinit init"
         },
         "env_vars": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "description": "The environment variables to be passed to the virtual machine. Example: SSH_KEY"
         },
         "flist": {
-          "type": "string"
+          "type": "string",
+          "description": "The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist"
         },
         "flist_checksum": {
-          "type": "string"
+          "type": "string",
+          "description": "The checksum of the flist which should match the checksum of the given flist, optional"
         },
         "gpus": {
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "A list of gpu IDs to be used in the virtual machine. GPU ID format: \u003cslot\u003e/\u003cvendor\u003e/\u003cdevice\u003e. Example: 0000:28:00.0/1002/731f"
         },
         "memory": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The memory capacity for the virtual machine in MB. Min is 250 MB"
         },
         "mounts": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:Mount"
-          }
+          },
+          "description": "A list of mounted disks or volumes"
         },
         "mycelium": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to generate a random mycelium IP seed to support mycelium in the virtual machine"
         },
         "mycelium_ip_seed": {
-          "type": "string"
+          "type": "string",
+          "description": "The seed used for mycelium IP generated for the virtual machine. It's length should be 6"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist"
         },
         "node_id": {
-          "$ref": "pulumi.json#/Any"
+          "$ref": "pulumi.json#/Any",
+          "description": "The node ID to deploy the virtual machine on, required and should match the requested resources"
         },
         "planetary": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to enable generating a yggdrasil IP for the virtual machine"
         },
         "public_ip": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to enable generating a public IP for the virtual machine, public node is required for it"
         },
         "public_ip6": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to enable generating a public IPv6 for the virtual machine, public node is required for it"
         },
         "rootfs_size": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The root fs size in GB (type SSD). Can be set as 0 to get the default minimum"
         },
         "zlogs": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:Zlog"
-          }
+          },
+          "description": "A list of virtual machine loggers"
         }
       },
       "type": "object",
@@ -448,13 +538,16 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "Computed IPs of the ZDB. Two IPs are returned: a public IPv6, and a YggIP, in this order"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "description": "Namespace of the ZDB"
         },
         "port": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Port of the ZDB"
         }
       },
       "type": "object",
@@ -467,10 +560,12 @@
     "threefold:index:ZDBInput": {
       "properties": {
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the 0-db workload, optional with no restrictions"
         },
         "mode": {
           "type": "string",
+          "description": "the enumeration of the modes 0-db can operate in (default user)",
           "default": "user",
           "defaultInfo": {
             "environment": [
@@ -479,16 +574,20 @@
           }
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "password": {
-          "type": "string"
+          "type": "string",
+          "description": "The 0-db password"
         },
         "public": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to make 0-db namespace public - readable by anyone"
         },
         "size": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The 0-db size in GB (type HDD)"
         }
       },
       "type": "object",
@@ -501,10 +600,12 @@
     "threefold:index:Zlog": {
       "properties": {
         "output": {
-          "type": "string"
+          "type": "string",
+          "description": "The output logs URL, should be a valid url"
         },
         "zmachine": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         }
       },
       "type": "object",
@@ -550,14 +651,17 @@
       "rmb_timeout": {
         "type": "string",
         "description": "The timeout duration in seconds for rmb calls"
-      },
-      "substrate_url": {
-        "type": "string",
-        "description": "The substrate url, example: wss://tfchain.dev.grid.tf/ws"
       }
     },
     "type": "object",
     "inputProperties": {
+      "graphql_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The graphql urls, example: https://graphql.grid.tf/graphql"
+      },
       "key_type": {
         "type": "string",
         "description": "The key type registered on substrate (ed25519 or sr25519).",
@@ -589,20 +693,30 @@
           ]
         }
       },
+      "proxy_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The proxy urls, example: https://gridproxy.grid.tf/"
+      },
       "relay_url": {
         "type": "array",
         "items": {
           "type": "string"
         },
-        "description": "The relay urls, example: wss://relay.dev.grid.tf"
+        "description": "The relay urls, example: wss://relay.grid.tf"
       },
       "rmb_timeout": {
         "type": "string",
         "description": "The timeout duration in seconds for rmb calls"
       },
       "substrate_url": {
-        "type": "string",
-        "description": "The substrate url, example: wss://tfchain.dev.grid.tf/ws"
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The substrate url, example: wss://tfchain.grid.tf/ws"
       }
     }
   },
@@ -610,37 +724,45 @@
     "threefold:index:Deployment": {
       "properties": {
         "contract_id": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The deployment ID"
         },
         "disks": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:Disk"
-          }
+          },
+          "description": "The disks requested to be included in the deployment"
         },
         "ip_range": {
-          "type": "string"
+          "type": "string",
+          "description": "IP range of the node for the wireguard network (e.g. 10.1.2.0/24). Has to have a subnet mask of 24"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist"
         },
         "node_deployment_id": {
           "type": "object",
           "additionalProperties": {
             "type": "integer"
-          }
+          },
+          "description": "Mapping from each node to its deployment ID"
         },
         "node_id": {
-          "$ref": "pulumi.json#/Any"
+          "$ref": "pulumi.json#/Any",
+          "description": "The node ID to deploy on, required and should match the requested resources"
         },
         "qsfs": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:QSFSInput"
-          }
+          },
+          "description": "The qsfs output instances requested to be included in the deployment"
         },
         "qsfs_computed": {
           "type": "array",
@@ -649,17 +771,20 @@
           }
         },
         "solution_provider": {
-          "type": "integer"
+          "type": "integer",
+          "description": "ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards"
         },
         "solution_type": {
           "type": "string",
+          "description": "The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)",
           "default": "vm/"
         },
         "vms": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:VMInput"
-          }
+          },
+          "description": "The vms output requested to be included in the deployment"
         },
         "vms_computed": {
           "type": "array",
@@ -671,7 +796,8 @@
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:ZDBInput"
-          }
+          },
+          "description": "The zdbs output requested to be included in the deployment"
         },
         "zdbs_computed": {
           "type": "array",
@@ -696,41 +822,50 @@
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:Disk"
-          }
+          },
+          "description": "The disks requested to be included in the deployment"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist"
         },
         "node_id": {
-          "$ref": "pulumi.json#/Any"
+          "$ref": "pulumi.json#/Any",
+          "description": "The node ID to deploy on, required and should match the requested resources"
         },
         "qsfs": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:QSFSInput"
-          }
+          },
+          "description": "The qsfs instances requested to be included in the deployment"
         },
         "solution_provider": {
-          "type": "integer"
+          "type": "integer",
+          "description": "ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards"
         },
         "solution_type": {
           "type": "string",
+          "description": "The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)",
           "default": "vm/"
         },
         "vms": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:VMInput"
-          }
+          },
+          "description": "The vms requested to be included in the deployment"
         },
         "zdbs": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:ZDBInput"
-          }
+          },
+          "description": "The zdbs requested to be included in the deployment"
         }
       },
       "requiredInputs": [
@@ -744,38 +879,48 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]"
         },
         "contract_id": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The deployment ID"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the virtual machine workload, optional with no restrictions"
         },
         "fqdn": {
-          "type": "string"
+          "type": "string",
+          "description": "The fully qualified domain name of the deployed workload"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "Network name to join, if backend IP is private"
         },
         "node_deployment_id": {
           "type": "object",
           "additionalProperties": {
             "type": "integer"
-          }
+          },
+          "description": "Mapping from each node to its deployment ID"
         },
         "node_id": {
-          "$ref": "pulumi.json#/Any"
+          "$ref": "pulumi.json#/Any",
+          "description": "The gateway's node ID"
         },
         "solution_type": {
           "type": "string",
+          "description": "The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)",
           "default": ""
         },
         "tls_pass_through": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service"
         }
       },
       "type": "object",
@@ -792,29 +937,37 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the virtual machine workload, optional with no restrictions"
         },
         "fqdn": {
-          "type": "string"
+          "type": "string",
+          "description": "The fully qualified domain name of the deployed workload"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "Network name to join, if backend IP is private"
         },
         "node_id": {
-          "$ref": "pulumi.json#/Any"
+          "$ref": "pulumi.json#/Any",
+          "description": "The gateway's node ID"
         },
         "solution_type": {
           "type": "string",
+          "description": "The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)",
           "default": ""
         },
         "tls_pass_through": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service"
         }
       },
       "requiredInputs": [
@@ -830,41 +983,52 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]"
         },
         "contract_id": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The deployment ID"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the virtual machine workload, optional with no restrictions"
         },
         "fqdn": {
-          "type": "string"
+          "type": "string",
+          "description": "The computed fully qualified domain name of the deployed workload"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Domain prefix. The fqdn will be \u003cname\u003e.\u003cgateway-domain\u003e. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters"
         },
         "name_contract_id": {
-          "type": "integer"
+          "type": "integer",
+          "description": "The reserved name contract ID"
         },
-        "network": {
-          "type": "string"
+        "network_name": {
+          "type": "string",
+          "description": "Network name to join, if backend IP is private"
         },
         "node_deployment_id": {
           "type": "object",
           "additionalProperties": {
             "type": "integer"
-          }
+          },
+          "description": "Mapping from each node to its deployment ID"
         },
         "node_id": {
-          "$ref": "pulumi.json#/Any"
+          "$ref": "pulumi.json#/Any",
+          "description": "The gateway's node ID"
         },
         "solution_type": {
           "type": "string",
+          "description": "The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)",
           "default": ""
         },
         "tls_passthrough": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service"
         }
       },
       "type": "object",
@@ -882,26 +1046,33 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the virtual machine workload, optional with no restrictions"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Domain prefix. The fqdn will be \u003cname\u003e.\u003cgateway-domain\u003e. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters"
         },
-        "network": {
-          "type": "string"
+        "network_name": {
+          "type": "string",
+          "description": "Network name to join, if backend IP is private"
         },
         "node_id": {
-          "$ref": "pulumi.json#/Any"
+          "$ref": "pulumi.json#/Any",
+          "description": "The gateway's node ID"
         },
         "solution_type": {
           "type": "string",
+          "description": "The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)",
           "default": ""
         },
         "tls_passthrough": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service"
         }
       },
       "requiredInputs": [
@@ -913,47 +1084,57 @@
     "threefold:index:Kubernetes": {
       "properties": {
         "master": {
-          "$ref": "#/types/threefold:index:K8sNodeInput"
+          "$ref": "#/types/threefold:index:K8sNodeInput",
+          "description": "Master holds the configuration of master node in the kubernetes cluster"
         },
         "master_computed": {
-          "$ref": "#/types/threefold:index:K8sNodeComputed"
+          "$ref": "#/types/threefold:index:VMComputed",
+          "description": "The computed fields of the master node"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist"
         },
         "node_deployment_id": {
           "type": "object",
           "additionalProperties": {
             "type": "integer"
-          }
+          },
+          "description": "Mapping from each node to its deployment ID"
         },
         "nodes_ip_range": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "description": "Computed values of nodes' IP ranges after deployment"
         },
         "solution_type": {
           "type": "string",
+          "description": "The solution type of the cluster, displayed as project name in contract metadata",
           "default": "kubernetes/"
         },
         "ssh_key": {
-          "type": "string"
+          "type": "string",
+          "description": "SSH key to access the cluster nodes"
         },
         "token": {
-          "type": "string"
+          "type": "string",
+          "description": "The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string"
         },
         "workers": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:K8sNodeInput"
-          }
+          },
+          "description": "Workers is a list holding the workers configuration for the kubernetes cluster"
         },
         "workers_computed": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/types/threefold:index:K8sNodeComputed"
-          }
+            "$ref": "#/types/threefold:index:VMComputed"
+          },
+          "description": "List of the computed fields of the worker nodes"
         }
       },
       "type": "object",
@@ -969,26 +1150,32 @@
       ],
       "inputProperties": {
         "master": {
-          "$ref": "#/types/threefold:index:K8sNodeInput"
+          "$ref": "#/types/threefold:index:K8sNodeInput",
+          "description": "Master holds the configuration of master node in the kubernetes cluster"
         },
         "network_name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist"
         },
         "solution_type": {
           "type": "string",
+          "description": "The solution type of the cluster, displayed as project name in contract metadata",
           "default": "kubernetes/"
         },
         "ssh_key": {
-          "type": "string"
+          "type": "string",
+          "description": "SSH key to access the cluster nodes"
         },
         "token": {
-          "type": "string"
+          "type": "string",
+          "description": "The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string"
         },
         "workers": {
           "type": "array",
           "items": {
             "$ref": "#/types/threefold:index:K8sNodeInput"
-          }
+          },
+          "description": "Workers is a list holding the workers configuration for the kubernetes cluster"
         }
       },
       "requiredInputs": [
@@ -1001,58 +1188,72 @@
     "threefold:index:Network": {
       "properties": {
         "access_wg_config": {
-          "type": "string"
+          "type": "string",
+          "description": "Generated wireguard configuration for external user access to the network"
         },
         "add_wg_access": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to support wireguard in the network"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the network workload, optional with no restrictions"
         },
         "external_ip": {
-          "type": "string"
+          "type": "string",
+          "description": "Wireguard IP assigned for external user access"
         },
         "external_sk": {
-          "type": "string"
+          "type": "string",
+          "description": "External user private key used in encryption while communicating through Wireguard network"
         },
         "ip_range": {
-          "type": "string"
+          "type": "string",
+          "description": "The IP range for the network, subnet should be 16"
         },
         "mycelium": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to generate a random mycelium key to support mycelium in the network"
         },
         "mycelium_keys": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "description": "A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "node_deployment_id": {
           "type": "object",
           "additionalProperties": {
             "type": "integer"
-          }
+          },
+          "description": "Mapping from each node to its deployment id"
         },
         "nodes": {
           "type": "array",
           "items": {
             "$ref": "pulumi.json#/Any"
-          }
+          },
+          "description": "The nodes used to deploy the network on, shouldn't be empty"
         },
         "nodes_ip_range": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "description": "Computed values of nodes' IP ranges after deployment"
         },
         "public_node_id": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Public node id (in case it's added). Used for wireguard access and supporting hidden nodes"
         },
         "solution_type": {
           "type": "string",
+          "description": "The solution type of the network, displayed as project name in contract metadata",
           "default": "Network"
         }
       },
@@ -1071,34 +1272,42 @@
       ],
       "inputProperties": {
         "add_wg_access": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to support wireguard in the network"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "The description of the network workload, optional with no restrictions"
         },
         "ip_range": {
-          "type": "string"
+          "type": "string",
+          "description": "The IP range for the network, subnet should be 16"
         },
         "mycelium": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "A flag to generate a random mycelium key to support mycelium in the network"
         },
         "mycelium_keys": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "description": "A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "nodes": {
           "type": "array",
           "items": {
             "$ref": "pulumi.json#/Any"
-          }
+          },
+          "description": "The nodes used to deploy the network on, shouldn't be empty"
         },
         "solution_type": {
           "type": "string",
+          "description": "The solution type of the network, displayed as project name in contract metadata",
           "default": "Network"
         }
       },

@@ -33,16 +33,46 @@ export class Kubernetes extends pulumi.CustomResource {
         return obj['__pulumiType'] === Kubernetes.__pulumiType;
     }
 
+    /**
+     * Master holds the configuration of master node in the kubernetes cluster
+     */
     public readonly master!: pulumi.Output<outputs.K8sNodeInput>;
-    public /*out*/ readonly master_computed!: pulumi.Output<outputs.K8sNodeComputed>;
+    /**
+     * The computed fields of the master node
+     */
+    public /*out*/ readonly master_computed!: pulumi.Output<outputs.VMComputed>;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     public readonly network_name!: pulumi.Output<string>;
+    /**
+     * Mapping from each node to its deployment ID
+     */
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
+    /**
+     * Computed values of nodes' IP ranges after deployment
+     */
     public /*out*/ readonly nodes_ip_range!: pulumi.Output<{[key: string]: string}>;
+    /**
+     * The solution type of the cluster, displayed as project name in contract metadata
+     */
     public readonly solution_type!: pulumi.Output<string | undefined>;
+    /**
+     * SSH key to access the cluster nodes
+     */
     public readonly ssh_key!: pulumi.Output<string | undefined>;
+    /**
+     * The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+     */
     public readonly token!: pulumi.Output<string>;
+    /**
+     * Workers is a list holding the workers configuration for the kubernetes cluster
+     */
     public readonly workers!: pulumi.Output<outputs.K8sNodeInput[]>;
-    public /*out*/ readonly workers_computed!: pulumi.Output<{[key: string]: outputs.K8sNodeComputed}>;
+    /**
+     * List of the computed fields of the worker nodes
+     */
+    public /*out*/ readonly workers_computed!: pulumi.Output<{[key: string]: outputs.VMComputed}>;
 
     /**
      * Create a Kubernetes resource with the given unique name, arguments, and options.
@@ -98,10 +128,28 @@ export class Kubernetes extends pulumi.CustomResource {
  * The set of arguments for constructing a Kubernetes resource.
  */
 export interface KubernetesArgs {
+    /**
+     * Master holds the configuration of master node in the kubernetes cluster
+     */
     master: pulumi.Input<inputs.K8sNodeInputArgs>;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     network_name: pulumi.Input<string>;
+    /**
+     * The solution type of the cluster, displayed as project name in contract metadata
+     */
     solution_type?: pulumi.Input<string>;
+    /**
+     * SSH key to access the cluster nodes
+     */
     ssh_key?: pulumi.Input<string>;
+    /**
+     * The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+     */
     token: pulumi.Input<string>;
+    /**
+     * Workers is a list holding the workers configuration for the kubernetes cluster
+     */
     workers: pulumi.Input<pulumi.Input<inputs.K8sNodeInputArgs>[]>;
 }

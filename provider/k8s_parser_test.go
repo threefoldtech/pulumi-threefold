@@ -9,15 +9,17 @@ import (
 
 func TestK8sParser(t *testing.T) {
 	k8sNodeInput := K8sNodeInput{
-		Name:      "master",
-		Node:      1,
-		DiskSize:  1,
-		Flist:     "",
-		CPU:       1,
-		Memory:    1,
-		PublicIP:  false,
-		PublicIP6: false,
-		Planetary: false,
+		VMInput: VMInput{
+			Name:      "master",
+			NodeID:    1,
+			Flist:     "",
+			CPU:       1,
+			Memory:    1,
+			PublicIP:  false,
+			PublicIP6: false,
+			Planetary: false,
+		},
+		DiskSize: 1,
 	}
 
 	k8sWorkerInput1 := k8sNodeInput
@@ -47,17 +49,17 @@ func TestK8sParser(t *testing.T) {
 	})
 
 	t.Run("parsing input failed: wrong node id type", func(t *testing.T) {
-		k8sInput.Master.Node = ""
+		k8sInput.Master.NodeID = ""
 		_, err := parseToK8sCluster(k8sInput)
 		assert.Error(t, err)
-		k8sInput.Master.Node = 1
+		k8sInput.Master.NodeID = 1
 	})
 
 	t.Run("parsing input failed: wrong worker node id type", func(t *testing.T) {
-		k8sInput.Workers[0].Node = ""
+		k8sInput.Workers[0].NodeID = ""
 		_, err := parseToK8sCluster(k8sInput)
 		assert.Error(t, err)
-		k8sInput.Workers[0].Node = 1
+		k8sInput.Workers[0].NodeID = 1
 	})
 
 	t.Run("parsing and update k8s success", func(t *testing.T) {

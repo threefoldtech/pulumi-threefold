@@ -24,6 +24,12 @@ class KubernetesArgs:
                  ssh_key: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Kubernetes resource.
+        :param pulumi.Input['K8sNodeInputArgs'] master: Master holds the configuration of master node in the kubernetes cluster
+        :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        :param pulumi.Input[str] token: The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+        :param pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]] workers: Workers is a list holding the workers configuration for the kubernetes cluster
+        :param pulumi.Input[str] solution_type: The solution type of the cluster, displayed as project name in contract metadata
+        :param pulumi.Input[str] ssh_key: SSH key to access the cluster nodes
         """
         pulumi.set(__self__, "master", master)
         pulumi.set(__self__, "network_name", network_name)
@@ -39,6 +45,9 @@ class KubernetesArgs:
     @property
     @pulumi.getter
     def master(self) -> pulumi.Input['K8sNodeInputArgs']:
+        """
+        Master holds the configuration of master node in the kubernetes cluster
+        """
         return pulumi.get(self, "master")
 
     @master.setter
@@ -48,6 +57,9 @@ class KubernetesArgs:
     @property
     @pulumi.getter
     def network_name(self) -> pulumi.Input[str]:
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
         return pulumi.get(self, "network_name")
 
     @network_name.setter
@@ -57,6 +69,9 @@ class KubernetesArgs:
     @property
     @pulumi.getter
     def token(self) -> pulumi.Input[str]:
+        """
+        The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+        """
         return pulumi.get(self, "token")
 
     @token.setter
@@ -66,6 +81,9 @@ class KubernetesArgs:
     @property
     @pulumi.getter
     def workers(self) -> pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]]:
+        """
+        Workers is a list holding the workers configuration for the kubernetes cluster
+        """
         return pulumi.get(self, "workers")
 
     @workers.setter
@@ -75,6 +93,9 @@ class KubernetesArgs:
     @property
     @pulumi.getter
     def solution_type(self) -> Optional[pulumi.Input[str]]:
+        """
+        The solution type of the cluster, displayed as project name in contract metadata
+        """
         return pulumi.get(self, "solution_type")
 
     @solution_type.setter
@@ -84,6 +105,9 @@ class KubernetesArgs:
     @property
     @pulumi.getter
     def ssh_key(self) -> Optional[pulumi.Input[str]]:
+        """
+        SSH key to access the cluster nodes
+        """
         return pulumi.get(self, "ssh_key")
 
     @ssh_key.setter
@@ -107,6 +131,12 @@ class Kubernetes(pulumi.CustomResource):
         Create a Kubernetes resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[pulumi.InputType['K8sNodeInputArgs']] master: Master holds the configuration of master node in the kubernetes cluster
+        :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        :param pulumi.Input[str] solution_type: The solution type of the cluster, displayed as project name in contract metadata
+        :param pulumi.Input[str] ssh_key: SSH key to access the cluster nodes
+        :param pulumi.Input[str] token: The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]]] workers: Workers is a list holding the workers configuration for the kubernetes cluster
         """
         ...
     @overload
@@ -203,50 +233,80 @@ class Kubernetes(pulumi.CustomResource):
     @property
     @pulumi.getter
     def master(self) -> pulumi.Output['outputs.K8sNodeInput']:
+        """
+        Master holds the configuration of master node in the kubernetes cluster
+        """
         return pulumi.get(self, "master")
 
     @property
     @pulumi.getter
-    def master_computed(self) -> pulumi.Output['outputs.K8sNodeComputed']:
+    def master_computed(self) -> pulumi.Output['outputs.VMComputed']:
+        """
+        The computed fields of the master node
+        """
         return pulumi.get(self, "master_computed")
 
     @property
     @pulumi.getter
     def network_name(self) -> pulumi.Output[str]:
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
         return pulumi.get(self, "network_name")
 
     @property
     @pulumi.getter
     def node_deployment_id(self) -> pulumi.Output[Mapping[str, int]]:
+        """
+        Mapping from each node to its deployment ID
+        """
         return pulumi.get(self, "node_deployment_id")
 
     @property
     @pulumi.getter
     def nodes_ip_range(self) -> pulumi.Output[Mapping[str, str]]:
+        """
+        Computed values of nodes' IP ranges after deployment
+        """
         return pulumi.get(self, "nodes_ip_range")
 
     @property
     @pulumi.getter
     def solution_type(self) -> pulumi.Output[Optional[str]]:
+        """
+        The solution type of the cluster, displayed as project name in contract metadata
+        """
         return pulumi.get(self, "solution_type")
 
     @property
     @pulumi.getter
     def ssh_key(self) -> pulumi.Output[Optional[str]]:
+        """
+        SSH key to access the cluster nodes
+        """
         return pulumi.get(self, "ssh_key")
 
     @property
     @pulumi.getter
     def token(self) -> pulumi.Output[str]:
+        """
+        The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+        """
         return pulumi.get(self, "token")
 
     @property
     @pulumi.getter
     def workers(self) -> pulumi.Output[Sequence['outputs.K8sNodeInput']]:
+        """
+        Workers is a list holding the workers configuration for the kubernetes cluster
+        """
         return pulumi.get(self, "workers")
 
     @property
     @pulumi.getter
-    def workers_computed(self) -> pulumi.Output[Mapping[str, 'outputs.K8sNodeComputed']]:
+    def workers_computed(self) -> pulumi.Output[Mapping[str, 'outputs.VMComputed']]:
+        """
+        List of the computed fields of the worker nodes
+        """
         return pulumi.get(self, "workers_computed")
 

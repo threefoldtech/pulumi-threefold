@@ -28,6 +28,11 @@ class BackendArgs:
                  address: pulumi.Input[str],
                  namespace: pulumi.Input[str],
                  password: pulumi.Input[str]):
+        """
+        :param pulumi.Input[str] address: Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
+        :param pulumi.Input[str] namespace: ZDB namespace
+        :param pulumi.Input[str] password: Namespace password
+        """
         pulumi.set(__self__, "address", address)
         pulumi.set(__self__, "namespace", namespace)
         pulumi.set(__self__, "password", password)
@@ -35,6 +40,9 @@ class BackendArgs:
     @property
     @pulumi.getter
     def address(self) -> pulumi.Input[str]:
+        """
+        Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
+        """
         return pulumi.get(self, "address")
 
     @address.setter
@@ -44,6 +52,9 @@ class BackendArgs:
     @property
     @pulumi.getter
     def namespace(self) -> pulumi.Input[str]:
+        """
+        ZDB namespace
+        """
         return pulumi.get(self, "namespace")
 
     @namespace.setter
@@ -53,6 +64,9 @@ class BackendArgs:
     @property
     @pulumi.getter
     def password(self) -> pulumi.Input[str]:
+        """
+        Namespace password
+        """
         return pulumi.get(self, "password")
 
     @password.setter
@@ -66,6 +80,11 @@ class DiskArgs:
                  name: pulumi.Input[str],
                  size: pulumi.Input[int],
                  description: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] name: The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[int] size: The disk size in GB (type SSD)
+        :param pulumi.Input[str] description: The description of the disk workload, optional with no restrictions
+        """
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "size", size)
         if description is not None:
@@ -74,6 +93,9 @@ class DiskArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -83,6 +105,9 @@ class DiskArgs:
     @property
     @pulumi.getter
     def size(self) -> pulumi.Input[int]:
+        """
+        The disk size in GB (type SSD)
+        """
         return pulumi.get(self, "size")
 
     @size.setter
@@ -92,6 +117,9 @@ class DiskArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the disk workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -103,12 +131,18 @@ class DiskArgs:
 class GroupArgs:
     def __init__(__self__, *,
                  backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None):
+        """
+        :param pulumi.Input[Sequence[pulumi.Input['BackendArgs']]] backends: List of ZDB backends configurations
+        """
         if backends is not None:
             pulumi.set(__self__, "backends", backends)
 
     @property
     @pulumi.getter
     def backends(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]]:
+        """
+        List of ZDB backends configurations
+        """
         return pulumi.get(self, "backends")
 
     @backends.setter
@@ -121,27 +155,65 @@ class K8sNodeInputArgs:
     def __init__(__self__, *,
                  cpu: pulumi.Input[int],
                  disk_size: pulumi.Input[int],
+                 flist: pulumi.Input[str],
                  memory: pulumi.Input[int],
                  name: pulumi.Input[str],
                  network_name: pulumi.Input[str],
-                 node: Any,
-                 flist: Optional[pulumi.Input[str]] = None,
+                 node_id: Any,
+                 description: Optional[pulumi.Input[str]] = None,
+                 entrypoint: Optional[pulumi.Input[str]] = None,
+                 env_vars: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
                  flist_checksum: Optional[pulumi.Input[str]] = None,
+                 gpus: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 mounts: Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]] = None,
                  mycelium: Optional[pulumi.Input[bool]] = None,
                  mycelium_ip_seed: Optional[pulumi.Input[str]] = None,
                  planetary: Optional[pulumi.Input[bool]] = None,
                  public_ip: Optional[pulumi.Input[bool]] = None,
-                 public_ip6: Optional[pulumi.Input[bool]] = None):
+                 public_ip6: Optional[pulumi.Input[bool]] = None,
+                 rootfs_size: Optional[pulumi.Input[int]] = None,
+                 zlogs: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]] = None):
+        """
+        :param pulumi.Input[int] cpu: The cpu units needed for the virtual machine. Range in [1: 32]
+        :param pulumi.Input[int] disk_size: Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
+        :param pulumi.Input[str] flist: The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        :param pulumi.Input[int] memory: The memory capacity for the virtual machine in MB. Min is 250 MB
+        :param pulumi.Input[str] name: The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        :param Any node_id: The node ID to deploy the virtual machine on, required and should match the requested resources
+        :param pulumi.Input[str] description: The description of the virtual machine workload, optional with no restrictions
+        :param pulumi.Input[str] entrypoint: The entry point for the flist. Example: /sbin/zinit init
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env_vars: The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        :param pulumi.Input[str] flist_checksum: The checksum of the flist which should match the checksum of the given flist, optional
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] gpus: A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+        :param pulumi.Input[Sequence[pulumi.Input['MountArgs']]] mounts: A list of mounted disks or volumes
+        :param pulumi.Input[bool] mycelium: A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        :param pulumi.Input[str] mycelium_ip_seed: The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        :param pulumi.Input[bool] planetary: A flag to enable generating a yggdrasil IP for the virtual machine
+        :param pulumi.Input[bool] public_ip: A flag to enable generating a public IP for the virtual machine, public node is required for it
+        :param pulumi.Input[bool] public_ip6: A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+        :param pulumi.Input[int] rootfs_size: The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+        :param pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]] zlogs: A list of virtual machine loggers
+        """
         pulumi.set(__self__, "cpu", cpu)
         pulumi.set(__self__, "disk_size", disk_size)
+        pulumi.set(__self__, "flist", flist)
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "network_name", network_name)
-        pulumi.set(__self__, "node", node)
-        if flist is not None:
-            pulumi.set(__self__, "flist", flist)
+        pulumi.set(__self__, "node_id", node_id)
+        if description is not None:
+            pulumi.set(__self__, "description", description)
+        if entrypoint is not None:
+            pulumi.set(__self__, "entrypoint", entrypoint)
+        if env_vars is not None:
+            pulumi.set(__self__, "env_vars", env_vars)
         if flist_checksum is not None:
             pulumi.set(__self__, "flist_checksum", flist_checksum)
+        if gpus is not None:
+            pulumi.set(__self__, "gpus", gpus)
+        if mounts is not None:
+            pulumi.set(__self__, "mounts", mounts)
         if mycelium is not None:
             pulumi.set(__self__, "mycelium", mycelium)
         if mycelium_ip_seed is not None:
@@ -152,10 +224,17 @@ class K8sNodeInputArgs:
             pulumi.set(__self__, "public_ip", public_ip)
         if public_ip6 is not None:
             pulumi.set(__self__, "public_ip6", public_ip6)
+        if rootfs_size is not None:
+            pulumi.set(__self__, "rootfs_size", rootfs_size)
+        if zlogs is not None:
+            pulumi.set(__self__, "zlogs", zlogs)
 
     @property
     @pulumi.getter
     def cpu(self) -> pulumi.Input[int]:
+        """
+        The cpu units needed for the virtual machine. Range in [1: 32]
+        """
         return pulumi.get(self, "cpu")
 
     @cpu.setter
@@ -165,6 +244,9 @@ class K8sNodeInputArgs:
     @property
     @pulumi.getter
     def disk_size(self) -> pulumi.Input[int]:
+        """
+        Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
+        """
         return pulumi.get(self, "disk_size")
 
     @disk_size.setter
@@ -173,7 +255,22 @@ class K8sNodeInputArgs:
 
     @property
     @pulumi.getter
+    def flist(self) -> pulumi.Input[str]:
+        """
+        The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        """
+        return pulumi.get(self, "flist")
+
+    @flist.setter
+    def flist(self, value: pulumi.Input[str]):
+        pulumi.set(self, "flist", value)
+
+    @property
+    @pulumi.getter
     def memory(self) -> pulumi.Input[int]:
+        """
+        The memory capacity for the virtual machine in MB. Min is 250 MB
+        """
         return pulumi.get(self, "memory")
 
     @memory.setter
@@ -183,6 +280,9 @@ class K8sNodeInputArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -192,6 +292,9 @@ class K8sNodeInputArgs:
     @property
     @pulumi.getter
     def network_name(self) -> pulumi.Input[str]:
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
         return pulumi.get(self, "network_name")
 
     @network_name.setter
@@ -200,25 +303,58 @@ class K8sNodeInputArgs:
 
     @property
     @pulumi.getter
-    def node(self) -> Any:
-        return pulumi.get(self, "node")
+    def node_id(self) -> Any:
+        """
+        The node ID to deploy the virtual machine on, required and should match the requested resources
+        """
+        return pulumi.get(self, "node_id")
 
-    @node.setter
-    def node(self, value: Any):
-        pulumi.set(self, "node", value)
+    @node_id.setter
+    def node_id(self, value: Any):
+        pulumi.set(self, "node_id", value)
 
     @property
     @pulumi.getter
-    def flist(self) -> Optional[pulumi.Input[str]]:
-        return pulumi.get(self, "flist")
+    def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
+        return pulumi.get(self, "description")
 
-    @flist.setter
-    def flist(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "flist", value)
+    @description.setter
+    def description(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "description", value)
+
+    @property
+    @pulumi.getter
+    def entrypoint(self) -> Optional[pulumi.Input[str]]:
+        """
+        The entry point for the flist. Example: /sbin/zinit init
+        """
+        return pulumi.get(self, "entrypoint")
+
+    @entrypoint.setter
+    def entrypoint(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "entrypoint", value)
+
+    @property
+    @pulumi.getter
+    def env_vars(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        """
+        return pulumi.get(self, "env_vars")
+
+    @env_vars.setter
+    def env_vars(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "env_vars", value)
 
     @property
     @pulumi.getter
     def flist_checksum(self) -> Optional[pulumi.Input[str]]:
+        """
+        The checksum of the flist which should match the checksum of the given flist, optional
+        """
         return pulumi.get(self, "flist_checksum")
 
     @flist_checksum.setter
@@ -227,7 +363,34 @@ class K8sNodeInputArgs:
 
     @property
     @pulumi.getter
+    def gpus(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+        """
+        return pulumi.get(self, "gpus")
+
+    @gpus.setter
+    def gpus(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "gpus", value)
+
+    @property
+    @pulumi.getter
+    def mounts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]]:
+        """
+        A list of mounted disks or volumes
+        """
+        return pulumi.get(self, "mounts")
+
+    @mounts.setter
+    def mounts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]]):
+        pulumi.set(self, "mounts", value)
+
+    @property
+    @pulumi.getter
     def mycelium(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        """
         return pulumi.get(self, "mycelium")
 
     @mycelium.setter
@@ -237,6 +400,9 @@ class K8sNodeInputArgs:
     @property
     @pulumi.getter
     def mycelium_ip_seed(self) -> Optional[pulumi.Input[str]]:
+        """
+        The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        """
         return pulumi.get(self, "mycelium_ip_seed")
 
     @mycelium_ip_seed.setter
@@ -246,6 +412,9 @@ class K8sNodeInputArgs:
     @property
     @pulumi.getter
     def planetary(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to enable generating a yggdrasil IP for the virtual machine
+        """
         return pulumi.get(self, "planetary")
 
     @planetary.setter
@@ -255,6 +424,9 @@ class K8sNodeInputArgs:
     @property
     @pulumi.getter
     def public_ip(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to enable generating a public IP for the virtual machine, public node is required for it
+        """
         return pulumi.get(self, "public_ip")
 
     @public_ip.setter
@@ -264,11 +436,38 @@ class K8sNodeInputArgs:
     @property
     @pulumi.getter
     def public_ip6(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+        """
         return pulumi.get(self, "public_ip6")
 
     @public_ip6.setter
     def public_ip6(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "public_ip6", value)
+
+    @property
+    @pulumi.getter
+    def rootfs_size(self) -> Optional[pulumi.Input[int]]:
+        """
+        The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+        """
+        return pulumi.get(self, "rootfs_size")
+
+    @rootfs_size.setter
+    def rootfs_size(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "rootfs_size", value)
+
+    @property
+    @pulumi.getter
+    def zlogs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]]:
+        """
+        A list of virtual machine loggers
+        """
+        return pulumi.get(self, "zlogs")
+
+    @zlogs.setter
+    def zlogs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]]):
+        pulumi.set(self, "zlogs", value)
 
 
 @pulumi.input_type
@@ -279,6 +478,13 @@ class MetadataArgs:
                  backends: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]] = None,
                  encryption_algorithm: Optional[pulumi.Input[str]] = None,
                  type: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] encryption_key: 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+        :param pulumi.Input[str] prefix: Data stored on the remote metadata is prefixed with
+        :param pulumi.Input[Sequence[pulumi.Input['BackendArgs']]] backends: List of ZDB backends configurations
+        :param pulumi.Input[str] encryption_algorithm: configuration to use for the encryption stage. Currently only AES is supported
+        :param pulumi.Input[str] type: configuration for the metadata store to use, currently only ZDB is supported
+        """
         pulumi.set(__self__, "encryption_key", encryption_key)
         pulumi.set(__self__, "prefix", prefix)
         if backends is not None:
@@ -291,6 +497,9 @@ class MetadataArgs:
     @property
     @pulumi.getter
     def encryption_key(self) -> pulumi.Input[str]:
+        """
+        64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+        """
         return pulumi.get(self, "encryption_key")
 
     @encryption_key.setter
@@ -300,6 +509,9 @@ class MetadataArgs:
     @property
     @pulumi.getter
     def prefix(self) -> pulumi.Input[str]:
+        """
+        Data stored on the remote metadata is prefixed with
+        """
         return pulumi.get(self, "prefix")
 
     @prefix.setter
@@ -309,6 +521,9 @@ class MetadataArgs:
     @property
     @pulumi.getter
     def backends(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]]:
+        """
+        List of ZDB backends configurations
+        """
         return pulumi.get(self, "backends")
 
     @backends.setter
@@ -318,6 +533,9 @@ class MetadataArgs:
     @property
     @pulumi.getter
     def encryption_algorithm(self) -> Optional[pulumi.Input[str]]:
+        """
+        configuration to use for the encryption stage. Currently only AES is supported
+        """
         return pulumi.get(self, "encryption_algorithm")
 
     @encryption_algorithm.setter
@@ -327,6 +545,9 @@ class MetadataArgs:
     @property
     @pulumi.getter
     def type(self) -> Optional[pulumi.Input[str]]:
+        """
+        configuration for the metadata store to use, currently only ZDB is supported
+        """
         return pulumi.get(self, "type")
 
     @type.setter
@@ -337,28 +558,38 @@ class MetadataArgs:
 @pulumi.input_type
 class MountArgs:
     def __init__(__self__, *,
-                 disk_name: pulumi.Input[str],
-                 mount_point: pulumi.Input[str]):
-        pulumi.set(__self__, "disk_name", disk_name)
+                 mount_point: pulumi.Input[str],
+                 name: pulumi.Input[str]):
+        """
+        :param pulumi.Input[str] mount_point: The mount point of the disk/volume
+        :param pulumi.Input[str] name: The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         pulumi.set(__self__, "mount_point", mount_point)
-
-    @property
-    @pulumi.getter
-    def disk_name(self) -> pulumi.Input[str]:
-        return pulumi.get(self, "disk_name")
-
-    @disk_name.setter
-    def disk_name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "disk_name", value)
+        pulumi.set(__self__, "name", name)
 
     @property
     @pulumi.getter
     def mount_point(self) -> pulumi.Input[str]:
+        """
+        The mount point of the disk/volume
+        """
         return pulumi.get(self, "mount_point")
 
     @mount_point.setter
     def mount_point(self, value: pulumi.Input[str]):
         pulumi.set(self, "mount_point", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> pulumi.Input[str]:
+        """
+        The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: pulumi.Input[str]):
+        pulumi.set(self, "name", value)
 
 
 @pulumi.input_type
@@ -377,6 +608,21 @@ class QSFSInputArgs:
                  compression_algorithm: Optional[pulumi.Input[str]] = None,
                  description: Optional[pulumi.Input[str]] = None,
                  encryption_algorithm: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[int] cache: The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
+        :param pulumi.Input[str] encryption_key: 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+        :param pulumi.Input[int] expected_shards: The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
+        :param pulumi.Input[Sequence[pulumi.Input['GroupArgs']]] groups: The backend groups to write the data to
+        :param pulumi.Input[int] max_zdb_data_dir_size: Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
+        :param pulumi.Input['MetadataArgs'] metadata: List of ZDB backends configurations
+        :param pulumi.Input[int] minimal_shards: The minimum amount of shards which are needed to recover the original data
+        :param pulumi.Input[str] name: The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[int] redundant_groups: The amount of groups which one should be able to loose while still being able to recover the original data
+        :param pulumi.Input[int] redundant_nodes: The amount of nodes that can be lost in every group while still being able to recover the original data
+        :param pulumi.Input[str] compression_algorithm: configuration to use for the compression stage. Currently only snappy is supported
+        :param pulumi.Input[str] description: The description of the qsfs workload, optional with no restrictions
+        :param pulumi.Input[str] encryption_algorithm: configuration to use for the encryption stage. Currently only AES is supported
+        """
         pulumi.set(__self__, "cache", cache)
         pulumi.set(__self__, "encryption_key", encryption_key)
         pulumi.set(__self__, "expected_shards", expected_shards)
@@ -397,6 +643,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def cache(self) -> pulumi.Input[int]:
+        """
+        The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
+        """
         return pulumi.get(self, "cache")
 
     @cache.setter
@@ -406,6 +655,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def encryption_key(self) -> pulumi.Input[str]:
+        """
+        64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+        """
         return pulumi.get(self, "encryption_key")
 
     @encryption_key.setter
@@ -415,6 +667,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def expected_shards(self) -> pulumi.Input[int]:
+        """
+        The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
+        """
         return pulumi.get(self, "expected_shards")
 
     @expected_shards.setter
@@ -424,6 +679,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def groups(self) -> pulumi.Input[Sequence[pulumi.Input['GroupArgs']]]:
+        """
+        The backend groups to write the data to
+        """
         return pulumi.get(self, "groups")
 
     @groups.setter
@@ -433,6 +691,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def max_zdb_data_dir_size(self) -> pulumi.Input[int]:
+        """
+        Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
+        """
         return pulumi.get(self, "max_zdb_data_dir_size")
 
     @max_zdb_data_dir_size.setter
@@ -442,6 +703,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def metadata(self) -> pulumi.Input['MetadataArgs']:
+        """
+        List of ZDB backends configurations
+        """
         return pulumi.get(self, "metadata")
 
     @metadata.setter
@@ -451,6 +715,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def minimal_shards(self) -> pulumi.Input[int]:
+        """
+        The minimum amount of shards which are needed to recover the original data
+        """
         return pulumi.get(self, "minimal_shards")
 
     @minimal_shards.setter
@@ -460,6 +727,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -469,6 +739,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def redundant_groups(self) -> pulumi.Input[int]:
+        """
+        The amount of groups which one should be able to loose while still being able to recover the original data
+        """
         return pulumi.get(self, "redundant_groups")
 
     @redundant_groups.setter
@@ -478,6 +751,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def redundant_nodes(self) -> pulumi.Input[int]:
+        """
+        The amount of nodes that can be lost in every group while still being able to recover the original data
+        """
         return pulumi.get(self, "redundant_nodes")
 
     @redundant_nodes.setter
@@ -487,6 +763,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def compression_algorithm(self) -> Optional[pulumi.Input[str]]:
+        """
+        configuration to use for the compression stage. Currently only snappy is supported
+        """
         return pulumi.get(self, "compression_algorithm")
 
     @compression_algorithm.setter
@@ -496,6 +775,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the qsfs workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -505,6 +787,9 @@ class QSFSInputArgs:
     @property
     @pulumi.getter
     def encryption_algorithm(self) -> Optional[pulumi.Input[str]]:
+        """
+        configuration to use for the encryption stage. Currently only AES is supported
+        """
         return pulumi.get(self, "encryption_algorithm")
 
     @encryption_algorithm.setter
@@ -534,6 +819,27 @@ class VMInputArgs:
                  public_ip6: Optional[pulumi.Input[bool]] = None,
                  rootfs_size: Optional[pulumi.Input[int]] = None,
                  zlogs: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]] = None):
+        """
+        :param pulumi.Input[int] cpu: The cpu units needed for the virtual machine. Range in [1: 32]
+        :param pulumi.Input[str] flist: The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        :param pulumi.Input[int] memory: The memory capacity for the virtual machine in MB. Min is 250 MB
+        :param pulumi.Input[str] name: The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        :param Any node_id: The node ID to deploy the virtual machine on, required and should match the requested resources
+        :param pulumi.Input[str] description: The description of the virtual machine workload, optional with no restrictions
+        :param pulumi.Input[str] entrypoint: The entry point for the flist. Example: /sbin/zinit init
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env_vars: The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        :param pulumi.Input[str] flist_checksum: The checksum of the flist which should match the checksum of the given flist, optional
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] gpus: A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+        :param pulumi.Input[Sequence[pulumi.Input['MountArgs']]] mounts: A list of mounted disks or volumes
+        :param pulumi.Input[bool] mycelium: A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        :param pulumi.Input[str] mycelium_ip_seed: The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        :param pulumi.Input[bool] planetary: A flag to enable generating a yggdrasil IP for the virtual machine
+        :param pulumi.Input[bool] public_ip: A flag to enable generating a public IP for the virtual machine, public node is required for it
+        :param pulumi.Input[bool] public_ip6: A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+        :param pulumi.Input[int] rootfs_size: The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+        :param pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]] zlogs: A list of virtual machine loggers
+        """
         pulumi.set(__self__, "cpu", cpu)
         pulumi.set(__self__, "flist", flist)
         pulumi.set(__self__, "memory", memory)
@@ -570,6 +876,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def cpu(self) -> pulumi.Input[int]:
+        """
+        The cpu units needed for the virtual machine. Range in [1: 32]
+        """
         return pulumi.get(self, "cpu")
 
     @cpu.setter
@@ -579,6 +888,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def flist(self) -> pulumi.Input[str]:
+        """
+        The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        """
         return pulumi.get(self, "flist")
 
     @flist.setter
@@ -588,6 +900,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def memory(self) -> pulumi.Input[int]:
+        """
+        The memory capacity for the virtual machine in MB. Min is 250 MB
+        """
         return pulumi.get(self, "memory")
 
     @memory.setter
@@ -597,6 +912,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -606,6 +924,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def network_name(self) -> pulumi.Input[str]:
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
         return pulumi.get(self, "network_name")
 
     @network_name.setter
@@ -615,6 +936,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def node_id(self) -> Any:
+        """
+        The node ID to deploy the virtual machine on, required and should match the requested resources
+        """
         return pulumi.get(self, "node_id")
 
     @node_id.setter
@@ -624,6 +948,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -633,6 +960,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def entrypoint(self) -> Optional[pulumi.Input[str]]:
+        """
+        The entry point for the flist. Example: /sbin/zinit init
+        """
         return pulumi.get(self, "entrypoint")
 
     @entrypoint.setter
@@ -642,6 +972,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def env_vars(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        """
         return pulumi.get(self, "env_vars")
 
     @env_vars.setter
@@ -651,6 +984,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def flist_checksum(self) -> Optional[pulumi.Input[str]]:
+        """
+        The checksum of the flist which should match the checksum of the given flist, optional
+        """
         return pulumi.get(self, "flist_checksum")
 
     @flist_checksum.setter
@@ -660,6 +996,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def gpus(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+        """
         return pulumi.get(self, "gpus")
 
     @gpus.setter
@@ -669,6 +1008,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def mounts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]]:
+        """
+        A list of mounted disks or volumes
+        """
         return pulumi.get(self, "mounts")
 
     @mounts.setter
@@ -678,6 +1020,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def mycelium(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        """
         return pulumi.get(self, "mycelium")
 
     @mycelium.setter
@@ -687,6 +1032,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def mycelium_ip_seed(self) -> Optional[pulumi.Input[str]]:
+        """
+        The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        """
         return pulumi.get(self, "mycelium_ip_seed")
 
     @mycelium_ip_seed.setter
@@ -696,6 +1044,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def planetary(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to enable generating a yggdrasil IP for the virtual machine
+        """
         return pulumi.get(self, "planetary")
 
     @planetary.setter
@@ -705,6 +1056,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def public_ip(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to enable generating a public IP for the virtual machine, public node is required for it
+        """
         return pulumi.get(self, "public_ip")
 
     @public_ip.setter
@@ -714,6 +1068,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def public_ip6(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+        """
         return pulumi.get(self, "public_ip6")
 
     @public_ip6.setter
@@ -723,6 +1080,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def rootfs_size(self) -> Optional[pulumi.Input[int]]:
+        """
+        The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+        """
         return pulumi.get(self, "rootfs_size")
 
     @rootfs_size.setter
@@ -732,6 +1092,9 @@ class VMInputArgs:
     @property
     @pulumi.getter
     def zlogs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]]:
+        """
+        A list of virtual machine loggers
+        """
         return pulumi.get(self, "zlogs")
 
     @zlogs.setter
@@ -748,6 +1111,14 @@ class ZDBInputArgs:
                  description: Optional[pulumi.Input[str]] = None,
                  mode: Optional[pulumi.Input[str]] = None,
                  public: Optional[pulumi.Input[bool]] = None):
+        """
+        :param pulumi.Input[str] name: The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[str] password: The 0-db password
+        :param pulumi.Input[int] size: The 0-db size in GB (type HDD)
+        :param pulumi.Input[str] description: The description of the 0-db workload, optional with no restrictions
+        :param pulumi.Input[str] mode: the enumeration of the modes 0-db can operate in (default user)
+        :param pulumi.Input[bool] public: A flag to make 0-db namespace public - readable by anyone
+        """
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "password", password)
         pulumi.set(__self__, "size", size)
@@ -763,6 +1134,9 @@ class ZDBInputArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -772,6 +1146,9 @@ class ZDBInputArgs:
     @property
     @pulumi.getter
     def password(self) -> pulumi.Input[str]:
+        """
+        The 0-db password
+        """
         return pulumi.get(self, "password")
 
     @password.setter
@@ -781,6 +1158,9 @@ class ZDBInputArgs:
     @property
     @pulumi.getter
     def size(self) -> pulumi.Input[int]:
+        """
+        The 0-db size in GB (type HDD)
+        """
         return pulumi.get(self, "size")
 
     @size.setter
@@ -790,6 +1170,9 @@ class ZDBInputArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the 0-db workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -799,6 +1182,9 @@ class ZDBInputArgs:
     @property
     @pulumi.getter
     def mode(self) -> Optional[pulumi.Input[str]]:
+        """
+        the enumeration of the modes 0-db can operate in (default user)
+        """
         return pulumi.get(self, "mode")
 
     @mode.setter
@@ -808,6 +1194,9 @@ class ZDBInputArgs:
     @property
     @pulumi.getter
     def public(self) -> Optional[pulumi.Input[bool]]:
+        """
+        A flag to make 0-db namespace public - readable by anyone
+        """
         return pulumi.get(self, "public")
 
     @public.setter
@@ -820,12 +1209,19 @@ class ZlogArgs:
     def __init__(__self__, *,
                  output: pulumi.Input[str],
                  zmachine: pulumi.Input[str]):
+        """
+        :param pulumi.Input[str] output: The output logs URL, should be a valid url
+        :param pulumi.Input[str] zmachine: The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         pulumi.set(__self__, "output", output)
         pulumi.set(__self__, "zmachine", zmachine)
 
     @property
     @pulumi.getter
     def output(self) -> pulumi.Input[str]:
+        """
+        The output logs URL, should be a valid url
+        """
         return pulumi.get(self, "output")
 
     @output.setter
@@ -835,6 +1231,9 @@ class ZlogArgs:
     @property
     @pulumi.getter
     def zmachine(self) -> pulumi.Input[str]:
+        """
+        The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "zmachine")
 
     @zmachine.setter

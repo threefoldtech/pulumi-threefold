@@ -13,7 +13,7 @@ func TestNameGatewayParser(t *testing.T) {
 		NodeID:         1,
 		Backends:       []string{"backend"},
 		TLSPassthrough: false,
-		Network:        "network",
+		NetworkName:    "network",
 		Description:    "description",
 		SolutionType:   "solution",
 	}
@@ -24,7 +24,7 @@ func TestNameGatewayParser(t *testing.T) {
 		assert.Equal(t, nameGateway.NodeID, uint32(nameGatewayInput.NodeID.(int)))
 		assert.Equal(t, nameGateway.Name, nameGatewayInput.Name)
 		assert.Equal(t, nameGateway.Backends[0], zos.Backend(nameGatewayInput.Backends[0]))
-		assert.Equal(t, nameGateway.Network, nameGatewayInput.Network)
+		assert.Equal(t, nameGateway.Network, nameGatewayInput.NetworkName)
 		assert.Equal(t, nameGateway.Description, nameGatewayInput.Description)
 		assert.Equal(t, nameGateway.SolutionType, nameGatewayInput.SolutionType)
 		assert.Equal(t, nameGateway.TLSPassthrough, nameGatewayInput.TLSPassthrough)

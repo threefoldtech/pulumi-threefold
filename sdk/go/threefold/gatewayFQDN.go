@@ -15,16 +15,26 @@ import (
 type GatewayFQDN struct {
 	pulumi.CustomResourceState
 
-	Backends           pulumi.StringArrayOutput `pulumi:"backends"`
-	Contract_id        pulumi.IntOutput         `pulumi:"contract_id"`
-	Description        pulumi.StringPtrOutput   `pulumi:"description"`
-	Fqdn               pulumi.StringOutput      `pulumi:"fqdn"`
-	Name               pulumi.StringOutput      `pulumi:"name"`
-	Network_name       pulumi.StringPtrOutput   `pulumi:"network_name"`
-	Node_deployment_id pulumi.IntMapOutput      `pulumi:"node_deployment_id"`
-	Node_id            pulumi.AnyOutput         `pulumi:"node_id"`
-	Solution_type      pulumi.StringPtrOutput   `pulumi:"solution_type"`
-	Tls_pass_through   pulumi.BoolPtrOutput     `pulumi:"tls_pass_through"`
+	// The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+	Backends pulumi.StringArrayOutput `pulumi:"backends"`
+	// The deployment ID
+	Contract_id pulumi.IntOutput `pulumi:"contract_id"`
+	// The description of the virtual machine workload, optional with no restrictions
+	Description pulumi.StringPtrOutput `pulumi:"description"`
+	// The fully qualified domain name of the deployed workload
+	Fqdn pulumi.StringOutput `pulumi:"fqdn"`
+	// Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+	Name pulumi.StringOutput `pulumi:"name"`
+	// Network name to join, if backend IP is private
+	Network_name pulumi.StringPtrOutput `pulumi:"network_name"`
+	// Mapping from each node to its deployment ID
+	Node_deployment_id pulumi.IntMapOutput `pulumi:"node_deployment_id"`
+	// The gateway's node ID
+	Node_id pulumi.AnyOutput `pulumi:"node_id"`
+	// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+	Solution_type pulumi.StringPtrOutput `pulumi:"solution_type"`
+	// TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+	Tls_pass_through pulumi.BoolPtrOutput `pulumi:"tls_pass_through"`
 }
 
 // NewGatewayFQDN registers a new resource with the given unique name, arguments, and options.
@@ -82,25 +92,41 @@ func (GatewayFQDNState) ElementType() reflect.Type {
 }
 
 type gatewayFQDNArgs struct {
-	Backends         []string    `pulumi:"backends"`
-	Description      *string     `pulumi:"description"`
-	Fqdn             string      `pulumi:"fqdn"`
-	Name             string      `pulumi:"name"`
-	Network_name     *string     `pulumi:"network_name"`
-	Node_id          interface{} `pulumi:"node_id"`
-	Solution_type    *string     `pulumi:"solution_type"`
-	Tls_pass_through *bool       `pulumi:"tls_pass_through"`
+	// The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+	Backends []string `pulumi:"backends"`
+	// The description of the virtual machine workload, optional with no restrictions
+	Description *string `pulumi:"description"`
+	// The fully qualified domain name of the deployed workload
+	Fqdn string `pulumi:"fqdn"`
+	// Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+	Name string `pulumi:"name"`
+	// Network name to join, if backend IP is private
+	Network_name *string `pulumi:"network_name"`
+	// The gateway's node ID
+	Node_id interface{} `pulumi:"node_id"`
+	// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+	Solution_type *string `pulumi:"solution_type"`
+	// TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+	Tls_pass_through *bool `pulumi:"tls_pass_through"`
 }
 
 // The set of arguments for constructing a GatewayFQDN resource.
 type GatewayFQDNArgs struct {
-	Backends         pulumi.StringArrayInput
-	Description      pulumi.StringPtrInput
-	Fqdn             pulumi.StringInput
-	Name             pulumi.StringInput
-	Network_name     pulumi.StringPtrInput
-	Node_id          pulumi.Input
-	Solution_type    pulumi.StringPtrInput
+	// The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+	Backends pulumi.StringArrayInput
+	// The description of the virtual machine workload, optional with no restrictions
+	Description pulumi.StringPtrInput
+	// The fully qualified domain name of the deployed workload
+	Fqdn pulumi.StringInput
+	// Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+	Name pulumi.StringInput
+	// Network name to join, if backend IP is private
+	Network_name pulumi.StringPtrInput
+	// The gateway's node ID
+	Node_id pulumi.Input
+	// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+	Solution_type pulumi.StringPtrInput
+	// TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
 	Tls_pass_through pulumi.BoolPtrInput
 }
 
@@ -191,42 +217,52 @@ func (o GatewayFQDNOutput) ToGatewayFQDNOutputWithContext(ctx context.Context) G
 	return o
 }
 
+// The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
 func (o GatewayFQDNOutput) Backends() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.StringArrayOutput { return v.Backends }).(pulumi.StringArrayOutput)
 }
 
+// The deployment ID
 func (o GatewayFQDNOutput) Contract_id() pulumi.IntOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.IntOutput { return v.Contract_id }).(pulumi.IntOutput)
 }
 
+// The description of the virtual machine workload, optional with no restrictions
 func (o GatewayFQDNOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.StringPtrOutput { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// The fully qualified domain name of the deployed workload
 func (o GatewayFQDNOutput) Fqdn() pulumi.StringOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.StringOutput { return v.Fqdn }).(pulumi.StringOutput)
 }
 
+// Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
 func (o GatewayFQDNOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// Network name to join, if backend IP is private
 func (o GatewayFQDNOutput) Network_name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.StringPtrOutput { return v.Network_name }).(pulumi.StringPtrOutput)
 }
 
+// Mapping from each node to its deployment ID
 func (o GatewayFQDNOutput) Node_deployment_id() pulumi.IntMapOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.IntMapOutput { return v.Node_deployment_id }).(pulumi.IntMapOutput)
 }
 
+// The gateway's node ID
 func (o GatewayFQDNOutput) Node_id() pulumi.AnyOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.AnyOutput { return v.Node_id }).(pulumi.AnyOutput)
 }
 
+// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
 func (o GatewayFQDNOutput) Solution_type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.StringPtrOutput { return v.Solution_type }).(pulumi.StringPtrOutput)
 }
 
+// TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
 func (o GatewayFQDNOutput) Tls_pass_through() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *GatewayFQDN) pulumi.BoolPtrOutput { return v.Tls_pass_through }).(pulumi.BoolPtrOutput)
 }

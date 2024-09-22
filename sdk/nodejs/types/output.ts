@@ -8,124 +8,370 @@ import * as outputs from "../types/output";
 import * as utilities from "../utilities";
 
 export interface Backend {
+    /**
+     * Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
+     */
     address: string;
+    /**
+     * ZDB namespace
+     */
     namespace: string;
+    /**
+     * Namespace password
+     */
     password: string;
 }
 
 export interface Disk {
+    /**
+     * The description of the disk workload, optional with no restrictions
+     */
     description?: string;
+    /**
+     * The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: string;
+    /**
+     * The disk size in GB (type SSD)
+     */
     size: number;
 }
 
 export interface Group {
+    /**
+     * List of ZDB backends configurations
+     */
     backends?: outputs.Backend[];
-}
-
-export interface K8sNodeComputed {
-    computed_ip: string;
-    computed_ip6: string;
-    console_url: string;
-    ip: string;
-    mycelium_ip: string;
-    mycelium_ip_seed: string;
-    planetary_ip: string;
 }
 
 export interface K8sNodeInput {
+    /**
+     * The cpu units needed for the virtual machine. Range in [1: 32]
+     */
     cpu: number;
+    /**
+     * The description of the virtual machine workload, optional with no restrictions
+     */
+    description?: string;
+    /**
+     * Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
+     */
     disk_size: number;
-    flist?: string;
+    /**
+     * The entry point for the flist. Example: /sbin/zinit init
+     */
+    entrypoint?: string;
+    /**
+     * The environment variables to be passed to the virtual machine. Example: SSH_KEY
+     */
+    env_vars?: {[key: string]: string};
+    /**
+     * The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+     */
+    flist: string;
+    /**
+     * The checksum of the flist which should match the checksum of the given flist, optional
+     */
     flist_checksum?: string;
+    /**
+     * A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+     */
+    gpus?: string[];
+    /**
+     * The memory capacity for the virtual machine in MB. Min is 250 MB
+     */
     memory: number;
+    /**
+     * A list of mounted disks or volumes
+     */
+    mounts?: outputs.Mount[];
+    /**
+     * A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+     */
     mycelium?: boolean;
+    /**
+     * The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+     */
     mycelium_ip_seed?: string;
+    /**
+     * The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: string;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     network_name: string;
-    node: any;
+    /**
+     * The node ID to deploy the virtual machine on, required and should match the requested resources
+     */
+    node_id: any;
+    /**
+     * A flag to enable generating a yggdrasil IP for the virtual machine
+     */
     planetary?: boolean;
+    /**
+     * A flag to enable generating a public IP for the virtual machine, public node is required for it
+     */
     public_ip?: boolean;
+    /**
+     * A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+     */
     public_ip6?: boolean;
+    /**
+     * The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+     */
+    rootfs_size?: number;
+    /**
+     * A list of virtual machine loggers
+     */
+    zlogs?: outputs.Zlog[];
 }
 
 export interface Metadata {
+    /**
+     * List of ZDB backends configurations
+     */
     backends?: outputs.Backend[];
+    /**
+     * configuration to use for the encryption stage. Currently only AES is supported
+     */
     encryption_algorithm?: string;
+    /**
+     * 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+     */
     encryption_key: string;
+    /**
+     * Data stored on the remote metadata is prefixed with
+     */
     prefix: string;
+    /**
+     * configuration for the metadata store to use, currently only ZDB is supported
+     */
     type?: string;
 }
 
 export interface Mount {
-    disk_name: string;
+    /**
+     * The mount point of the disk/volume
+     */
     mount_point: string;
+    /**
+     * The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
+    name: string;
 }
 
 export interface QSFSComputed {
+    /**
+     * Exposed metrics endpoint
+     */
     metrics_endpoint: string;
 }
 
 export interface QSFSInput {
+    /**
+     * The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
+     */
     cache: number;
+    /**
+     * configuration to use for the compression stage. Currently only snappy is supported
+     */
     compression_algorithm?: string;
+    /**
+     * The description of the qsfs workload, optional with no restrictions
+     */
     description?: string;
+    /**
+     * configuration to use for the encryption stage. Currently only AES is supported
+     */
     encryption_algorithm?: string;
+    /**
+     * 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+     */
     encryption_key: string;
+    /**
+     * The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
+     */
     expected_shards: number;
+    /**
+     * The backend groups to write the data to
+     */
     groups: outputs.Group[];
+    /**
+     * Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
+     */
     max_zdb_data_dir_size: number;
+    /**
+     * List of ZDB backends configurations
+     */
     metadata: outputs.Metadata;
+    /**
+     * The minimum amount of shards which are needed to recover the original data
+     */
     minimal_shards: number;
+    /**
+     * The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: string;
+    /**
+     * The amount of groups which one should be able to loose while still being able to recover the original data
+     */
     redundant_groups: number;
+    /**
+     * The amount of nodes that can be lost in every group while still being able to recover the original data
+     */
     redundant_nodes: number;
 }
 
 export interface VMComputed {
+    /**
+     * The reserved public ipv4 if any
+     */
     computed_ip: string;
+    /**
+     * The reserved public ipv6 if any
+     */
     computed_ip6: string;
+    /**
+     * The url to access the vm via cloud console on private interface using wireguard
+     */
     console_url: string;
+    /**
+     * The private wireguard IP of the vm
+     */
     ip?: string;
+    /**
+     * The allocated mycelium IP
+     */
     mycelium_ip: string;
+    /**
+     * The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+     */
     mycelium_ip_seed: string;
+    /**
+     * The allocated Yggdrasil IP
+     */
     planetary_ip: string;
 }
 
 export interface VMInput {
+    /**
+     * The cpu units needed for the virtual machine. Range in [1: 32]
+     */
     cpu: number;
+    /**
+     * The description of the virtual machine workload, optional with no restrictions
+     */
     description?: string;
+    /**
+     * The entry point for the flist. Example: /sbin/zinit init
+     */
     entrypoint?: string;
+    /**
+     * The environment variables to be passed to the virtual machine. Example: SSH_KEY
+     */
     env_vars?: {[key: string]: string};
+    /**
+     * The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+     */
     flist: string;
+    /**
+     * The checksum of the flist which should match the checksum of the given flist, optional
+     */
     flist_checksum?: string;
+    /**
+     * A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+     */
     gpus?: string[];
+    /**
+     * The memory capacity for the virtual machine in MB. Min is 250 MB
+     */
     memory: number;
+    /**
+     * A list of mounted disks or volumes
+     */
     mounts?: outputs.Mount[];
+    /**
+     * A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+     */
     mycelium?: boolean;
+    /**
+     * The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+     */
     mycelium_ip_seed?: string;
+    /**
+     * The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: string;
+    /**
+     * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+     */
     network_name: string;
+    /**
+     * The node ID to deploy the virtual machine on, required and should match the requested resources
+     */
     node_id: any;
+    /**
+     * A flag to enable generating a yggdrasil IP for the virtual machine
+     */
     planetary?: boolean;
+    /**
+     * A flag to enable generating a public IP for the virtual machine, public node is required for it
+     */
     public_ip?: boolean;
+    /**
+     * A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+     */
     public_ip6?: boolean;
+    /**
+     * The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+     */
     rootfs_size?: number;
+    /**
+     * A list of virtual machine loggers
+     */
     zlogs?: outputs.Zlog[];
 }
 
 export interface ZDBComputed {
+    /**
+     * Computed IPs of the ZDB. Two IPs are returned: a public IPv6, and a YggIP, in this order
+     */
     ips: string[];
+    /**
+     * Namespace of the ZDB
+     */
     namespace: string;
+    /**
+     * Port of the ZDB
+     */
     port: number;
 }
 
 export interface ZDBInput {
+    /**
+     * The description of the 0-db workload, optional with no restrictions
+     */
     description?: string;
+    /**
+     * the enumeration of the modes 0-db can operate in (default user)
+     */
     mode?: string;
+    /**
+     * The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: string;
+    /**
+     * The 0-db password
+     */
     password: string;
+    /**
+     * A flag to make 0-db namespace public - readable by anyone
+     */
     public?: boolean;
+    /**
+     * The 0-db size in GB (type HDD)
+     */
     size: number;
 }
 /**
@@ -139,7 +385,13 @@ export function zdbinputProvideDefaults(val: ZDBInput): ZDBInput {
 }
 
 export interface Zlog {
+    /**
+     * The output logs URL, should be a valid url
+     */
     output: string;
+    /**
+     * The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     zmachine: string;
 }
 

@@ -24,6 +24,14 @@ class GatewayFQDNArgs:
                  tls_pass_through: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a GatewayFQDN resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] backends: The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        :param pulumi.Input[str] fqdn: The fully qualified domain name of the deployed workload
+        :param pulumi.Input[str] name: Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        :param Any node_id: The gateway's node ID
+        :param pulumi.Input[str] description: The description of the virtual machine workload, optional with no restrictions
+        :param pulumi.Input[str] network_name: Network name to join, if backend IP is private
+        :param pulumi.Input[str] solution_type: The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        :param pulumi.Input[bool] tls_pass_through: TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
         """
         pulumi.set(__self__, "backends", backends)
         pulumi.set(__self__, "fqdn", fqdn)
@@ -43,6 +51,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def backends(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        """
         return pulumi.get(self, "backends")
 
     @backends.setter
@@ -52,6 +63,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def fqdn(self) -> pulumi.Input[str]:
+        """
+        The fully qualified domain name of the deployed workload
+        """
         return pulumi.get(self, "fqdn")
 
     @fqdn.setter
@@ -61,6 +75,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -70,6 +87,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def node_id(self) -> Any:
+        """
+        The gateway's node ID
+        """
         return pulumi.get(self, "node_id")
 
     @node_id.setter
@@ -79,6 +99,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @description.setter
@@ -88,6 +111,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def network_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Network name to join, if backend IP is private
+        """
         return pulumi.get(self, "network_name")
 
     @network_name.setter
@@ -97,6 +123,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def solution_type(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        """
         return pulumi.get(self, "solution_type")
 
     @solution_type.setter
@@ -106,6 +135,9 @@ class GatewayFQDNArgs:
     @property
     @pulumi.getter
     def tls_pass_through(self) -> Optional[pulumi.Input[bool]]:
+        """
+        TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+        """
         return pulumi.get(self, "tls_pass_through")
 
     @tls_pass_through.setter
@@ -131,6 +163,14 @@ class GatewayFQDN(pulumi.CustomResource):
         Create a GatewayFQDN resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] backends: The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        :param pulumi.Input[str] description: The description of the virtual machine workload, optional with no restrictions
+        :param pulumi.Input[str] fqdn: The fully qualified domain name of the deployed workload
+        :param pulumi.Input[str] name: Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        :param pulumi.Input[str] network_name: Network name to join, if backend IP is private
+        :param Any node_id: The gateway's node ID
+        :param pulumi.Input[str] solution_type: The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        :param pulumi.Input[bool] tls_pass_through: TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
         """
         ...
     @overload
@@ -229,50 +269,80 @@ class GatewayFQDN(pulumi.CustomResource):
     @property
     @pulumi.getter
     def backends(self) -> pulumi.Output[Sequence[str]]:
+        """
+        The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+        """
         return pulumi.get(self, "backends")
 
     @property
     @pulumi.getter
     def contract_id(self) -> pulumi.Output[int]:
+        """
+        The deployment ID
+        """
         return pulumi.get(self, "contract_id")
 
     @property
     @pulumi.getter
     def description(self) -> pulumi.Output[Optional[str]]:
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
         return pulumi.get(self, "description")
 
     @property
     @pulumi.getter
     def fqdn(self) -> pulumi.Output[str]:
+        """
+        The fully qualified domain name of the deployed workload
+        """
         return pulumi.get(self, "fqdn")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def network_name(self) -> pulumi.Output[Optional[str]]:
+        """
+        Network name to join, if backend IP is private
+        """
         return pulumi.get(self, "network_name")
 
     @property
     @pulumi.getter
     def node_deployment_id(self) -> pulumi.Output[Mapping[str, int]]:
+        """
+        Mapping from each node to its deployment ID
+        """
         return pulumi.get(self, "node_deployment_id")
 
     @property
     @pulumi.getter
     def node_id(self) -> pulumi.Output[Any]:
+        """
+        The gateway's node ID
+        """
         return pulumi.get(self, "node_id")
 
     @property
     @pulumi.getter
     def solution_type(self) -> pulumi.Output[Optional[str]]:
+        """
+        The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        """
         return pulumi.get(self, "solution_type")
 
     @property
     @pulumi.getter
     def tls_pass_through(self) -> pulumi.Output[Optional[bool]]:
+        """
+        TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+        """
         return pulumi.get(self, "tls_pass_through")
 

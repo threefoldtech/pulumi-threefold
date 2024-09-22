@@ -12,30 +12,8 @@ import (
 
 // K8sNodeInput struct of input data
 type K8sNodeInput struct {
-	Name           string      `pulumi:"name"`
-	NetworkName    string      `pulumi:"network_name"`
-	Node           interface{} `pulumi:"node"`
-	DiskSize       int         `pulumi:"disk_size"`
-	Flist          string      `pulumi:"flist,optional"`
-	FlistChecksum  string      `pulumi:"flist_checksum,optional"`
-	CPU            int         `pulumi:"cpu"`
-	Memory         int         `pulumi:"memory"`
-	PublicIP       bool        `pulumi:"public_ip,optional"`
-	PublicIP6      bool        `pulumi:"public_ip6,optional"`
-	Planetary      bool        `pulumi:"planetary,optional"`
-	Mycelium       bool        `pulumi:"mycelium,optional"`
-	MyceliumIPSeed string      `pulumi:"mycelium_ip_seed,optional"`
-}
-
-// K8sNodeComputed struct of computed data
-type K8sNodeComputed struct {
-	MyceliumIPSeed string `pulumi:"mycelium_ip_seed"`
-	ComputedIP     string `pulumi:"computed_ip"`
-	ComputedIP6    string `pulumi:"computed_ip6"`
-	IP             string `pulumi:"ip"`
-	PlanetaryIP    string `pulumi:"planetary_ip"`
-	MyceliumIP     string `pulumi:"mycelium_ip"`
-	ConsoleURL     string `pulumi:"console_url"`
+	VMInput
+	DiskSize int `pulumi:"disk_size"`
 }
 
 func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
@@ -52,7 +30,7 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 	}
 
 	// parse master computed
-	masterComputed := K8sNodeComputed{
+	masterComputed := VMComputed{
 		MyceliumIPSeed: hex.EncodeToString(k8sCluster.Master.MyceliumIPSeed),
 		ComputedIP:     k8sCluster.Master.ComputedIP,
 		ComputedIP6:    k8sCluster.Master.ComputedIP6,
@@ -64,25 +42,27 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 
 	// parse master input
 	masterInput := K8sNodeInput{
-		Name:           k8sCluster.Master.Name,
-		NetworkName:    k8sCluster.Master.NetworkName,
-		Node:           int(k8sCluster.Master.NodeID),
-		DiskSize:       int(k8sCluster.Master.DiskSizeGB),
-		PublicIP:       k8sCluster.Master.PublicIP,
-		PublicIP6:      k8sCluster.Master.PublicIP6,
-		Planetary:      k8sCluster.Master.Planetary,
-		MyceliumIPSeed: hex.EncodeToString(k8sCluster.Master.MyceliumIPSeed),
-		Flist:          k8sCluster.Master.Flist,
-		FlistChecksum:  k8sCluster.Master.FlistChecksum,
-		CPU:            int(k8sCluster.Master.CPU),
-		Memory:         int(k8sCluster.Master.MemoryMB),
+		VMInput: VMInput{
+			Name:           k8sCluster.Master.Name,
+			NetworkName:    k8sCluster.Master.NetworkName,
+			NodeID:         int(k8sCluster.Master.NodeID),
+			PublicIP:       k8sCluster.Master.PublicIP,
+			PublicIP6:      k8sCluster.Master.PublicIP6,
+			Planetary:      k8sCluster.Master.Planetary,
+			MyceliumIPSeed: hex.EncodeToString(k8sCluster.Master.MyceliumIPSeed),
+			Flist:          k8sCluster.Master.Flist,
+			FlistChecksum:  k8sCluster.Master.FlistChecksum,
+			CPU:            int(k8sCluster.Master.CPU),
+			Memory:         int(k8sCluster.Master.MemoryMB),
+		},
+		DiskSize: int(k8sCluster.Master.DiskSizeGB),
 	}
 
 	// parse workers computed & input
-	workersComputed := make(map[string]K8sNodeComputed)
+	workersComputed := make(map[string]VMComputed)
 	workersInput := []K8sNodeInput{}
 	for _, w := range k8sCluster.Workers {
-		newWorkerComputed := K8sNodeComputed{
+		newWorkerComputed := VMComputed{
 			MyceliumIPSeed: hex.EncodeToString(w.MyceliumIPSeed),
 			ComputedIP:     w.ComputedIP,
 			ComputedIP6:    w.ComputedIP6,
@@ -94,18 +74,20 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 		workersComputed[w.Name] = newWorkerComputed
 
 		newWorkerInput := K8sNodeInput{
-			Name:           w.Name,
-			NetworkName:    w.NetworkName,
-			Node:           int(w.NodeID),
-			DiskSize:       int(w.DiskSizeGB),
-			PublicIP:       w.PublicIP,
-			PublicIP6:      w.PublicIP6,
-			Planetary:      w.Planetary,
-			MyceliumIPSeed: hex.EncodeToString(w.MyceliumIPSeed),
-			Flist:          w.Flist,
-			FlistChecksum:  w.FlistChecksum,
-			CPU:            int(w.CPU),
-			Memory:         int(w.MemoryMB),
+			VMInput: VMInput{
+				Name:           w.Name,
+				NetworkName:    w.NetworkName,
+				NodeID:         int(w.NodeID),
+				PublicIP:       w.PublicIP,
+				PublicIP6:      w.PublicIP6,
+				Planetary:      w.Planetary,
+				MyceliumIPSeed: hex.EncodeToString(w.MyceliumIPSeed),
+				Flist:          w.Flist,
+				FlistChecksum:  w.FlistChecksum,
+				CPU:            int(w.CPU),
+				Memory:         int(w.MemoryMB),
+			},
+			DiskSize: int(w.DiskSizeGB),
 		}
 		workersInput = append(workersInput, newWorkerInput)
 	}
@@ -133,7 +115,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 		kubernetesArgs.SSHKey = sshKey
 	}
 
-	nodeID, err := strconv.Atoi(fmt.Sprint(kubernetesArgs.Master.Node))
+	nodeID, err := strconv.Atoi(fmt.Sprint(kubernetesArgs.Master.NodeID))
 	if err != nil {
 		return workloads.K8sCluster{}, err
 	}
@@ -180,7 +162,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 	// parse workers
 	workers := []workloads.K8sNode{}
 	for _, w := range kubernetesArgs.Workers {
-		nodeID, err := strconv.Atoi(fmt.Sprint(w.Node))
+		nodeID, err := strconv.Atoi(fmt.Sprint(w.NodeID))
 		if err != nil {
 			return workloads.K8sCluster{}, err
 		}

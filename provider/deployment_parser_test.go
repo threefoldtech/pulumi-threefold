@@ -44,7 +44,7 @@ func generateInputs() (Disk, ZDBInput, VMInput, QSFSInput, DeploymentArgs) {
 		RootfsSize:  0,
 		Entrypoint:  "entrypoint",
 		Mounts: []Mount{{
-			DiskName:   diskInput.Name,
+			Name:       diskInput.Name,
 			MountPoint: fmt.Sprintf("/%s", diskInput.Name),
 		}},
 		Zlogs:   []Zlog{zlogInput},

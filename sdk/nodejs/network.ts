@@ -31,19 +31,61 @@ export class Network extends pulumi.CustomResource {
         return obj['__pulumiType'] === Network.__pulumiType;
     }
 
+    /**
+     * Generated wireguard configuration for external user access to the network
+     */
     public /*out*/ readonly access_wg_config!: pulumi.Output<string>;
+    /**
+     * A flag to support wireguard in the network
+     */
     public readonly add_wg_access!: pulumi.Output<boolean | undefined>;
+    /**
+     * The description of the network workload, optional with no restrictions
+     */
     public readonly description!: pulumi.Output<string>;
+    /**
+     * Wireguard IP assigned for external user access
+     */
     public /*out*/ readonly external_ip!: pulumi.Output<string>;
+    /**
+     * External user private key used in encryption while communicating through Wireguard network
+     */
     public /*out*/ readonly external_sk!: pulumi.Output<string>;
+    /**
+     * The IP range for the network, subnet should be 16
+     */
     public readonly ip_range!: pulumi.Output<string>;
+    /**
+     * A flag to generate a random mycelium key to support mycelium in the network
+     */
     public readonly mycelium!: pulumi.Output<boolean | undefined>;
+    /**
+     * A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
+     */
     public readonly mycelium_keys!: pulumi.Output<{[key: string]: string} | undefined>;
+    /**
+     * The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     public readonly name!: pulumi.Output<string>;
+    /**
+     * Mapping from each node to its deployment id
+     */
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
+    /**
+     * The nodes used to deploy the network on, shouldn't be empty
+     */
     public readonly nodes!: pulumi.Output<any[]>;
+    /**
+     * Computed values of nodes' IP ranges after deployment
+     */
     public /*out*/ readonly nodes_ip_range!: pulumi.Output<{[key: string]: string}>;
+    /**
+     * Public node id (in case it's added). Used for wireguard access and supporting hidden nodes
+     */
     public /*out*/ readonly public_node_id!: pulumi.Output<number>;
+    /**
+     * The solution type of the network, displayed as project name in contract metadata
+     */
     public readonly solution_type!: pulumi.Output<string | undefined>;
 
     /**
@@ -108,12 +150,36 @@ export class Network extends pulumi.CustomResource {
  * The set of arguments for constructing a Network resource.
  */
 export interface NetworkArgs {
+    /**
+     * A flag to support wireguard in the network
+     */
     add_wg_access?: pulumi.Input<boolean>;
+    /**
+     * The description of the network workload, optional with no restrictions
+     */
     description: pulumi.Input<string>;
+    /**
+     * The IP range for the network, subnet should be 16
+     */
     ip_range: pulumi.Input<string>;
+    /**
+     * A flag to generate a random mycelium key to support mycelium in the network
+     */
     mycelium?: pulumi.Input<boolean>;
+    /**
+     * A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
+     */
     mycelium_keys?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     */
     name: pulumi.Input<string>;
+    /**
+     * The nodes used to deploy the network on, shouldn't be empty
+     */
     nodes: pulumi.Input<any[]>;
+    /**
+     * The solution type of the network, displayed as project name in contract metadata
+     */
     solution_type?: pulumi.Input<string>;
 }

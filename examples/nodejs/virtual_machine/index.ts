@@ -33,7 +33,7 @@ const deployment = new threefold.Deployment("deployment", {
         planetary: true,
         mycelium: true,
         mounts: [{
-            disk_name: "data",
+            name: "data",
             mount_point: "/app",
         }],
         env_vars: {
