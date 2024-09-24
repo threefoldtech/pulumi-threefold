@@ -1,7 +1,7 @@
 module pulumi-threefold
 
-go 1.21
+go 1.22
 
 require (
-  github.com/pulumi/pulumi/sdk/v3 v3.130.0
+  github.com/pulumi/pulumi/sdk/v3 v3.133.0
 )
