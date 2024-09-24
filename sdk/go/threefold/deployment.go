@@ -15,21 +15,33 @@ import (
 type Deployment struct {
 	pulumi.CustomResourceState
 
-	Contract_id        pulumi.IntOutput        `pulumi:"contract_id"`
-	Disks              DiskArrayOutput         `pulumi:"disks"`
-	Ip_range           pulumi.StringOutput     `pulumi:"ip_range"`
-	Name               pulumi.StringOutput     `pulumi:"name"`
-	Network_name       pulumi.StringPtrOutput  `pulumi:"network_name"`
-	Node_deployment_id pulumi.IntMapOutput     `pulumi:"node_deployment_id"`
-	Node_id            pulumi.AnyOutput        `pulumi:"node_id"`
-	Qsfs               QSFSInputArrayOutput    `pulumi:"qsfs"`
-	Qsfs_computed      QSFSComputedArrayOutput `pulumi:"qsfs_computed"`
-	Solution_provider  pulumi.IntPtrOutput     `pulumi:"solution_provider"`
-	Solution_type      pulumi.StringPtrOutput  `pulumi:"solution_type"`
-	Vms                VMInputArrayOutput      `pulumi:"vms"`
-	Vms_computed       VMComputedArrayOutput   `pulumi:"vms_computed"`
-	Zdbs               ZDBInputArrayOutput     `pulumi:"zdbs"`
-	Zdbs_computed      ZDBComputedArrayOutput  `pulumi:"zdbs_computed"`
+	// The deployment ID
+	Contract_id pulumi.IntOutput `pulumi:"contract_id"`
+	// The disks requested to be included in the deployment
+	Disks DiskArrayOutput `pulumi:"disks"`
+	// IP range of the node for the wireguard network (e.g. 10.1.2.0/24). Has to have a subnet mask of 24
+	Ip_range pulumi.StringOutput `pulumi:"ip_range"`
+	// The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringOutput `pulumi:"name"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name pulumi.StringPtrOutput `pulumi:"network_name"`
+	// Mapping from each node to its deployment ID
+	Node_deployment_id pulumi.IntMapOutput `pulumi:"node_deployment_id"`
+	// The node ID to deploy on, required and should match the requested resources
+	Node_id pulumi.AnyOutput `pulumi:"node_id"`
+	// The qsfs output instances requested to be included in the deployment
+	Qsfs          QSFSInputArrayOutput    `pulumi:"qsfs"`
+	Qsfs_computed QSFSComputedArrayOutput `pulumi:"qsfs_computed"`
+	// ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+	Solution_provider pulumi.IntPtrOutput `pulumi:"solution_provider"`
+	// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+	Solution_type pulumi.StringPtrOutput `pulumi:"solution_type"`
+	// The vms output requested to be included in the deployment
+	Vms          VMInputArrayOutput    `pulumi:"vms"`
+	Vms_computed VMComputedArrayOutput `pulumi:"vms_computed"`
+	// The zdbs output requested to be included in the deployment
+	Zdbs          ZDBInputArrayOutput    `pulumi:"zdbs"`
+	Zdbs_computed ZDBComputedArrayOutput `pulumi:"zdbs_computed"`
 }
 
 // NewDeployment registers a new resource with the given unique name, arguments, and options.
@@ -81,28 +93,46 @@ func (DeploymentState) ElementType() reflect.Type {
 }
 
 type deploymentArgs struct {
-	Disks             []Disk      `pulumi:"disks"`
-	Name              string      `pulumi:"name"`
-	Network_name      *string     `pulumi:"network_name"`
-	Node_id           interface{} `pulumi:"node_id"`
-	Qsfs              []QSFSInput `pulumi:"qsfs"`
-	Solution_provider *int        `pulumi:"solution_provider"`
-	Solution_type     *string     `pulumi:"solution_type"`
-	Vms               []VMInput   `pulumi:"vms"`
-	Zdbs              []ZDBInput  `pulumi:"zdbs"`
+	// The disks requested to be included in the deployment
+	Disks []Disk `pulumi:"disks"`
+	// The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name *string `pulumi:"network_name"`
+	// The node ID to deploy on, required and should match the requested resources
+	Node_id interface{} `pulumi:"node_id"`
+	// The qsfs instances requested to be included in the deployment
+	Qsfs []QSFSInput `pulumi:"qsfs"`
+	// ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+	Solution_provider *int `pulumi:"solution_provider"`
+	// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+	Solution_type *string `pulumi:"solution_type"`
+	// The vms requested to be included in the deployment
+	Vms []VMInput `pulumi:"vms"`
+	// The zdbs requested to be included in the deployment
+	Zdbs []ZDBInput `pulumi:"zdbs"`
 }
 
 // The set of arguments for constructing a Deployment resource.
 type DeploymentArgs struct {
-	Disks             DiskArrayInput
-	Name              pulumi.StringInput
-	Network_name      pulumi.StringPtrInput
-	Node_id           pulumi.Input
-	Qsfs              QSFSInputArrayInput
+	// The disks requested to be included in the deployment
+	Disks DiskArrayInput
+	// The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name pulumi.StringPtrInput
+	// The node ID to deploy on, required and should match the requested resources
+	Node_id pulumi.Input
+	// The qsfs instances requested to be included in the deployment
+	Qsfs QSFSInputArrayInput
+	// ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
 	Solution_provider pulumi.IntPtrInput
-	Solution_type     pulumi.StringPtrInput
-	Vms               VMInputArrayInput
-	Zdbs              ZDBInputArrayInput
+	// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+	Solution_type pulumi.StringPtrInput
+	// The vms requested to be included in the deployment
+	Vms VMInputArrayInput
+	// The zdbs requested to be included in the deployment
+	Zdbs ZDBInputArrayInput
 }
 
 func (DeploymentArgs) ElementType() reflect.Type {
@@ -192,34 +222,42 @@ func (o DeploymentOutput) ToDeploymentOutputWithContext(ctx context.Context) Dep
 	return o
 }
 
+// The deployment ID
 func (o DeploymentOutput) Contract_id() pulumi.IntOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.IntOutput { return v.Contract_id }).(pulumi.IntOutput)
 }
 
+// The disks requested to be included in the deployment
 func (o DeploymentOutput) Disks() DiskArrayOutput {
 	return o.ApplyT(func(v *Deployment) DiskArrayOutput { return v.Disks }).(DiskArrayOutput)
 }
 
+// IP range of the node for the wireguard network (e.g. 10.1.2.0/24). Has to have a subnet mask of 24
 func (o DeploymentOutput) Ip_range() pulumi.StringOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringOutput { return v.Ip_range }).(pulumi.StringOutput)
 }
 
+// The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o DeploymentOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
 func (o DeploymentOutput) Network_name() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringPtrOutput { return v.Network_name }).(pulumi.StringPtrOutput)
 }
 
+// Mapping from each node to its deployment ID
 func (o DeploymentOutput) Node_deployment_id() pulumi.IntMapOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.IntMapOutput { return v.Node_deployment_id }).(pulumi.IntMapOutput)
 }
 
+// The node ID to deploy on, required and should match the requested resources
 func (o DeploymentOutput) Node_id() pulumi.AnyOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.AnyOutput { return v.Node_id }).(pulumi.AnyOutput)
 }
 
+// The qsfs output instances requested to be included in the deployment
 func (o DeploymentOutput) Qsfs() QSFSInputArrayOutput {
 	return o.ApplyT(func(v *Deployment) QSFSInputArrayOutput { return v.Qsfs }).(QSFSInputArrayOutput)
 }
@@ -228,14 +266,17 @@ func (o DeploymentOutput) Qsfs_computed() QSFSComputedArrayOutput {
 	return o.ApplyT(func(v *Deployment) QSFSComputedArrayOutput { return v.Qsfs_computed }).(QSFSComputedArrayOutput)
 }
 
+// ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
 func (o DeploymentOutput) Solution_provider() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.IntPtrOutput { return v.Solution_provider }).(pulumi.IntPtrOutput)
 }
 
+// The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
 func (o DeploymentOutput) Solution_type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Deployment) pulumi.StringPtrOutput { return v.Solution_type }).(pulumi.StringPtrOutput)
 }
 
+// The vms output requested to be included in the deployment
 func (o DeploymentOutput) Vms() VMInputArrayOutput {
 	return o.ApplyT(func(v *Deployment) VMInputArrayOutput { return v.Vms }).(VMInputArrayOutput)
 }
@@ -244,6 +285,7 @@ func (o DeploymentOutput) Vms_computed() VMComputedArrayOutput {
 	return o.ApplyT(func(v *Deployment) VMComputedArrayOutput { return v.Vms_computed }).(VMComputedArrayOutput)
 }
 
+// The zdbs output requested to be included in the deployment
 func (o DeploymentOutput) Zdbs() ZDBInputArrayOutput {
 	return o.ApplyT(func(v *Deployment) ZDBInputArrayOutput { return v.Zdbs }).(ZDBInputArrayOutput)
 }

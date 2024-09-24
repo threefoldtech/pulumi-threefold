@@ -36,12 +36,6 @@ type NetworkState struct {
 	NodeDeploymentID map[string]int64  `pulumi:"node_deployment_id"`
 }
 
-var _ = (infer.Annotated)((*NetworkArgs)(nil))
-
-func (n *NetworkArgs) Annotate(a infer.Annotator) {
-	a.SetDefault(&n.SolutionType, "Network")
-}
-
 // Check validates the network
 func (*Network) Check(
 	ctx context.Context,

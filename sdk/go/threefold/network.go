@@ -15,20 +15,34 @@ import (
 type Network struct {
 	pulumi.CustomResourceState
 
-	Access_wg_config   pulumi.StringOutput    `pulumi:"access_wg_config"`
-	Add_wg_access      pulumi.BoolPtrOutput   `pulumi:"add_wg_access"`
-	Description        pulumi.StringOutput    `pulumi:"description"`
-	External_ip        pulumi.StringOutput    `pulumi:"external_ip"`
-	External_sk        pulumi.StringOutput    `pulumi:"external_sk"`
-	Ip_range           pulumi.StringOutput    `pulumi:"ip_range"`
-	Mycelium           pulumi.BoolPtrOutput   `pulumi:"mycelium"`
-	Mycelium_keys      pulumi.StringMapOutput `pulumi:"mycelium_keys"`
-	Name               pulumi.StringOutput    `pulumi:"name"`
-	Node_deployment_id pulumi.IntMapOutput    `pulumi:"node_deployment_id"`
-	Nodes              pulumi.ArrayOutput     `pulumi:"nodes"`
-	Nodes_ip_range     pulumi.StringMapOutput `pulumi:"nodes_ip_range"`
-	Public_node_id     pulumi.IntOutput       `pulumi:"public_node_id"`
-	Solution_type      pulumi.StringPtrOutput `pulumi:"solution_type"`
+	// Generated wireguard configuration for external user access to the network
+	Access_wg_config pulumi.StringOutput `pulumi:"access_wg_config"`
+	// A flag to support wireguard in the network
+	Add_wg_access pulumi.BoolPtrOutput `pulumi:"add_wg_access"`
+	// The description of the network workload, optional with no restrictions
+	Description pulumi.StringOutput `pulumi:"description"`
+	// Wireguard IP assigned for external user access
+	External_ip pulumi.StringOutput `pulumi:"external_ip"`
+	// External user private key used in encryption while communicating through Wireguard network
+	External_sk pulumi.StringOutput `pulumi:"external_sk"`
+	// The IP range for the network, subnet should be 16
+	Ip_range pulumi.StringOutput `pulumi:"ip_range"`
+	// A flag to generate a random mycelium key to support mycelium in the network
+	Mycelium pulumi.BoolPtrOutput `pulumi:"mycelium"`
+	// A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
+	Mycelium_keys pulumi.StringMapOutput `pulumi:"mycelium_keys"`
+	// The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringOutput `pulumi:"name"`
+	// Mapping from each node to its deployment id
+	Node_deployment_id pulumi.IntMapOutput `pulumi:"node_deployment_id"`
+	// The nodes used to deploy the network on, shouldn't be empty
+	Nodes pulumi.ArrayOutput `pulumi:"nodes"`
+	// Computed values of nodes' IP ranges after deployment
+	Nodes_ip_range pulumi.StringMapOutput `pulumi:"nodes_ip_range"`
+	// Public node id (in case it's added). Used for wireguard access and supporting hidden nodes
+	Public_node_id pulumi.IntOutput `pulumi:"public_node_id"`
+	// The solution type of the network, displayed as project name in contract metadata
+	Solution_type pulumi.StringPtrOutput `pulumi:"solution_type"`
 }
 
 // NewNetwork registers a new resource with the given unique name, arguments, and options.
@@ -86,25 +100,41 @@ func (NetworkState) ElementType() reflect.Type {
 }
 
 type networkArgs struct {
-	Add_wg_access *bool             `pulumi:"add_wg_access"`
-	Description   string            `pulumi:"description"`
-	Ip_range      string            `pulumi:"ip_range"`
-	Mycelium      *bool             `pulumi:"mycelium"`
+	// A flag to support wireguard in the network
+	Add_wg_access *bool `pulumi:"add_wg_access"`
+	// The description of the network workload, optional with no restrictions
+	Description string `pulumi:"description"`
+	// The IP range for the network, subnet should be 16
+	Ip_range string `pulumi:"ip_range"`
+	// A flag to generate a random mycelium key to support mycelium in the network
+	Mycelium *bool `pulumi:"mycelium"`
+	// A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
 	Mycelium_keys map[string]string `pulumi:"mycelium_keys"`
-	Name          string            `pulumi:"name"`
-	Nodes         []interface{}     `pulumi:"nodes"`
-	Solution_type *string           `pulumi:"solution_type"`
+	// The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
+	// The nodes used to deploy the network on, shouldn't be empty
+	Nodes []interface{} `pulumi:"nodes"`
+	// The solution type of the network, displayed as project name in contract metadata
+	Solution_type *string `pulumi:"solution_type"`
 }
 
 // The set of arguments for constructing a Network resource.
 type NetworkArgs struct {
+	// A flag to support wireguard in the network
 	Add_wg_access pulumi.BoolPtrInput
-	Description   pulumi.StringInput
-	Ip_range      pulumi.StringInput
-	Mycelium      pulumi.BoolPtrInput
+	// The description of the network workload, optional with no restrictions
+	Description pulumi.StringInput
+	// The IP range for the network, subnet should be 16
+	Ip_range pulumi.StringInput
+	// A flag to generate a random mycelium key to support mycelium in the network
+	Mycelium pulumi.BoolPtrInput
+	// A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
 	Mycelium_keys pulumi.StringMapInput
-	Name          pulumi.StringInput
-	Nodes         pulumi.ArrayInput
+	// The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput
+	// The nodes used to deploy the network on, shouldn't be empty
+	Nodes pulumi.ArrayInput
+	// The solution type of the network, displayed as project name in contract metadata
 	Solution_type pulumi.StringPtrInput
 }
 
@@ -195,58 +225,72 @@ func (o NetworkOutput) ToNetworkOutputWithContext(ctx context.Context) NetworkOu
 	return o
 }
 
+// Generated wireguard configuration for external user access to the network
 func (o NetworkOutput) Access_wg_config() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.Access_wg_config }).(pulumi.StringOutput)
 }
 
+// A flag to support wireguard in the network
 func (o NetworkOutput) Add_wg_access() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Network) pulumi.BoolPtrOutput { return v.Add_wg_access }).(pulumi.BoolPtrOutput)
 }
 
+// The description of the network workload, optional with no restrictions
 func (o NetworkOutput) Description() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.Description }).(pulumi.StringOutput)
 }
 
+// Wireguard IP assigned for external user access
 func (o NetworkOutput) External_ip() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.External_ip }).(pulumi.StringOutput)
 }
 
+// External user private key used in encryption while communicating through Wireguard network
 func (o NetworkOutput) External_sk() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.External_sk }).(pulumi.StringOutput)
 }
 
+// The IP range for the network, subnet should be 16
 func (o NetworkOutput) Ip_range() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.Ip_range }).(pulumi.StringOutput)
 }
 
+// A flag to generate a random mycelium key to support mycelium in the network
 func (o NetworkOutput) Mycelium() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v *Network) pulumi.BoolPtrOutput { return v.Mycelium }).(pulumi.BoolPtrOutput)
 }
 
+// A map of nodes as a key and mycelium key for each node, mycelium key length should be 32. Selected nodes must be included in the network's nodes
 func (o NetworkOutput) Mycelium_keys() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringMapOutput { return v.Mycelium_keys }).(pulumi.StringMapOutput)
 }
 
+// The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o NetworkOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
+// Mapping from each node to its deployment id
 func (o NetworkOutput) Node_deployment_id() pulumi.IntMapOutput {
 	return o.ApplyT(func(v *Network) pulumi.IntMapOutput { return v.Node_deployment_id }).(pulumi.IntMapOutput)
 }
 
+// The nodes used to deploy the network on, shouldn't be empty
 func (o NetworkOutput) Nodes() pulumi.ArrayOutput {
 	return o.ApplyT(func(v *Network) pulumi.ArrayOutput { return v.Nodes }).(pulumi.ArrayOutput)
 }
 
+// Computed values of nodes' IP ranges after deployment
 func (o NetworkOutput) Nodes_ip_range() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringMapOutput { return v.Nodes_ip_range }).(pulumi.StringMapOutput)
 }
 
+// Public node id (in case it's added). Used for wireguard access and supporting hidden nodes
 func (o NetworkOutput) Public_node_id() pulumi.IntOutput {
 	return o.ApplyT(func(v *Network) pulumi.IntOutput { return v.Public_node_id }).(pulumi.IntOutput)
 }
 
+// The solution type of the network, displayed as project name in contract metadata
 func (o NetworkOutput) Solution_type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Network) pulumi.StringPtrOutput { return v.Solution_type }).(pulumi.StringPtrOutput)
 }

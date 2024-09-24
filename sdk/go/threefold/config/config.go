@@ -11,6 +11,11 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
+// The graphql urls, example: https://graphql.grid.tf/graphql
+func GetGraphql_url(ctx *pulumi.Context) string {
+	return config.Get(ctx, "threefold:graphql_url")
+}
+
 // The key type registered on substrate (ed25519 or sr25519).
 func GetKey_type(ctx *pulumi.Context) string {
 	v, err := config.Try(ctx, "threefold:key_type")
@@ -50,7 +55,12 @@ func GetNetwork(ctx *pulumi.Context) string {
 	return value
 }
 
-// The relay urls, example: wss://relay.dev.grid.tf
+// The proxy urls, example: https://gridproxy.grid.tf/
+func GetProxy_url(ctx *pulumi.Context) string {
+	return config.Get(ctx, "threefold:proxy_url")
+}
+
+// The relay urls, example: wss://relay.grid.tf
 func GetRelay_url(ctx *pulumi.Context) string {
 	return config.Get(ctx, "threefold:relay_url")
 }
@@ -60,7 +70,7 @@ func GetRmb_timeout(ctx *pulumi.Context) string {
 	return config.Get(ctx, "threefold:rmb_timeout")
 }
 
-// The substrate url, example: wss://tfchain.dev.grid.tf/ws
+// The substrate url, example: wss://tfchain.grid.tf/ws
 func GetSubstrate_url(ctx *pulumi.Context) string {
 	return config.Get(ctx, "threefold:substrate_url")
 }

@@ -9,6 +9,11 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from .. import _utilities
 
+graphql_url: Optional[str]
+"""
+The graphql urls, example: https://graphql.grid.tf/graphql
+"""
+
 key_type: str
 """
 The key type registered on substrate (ed25519 or sr25519).
@@ -24,9 +29,14 @@ network: str
 The network to deploy on.
 """
 
+proxy_url: Optional[str]
+"""
+The proxy urls, example: https://gridproxy.grid.tf/
+"""
+
 relay_url: Optional[str]
 """
-The relay urls, example: wss://relay.dev.grid.tf
+The relay urls, example: wss://relay.grid.tf
 """
 
 rmb_timeout: Optional[str]
@@ -36,6 +46,6 @@ The timeout duration in seconds for rmb calls
 
 substrate_url: Optional[str]
 """
-The substrate url, example: wss://tfchain.dev.grid.tf/ws
+The substrate url, example: wss://tfchain.grid.tf/ws
 """
 

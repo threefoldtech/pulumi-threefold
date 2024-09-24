@@ -45,35 +45,35 @@ func main() {
 			Master: &threefold.K8sNodeInputArgs{
 				Name:         pulumi.String("kubernetes"),
 				Network_name: pulumi.String("test"),
-				Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+				Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 					return nodes[0], nil
 				}).(pulumi.IntOutput),
-				Disk_size: pulumi.Int(2),
 				Planetary: pulumi.Bool(true),
 				Mycelium:  pulumi.Bool(true),
 				Cpu:       pulumi.Int(2),
 				Memory:    pulumi.Int(2048),
+				Disk_size: pulumi.Int(2),
 			},
 			Workers: threefold.K8sNodeInputArray{
 				&threefold.K8sNodeInputArgs{
 					Name:         pulumi.String("worker1"),
 					Network_name: pulumi.String("test"),
-					Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+					Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 						return nodes[0], nil
 					}).(pulumi.IntOutput),
-					Disk_size: pulumi.Int(2),
 					Cpu:       pulumi.Int(2),
 					Memory:    pulumi.Int(2048),
+					Disk_size: pulumi.Int(2),
 				},
 				&threefold.K8sNodeInputArgs{
 					Name:         pulumi.String("worker2"),
 					Network_name: pulumi.String("test"),
-					Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+					Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
 						return nodes[0], nil
 					}).(pulumi.IntOutput),
-					Disk_size: pulumi.Int(2),
 					Cpu:       pulumi.Int(2),
 					Memory:    pulumi.Int(2048),
+					Disk_size: pulumi.Int(2),
 				},
 			},
 			Token:        pulumi.String("t123456789"),
@@ -86,10 +86,10 @@ func main() {
 			return err
 		}
 		ctx.Export("node_deployment_id", kubernetes.Node_deployment_id)
-		ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
+		ctx.Export("planetary_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.VMComputed) (*string, error) {
 			return &master_computed.Planetary_ip, nil
 		}).(pulumi.StringPtrOutput))
-		ctx.Export("mycelium_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.K8sNodeComputed) (*string, error) {
+		ctx.Export("mycelium_ip", kubernetes.Master_computed.ApplyT(func(master_computed threefold.VMComputed) (*string, error) {
 			return &master_computed.Mycelium_ip, nil
 		}).(pulumi.StringPtrOutput))
 		return nil

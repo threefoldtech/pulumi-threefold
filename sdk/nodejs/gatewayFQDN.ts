@@ -31,15 +31,45 @@ export class GatewayFQDN extends pulumi.CustomResource {
         return obj['__pulumiType'] === GatewayFQDN.__pulumiType;
     }
 
+    /**
+     * The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+     */
     public readonly backends!: pulumi.Output<string[]>;
+    /**
+     * The deployment ID
+     */
     public /*out*/ readonly contract_id!: pulumi.Output<number>;
+    /**
+     * The description of the virtual machine workload, optional with no restrictions
+     */
     public readonly description!: pulumi.Output<string | undefined>;
+    /**
+     * The fully qualified domain name of the deployed workload
+     */
     public readonly fqdn!: pulumi.Output<string>;
+    /**
+     * Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+     */
     public readonly name!: pulumi.Output<string>;
+    /**
+     * Network name to join, if backend IP is private
+     */
     public readonly network_name!: pulumi.Output<string | undefined>;
+    /**
+     * Mapping from each node to its deployment ID
+     */
     public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
+    /**
+     * The gateway's node ID
+     */
     public readonly node_id!: pulumi.Output<any>;
+    /**
+     * The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+     */
     public readonly solution_type!: pulumi.Output<string | undefined>;
+    /**
+     * TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+     */
     public readonly tls_pass_through!: pulumi.Output<boolean | undefined>;
 
     /**
@@ -96,12 +126,36 @@ export class GatewayFQDN extends pulumi.CustomResource {
  * The set of arguments for constructing a GatewayFQDN resource.
  */
 export interface GatewayFQDNArgs {
+    /**
+     * The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
+     */
     backends: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The description of the virtual machine workload, optional with no restrictions
+     */
     description?: pulumi.Input<string>;
+    /**
+     * The fully qualified domain name of the deployed workload
+     */
     fqdn: pulumi.Input<string>;
+    /**
+     * Gateway workload name.  This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
+     */
     name: pulumi.Input<string>;
+    /**
+     * Network name to join, if backend IP is private
+     */
     network_name?: pulumi.Input<string>;
+    /**
+     * The gateway's node ID
+     */
     node_id: any;
+    /**
+     * The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+     */
     solution_type?: pulumi.Input<string>;
+    /**
+     * TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
+     */
     tls_pass_through?: pulumi.Input<boolean>;
 }

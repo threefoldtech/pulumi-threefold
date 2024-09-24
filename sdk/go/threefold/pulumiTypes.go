@@ -14,9 +14,12 @@ import (
 var _ = internal.GetEnvOrDefault
 
 type Backend struct {
-	Address   string `pulumi:"address"`
+	// Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
+	Address string `pulumi:"address"`
+	// ZDB namespace
 	Namespace string `pulumi:"namespace"`
-	Password  string `pulumi:"password"`
+	// Namespace password
+	Password string `pulumi:"password"`
 }
 
 // BackendInput is an input type that accepts BackendArgs and BackendOutput values.
@@ -31,9 +34,12 @@ type BackendInput interface {
 }
 
 type BackendArgs struct {
-	Address   pulumi.StringInput `pulumi:"address"`
+	// Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
+	Address pulumi.StringInput `pulumi:"address"`
+	// ZDB namespace
 	Namespace pulumi.StringInput `pulumi:"namespace"`
-	Password  pulumi.StringInput `pulumi:"password"`
+	// Namespace password
+	Password pulumi.StringInput `pulumi:"password"`
 }
 
 func (BackendArgs) ElementType() reflect.Type {
@@ -87,14 +93,17 @@ func (o BackendOutput) ToBackendOutputWithContext(ctx context.Context) BackendOu
 	return o
 }
 
+// Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
 func (o BackendOutput) Address() pulumi.StringOutput {
 	return o.ApplyT(func(v Backend) string { return v.Address }).(pulumi.StringOutput)
 }
 
+// ZDB namespace
 func (o BackendOutput) Namespace() pulumi.StringOutput {
 	return o.ApplyT(func(v Backend) string { return v.Namespace }).(pulumi.StringOutput)
 }
 
+// Namespace password
 func (o BackendOutput) Password() pulumi.StringOutput {
 	return o.ApplyT(func(v Backend) string { return v.Password }).(pulumi.StringOutput)
 }
@@ -120,9 +129,12 @@ func (o BackendArrayOutput) Index(i pulumi.IntInput) BackendOutput {
 }
 
 type Disk struct {
+	// The description of the disk workload, optional with no restrictions
 	Description *string `pulumi:"description"`
-	Name        string  `pulumi:"name"`
-	Size        int     `pulumi:"size"`
+	// The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
+	// The disk size in GB (type SSD)
+	Size int `pulumi:"size"`
 }
 
 // DiskInput is an input type that accepts DiskArgs and DiskOutput values.
@@ -137,9 +149,12 @@ type DiskInput interface {
 }
 
 type DiskArgs struct {
+	// The description of the disk workload, optional with no restrictions
 	Description pulumi.StringPtrInput `pulumi:"description"`
-	Name        pulumi.StringInput    `pulumi:"name"`
-	Size        pulumi.IntInput       `pulumi:"size"`
+	// The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput `pulumi:"name"`
+	// The disk size in GB (type SSD)
+	Size pulumi.IntInput `pulumi:"size"`
 }
 
 func (DiskArgs) ElementType() reflect.Type {
@@ -193,14 +208,17 @@ func (o DiskOutput) ToDiskOutputWithContext(ctx context.Context) DiskOutput {
 	return o
 }
 
+// The description of the disk workload, optional with no restrictions
 func (o DiskOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Disk) *string { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o DiskOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v Disk) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// The disk size in GB (type SSD)
 func (o DiskOutput) Size() pulumi.IntOutput {
 	return o.ApplyT(func(v Disk) int { return v.Size }).(pulumi.IntOutput)
 }
@@ -226,6 +244,7 @@ func (o DiskArrayOutput) Index(i pulumi.IntInput) DiskOutput {
 }
 
 type Group struct {
+	// List of ZDB backends configurations
 	Backends []Backend `pulumi:"backends"`
 }
 
@@ -241,6 +260,7 @@ type GroupInput interface {
 }
 
 type GroupArgs struct {
+	// List of ZDB backends configurations
 	Backends BackendArrayInput `pulumi:"backends"`
 }
 
@@ -295,6 +315,7 @@ func (o GroupOutput) ToGroupOutputWithContext(ctx context.Context) GroupOutput {
 	return o
 }
 
+// List of ZDB backends configurations
 func (o GroupOutput) Backends() BackendArrayOutput {
 	return o.ApplyT(func(v Group) []Backend { return v.Backends }).(BackendArrayOutput)
 }
@@ -319,150 +340,47 @@ func (o GroupArrayOutput) Index(i pulumi.IntInput) GroupOutput {
 	}).(GroupOutput)
 }
 
-type K8sNodeComputed struct {
-	Computed_ip      string `pulumi:"computed_ip"`
-	Computed_ip6     string `pulumi:"computed_ip6"`
-	Console_url      string `pulumi:"console_url"`
-	Ip               string `pulumi:"ip"`
-	Mycelium_ip      string `pulumi:"mycelium_ip"`
-	Mycelium_ip_seed string `pulumi:"mycelium_ip_seed"`
-	Planetary_ip     string `pulumi:"planetary_ip"`
-}
-
-// K8sNodeComputedInput is an input type that accepts K8sNodeComputedArgs and K8sNodeComputedOutput values.
-// You can construct a concrete instance of `K8sNodeComputedInput` via:
-//
-//	K8sNodeComputedArgs{...}
-type K8sNodeComputedInput interface {
-	pulumi.Input
-
-	ToK8sNodeComputedOutput() K8sNodeComputedOutput
-	ToK8sNodeComputedOutputWithContext(context.Context) K8sNodeComputedOutput
-}
-
-type K8sNodeComputedArgs struct {
-	Computed_ip      pulumi.StringInput `pulumi:"computed_ip"`
-	Computed_ip6     pulumi.StringInput `pulumi:"computed_ip6"`
-	Console_url      pulumi.StringInput `pulumi:"console_url"`
-	Ip               pulumi.StringInput `pulumi:"ip"`
-	Mycelium_ip      pulumi.StringInput `pulumi:"mycelium_ip"`
-	Mycelium_ip_seed pulumi.StringInput `pulumi:"mycelium_ip_seed"`
-	Planetary_ip     pulumi.StringInput `pulumi:"planetary_ip"`
-}
-
-func (K8sNodeComputedArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*K8sNodeComputed)(nil)).Elem()
-}
-
-func (i K8sNodeComputedArgs) ToK8sNodeComputedOutput() K8sNodeComputedOutput {
-	return i.ToK8sNodeComputedOutputWithContext(context.Background())
-}
-
-func (i K8sNodeComputedArgs) ToK8sNodeComputedOutputWithContext(ctx context.Context) K8sNodeComputedOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(K8sNodeComputedOutput)
-}
-
-// K8sNodeComputedMapInput is an input type that accepts K8sNodeComputedMap and K8sNodeComputedMapOutput values.
-// You can construct a concrete instance of `K8sNodeComputedMapInput` via:
-//
-//	K8sNodeComputedMap{ "key": K8sNodeComputedArgs{...} }
-type K8sNodeComputedMapInput interface {
-	pulumi.Input
-
-	ToK8sNodeComputedMapOutput() K8sNodeComputedMapOutput
-	ToK8sNodeComputedMapOutputWithContext(context.Context) K8sNodeComputedMapOutput
-}
-
-type K8sNodeComputedMap map[string]K8sNodeComputedInput
-
-func (K8sNodeComputedMap) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]K8sNodeComputed)(nil)).Elem()
-}
-
-func (i K8sNodeComputedMap) ToK8sNodeComputedMapOutput() K8sNodeComputedMapOutput {
-	return i.ToK8sNodeComputedMapOutputWithContext(context.Background())
-}
-
-func (i K8sNodeComputedMap) ToK8sNodeComputedMapOutputWithContext(ctx context.Context) K8sNodeComputedMapOutput {
-	return pulumi.ToOutputWithContext(ctx, i).(K8sNodeComputedMapOutput)
-}
-
-type K8sNodeComputedOutput struct{ *pulumi.OutputState }
-
-func (K8sNodeComputedOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*K8sNodeComputed)(nil)).Elem()
-}
-
-func (o K8sNodeComputedOutput) ToK8sNodeComputedOutput() K8sNodeComputedOutput {
-	return o
-}
-
-func (o K8sNodeComputedOutput) ToK8sNodeComputedOutputWithContext(ctx context.Context) K8sNodeComputedOutput {
-	return o
-}
-
-func (o K8sNodeComputedOutput) Computed_ip() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Computed_ip }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Computed_ip6() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Computed_ip6 }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Console_url() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Console_url }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Ip() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Ip }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Mycelium_ip() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Mycelium_ip }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Mycelium_ip_seed() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Mycelium_ip_seed }).(pulumi.StringOutput)
-}
-
-func (o K8sNodeComputedOutput) Planetary_ip() pulumi.StringOutput {
-	return o.ApplyT(func(v K8sNodeComputed) string { return v.Planetary_ip }).(pulumi.StringOutput)
-}
-
-type K8sNodeComputedMapOutput struct{ *pulumi.OutputState }
-
-func (K8sNodeComputedMapOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*map[string]K8sNodeComputed)(nil)).Elem()
-}
-
-func (o K8sNodeComputedMapOutput) ToK8sNodeComputedMapOutput() K8sNodeComputedMapOutput {
-	return o
-}
-
-func (o K8sNodeComputedMapOutput) ToK8sNodeComputedMapOutputWithContext(ctx context.Context) K8sNodeComputedMapOutput {
-	return o
-}
-
-func (o K8sNodeComputedMapOutput) MapIndex(k pulumi.StringInput) K8sNodeComputedOutput {
-	return pulumi.All(o, k).ApplyT(func(vs []interface{}) K8sNodeComputed {
-		return vs[0].(map[string]K8sNodeComputed)[vs[1].(string)]
-	}).(K8sNodeComputedOutput)
-}
-
 type K8sNodeInput struct {
-	Cpu              int         `pulumi:"cpu"`
-	Disk_size        int         `pulumi:"disk_size"`
-	Flist            *string     `pulumi:"flist"`
-	Flist_checksum   *string     `pulumi:"flist_checksum"`
-	Memory           int         `pulumi:"memory"`
-	Mycelium         *bool       `pulumi:"mycelium"`
-	Mycelium_ip_seed *string     `pulumi:"mycelium_ip_seed"`
-	Name             string      `pulumi:"name"`
-	Network_name     string      `pulumi:"network_name"`
-	Node             interface{} `pulumi:"node"`
-	Planetary        *bool       `pulumi:"planetary"`
-	Public_ip        *bool       `pulumi:"public_ip"`
-	Public_ip6       *bool       `pulumi:"public_ip6"`
+	// The cpu units needed for the virtual machine. Range in [1: 32]
+	Cpu int `pulumi:"cpu"`
+	// The description of the virtual machine workload, optional with no restrictions
+	Description *string `pulumi:"description"`
+	// Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
+	Disk_size int `pulumi:"disk_size"`
+	// The entry point for the flist. Example: /sbin/zinit init
+	Entrypoint *string `pulumi:"entrypoint"`
+	// The environment variables to be passed to the virtual machine. Example: SSH_KEY
+	Env_vars map[string]string `pulumi:"env_vars"`
+	// The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+	Flist string `pulumi:"flist"`
+	// The checksum of the flist which should match the checksum of the given flist, optional
+	Flist_checksum *string `pulumi:"flist_checksum"`
+	// A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+	Gpus []string `pulumi:"gpus"`
+	// The memory capacity for the virtual machine in MB. Min is 250 MB
+	Memory int `pulumi:"memory"`
+	// A list of mounted disks or volumes
+	Mounts []Mount `pulumi:"mounts"`
+	// A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+	Mycelium *bool `pulumi:"mycelium"`
+	// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+	Mycelium_ip_seed *string `pulumi:"mycelium_ip_seed"`
+	// The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name string `pulumi:"network_name"`
+	// The node ID to deploy the virtual machine on, required and should match the requested resources
+	Node_id interface{} `pulumi:"node_id"`
+	// A flag to enable generating a yggdrasil IP for the virtual machine
+	Planetary *bool `pulumi:"planetary"`
+	// A flag to enable generating a public IP for the virtual machine, public node is required for it
+	Public_ip *bool `pulumi:"public_ip"`
+	// A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+	Public_ip6 *bool `pulumi:"public_ip6"`
+	// The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+	Rootfs_size *int `pulumi:"rootfs_size"`
+	// A list of virtual machine loggers
+	Zlogs []Zlog `pulumi:"zlogs"`
 }
 
 // K8sNodeInputInput is an input type that accepts K8sNodeInputArgs and K8sNodeInputOutput values.
@@ -477,19 +395,46 @@ type K8sNodeInputInput interface {
 }
 
 type K8sNodeInputArgs struct {
-	Cpu              pulumi.IntInput       `pulumi:"cpu"`
-	Disk_size        pulumi.IntInput       `pulumi:"disk_size"`
-	Flist            pulumi.StringPtrInput `pulumi:"flist"`
-	Flist_checksum   pulumi.StringPtrInput `pulumi:"flist_checksum"`
-	Memory           pulumi.IntInput       `pulumi:"memory"`
-	Mycelium         pulumi.BoolPtrInput   `pulumi:"mycelium"`
+	// The cpu units needed for the virtual machine. Range in [1: 32]
+	Cpu pulumi.IntInput `pulumi:"cpu"`
+	// The description of the virtual machine workload, optional with no restrictions
+	Description pulumi.StringPtrInput `pulumi:"description"`
+	// Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
+	Disk_size pulumi.IntInput `pulumi:"disk_size"`
+	// The entry point for the flist. Example: /sbin/zinit init
+	Entrypoint pulumi.StringPtrInput `pulumi:"entrypoint"`
+	// The environment variables to be passed to the virtual machine. Example: SSH_KEY
+	Env_vars pulumi.StringMapInput `pulumi:"env_vars"`
+	// The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+	Flist pulumi.StringInput `pulumi:"flist"`
+	// The checksum of the flist which should match the checksum of the given flist, optional
+	Flist_checksum pulumi.StringPtrInput `pulumi:"flist_checksum"`
+	// A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+	Gpus pulumi.StringArrayInput `pulumi:"gpus"`
+	// The memory capacity for the virtual machine in MB. Min is 250 MB
+	Memory pulumi.IntInput `pulumi:"memory"`
+	// A list of mounted disks or volumes
+	Mounts MountArrayInput `pulumi:"mounts"`
+	// A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+	Mycelium pulumi.BoolPtrInput `pulumi:"mycelium"`
+	// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
 	Mycelium_ip_seed pulumi.StringPtrInput `pulumi:"mycelium_ip_seed"`
-	Name             pulumi.StringInput    `pulumi:"name"`
-	Network_name     pulumi.StringInput    `pulumi:"network_name"`
-	Node             pulumi.Input          `pulumi:"node"`
-	Planetary        pulumi.BoolPtrInput   `pulumi:"planetary"`
-	Public_ip        pulumi.BoolPtrInput   `pulumi:"public_ip"`
-	Public_ip6       pulumi.BoolPtrInput   `pulumi:"public_ip6"`
+	// The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput `pulumi:"name"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name pulumi.StringInput `pulumi:"network_name"`
+	// The node ID to deploy the virtual machine on, required and should match the requested resources
+	Node_id pulumi.Input `pulumi:"node_id"`
+	// A flag to enable generating a yggdrasil IP for the virtual machine
+	Planetary pulumi.BoolPtrInput `pulumi:"planetary"`
+	// A flag to enable generating a public IP for the virtual machine, public node is required for it
+	Public_ip pulumi.BoolPtrInput `pulumi:"public_ip"`
+	// A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+	Public_ip6 pulumi.BoolPtrInput `pulumi:"public_ip6"`
+	// The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+	Rootfs_size pulumi.IntPtrInput `pulumi:"rootfs_size"`
+	// A list of virtual machine loggers
+	Zlogs ZlogArrayInput `pulumi:"zlogs"`
 }
 
 func (K8sNodeInputArgs) ElementType() reflect.Type {
@@ -543,56 +488,104 @@ func (o K8sNodeInputOutput) ToK8sNodeInputOutputWithContext(ctx context.Context)
 	return o
 }
 
+// The cpu units needed for the virtual machine. Range in [1: 32]
 func (o K8sNodeInputOutput) Cpu() pulumi.IntOutput {
 	return o.ApplyT(func(v K8sNodeInput) int { return v.Cpu }).(pulumi.IntOutput)
 }
 
+// The description of the virtual machine workload, optional with no restrictions
+func (o K8sNodeInputOutput) Description() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v K8sNodeInput) *string { return v.Description }).(pulumi.StringPtrOutput)
+}
+
+// Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
 func (o K8sNodeInputOutput) Disk_size() pulumi.IntOutput {
 	return o.ApplyT(func(v K8sNodeInput) int { return v.Disk_size }).(pulumi.IntOutput)
 }
 
-func (o K8sNodeInputOutput) Flist() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v K8sNodeInput) *string { return v.Flist }).(pulumi.StringPtrOutput)
+// The entry point for the flist. Example: /sbin/zinit init
+func (o K8sNodeInputOutput) Entrypoint() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v K8sNodeInput) *string { return v.Entrypoint }).(pulumi.StringPtrOutput)
 }
 
+// The environment variables to be passed to the virtual machine. Example: SSH_KEY
+func (o K8sNodeInputOutput) Env_vars() pulumi.StringMapOutput {
+	return o.ApplyT(func(v K8sNodeInput) map[string]string { return v.Env_vars }).(pulumi.StringMapOutput)
+}
+
+// The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+func (o K8sNodeInputOutput) Flist() pulumi.StringOutput {
+	return o.ApplyT(func(v K8sNodeInput) string { return v.Flist }).(pulumi.StringOutput)
+}
+
+// The checksum of the flist which should match the checksum of the given flist, optional
 func (o K8sNodeInputOutput) Flist_checksum() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v K8sNodeInput) *string { return v.Flist_checksum }).(pulumi.StringPtrOutput)
 }
 
+// A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+func (o K8sNodeInputOutput) Gpus() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v K8sNodeInput) []string { return v.Gpus }).(pulumi.StringArrayOutput)
+}
+
+// The memory capacity for the virtual machine in MB. Min is 250 MB
 func (o K8sNodeInputOutput) Memory() pulumi.IntOutput {
 	return o.ApplyT(func(v K8sNodeInput) int { return v.Memory }).(pulumi.IntOutput)
 }
 
+// A list of mounted disks or volumes
+func (o K8sNodeInputOutput) Mounts() MountArrayOutput {
+	return o.ApplyT(func(v K8sNodeInput) []Mount { return v.Mounts }).(MountArrayOutput)
+}
+
+// A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
 func (o K8sNodeInputOutput) Mycelium() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v K8sNodeInput) *bool { return v.Mycelium }).(pulumi.BoolPtrOutput)
 }
 
+// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
 func (o K8sNodeInputOutput) Mycelium_ip_seed() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v K8sNodeInput) *string { return v.Mycelium_ip_seed }).(pulumi.StringPtrOutput)
 }
 
+// The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o K8sNodeInputOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeInput) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
 func (o K8sNodeInputOutput) Network_name() pulumi.StringOutput {
 	return o.ApplyT(func(v K8sNodeInput) string { return v.Network_name }).(pulumi.StringOutput)
 }
 
-func (o K8sNodeInputOutput) Node() pulumi.AnyOutput {
-	return o.ApplyT(func(v K8sNodeInput) interface{} { return v.Node }).(pulumi.AnyOutput)
+// The node ID to deploy the virtual machine on, required and should match the requested resources
+func (o K8sNodeInputOutput) Node_id() pulumi.AnyOutput {
+	return o.ApplyT(func(v K8sNodeInput) interface{} { return v.Node_id }).(pulumi.AnyOutput)
 }
 
+// A flag to enable generating a yggdrasil IP for the virtual machine
 func (o K8sNodeInputOutput) Planetary() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v K8sNodeInput) *bool { return v.Planetary }).(pulumi.BoolPtrOutput)
 }
 
+// A flag to enable generating a public IP for the virtual machine, public node is required for it
 func (o K8sNodeInputOutput) Public_ip() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v K8sNodeInput) *bool { return v.Public_ip }).(pulumi.BoolPtrOutput)
 }
 
+// A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
 func (o K8sNodeInputOutput) Public_ip6() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v K8sNodeInput) *bool { return v.Public_ip6 }).(pulumi.BoolPtrOutput)
+}
+
+// The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+func (o K8sNodeInputOutput) Rootfs_size() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v K8sNodeInput) *int { return v.Rootfs_size }).(pulumi.IntPtrOutput)
+}
+
+// A list of virtual machine loggers
+func (o K8sNodeInputOutput) Zlogs() ZlogArrayOutput {
+	return o.ApplyT(func(v K8sNodeInput) []Zlog { return v.Zlogs }).(ZlogArrayOutput)
 }
 
 type K8sNodeInputArrayOutput struct{ *pulumi.OutputState }
@@ -616,11 +609,16 @@ func (o K8sNodeInputArrayOutput) Index(i pulumi.IntInput) K8sNodeInputOutput {
 }
 
 type Metadata struct {
-	Backends             []Backend `pulumi:"backends"`
-	Encryption_algorithm *string   `pulumi:"encryption_algorithm"`
-	Encryption_key       string    `pulumi:"encryption_key"`
-	Prefix               string    `pulumi:"prefix"`
-	Type                 *string   `pulumi:"type"`
+	// List of ZDB backends configurations
+	Backends []Backend `pulumi:"backends"`
+	// configuration to use for the encryption stage. Currently only AES is supported
+	Encryption_algorithm *string `pulumi:"encryption_algorithm"`
+	// 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+	Encryption_key string `pulumi:"encryption_key"`
+	// Data stored on the remote metadata is prefixed with
+	Prefix string `pulumi:"prefix"`
+	// configuration for the metadata store to use, currently only ZDB is supported
+	Type *string `pulumi:"type"`
 }
 
 // MetadataInput is an input type that accepts MetadataArgs and MetadataOutput values.
@@ -635,11 +633,16 @@ type MetadataInput interface {
 }
 
 type MetadataArgs struct {
-	Backends             BackendArrayInput     `pulumi:"backends"`
+	// List of ZDB backends configurations
+	Backends BackendArrayInput `pulumi:"backends"`
+	// configuration to use for the encryption stage. Currently only AES is supported
 	Encryption_algorithm pulumi.StringPtrInput `pulumi:"encryption_algorithm"`
-	Encryption_key       pulumi.StringInput    `pulumi:"encryption_key"`
-	Prefix               pulumi.StringInput    `pulumi:"prefix"`
-	Type                 pulumi.StringPtrInput `pulumi:"type"`
+	// 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+	Encryption_key pulumi.StringInput `pulumi:"encryption_key"`
+	// Data stored on the remote metadata is prefixed with
+	Prefix pulumi.StringInput `pulumi:"prefix"`
+	// configuration for the metadata store to use, currently only ZDB is supported
+	Type pulumi.StringPtrInput `pulumi:"type"`
 }
 
 func (MetadataArgs) ElementType() reflect.Type {
@@ -668,29 +671,36 @@ func (o MetadataOutput) ToMetadataOutputWithContext(ctx context.Context) Metadat
 	return o
 }
 
+// List of ZDB backends configurations
 func (o MetadataOutput) Backends() BackendArrayOutput {
 	return o.ApplyT(func(v Metadata) []Backend { return v.Backends }).(BackendArrayOutput)
 }
 
+// configuration to use for the encryption stage. Currently only AES is supported
 func (o MetadataOutput) Encryption_algorithm() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Metadata) *string { return v.Encryption_algorithm }).(pulumi.StringPtrOutput)
 }
 
+// 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
 func (o MetadataOutput) Encryption_key() pulumi.StringOutput {
 	return o.ApplyT(func(v Metadata) string { return v.Encryption_key }).(pulumi.StringOutput)
 }
 
+// Data stored on the remote metadata is prefixed with
 func (o MetadataOutput) Prefix() pulumi.StringOutput {
 	return o.ApplyT(func(v Metadata) string { return v.Prefix }).(pulumi.StringOutput)
 }
 
+// configuration for the metadata store to use, currently only ZDB is supported
 func (o MetadataOutput) Type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v Metadata) *string { return v.Type }).(pulumi.StringPtrOutput)
 }
 
 type Mount struct {
-	Disk_name   string `pulumi:"disk_name"`
+	// The mount point of the disk/volume
 	Mount_point string `pulumi:"mount_point"`
+	// The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
 }
 
 // MountInput is an input type that accepts MountArgs and MountOutput values.
@@ -705,8 +715,10 @@ type MountInput interface {
 }
 
 type MountArgs struct {
-	Disk_name   pulumi.StringInput `pulumi:"disk_name"`
+	// The mount point of the disk/volume
 	Mount_point pulumi.StringInput `pulumi:"mount_point"`
+	// The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput `pulumi:"name"`
 }
 
 func (MountArgs) ElementType() reflect.Type {
@@ -760,12 +772,14 @@ func (o MountOutput) ToMountOutputWithContext(ctx context.Context) MountOutput {
 	return o
 }
 
-func (o MountOutput) Disk_name() pulumi.StringOutput {
-	return o.ApplyT(func(v Mount) string { return v.Disk_name }).(pulumi.StringOutput)
-}
-
+// The mount point of the disk/volume
 func (o MountOutput) Mount_point() pulumi.StringOutput {
 	return o.ApplyT(func(v Mount) string { return v.Mount_point }).(pulumi.StringOutput)
+}
+
+// The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+func (o MountOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v Mount) string { return v.Name }).(pulumi.StringOutput)
 }
 
 type MountArrayOutput struct{ *pulumi.OutputState }
@@ -789,6 +803,7 @@ func (o MountArrayOutput) Index(i pulumi.IntInput) MountOutput {
 }
 
 type QSFSComputed struct {
+	// Exposed metrics endpoint
 	Metrics_endpoint string `pulumi:"metrics_endpoint"`
 }
 
@@ -804,6 +819,7 @@ type QSFSComputedInput interface {
 }
 
 type QSFSComputedArgs struct {
+	// Exposed metrics endpoint
 	Metrics_endpoint pulumi.StringInput `pulumi:"metrics_endpoint"`
 }
 
@@ -858,6 +874,7 @@ func (o QSFSComputedOutput) ToQSFSComputedOutputWithContext(ctx context.Context)
 	return o
 }
 
+// Exposed metrics endpoint
 func (o QSFSComputedOutput) Metrics_endpoint() pulumi.StringOutput {
 	return o.ApplyT(func(v QSFSComputed) string { return v.Metrics_endpoint }).(pulumi.StringOutput)
 }
@@ -883,19 +900,32 @@ func (o QSFSComputedArrayOutput) Index(i pulumi.IntInput) QSFSComputedOutput {
 }
 
 type QSFSInput struct {
-	Cache                 int      `pulumi:"cache"`
-	Compression_algorithm *string  `pulumi:"compression_algorithm"`
-	Description           *string  `pulumi:"description"`
-	Encryption_algorithm  *string  `pulumi:"encryption_algorithm"`
-	Encryption_key        string   `pulumi:"encryption_key"`
-	Expected_shards       int      `pulumi:"expected_shards"`
-	Groups                []Group  `pulumi:"groups"`
-	Max_zdb_data_dir_size int      `pulumi:"max_zdb_data_dir_size"`
-	Metadata              Metadata `pulumi:"metadata"`
-	Minimal_shards        int      `pulumi:"minimal_shards"`
-	Name                  string   `pulumi:"name"`
-	Redundant_groups      int      `pulumi:"redundant_groups"`
-	Redundant_nodes       int      `pulumi:"redundant_nodes"`
+	// The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
+	Cache int `pulumi:"cache"`
+	// configuration to use for the compression stage. Currently only snappy is supported
+	Compression_algorithm *string `pulumi:"compression_algorithm"`
+	// The description of the qsfs workload, optional with no restrictions
+	Description *string `pulumi:"description"`
+	// configuration to use for the encryption stage. Currently only AES is supported
+	Encryption_algorithm *string `pulumi:"encryption_algorithm"`
+	// 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+	Encryption_key string `pulumi:"encryption_key"`
+	// The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
+	Expected_shards int `pulumi:"expected_shards"`
+	// The backend groups to write the data to
+	Groups []Group `pulumi:"groups"`
+	// Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
+	Max_zdb_data_dir_size int `pulumi:"max_zdb_data_dir_size"`
+	// List of ZDB backends configurations
+	Metadata Metadata `pulumi:"metadata"`
+	// The minimum amount of shards which are needed to recover the original data
+	Minimal_shards int `pulumi:"minimal_shards"`
+	// The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
+	// The amount of groups which one should be able to loose while still being able to recover the original data
+	Redundant_groups int `pulumi:"redundant_groups"`
+	// The amount of nodes that can be lost in every group while still being able to recover the original data
+	Redundant_nodes int `pulumi:"redundant_nodes"`
 }
 
 // QSFSInputInput is an input type that accepts QSFSInputArgs and QSFSInputOutput values.
@@ -910,19 +940,32 @@ type QSFSInputInput interface {
 }
 
 type QSFSInputArgs struct {
-	Cache                 pulumi.IntInput       `pulumi:"cache"`
+	// The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
+	Cache pulumi.IntInput `pulumi:"cache"`
+	// configuration to use for the compression stage. Currently only snappy is supported
 	Compression_algorithm pulumi.StringPtrInput `pulumi:"compression_algorithm"`
-	Description           pulumi.StringPtrInput `pulumi:"description"`
-	Encryption_algorithm  pulumi.StringPtrInput `pulumi:"encryption_algorithm"`
-	Encryption_key        pulumi.StringInput    `pulumi:"encryption_key"`
-	Expected_shards       pulumi.IntInput       `pulumi:"expected_shards"`
-	Groups                GroupArrayInput       `pulumi:"groups"`
-	Max_zdb_data_dir_size pulumi.IntInput       `pulumi:"max_zdb_data_dir_size"`
-	Metadata              MetadataInput         `pulumi:"metadata"`
-	Minimal_shards        pulumi.IntInput       `pulumi:"minimal_shards"`
-	Name                  pulumi.StringInput    `pulumi:"name"`
-	Redundant_groups      pulumi.IntInput       `pulumi:"redundant_groups"`
-	Redundant_nodes       pulumi.IntInput       `pulumi:"redundant_nodes"`
+	// The description of the qsfs workload, optional with no restrictions
+	Description pulumi.StringPtrInput `pulumi:"description"`
+	// configuration to use for the encryption stage. Currently only AES is supported
+	Encryption_algorithm pulumi.StringPtrInput `pulumi:"encryption_algorithm"`
+	// 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+	Encryption_key pulumi.StringInput `pulumi:"encryption_key"`
+	// The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
+	Expected_shards pulumi.IntInput `pulumi:"expected_shards"`
+	// The backend groups to write the data to
+	Groups GroupArrayInput `pulumi:"groups"`
+	// Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
+	Max_zdb_data_dir_size pulumi.IntInput `pulumi:"max_zdb_data_dir_size"`
+	// List of ZDB backends configurations
+	Metadata MetadataInput `pulumi:"metadata"`
+	// The minimum amount of shards which are needed to recover the original data
+	Minimal_shards pulumi.IntInput `pulumi:"minimal_shards"`
+	// The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput `pulumi:"name"`
+	// The amount of groups which one should be able to loose while still being able to recover the original data
+	Redundant_groups pulumi.IntInput `pulumi:"redundant_groups"`
+	// The amount of nodes that can be lost in every group while still being able to recover the original data
+	Redundant_nodes pulumi.IntInput `pulumi:"redundant_nodes"`
 }
 
 func (QSFSInputArgs) ElementType() reflect.Type {
@@ -976,54 +1019,67 @@ func (o QSFSInputOutput) ToQSFSInputOutputWithContext(ctx context.Context) QSFSI
 	return o
 }
 
+// The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
 func (o QSFSInputOutput) Cache() pulumi.IntOutput {
 	return o.ApplyT(func(v QSFSInput) int { return v.Cache }).(pulumi.IntOutput)
 }
 
+// configuration to use for the compression stage. Currently only snappy is supported
 func (o QSFSInputOutput) Compression_algorithm() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v QSFSInput) *string { return v.Compression_algorithm }).(pulumi.StringPtrOutput)
 }
 
+// The description of the qsfs workload, optional with no restrictions
 func (o QSFSInputOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v QSFSInput) *string { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// configuration to use for the encryption stage. Currently only AES is supported
 func (o QSFSInputOutput) Encryption_algorithm() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v QSFSInput) *string { return v.Encryption_algorithm }).(pulumi.StringPtrOutput)
 }
 
+// 64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
 func (o QSFSInputOutput) Encryption_key() pulumi.StringOutput {
 	return o.ApplyT(func(v QSFSInput) string { return v.Encryption_key }).(pulumi.StringOutput)
 }
 
+// The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
 func (o QSFSInputOutput) Expected_shards() pulumi.IntOutput {
 	return o.ApplyT(func(v QSFSInput) int { return v.Expected_shards }).(pulumi.IntOutput)
 }
 
+// The backend groups to write the data to
 func (o QSFSInputOutput) Groups() GroupArrayOutput {
 	return o.ApplyT(func(v QSFSInput) []Group { return v.Groups }).(GroupArrayOutput)
 }
 
+// Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
 func (o QSFSInputOutput) Max_zdb_data_dir_size() pulumi.IntOutput {
 	return o.ApplyT(func(v QSFSInput) int { return v.Max_zdb_data_dir_size }).(pulumi.IntOutput)
 }
 
+// List of ZDB backends configurations
 func (o QSFSInputOutput) Metadata() MetadataOutput {
 	return o.ApplyT(func(v QSFSInput) Metadata { return v.Metadata }).(MetadataOutput)
 }
 
+// The minimum amount of shards which are needed to recover the original data
 func (o QSFSInputOutput) Minimal_shards() pulumi.IntOutput {
 	return o.ApplyT(func(v QSFSInput) int { return v.Minimal_shards }).(pulumi.IntOutput)
 }
 
+// The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o QSFSInputOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v QSFSInput) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// The amount of groups which one should be able to loose while still being able to recover the original data
 func (o QSFSInputOutput) Redundant_groups() pulumi.IntOutput {
 	return o.ApplyT(func(v QSFSInput) int { return v.Redundant_groups }).(pulumi.IntOutput)
 }
 
+// The amount of nodes that can be lost in every group while still being able to recover the original data
 func (o QSFSInputOutput) Redundant_nodes() pulumi.IntOutput {
 	return o.ApplyT(func(v QSFSInput) int { return v.Redundant_nodes }).(pulumi.IntOutput)
 }
@@ -1049,13 +1105,20 @@ func (o QSFSInputArrayOutput) Index(i pulumi.IntInput) QSFSInputOutput {
 }
 
 type VMComputed struct {
-	Computed_ip      string  `pulumi:"computed_ip"`
-	Computed_ip6     string  `pulumi:"computed_ip6"`
-	Console_url      string  `pulumi:"console_url"`
-	Ip               *string `pulumi:"ip"`
-	Mycelium_ip      string  `pulumi:"mycelium_ip"`
-	Mycelium_ip_seed string  `pulumi:"mycelium_ip_seed"`
-	Planetary_ip     string  `pulumi:"planetary_ip"`
+	// The reserved public ipv4 if any
+	Computed_ip string `pulumi:"computed_ip"`
+	// The reserved public ipv6 if any
+	Computed_ip6 string `pulumi:"computed_ip6"`
+	// The url to access the vm via cloud console on private interface using wireguard
+	Console_url string `pulumi:"console_url"`
+	// The private wireguard IP of the vm
+	Ip *string `pulumi:"ip"`
+	// The allocated mycelium IP
+	Mycelium_ip string `pulumi:"mycelium_ip"`
+	// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+	Mycelium_ip_seed string `pulumi:"mycelium_ip_seed"`
+	// The allocated Yggdrasil IP
+	Planetary_ip string `pulumi:"planetary_ip"`
 }
 
 // VMComputedInput is an input type that accepts VMComputedArgs and VMComputedOutput values.
@@ -1070,13 +1133,20 @@ type VMComputedInput interface {
 }
 
 type VMComputedArgs struct {
-	Computed_ip      pulumi.StringInput    `pulumi:"computed_ip"`
-	Computed_ip6     pulumi.StringInput    `pulumi:"computed_ip6"`
-	Console_url      pulumi.StringInput    `pulumi:"console_url"`
-	Ip               pulumi.StringPtrInput `pulumi:"ip"`
-	Mycelium_ip      pulumi.StringInput    `pulumi:"mycelium_ip"`
-	Mycelium_ip_seed pulumi.StringInput    `pulumi:"mycelium_ip_seed"`
-	Planetary_ip     pulumi.StringInput    `pulumi:"planetary_ip"`
+	// The reserved public ipv4 if any
+	Computed_ip pulumi.StringInput `pulumi:"computed_ip"`
+	// The reserved public ipv6 if any
+	Computed_ip6 pulumi.StringInput `pulumi:"computed_ip6"`
+	// The url to access the vm via cloud console on private interface using wireguard
+	Console_url pulumi.StringInput `pulumi:"console_url"`
+	// The private wireguard IP of the vm
+	Ip pulumi.StringPtrInput `pulumi:"ip"`
+	// The allocated mycelium IP
+	Mycelium_ip pulumi.StringInput `pulumi:"mycelium_ip"`
+	// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+	Mycelium_ip_seed pulumi.StringInput `pulumi:"mycelium_ip_seed"`
+	// The allocated Yggdrasil IP
+	Planetary_ip pulumi.StringInput `pulumi:"planetary_ip"`
 }
 
 func (VMComputedArgs) ElementType() reflect.Type {
@@ -1116,6 +1186,31 @@ func (i VMComputedArray) ToVMComputedArrayOutputWithContext(ctx context.Context)
 	return pulumi.ToOutputWithContext(ctx, i).(VMComputedArrayOutput)
 }
 
+// VMComputedMapInput is an input type that accepts VMComputedMap and VMComputedMapOutput values.
+// You can construct a concrete instance of `VMComputedMapInput` via:
+//
+//	VMComputedMap{ "key": VMComputedArgs{...} }
+type VMComputedMapInput interface {
+	pulumi.Input
+
+	ToVMComputedMapOutput() VMComputedMapOutput
+	ToVMComputedMapOutputWithContext(context.Context) VMComputedMapOutput
+}
+
+type VMComputedMap map[string]VMComputedInput
+
+func (VMComputedMap) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]VMComputed)(nil)).Elem()
+}
+
+func (i VMComputedMap) ToVMComputedMapOutput() VMComputedMapOutput {
+	return i.ToVMComputedMapOutputWithContext(context.Background())
+}
+
+func (i VMComputedMap) ToVMComputedMapOutputWithContext(ctx context.Context) VMComputedMapOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VMComputedMapOutput)
+}
+
 type VMComputedOutput struct{ *pulumi.OutputState }
 
 func (VMComputedOutput) ElementType() reflect.Type {
@@ -1130,30 +1225,37 @@ func (o VMComputedOutput) ToVMComputedOutputWithContext(ctx context.Context) VMC
 	return o
 }
 
+// The reserved public ipv4 if any
 func (o VMComputedOutput) Computed_ip() pulumi.StringOutput {
 	return o.ApplyT(func(v VMComputed) string { return v.Computed_ip }).(pulumi.StringOutput)
 }
 
+// The reserved public ipv6 if any
 func (o VMComputedOutput) Computed_ip6() pulumi.StringOutput {
 	return o.ApplyT(func(v VMComputed) string { return v.Computed_ip6 }).(pulumi.StringOutput)
 }
 
+// The url to access the vm via cloud console on private interface using wireguard
 func (o VMComputedOutput) Console_url() pulumi.StringOutput {
 	return o.ApplyT(func(v VMComputed) string { return v.Console_url }).(pulumi.StringOutput)
 }
 
+// The private wireguard IP of the vm
 func (o VMComputedOutput) Ip() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VMComputed) *string { return v.Ip }).(pulumi.StringPtrOutput)
 }
 
+// The allocated mycelium IP
 func (o VMComputedOutput) Mycelium_ip() pulumi.StringOutput {
 	return o.ApplyT(func(v VMComputed) string { return v.Mycelium_ip }).(pulumi.StringOutput)
 }
 
+// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
 func (o VMComputedOutput) Mycelium_ip_seed() pulumi.StringOutput {
 	return o.ApplyT(func(v VMComputed) string { return v.Mycelium_ip_seed }).(pulumi.StringOutput)
 }
 
+// The allocated Yggdrasil IP
 func (o VMComputedOutput) Planetary_ip() pulumi.StringOutput {
 	return o.ApplyT(func(v VMComputed) string { return v.Planetary_ip }).(pulumi.StringOutput)
 }
@@ -1178,26 +1280,65 @@ func (o VMComputedArrayOutput) Index(i pulumi.IntInput) VMComputedOutput {
 	}).(VMComputedOutput)
 }
 
+type VMComputedMapOutput struct{ *pulumi.OutputState }
+
+func (VMComputedMapOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*map[string]VMComputed)(nil)).Elem()
+}
+
+func (o VMComputedMapOutput) ToVMComputedMapOutput() VMComputedMapOutput {
+	return o
+}
+
+func (o VMComputedMapOutput) ToVMComputedMapOutputWithContext(ctx context.Context) VMComputedMapOutput {
+	return o
+}
+
+func (o VMComputedMapOutput) MapIndex(k pulumi.StringInput) VMComputedOutput {
+	return pulumi.All(o, k).ApplyT(func(vs []interface{}) VMComputed {
+		return vs[0].(map[string]VMComputed)[vs[1].(string)]
+	}).(VMComputedOutput)
+}
+
 type VMInput struct {
-	Cpu              int               `pulumi:"cpu"`
-	Description      *string           `pulumi:"description"`
-	Entrypoint       *string           `pulumi:"entrypoint"`
-	Env_vars         map[string]string `pulumi:"env_vars"`
-	Flist            string            `pulumi:"flist"`
-	Flist_checksum   *string           `pulumi:"flist_checksum"`
-	Gpus             []string          `pulumi:"gpus"`
-	Memory           int               `pulumi:"memory"`
-	Mounts           []Mount           `pulumi:"mounts"`
-	Mycelium         *bool             `pulumi:"mycelium"`
-	Mycelium_ip_seed *string           `pulumi:"mycelium_ip_seed"`
-	Name             string            `pulumi:"name"`
-	Network_name     string            `pulumi:"network_name"`
-	Node_id          interface{}       `pulumi:"node_id"`
-	Planetary        *bool             `pulumi:"planetary"`
-	Public_ip        *bool             `pulumi:"public_ip"`
-	Public_ip6       *bool             `pulumi:"public_ip6"`
-	Rootfs_size      *int              `pulumi:"rootfs_size"`
-	Zlogs            []Zlog            `pulumi:"zlogs"`
+	// The cpu units needed for the virtual machine. Range in [1: 32]
+	Cpu int `pulumi:"cpu"`
+	// The description of the virtual machine workload, optional with no restrictions
+	Description *string `pulumi:"description"`
+	// The entry point for the flist. Example: /sbin/zinit init
+	Entrypoint *string `pulumi:"entrypoint"`
+	// The environment variables to be passed to the virtual machine. Example: SSH_KEY
+	Env_vars map[string]string `pulumi:"env_vars"`
+	// The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+	Flist string `pulumi:"flist"`
+	// The checksum of the flist which should match the checksum of the given flist, optional
+	Flist_checksum *string `pulumi:"flist_checksum"`
+	// A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+	Gpus []string `pulumi:"gpus"`
+	// The memory capacity for the virtual machine in MB. Min is 250 MB
+	Memory int `pulumi:"memory"`
+	// A list of mounted disks or volumes
+	Mounts []Mount `pulumi:"mounts"`
+	// A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+	Mycelium *bool `pulumi:"mycelium"`
+	// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+	Mycelium_ip_seed *string `pulumi:"mycelium_ip_seed"`
+	// The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name string `pulumi:"network_name"`
+	// The node ID to deploy the virtual machine on, required and should match the requested resources
+	Node_id interface{} `pulumi:"node_id"`
+	// A flag to enable generating a yggdrasil IP for the virtual machine
+	Planetary *bool `pulumi:"planetary"`
+	// A flag to enable generating a public IP for the virtual machine, public node is required for it
+	Public_ip *bool `pulumi:"public_ip"`
+	// A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+	Public_ip6 *bool `pulumi:"public_ip6"`
+	// The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+	Rootfs_size *int `pulumi:"rootfs_size"`
+	// A list of virtual machine loggers
+	Zlogs []Zlog `pulumi:"zlogs"`
 }
 
 // VMInputInput is an input type that accepts VMInputArgs and VMInputOutput values.
@@ -1212,25 +1353,44 @@ type VMInputInput interface {
 }
 
 type VMInputArgs struct {
-	Cpu              pulumi.IntInput         `pulumi:"cpu"`
-	Description      pulumi.StringPtrInput   `pulumi:"description"`
-	Entrypoint       pulumi.StringPtrInput   `pulumi:"entrypoint"`
-	Env_vars         pulumi.StringMapInput   `pulumi:"env_vars"`
-	Flist            pulumi.StringInput      `pulumi:"flist"`
-	Flist_checksum   pulumi.StringPtrInput   `pulumi:"flist_checksum"`
-	Gpus             pulumi.StringArrayInput `pulumi:"gpus"`
-	Memory           pulumi.IntInput         `pulumi:"memory"`
-	Mounts           MountArrayInput         `pulumi:"mounts"`
-	Mycelium         pulumi.BoolPtrInput     `pulumi:"mycelium"`
-	Mycelium_ip_seed pulumi.StringPtrInput   `pulumi:"mycelium_ip_seed"`
-	Name             pulumi.StringInput      `pulumi:"name"`
-	Network_name     pulumi.StringInput      `pulumi:"network_name"`
-	Node_id          pulumi.Input            `pulumi:"node_id"`
-	Planetary        pulumi.BoolPtrInput     `pulumi:"planetary"`
-	Public_ip        pulumi.BoolPtrInput     `pulumi:"public_ip"`
-	Public_ip6       pulumi.BoolPtrInput     `pulumi:"public_ip6"`
-	Rootfs_size      pulumi.IntPtrInput      `pulumi:"rootfs_size"`
-	Zlogs            ZlogArrayInput          `pulumi:"zlogs"`
+	// The cpu units needed for the virtual machine. Range in [1: 32]
+	Cpu pulumi.IntInput `pulumi:"cpu"`
+	// The description of the virtual machine workload, optional with no restrictions
+	Description pulumi.StringPtrInput `pulumi:"description"`
+	// The entry point for the flist. Example: /sbin/zinit init
+	Entrypoint pulumi.StringPtrInput `pulumi:"entrypoint"`
+	// The environment variables to be passed to the virtual machine. Example: SSH_KEY
+	Env_vars pulumi.StringMapInput `pulumi:"env_vars"`
+	// The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+	Flist pulumi.StringInput `pulumi:"flist"`
+	// The checksum of the flist which should match the checksum of the given flist, optional
+	Flist_checksum pulumi.StringPtrInput `pulumi:"flist_checksum"`
+	// A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+	Gpus pulumi.StringArrayInput `pulumi:"gpus"`
+	// The memory capacity for the virtual machine in MB. Min is 250 MB
+	Memory pulumi.IntInput `pulumi:"memory"`
+	// A list of mounted disks or volumes
+	Mounts MountArrayInput `pulumi:"mounts"`
+	// A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+	Mycelium pulumi.BoolPtrInput `pulumi:"mycelium"`
+	// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+	Mycelium_ip_seed pulumi.StringPtrInput `pulumi:"mycelium_ip_seed"`
+	// The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput `pulumi:"name"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name pulumi.StringInput `pulumi:"network_name"`
+	// The node ID to deploy the virtual machine on, required and should match the requested resources
+	Node_id pulumi.Input `pulumi:"node_id"`
+	// A flag to enable generating a yggdrasil IP for the virtual machine
+	Planetary pulumi.BoolPtrInput `pulumi:"planetary"`
+	// A flag to enable generating a public IP for the virtual machine, public node is required for it
+	Public_ip pulumi.BoolPtrInput `pulumi:"public_ip"`
+	// A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+	Public_ip6 pulumi.BoolPtrInput `pulumi:"public_ip6"`
+	// The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+	Rootfs_size pulumi.IntPtrInput `pulumi:"rootfs_size"`
+	// A list of virtual machine loggers
+	Zlogs ZlogArrayInput `pulumi:"zlogs"`
 }
 
 func (VMInputArgs) ElementType() reflect.Type {
@@ -1284,78 +1444,97 @@ func (o VMInputOutput) ToVMInputOutputWithContext(ctx context.Context) VMInputOu
 	return o
 }
 
+// The cpu units needed for the virtual machine. Range in [1: 32]
 func (o VMInputOutput) Cpu() pulumi.IntOutput {
 	return o.ApplyT(func(v VMInput) int { return v.Cpu }).(pulumi.IntOutput)
 }
 
+// The description of the virtual machine workload, optional with no restrictions
 func (o VMInputOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VMInput) *string { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// The entry point for the flist. Example: /sbin/zinit init
 func (o VMInputOutput) Entrypoint() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VMInput) *string { return v.Entrypoint }).(pulumi.StringPtrOutput)
 }
 
+// The environment variables to be passed to the virtual machine. Example: SSH_KEY
 func (o VMInputOutput) Env_vars() pulumi.StringMapOutput {
 	return o.ApplyT(func(v VMInput) map[string]string { return v.Env_vars }).(pulumi.StringMapOutput)
 }
 
+// The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
 func (o VMInputOutput) Flist() pulumi.StringOutput {
 	return o.ApplyT(func(v VMInput) string { return v.Flist }).(pulumi.StringOutput)
 }
 
+// The checksum of the flist which should match the checksum of the given flist, optional
 func (o VMInputOutput) Flist_checksum() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VMInput) *string { return v.Flist_checksum }).(pulumi.StringPtrOutput)
 }
 
+// A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
 func (o VMInputOutput) Gpus() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v VMInput) []string { return v.Gpus }).(pulumi.StringArrayOutput)
 }
 
+// The memory capacity for the virtual machine in MB. Min is 250 MB
 func (o VMInputOutput) Memory() pulumi.IntOutput {
 	return o.ApplyT(func(v VMInput) int { return v.Memory }).(pulumi.IntOutput)
 }
 
+// A list of mounted disks or volumes
 func (o VMInputOutput) Mounts() MountArrayOutput {
 	return o.ApplyT(func(v VMInput) []Mount { return v.Mounts }).(MountArrayOutput)
 }
 
+// A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
 func (o VMInputOutput) Mycelium() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v VMInput) *bool { return v.Mycelium }).(pulumi.BoolPtrOutput)
 }
 
+// The seed used for mycelium IP generated for the virtual machine. It's length should be 6
 func (o VMInputOutput) Mycelium_ip_seed() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VMInput) *string { return v.Mycelium_ip_seed }).(pulumi.StringPtrOutput)
 }
 
+// The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o VMInputOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v VMInput) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
 func (o VMInputOutput) Network_name() pulumi.StringOutput {
 	return o.ApplyT(func(v VMInput) string { return v.Network_name }).(pulumi.StringOutput)
 }
 
+// The node ID to deploy the virtual machine on, required and should match the requested resources
 func (o VMInputOutput) Node_id() pulumi.AnyOutput {
 	return o.ApplyT(func(v VMInput) interface{} { return v.Node_id }).(pulumi.AnyOutput)
 }
 
+// A flag to enable generating a yggdrasil IP for the virtual machine
 func (o VMInputOutput) Planetary() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v VMInput) *bool { return v.Planetary }).(pulumi.BoolPtrOutput)
 }
 
+// A flag to enable generating a public IP for the virtual machine, public node is required for it
 func (o VMInputOutput) Public_ip() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v VMInput) *bool { return v.Public_ip }).(pulumi.BoolPtrOutput)
 }
 
+// A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
 func (o VMInputOutput) Public_ip6() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v VMInput) *bool { return v.Public_ip6 }).(pulumi.BoolPtrOutput)
 }
 
+// The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
 func (o VMInputOutput) Rootfs_size() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v VMInput) *int { return v.Rootfs_size }).(pulumi.IntPtrOutput)
 }
 
+// A list of virtual machine loggers
 func (o VMInputOutput) Zlogs() ZlogArrayOutput {
 	return o.ApplyT(func(v VMInput) []Zlog { return v.Zlogs }).(ZlogArrayOutput)
 }
@@ -1381,9 +1560,12 @@ func (o VMInputArrayOutput) Index(i pulumi.IntInput) VMInputOutput {
 }
 
 type ZDBComputed struct {
-	Ips       []string `pulumi:"ips"`
-	Namespace string   `pulumi:"namespace"`
-	Port      int      `pulumi:"port"`
+	// Computed IPs of the ZDB. Two IPs are returned: a public IPv6, and a YggIP, in this order
+	Ips []string `pulumi:"ips"`
+	// Namespace of the ZDB
+	Namespace string `pulumi:"namespace"`
+	// Port of the ZDB
+	Port int `pulumi:"port"`
 }
 
 // ZDBComputedInput is an input type that accepts ZDBComputedArgs and ZDBComputedOutput values.
@@ -1398,9 +1580,12 @@ type ZDBComputedInput interface {
 }
 
 type ZDBComputedArgs struct {
-	Ips       pulumi.StringArrayInput `pulumi:"ips"`
-	Namespace pulumi.StringInput      `pulumi:"namespace"`
-	Port      pulumi.IntInput         `pulumi:"port"`
+	// Computed IPs of the ZDB. Two IPs are returned: a public IPv6, and a YggIP, in this order
+	Ips pulumi.StringArrayInput `pulumi:"ips"`
+	// Namespace of the ZDB
+	Namespace pulumi.StringInput `pulumi:"namespace"`
+	// Port of the ZDB
+	Port pulumi.IntInput `pulumi:"port"`
 }
 
 func (ZDBComputedArgs) ElementType() reflect.Type {
@@ -1454,14 +1639,17 @@ func (o ZDBComputedOutput) ToZDBComputedOutputWithContext(ctx context.Context) Z
 	return o
 }
 
+// Computed IPs of the ZDB. Two IPs are returned: a public IPv6, and a YggIP, in this order
 func (o ZDBComputedOutput) Ips() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v ZDBComputed) []string { return v.Ips }).(pulumi.StringArrayOutput)
 }
 
+// Namespace of the ZDB
 func (o ZDBComputedOutput) Namespace() pulumi.StringOutput {
 	return o.ApplyT(func(v ZDBComputed) string { return v.Namespace }).(pulumi.StringOutput)
 }
 
+// Port of the ZDB
 func (o ZDBComputedOutput) Port() pulumi.IntOutput {
 	return o.ApplyT(func(v ZDBComputed) int { return v.Port }).(pulumi.IntOutput)
 }
@@ -1487,12 +1675,18 @@ func (o ZDBComputedArrayOutput) Index(i pulumi.IntInput) ZDBComputedOutput {
 }
 
 type ZDBInput struct {
+	// The description of the 0-db workload, optional with no restrictions
 	Description *string `pulumi:"description"`
-	Mode        *string `pulumi:"mode"`
-	Name        string  `pulumi:"name"`
-	Password    string  `pulumi:"password"`
-	Public      *bool   `pulumi:"public"`
-	Size        int     `pulumi:"size"`
+	// the enumeration of the modes 0-db can operate in (default user)
+	Mode *string `pulumi:"mode"`
+	// The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name string `pulumi:"name"`
+	// The 0-db password
+	Password string `pulumi:"password"`
+	// A flag to make 0-db namespace public - readable by anyone
+	Public *bool `pulumi:"public"`
+	// The 0-db size in GB (type HDD)
+	Size int `pulumi:"size"`
 }
 
 // Defaults sets the appropriate defaults for ZDBInput
@@ -1522,12 +1716,18 @@ type ZDBInputInput interface {
 }
 
 type ZDBInputArgs struct {
+	// The description of the 0-db workload, optional with no restrictions
 	Description pulumi.StringPtrInput `pulumi:"description"`
-	Mode        pulumi.StringPtrInput `pulumi:"mode"`
-	Name        pulumi.StringInput    `pulumi:"name"`
-	Password    pulumi.StringInput    `pulumi:"password"`
-	Public      pulumi.BoolPtrInput   `pulumi:"public"`
-	Size        pulumi.IntInput       `pulumi:"size"`
+	// the enumeration of the modes 0-db can operate in (default user)
+	Mode pulumi.StringPtrInput `pulumi:"mode"`
+	// The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+	Name pulumi.StringInput `pulumi:"name"`
+	// The 0-db password
+	Password pulumi.StringInput `pulumi:"password"`
+	// A flag to make 0-db namespace public - readable by anyone
+	Public pulumi.BoolPtrInput `pulumi:"public"`
+	// The 0-db size in GB (type HDD)
+	Size pulumi.IntInput `pulumi:"size"`
 }
 
 // Defaults sets the appropriate defaults for ZDBInputArgs
@@ -1594,26 +1794,32 @@ func (o ZDBInputOutput) ToZDBInputOutputWithContext(ctx context.Context) ZDBInpu
 	return o
 }
 
+// The description of the 0-db workload, optional with no restrictions
 func (o ZDBInputOutput) Description() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ZDBInput) *string { return v.Description }).(pulumi.StringPtrOutput)
 }
 
+// the enumeration of the modes 0-db can operate in (default user)
 func (o ZDBInputOutput) Mode() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v ZDBInput) *string { return v.Mode }).(pulumi.StringPtrOutput)
 }
 
+// The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o ZDBInputOutput) Name() pulumi.StringOutput {
 	return o.ApplyT(func(v ZDBInput) string { return v.Name }).(pulumi.StringOutput)
 }
 
+// The 0-db password
 func (o ZDBInputOutput) Password() pulumi.StringOutput {
 	return o.ApplyT(func(v ZDBInput) string { return v.Password }).(pulumi.StringOutput)
 }
 
+// A flag to make 0-db namespace public - readable by anyone
 func (o ZDBInputOutput) Public() pulumi.BoolPtrOutput {
 	return o.ApplyT(func(v ZDBInput) *bool { return v.Public }).(pulumi.BoolPtrOutput)
 }
 
+// The 0-db size in GB (type HDD)
 func (o ZDBInputOutput) Size() pulumi.IntOutput {
 	return o.ApplyT(func(v ZDBInput) int { return v.Size }).(pulumi.IntOutput)
 }
@@ -1639,7 +1845,9 @@ func (o ZDBInputArrayOutput) Index(i pulumi.IntInput) ZDBInputOutput {
 }
 
 type Zlog struct {
-	Output   string `pulumi:"output"`
+	// The output logs URL, should be a valid url
+	Output string `pulumi:"output"`
+	// The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 	Zmachine string `pulumi:"zmachine"`
 }
 
@@ -1655,7 +1863,9 @@ type ZlogInput interface {
 }
 
 type ZlogArgs struct {
-	Output   pulumi.StringInput `pulumi:"output"`
+	// The output logs URL, should be a valid url
+	Output pulumi.StringInput `pulumi:"output"`
+	// The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 	Zmachine pulumi.StringInput `pulumi:"zmachine"`
 }
 
@@ -1710,10 +1920,12 @@ func (o ZlogOutput) ToZlogOutputWithContext(ctx context.Context) ZlogOutput {
 	return o
 }
 
+// The output logs URL, should be a valid url
 func (o ZlogOutput) Output() pulumi.StringOutput {
 	return o.ApplyT(func(v Zlog) string { return v.Output }).(pulumi.StringOutput)
 }
 
+// The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
 func (o ZlogOutput) Zmachine() pulumi.StringOutput {
 	return o.ApplyT(func(v Zlog) string { return v.Zmachine }).(pulumi.StringOutput)
 }
@@ -1745,8 +1957,6 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*DiskArrayInput)(nil)).Elem(), DiskArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GroupInput)(nil)).Elem(), GroupArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*GroupArrayInput)(nil)).Elem(), GroupArray{})
-	pulumi.RegisterInputType(reflect.TypeOf((*K8sNodeComputedInput)(nil)).Elem(), K8sNodeComputedArgs{})
-	pulumi.RegisterInputType(reflect.TypeOf((*K8sNodeComputedMapInput)(nil)).Elem(), K8sNodeComputedMap{})
 	pulumi.RegisterInputType(reflect.TypeOf((*K8sNodeInputInput)(nil)).Elem(), K8sNodeInputArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*K8sNodeInputArrayInput)(nil)).Elem(), K8sNodeInputArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*MetadataInput)(nil)).Elem(), MetadataArgs{})
@@ -1758,6 +1968,7 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*QSFSInputArrayInput)(nil)).Elem(), QSFSInputArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VMComputedInput)(nil)).Elem(), VMComputedArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VMComputedArrayInput)(nil)).Elem(), VMComputedArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*VMComputedMapInput)(nil)).Elem(), VMComputedMap{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VMInputInput)(nil)).Elem(), VMInputArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*VMInputArrayInput)(nil)).Elem(), VMInputArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ZDBComputedInput)(nil)).Elem(), ZDBComputedArgs{})
@@ -1772,8 +1983,6 @@ func init() {
 	pulumi.RegisterOutputType(DiskArrayOutput{})
 	pulumi.RegisterOutputType(GroupOutput{})
 	pulumi.RegisterOutputType(GroupArrayOutput{})
-	pulumi.RegisterOutputType(K8sNodeComputedOutput{})
-	pulumi.RegisterOutputType(K8sNodeComputedMapOutput{})
 	pulumi.RegisterOutputType(K8sNodeInputOutput{})
 	pulumi.RegisterOutputType(K8sNodeInputArrayOutput{})
 	pulumi.RegisterOutputType(MetadataOutput{})
@@ -1785,6 +1994,7 @@ func init() {
 	pulumi.RegisterOutputType(QSFSInputArrayOutput{})
 	pulumi.RegisterOutputType(VMComputedOutput{})
 	pulumi.RegisterOutputType(VMComputedArrayOutput{})
+	pulumi.RegisterOutputType(VMComputedMapOutput{})
 	pulumi.RegisterOutputType(VMInputOutput{})
 	pulumi.RegisterOutputType(VMInputArrayOutput{})
 	pulumi.RegisterOutputType(ZDBComputedOutput{})

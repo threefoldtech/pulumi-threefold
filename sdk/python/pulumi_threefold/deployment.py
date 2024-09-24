@@ -27,6 +27,15 @@ class DeploymentArgs:
                  zdbs: Optional[pulumi.Input[Sequence[pulumi.Input['ZDBInputArgs']]]] = None):
         """
         The set of arguments for constructing a Deployment resource.
+        :param pulumi.Input[str] name: The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param Any node_id: The node ID to deploy on, required and should match the requested resources
+        :param pulumi.Input[Sequence[pulumi.Input['DiskArgs']]] disks: The disks requested to be included in the deployment
+        :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        :param pulumi.Input[Sequence[pulumi.Input['QSFSInputArgs']]] qsfs: The qsfs instances requested to be included in the deployment
+        :param pulumi.Input[int] solution_provider: ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+        :param pulumi.Input[str] solution_type: The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        :param pulumi.Input[Sequence[pulumi.Input['VMInputArgs']]] vms: The vms requested to be included in the deployment
+        :param pulumi.Input[Sequence[pulumi.Input['ZDBInputArgs']]] zdbs: The zdbs requested to be included in the deployment
         """
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "node_id", node_id)
@@ -50,6 +59,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
+        """
+        The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @name.setter
@@ -59,6 +71,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def node_id(self) -> Any:
+        """
+        The node ID to deploy on, required and should match the requested resources
+        """
         return pulumi.get(self, "node_id")
 
     @node_id.setter
@@ -68,6 +83,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def disks(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['DiskArgs']]]]:
+        """
+        The disks requested to be included in the deployment
+        """
         return pulumi.get(self, "disks")
 
     @disks.setter
@@ -77,6 +95,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def network_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
         return pulumi.get(self, "network_name")
 
     @network_name.setter
@@ -86,6 +107,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def qsfs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['QSFSInputArgs']]]]:
+        """
+        The qsfs instances requested to be included in the deployment
+        """
         return pulumi.get(self, "qsfs")
 
     @qsfs.setter
@@ -95,6 +119,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def solution_provider(self) -> Optional[pulumi.Input[int]]:
+        """
+        ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+        """
         return pulumi.get(self, "solution_provider")
 
     @solution_provider.setter
@@ -104,6 +131,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def solution_type(self) -> Optional[pulumi.Input[str]]:
+        """
+        The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        """
         return pulumi.get(self, "solution_type")
 
     @solution_type.setter
@@ -113,6 +143,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def vms(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['VMInputArgs']]]]:
+        """
+        The vms requested to be included in the deployment
+        """
         return pulumi.get(self, "vms")
 
     @vms.setter
@@ -122,6 +155,9 @@ class DeploymentArgs:
     @property
     @pulumi.getter
     def zdbs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ZDBInputArgs']]]]:
+        """
+        The zdbs requested to be included in the deployment
+        """
         return pulumi.get(self, "zdbs")
 
     @zdbs.setter
@@ -148,6 +184,15 @@ class Deployment(pulumi.CustomResource):
         Create a Deployment resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DiskArgs']]]] disks: The disks requested to be included in the deployment
+        :param pulumi.Input[str] name: The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        :param Any node_id: The node ID to deploy on, required and should match the requested resources
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['QSFSInputArgs']]]] qsfs: The qsfs instances requested to be included in the deployment
+        :param pulumi.Input[int] solution_provider: ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+        :param pulumi.Input[str] solution_type: The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VMInputArgs']]]] vms: The vms requested to be included in the deployment
+        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ZDBInputArgs']]]] zdbs: The zdbs requested to be included in the deployment
         """
         ...
     @overload
@@ -253,41 +298,65 @@ class Deployment(pulumi.CustomResource):
     @property
     @pulumi.getter
     def contract_id(self) -> pulumi.Output[int]:
+        """
+        The deployment ID
+        """
         return pulumi.get(self, "contract_id")
 
     @property
     @pulumi.getter
     def disks(self) -> pulumi.Output[Optional[Sequence['outputs.Disk']]]:
+        """
+        The disks requested to be included in the deployment
+        """
         return pulumi.get(self, "disks")
 
     @property
     @pulumi.getter
     def ip_range(self) -> pulumi.Output[str]:
+        """
+        IP range of the node for the wireguard network (e.g. 10.1.2.0/24). Has to have a subnet mask of 24
+        """
         return pulumi.get(self, "ip_range")
 
     @property
     @pulumi.getter
     def name(self) -> pulumi.Output[str]:
+        """
+        The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
         return pulumi.get(self, "name")
 
     @property
     @pulumi.getter
     def network_name(self) -> pulumi.Output[Optional[str]]:
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
         return pulumi.get(self, "network_name")
 
     @property
     @pulumi.getter
     def node_deployment_id(self) -> pulumi.Output[Mapping[str, int]]:
+        """
+        Mapping from each node to its deployment ID
+        """
         return pulumi.get(self, "node_deployment_id")
 
     @property
     @pulumi.getter
     def node_id(self) -> pulumi.Output[Any]:
+        """
+        The node ID to deploy on, required and should match the requested resources
+        """
         return pulumi.get(self, "node_id")
 
     @property
     @pulumi.getter
     def qsfs(self) -> pulumi.Output[Optional[Sequence['outputs.QSFSInput']]]:
+        """
+        The qsfs output instances requested to be included in the deployment
+        """
         return pulumi.get(self, "qsfs")
 
     @property
@@ -298,16 +367,25 @@ class Deployment(pulumi.CustomResource):
     @property
     @pulumi.getter
     def solution_provider(self) -> pulumi.Output[Optional[int]]:
+        """
+        ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
+        """
         return pulumi.get(self, "solution_provider")
 
     @property
     @pulumi.getter
     def solution_type(self) -> pulumi.Output[Optional[str]]:
+        """
+        The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
+        """
         return pulumi.get(self, "solution_type")
 
     @property
     @pulumi.getter
     def vms(self) -> pulumi.Output[Optional[Sequence['outputs.VMInput']]]:
+        """
+        The vms output requested to be included in the deployment
+        """
         return pulumi.get(self, "vms")
 
     @property
@@ -318,6 +396,9 @@ class Deployment(pulumi.CustomResource):
     @property
     @pulumi.getter
     def zdbs(self) -> pulumi.Output[Optional[Sequence['outputs.ZDBInput']]]:
+        """
+        The zdbs output requested to be included in the deployment
+        """
         return pulumi.get(self, "zdbs")
 
     @property

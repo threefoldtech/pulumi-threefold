@@ -229,7 +229,7 @@ func main() {
           Mycelium:     pulumi.Bool(true),
           Mounts: threefold.MountArray{
             &threefold.MountArgs{
-              Disk_name:   pulumi.String("data"),
+              Name:   pulumi.String("data"),
               Mount_point: pulumi.String("/app"),
             },
           },
@@ -300,7 +300,7 @@ deployment = threefold.Deployment("deployment",
         memory=256, #MB
         mycelium=True,
         mounts=[threefold.MountArgs(
-            disk_name="data",
+            name="data",
             mount_point="/app",
         )],
         env_vars={
@@ -379,7 +379,7 @@ resources:
           planetary: true
           mycelium: true
           mounts:
-            - disk_name: data
+            - name: data
               mount_point: /app
           env_vars:
             SSH_KEY:
@@ -434,7 +434,7 @@ const deployment = new threefold.Deployment("deployment", {
         planetary: true,
         mycelium: true,
         mounts: [{
-            disk_name: "data",
+            name: "data",
             mount_point: "/app",
         }],
         env_vars: {
@@ -510,22 +510,24 @@ func main() {
     }
     kubernetes, err := threefold.NewKubernetes(ctx, "kubernetes", &threefold.KubernetesArgs{
       Master: &threefold.K8sNodeInputArgs{
-        Name: pulumi.String("kubernetes"),
-        Network_name: pulumi.String("test"),
-        Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
-          return nodes[0], nil
-        }).(pulumi.IntOutput),
+        VMInput: &threefold.VMInput{
+          Name:         pulumi.String("kubernetes"),
+          Network_name: pulumi.String("test"),
+          NodeID: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+            return nodes[0], nil
+          }).(pulumi.IntOutput),
+          Planetary: pulumi.Bool(true),
+          Mycelium:  pulumi.Bool(true),
+          Cpu:       pulumi.Int(2),
+          Memory:    pulumi.Int(2048),
+        },
         Disk_size: pulumi.Int(2),
-        Planetary: pulumi.Bool(true),
-        Mycelium:  pulumi.Bool(true),
-        Cpu:       pulumi.Int(2),
-        Memory:    pulumi.Int(2048),
       },
       Workers: threefold.K8sNodeInputArray{
         &threefold.K8sNodeInputArgs{
           Name: pulumi.String("worker1"),
           Network_name: pulumi.String("test"),
-          Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+          Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
             return nodes[0], nil
           }).(pulumi.IntOutput),
           Disk_size: pulumi.Int(2),
@@ -535,7 +537,7 @@ func main() {
         &threefold.K8sNodeInputArgs{
           Name: pulumi.String("worker2"),
           Network_name: pulumi.String("test"),
-          Node: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+          Node_id: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
             return nodes[0], nil
           }).(pulumi.IntOutput),
           Disk_size: pulumi.Int(2),
@@ -594,7 +596,7 @@ kubernetes = threefold.Kubernetes("kubernetes",
     master=threefold.K8sNodeInputArgs(
         name="kubernetes",
         network_name="example",
-        node=scheduler.nodes[0],
+        node_id=scheduler.nodes[0],
         disk_size=2,
         planetary=True,
         mycelium=True,
@@ -605,7 +607,7 @@ kubernetes = threefold.Kubernetes("kubernetes",
         threefold.K8sNodeInputArgs(
             name="worker1",
             network_name="example",
-            node=scheduler.nodes[0],
+            node_id=scheduler.nodes[0],
             disk_size=2,
             cpu=2,
             memory=2048,
@@ -613,7 +615,7 @@ kubernetes = threefold.Kubernetes("kubernetes",
         threefold.K8sNodeInputArgs(
             name="worker2",
             network_name="example",
-            node=scheduler.nodes[0],
+            node_id=scheduler.nodes[0],
             disk_size=2,
             cpu=2,
             memory=2048,
@@ -678,7 +680,7 @@ resources:
       master:
         name: kubernetes
         network_name: test
-        node: ${scheduler.nodes[0]}
+        node_id: ${scheduler.nodes[0]}
         disk_size: 2
         planetary: true
         mycelium: true
@@ -688,14 +690,14 @@ resources:
       workers:
         - name: worker1
           network_name: test
-          node: ${scheduler.nodes[0]}
+          node_id: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
           mycelium: true
         - name: worker2
           network_name: test
-          node: ${scheduler.nodes[0]}
+          node_id: ${scheduler.nodes[0]}
           disk_size: 2
           cpu: 2
           memory: 2048
@@ -740,7 +742,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
     master: {
         name: "kubernetes",
         network_name: "test",
-        node: scheduler.nodes[0],
+        node_id: scheduler.nodes[0],
         disk_size: 2,
         planetary: true,
         mycelium: true,
@@ -751,7 +753,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
         {
             name: "worker1",
             network_name: "test",
-            node: scheduler.nodes[0],
+            node_id: scheduler.nodes[0],
             disk_size: 2,
             cpu: 2,
             memory: 2048,
@@ -760,7 +762,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
         {
             name: "worker2",
             network_name: "test",
-            node: scheduler.nodes[0],
+            node_id: scheduler.nodes[0],
             disk_size: 2,
             cpu: 2,
             memory: 2048,

@@ -62,7 +62,7 @@ func main() {
 					Mycelium:     pulumi.Bool(true),
 					Mounts: threefold.MountArray{
 						&threefold.MountArgs{
-							Disk_name:   pulumi.String("data"),
+							Name:        pulumi.String("data"),
 							Mount_point: pulumi.String("/app"),
 						},
 					},

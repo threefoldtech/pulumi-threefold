@@ -35,10 +35,6 @@ export class Provider extends pulumi.ProviderResource {
      * The timeout duration in seconds for rmb calls
      */
     public readonly rmb_timeout!: pulumi.Output<string | undefined>;
-    /**
-     * The substrate url, example: wss://tfchain.dev.grid.tf/ws
-     */
-    public readonly substrate_url!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -51,12 +47,14 @@ export class Provider extends pulumi.ProviderResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         {
+            resourceInputs["graphql_url"] = pulumi.output(args ? args.graphql_url : undefined).apply(JSON.stringify);
             resourceInputs["key_type"] = (args ? args.key_type : undefined) ?? (utilities.getEnv("") || "sr25519");
             resourceInputs["mnemonic"] = (args?.mnemonic ? pulumi.secret(args.mnemonic) : undefined) ?? (utilities.getEnv("") || "");
             resourceInputs["network"] = (args ? args.network : undefined) ?? (utilities.getEnv("") || "");
+            resourceInputs["proxy_url"] = pulumi.output(args ? args.proxy_url : undefined).apply(JSON.stringify);
             resourceInputs["relay_url"] = pulumi.output(args ? args.relay_url : undefined).apply(JSON.stringify);
             resourceInputs["rmb_timeout"] = args ? args.rmb_timeout : undefined;
-            resourceInputs["substrate_url"] = args ? args.substrate_url : undefined;
+            resourceInputs["substrate_url"] = pulumi.output(args ? args.substrate_url : undefined).apply(JSON.stringify);
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         const secretOpts = { additionalSecretOutputs: ["mnemonic"] };
@@ -70,6 +68,10 @@ export class Provider extends pulumi.ProviderResource {
  */
 export interface ProviderArgs {
     /**
+     * The graphql urls, example: https://graphql.grid.tf/graphql
+     */
+    graphql_url?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
      * The key type registered on substrate (ed25519 or sr25519).
      */
     key_type?: pulumi.Input<string>;
@@ -82,7 +84,11 @@ export interface ProviderArgs {
      */
     network?: pulumi.Input<string>;
     /**
-     * The relay urls, example: wss://relay.dev.grid.tf
+     * The proxy urls, example: https://gridproxy.grid.tf/
+     */
+    proxy_url?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The relay urls, example: wss://relay.grid.tf
      */
     relay_url?: pulumi.Input<pulumi.Input<string>[]>;
     /**
@@ -90,7 +96,7 @@ export interface ProviderArgs {
      */
     rmb_timeout?: pulumi.Input<string>;
     /**
-     * The substrate url, example: wss://tfchain.dev.grid.tf/ws
+     * The substrate url, example: wss://tfchain.grid.tf/ws
      */
-    substrate_url?: pulumi.Input<string>;
+    substrate_url?: pulumi.Input<pulumi.Input<string>[]>;
 }

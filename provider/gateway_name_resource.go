@@ -17,7 +17,7 @@ type GatewayNameArgs struct {
 	NodeID         interface{} `pulumi:"node_id"`
 	Backends       []string    `pulumi:"backends"`
 	TLSPassthrough bool        `pulumi:"tls_passthrough,optional"`
-	Network        string      `pulumi:"network,optional"`
+	NetworkName    string      `pulumi:"network_name,optional"`
 	Description    string      `pulumi:"description,optional"`
 	SolutionType   string      `pulumi:"solution_type,optional"`
 }
@@ -30,12 +30,6 @@ type GatewayNameState struct {
 	FQDN             string           `pulumi:"fqdn"`
 	NameContractID   int64            `pulumi:"name_contract_id"`
 	ContractID       int64            `pulumi:"contract_id"`
-}
-
-var _ = (infer.Annotated)((*GatewayNameArgs)(nil))
-
-func (g *GatewayNameArgs) Annotate(a infer.Annotator) {
-	a.SetDefault(&g.SolutionType, g.Name)
 }
 
 // Check validates name gateway data

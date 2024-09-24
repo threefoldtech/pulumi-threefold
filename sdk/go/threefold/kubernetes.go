@@ -15,16 +15,26 @@ import (
 type Kubernetes struct {
 	pulumi.CustomResourceState
 
-	Master             K8sNodeInputOutput       `pulumi:"master"`
-	Master_computed    K8sNodeComputedOutput    `pulumi:"master_computed"`
-	Network_name       pulumi.StringOutput      `pulumi:"network_name"`
-	Node_deployment_id pulumi.IntMapOutput      `pulumi:"node_deployment_id"`
-	Nodes_ip_range     pulumi.StringMapOutput   `pulumi:"nodes_ip_range"`
-	Solution_type      pulumi.StringPtrOutput   `pulumi:"solution_type"`
-	Ssh_key            pulumi.StringPtrOutput   `pulumi:"ssh_key"`
-	Token              pulumi.StringOutput      `pulumi:"token"`
-	Workers            K8sNodeInputArrayOutput  `pulumi:"workers"`
-	Workers_computed   K8sNodeComputedMapOutput `pulumi:"workers_computed"`
+	// Master holds the configuration of master node in the kubernetes cluster
+	Master K8sNodeInputOutput `pulumi:"master"`
+	// The computed fields of the master node
+	Master_computed VMComputedOutput `pulumi:"master_computed"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name pulumi.StringOutput `pulumi:"network_name"`
+	// Mapping from each node to its deployment ID
+	Node_deployment_id pulumi.IntMapOutput `pulumi:"node_deployment_id"`
+	// Computed values of nodes' IP ranges after deployment
+	Nodes_ip_range pulumi.StringMapOutput `pulumi:"nodes_ip_range"`
+	// The solution type of the cluster, displayed as project name in contract metadata
+	Solution_type pulumi.StringPtrOutput `pulumi:"solution_type"`
+	// SSH key to access the cluster nodes
+	Ssh_key pulumi.StringPtrOutput `pulumi:"ssh_key"`
+	// The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+	Token pulumi.StringOutput `pulumi:"token"`
+	// Workers is a list holding the workers configuration for the kubernetes cluster
+	Workers K8sNodeInputArrayOutput `pulumi:"workers"`
+	// List of the computed fields of the worker nodes
+	Workers_computed VMComputedMapOutput `pulumi:"workers_computed"`
 }
 
 // NewKubernetes registers a new resource with the given unique name, arguments, and options.
@@ -82,22 +92,34 @@ func (KubernetesState) ElementType() reflect.Type {
 }
 
 type kubernetesArgs struct {
-	Master        K8sNodeInput   `pulumi:"master"`
-	Network_name  string         `pulumi:"network_name"`
-	Solution_type *string        `pulumi:"solution_type"`
-	Ssh_key       *string        `pulumi:"ssh_key"`
-	Token         string         `pulumi:"token"`
-	Workers       []K8sNodeInput `pulumi:"workers"`
+	// Master holds the configuration of master node in the kubernetes cluster
+	Master K8sNodeInput `pulumi:"master"`
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name string `pulumi:"network_name"`
+	// The solution type of the cluster, displayed as project name in contract metadata
+	Solution_type *string `pulumi:"solution_type"`
+	// SSH key to access the cluster nodes
+	Ssh_key *string `pulumi:"ssh_key"`
+	// The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+	Token string `pulumi:"token"`
+	// Workers is a list holding the workers configuration for the kubernetes cluster
+	Workers []K8sNodeInput `pulumi:"workers"`
 }
 
 // The set of arguments for constructing a Kubernetes resource.
 type KubernetesArgs struct {
-	Master        K8sNodeInputInput
-	Network_name  pulumi.StringInput
+	// Master holds the configuration of master node in the kubernetes cluster
+	Master K8sNodeInputInput
+	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+	Network_name pulumi.StringInput
+	// The solution type of the cluster, displayed as project name in contract metadata
 	Solution_type pulumi.StringPtrInput
-	Ssh_key       pulumi.StringPtrInput
-	Token         pulumi.StringInput
-	Workers       K8sNodeInputArrayInput
+	// SSH key to access the cluster nodes
+	Ssh_key pulumi.StringPtrInput
+	// The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
+	Token pulumi.StringInput
+	// Workers is a list holding the workers configuration for the kubernetes cluster
+	Workers K8sNodeInputArrayInput
 }
 
 func (KubernetesArgs) ElementType() reflect.Type {
@@ -187,44 +209,54 @@ func (o KubernetesOutput) ToKubernetesOutputWithContext(ctx context.Context) Kub
 	return o
 }
 
+// Master holds the configuration of master node in the kubernetes cluster
 func (o KubernetesOutput) Master() K8sNodeInputOutput {
 	return o.ApplyT(func(v *Kubernetes) K8sNodeInputOutput { return v.Master }).(K8sNodeInputOutput)
 }
 
-func (o KubernetesOutput) Master_computed() K8sNodeComputedOutput {
-	return o.ApplyT(func(v *Kubernetes) K8sNodeComputedOutput { return v.Master_computed }).(K8sNodeComputedOutput)
+// The computed fields of the master node
+func (o KubernetesOutput) Master_computed() VMComputedOutput {
+	return o.ApplyT(func(v *Kubernetes) VMComputedOutput { return v.Master_computed }).(VMComputedOutput)
 }
 
+// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
 func (o KubernetesOutput) Network_name() pulumi.StringOutput {
 	return o.ApplyT(func(v *Kubernetes) pulumi.StringOutput { return v.Network_name }).(pulumi.StringOutput)
 }
 
+// Mapping from each node to its deployment ID
 func (o KubernetesOutput) Node_deployment_id() pulumi.IntMapOutput {
 	return o.ApplyT(func(v *Kubernetes) pulumi.IntMapOutput { return v.Node_deployment_id }).(pulumi.IntMapOutput)
 }
 
+// Computed values of nodes' IP ranges after deployment
 func (o KubernetesOutput) Nodes_ip_range() pulumi.StringMapOutput {
 	return o.ApplyT(func(v *Kubernetes) pulumi.StringMapOutput { return v.Nodes_ip_range }).(pulumi.StringMapOutput)
 }
 
+// The solution type of the cluster, displayed as project name in contract metadata
 func (o KubernetesOutput) Solution_type() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Kubernetes) pulumi.StringPtrOutput { return v.Solution_type }).(pulumi.StringPtrOutput)
 }
 
+// SSH key to access the cluster nodes
 func (o KubernetesOutput) Ssh_key() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *Kubernetes) pulumi.StringPtrOutput { return v.Ssh_key }).(pulumi.StringPtrOutput)
 }
 
+// The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
 func (o KubernetesOutput) Token() pulumi.StringOutput {
 	return o.ApplyT(func(v *Kubernetes) pulumi.StringOutput { return v.Token }).(pulumi.StringOutput)
 }
 
+// Workers is a list holding the workers configuration for the kubernetes cluster
 func (o KubernetesOutput) Workers() K8sNodeInputArrayOutput {
 	return o.ApplyT(func(v *Kubernetes) K8sNodeInputArrayOutput { return v.Workers }).(K8sNodeInputArrayOutput)
 }
 
-func (o KubernetesOutput) Workers_computed() K8sNodeComputedMapOutput {
-	return o.ApplyT(func(v *Kubernetes) K8sNodeComputedMapOutput { return v.Workers_computed }).(K8sNodeComputedMapOutput)
+// List of the computed fields of the worker nodes
+func (o KubernetesOutput) Workers_computed() VMComputedMapOutput {
+	return o.ApplyT(func(v *Kubernetes) VMComputedMapOutput { return v.Workers_computed }).(VMComputedMapOutput)
 }
 
 type KubernetesArrayOutput struct{ *pulumi.OutputState }

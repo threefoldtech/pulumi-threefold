@@ -61,12 +61,14 @@ func RunProvider(providerName, Version string) error {
 
 // Config struct holds the configuration fields for the provider
 type Config struct {
-	Mnemonic     string   `pulumi:"mnemonic,optional"  provider:"secret"`
-	Network      string   `pulumi:"network,optional"`
-	KeyType      string   `pulumi:"key_type,optional"`
-	SubstrateURL string   `pulumi:"substrate_url,optional"`
-	RelayURLs    []string `pulumi:"relay_url,optional"`
-	RmbTimeout   string   `pulumi:"rmb_timeout,optional"`
+	Mnemonic      string   `pulumi:"mnemonic,optional"  provider:"secret"`
+	Network       string   `pulumi:"network,optional"`
+	KeyType       string   `pulumi:"key_type,optional"`
+	SubstrateURLs []string `pulumi:"substrate_url,optional"`
+	RelayURLs     []string `pulumi:"relay_url,optional"`
+	ProxyURLs     []string `pulumi:"proxy_url,optional"`
+	GraphqlURLs   []string `pulumi:"graphql_url,optional"`
+	RmbTimeout    string   `pulumi:"rmb_timeout,optional"`
 
 	TFPluginClient deployer.TFPluginClient
 }
@@ -78,9 +80,12 @@ func (c *Config) Annotate(a infer.Annotator) {
 	a.Describe(&c.Mnemonic, "The mnemonic of the user. It is very secret.")
 	a.Describe(&c.Network, "The network to deploy on.")
 	a.Describe(&c.KeyType, "The key type registered on substrate (ed25519 or sr25519).")
-	a.Describe(&c.SubstrateURL, "The substrate url, example: wss://tfchain.dev.grid.tf/ws")
-	a.Describe(&c.RelayURLs, "The relay urls, example: wss://relay.dev.grid.tf")
+	a.Describe(&c.SubstrateURLs, "The substrate url, example: wss://tfchain.grid.tf/ws")
+	a.Describe(&c.RelayURLs, "The relay urls, example: wss://relay.grid.tf")
+	a.Describe(&c.ProxyURLs, "The proxy urls, example: https://gridproxy.grid.tf/")
+	a.Describe(&c.GraphqlURLs, "The graphql urls, example: https://graphql.grid.tf/graphql")
 	a.Describe(&c.RmbTimeout, "The timeout duration in seconds for rmb calls")
+
 	a.SetDefault(&c.Mnemonic, os.Getenv("MNEMONIC"), "")
 	a.SetDefault(&c.Network, os.Getenv("NETWORK"), "")
 	a.SetDefault(&c.KeyType, "sr25519", "")
@@ -103,12 +108,20 @@ func (c *Config) Configure(ctx context.Context) error {
 		deployer.WithNetwork(c.Network),
 	}
 
-	if c.SubstrateURL != "" {
-		opts = append(opts, deployer.WithSubstrateURL(c.SubstrateURL))
+	if len(c.SubstrateURLs) > 0 {
+		opts = append(opts, deployer.WithSubstrateURL(c.SubstrateURLs...))
 	}
 
 	if len(c.RelayURLs) > 0 {
 		opts = append(opts, deployer.WithRelayURL(c.RelayURLs...))
+	}
+
+	if len(c.ProxyURLs) > 0 {
+		opts = append(opts, deployer.WithProxyURL(c.ProxyURLs...))
+	}
+
+	if len(c.GraphqlURLs) > 0 {
+		opts = append(opts, deployer.WithGraphQlURL(c.GraphqlURLs...))
 	}
 
 	tfPluginClient, err := deployer.NewTFPluginClient(

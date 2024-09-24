@@ -2,7 +2,6 @@ package provider
 
 import (
 	"context"
-	"fmt"
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -26,16 +25,10 @@ type KubernetesArgs struct {
 type KubernetesState struct {
 	KubernetesArgs
 
-	MasterComputed   K8sNodeComputed            `pulumi:"master_computed"`
-	WorkersComputed  map[string]K8sNodeComputed `pulumi:"workers_computed"`
-	NodesIPRange     map[string]string          `pulumi:"nodes_ip_range"`
-	NodeDeploymentID map[string]int64           `pulumi:"node_deployment_id"`
-}
-
-var _ = (infer.Annotated)((*KubernetesArgs)(nil))
-
-func (k *KubernetesArgs) Annotate(a infer.Annotator) {
-	a.SetDefault(&k.SolutionType, fmt.Sprintf("kubernetes/%s", k.Master.Name))
+	MasterComputed   VMComputed            `pulumi:"master_computed"`
+	WorkersComputed  map[string]VMComputed `pulumi:"workers_computed"`
+	NodesIPRange     map[string]string     `pulumi:"nodes_ip_range"`
+	NodeDeploymentID map[string]int64      `pulumi:"node_deployment_id"`
 }
 
 // Check validates kubernetes data
@@ -50,13 +43,13 @@ func (*Kubernetes) Check(
 	}
 
 	// TODO: bypass validation of empty node (will be assigned from scheduler)
-	if nodeID, ok := args.Master.Node.(string); ok && len(nodeID) == 0 {
-		args.Master.Node = 1
+	if nodeID, ok := args.Master.NodeID.(string); ok && len(nodeID) == 0 {
+		args.Master.NodeID = 1
 	}
 
 	for i := range args.Workers {
-		if nodeID, ok := args.Workers[i].Node.(string); ok && len(nodeID) == 0 {
-			args.Workers[i].Node = 1
+		if nodeID, ok := args.Workers[i].NodeID.(string); ok && len(nodeID) == 0 {
+			args.Workers[i].NodeID = 1
 		}
 	}
 

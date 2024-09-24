@@ -5,7 +5,6 @@ linters:
     - gofmt
     - govet
     - ineffassign
-    - lll
     - misspell
     - nakedret
     - unconvert

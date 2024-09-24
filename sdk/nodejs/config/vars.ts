@@ -8,6 +8,17 @@ declare var exports: any;
 const __config = new pulumi.Config("threefold");
 
 /**
+ * The graphql urls, example: https://graphql.grid.tf/graphql
+ */
+export declare const graphql_url: string[] | undefined;
+Object.defineProperty(exports, "graphql_url", {
+    get() {
+        return __config.getObject<string[]>("graphql_url");
+    },
+    enumerable: true,
+});
+
+/**
  * The key type registered on substrate (ed25519 or sr25519).
  */
 export declare const key_type: string;
@@ -41,7 +52,18 @@ Object.defineProperty(exports, "network", {
 });
 
 /**
- * The relay urls, example: wss://relay.dev.grid.tf
+ * The proxy urls, example: https://gridproxy.grid.tf/
+ */
+export declare const proxy_url: string[] | undefined;
+Object.defineProperty(exports, "proxy_url", {
+    get() {
+        return __config.getObject<string[]>("proxy_url");
+    },
+    enumerable: true,
+});
+
+/**
+ * The relay urls, example: wss://relay.grid.tf
  */
 export declare const relay_url: string[] | undefined;
 Object.defineProperty(exports, "relay_url", {
@@ -63,12 +85,12 @@ Object.defineProperty(exports, "rmb_timeout", {
 });
 
 /**
- * The substrate url, example: wss://tfchain.dev.grid.tf/ws
+ * The substrate url, example: wss://tfchain.grid.tf/ws
  */
-export declare const substrate_url: string | undefined;
+export declare const substrate_url: string[] | undefined;
 Object.defineProperty(exports, "substrate_url", {
     get() {
-        return __config.get("substrate_url");
+        return __config.getObject<string[]>("substrate_url");
     },
     enumerable: true,
 });

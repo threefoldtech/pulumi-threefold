@@ -19,7 +19,7 @@ type Disk struct {
 
 // Mount represents mounting of disks
 type Mount struct {
-	DiskName   string `pulumi:"disk_name"`
+	Name       string `pulumi:"name"`
 	MountPoint string `pulumi:"mount_point"`
 }
 
@@ -164,7 +164,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 		var mounts []workloads.Mount
 		for _, mount := range vm.Mounts {
 			mounts = append(mounts, workloads.Mount{
-				Name:       mount.DiskName,
+				Name:       mount.Name,
 				MountPoint: mount.MountPoint,
 			})
 		}
@@ -323,7 +323,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 		var mounts []Mount
 		for _, mount := range vm.Mounts {
 			mounts = append(mounts, Mount{
-				DiskName:   mount.Name,
+				Name:       mount.Name,
 				MountPoint: mount.MountPoint,
 			})
 		}

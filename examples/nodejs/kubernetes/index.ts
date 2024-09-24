@@ -22,7 +22,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
     master: {
         name: "kubernetes",
         network_name: "test",
-        node: scheduler.nodes[0],
+        node_id: scheduler.nodes[0],
         disk_size: 2,
         planetary: true,
         mycelium: true,
@@ -33,7 +33,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
         {
             name: "worker1",
             network_name: "test",
-            node: scheduler.nodes[0],
+            node_id: scheduler.nodes[0],
             disk_size: 2,
             cpu: 2,
             memory: 2048,
@@ -41,7 +41,7 @@ const kubernetes = new threefold.Kubernetes("kubernetes", {
         {
             name: "worker2",
             network_name: "test",
-            node: scheduler.nodes[0],
+            node_id: scheduler.nodes[0],
             disk_size: 2,
             cpu: 2,
             memory: 2048,

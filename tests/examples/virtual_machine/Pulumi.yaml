@@ -56,7 +56,7 @@ resources:
           planetary: true
           mycelium: true
           mounts:
-            - disk_name: data
+            - name: data
               mount_point: /app
           env_vars:
             SSH_KEY:

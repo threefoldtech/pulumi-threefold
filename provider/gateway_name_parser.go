@@ -28,7 +28,7 @@ func parseToGWNameState(gw workloads.GatewayNameProxy) GatewayNameState {
 			NodeID:         int32(gw.NodeID),
 			Backends:       backends,
 			TLSPassthrough: gw.TLSPassthrough,
-			Network:        gw.Network,
+			NetworkName:    gw.Network,
 			Description:    gw.Description,
 			SolutionType:   gw.SolutionType,
 		},
@@ -56,7 +56,7 @@ func parseToGWName(gwArgs GatewayNameArgs) (workloads.GatewayNameProxy, error) {
 		NodeID:         uint32(nodeID),
 		Backends:       backends,
 		TLSPassthrough: gwArgs.TLSPassthrough,
-		Network:        gwArgs.Network,
+		Network:        gwArgs.NetworkName,
 		Description:    gwArgs.Description,
 		SolutionType:   gwArgs.SolutionType,
 	}, nil
