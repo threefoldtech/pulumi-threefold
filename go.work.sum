@@ -261,6 +261,7 @@ github.com/apache/arrow/go/arrow v0.0.0-20191024131854-af6fa24be0db/go.mod h1:VT
 github.com/apparentlymart/go-dump v0.0.0-20180507223929-23540a00eaa3/go.mod h1:oL81AME2rN47vu18xqj1S1jPIPuN7afo62yKTNn3XMM=
 github.com/armon/go-metrics v0.4.0 h1:yCQqn7dwca4ITXb+CbubHmedzaQYHhNhrEXLYUeEe8Q=
 github.com/armon/go-metrics v0.4.0/go.mod h1:E6amYzXo6aW1tqzoZGT755KkbgrJsSdpwZ+3JqfkOG4=
+github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
 github.com/armon/go-radix v1.0.0 h1:F4z6KzEeeQIMeLFa97iZU6vupzoecKdU5TX24SNppXI=
 github.com/armon/go-radix v1.0.0/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
 github.com/aws/aws-sdk-go-v2 v1.2.0/go.mod h1:zEQs02YRBw1DjK0PoJv3ygDYOFTre1ejlJWl8FwAuQo=
@@ -660,6 +661,7 @@ github.com/pgavlin/diff v0.0.0-20230503175810-113847418e2e/go.mod h1:WGwlmuPAiQT
 github.com/pgavlin/text v0.0.0-20230428184845-84c285f11d2f/go.mod h1:fk4+YyTLi0Ap0CsL1HA70/tAs6evqw3hbPGdR8rD/3E=
 github.com/pgavlin/text v0.0.0-20240821195002-b51d0990e284/go.mod h1:fk4+YyTLi0Ap0CsL1HA70/tAs6evqw3hbPGdR8rD/3E=
 github.com/philhofer/fwd v1.0.0/go.mod h1:gk3iGcWd9+svBvR0sR+KPcfE+RNWozjowpeBVG3ZVNU=
+github.com/pierrec/lz4 v2.3.0+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pierrec/lz4 v2.6.1+incompatible h1:9UY3+iC23yxF0UfGaYrGplQ+79Rg+h/q9FV9ix19jjM=
 github.com/pierrec/lz4 v2.6.1+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pingcap/errors v0.11.4/go.mod h1:Oi8TUi2kEtXXLMJk9l1cGmz20kV3TaQ0usTwv5KuLY8=
@@ -680,8 +682,7 @@ github.com/prometheus/common v0.46.0/go.mod h1:Tp0qkxpb9Jsg54QMe+EAmqXkSV7Evdy1B
 github.com/prometheus/procfs v0.9.0/go.mod h1:+pB4zwohETzFnmlpe6yd2lSc+0/46IYZRB/chUwxUZY=
 github.com/prometheus/procfs v0.12.0/go.mod h1:pcuDEFsWDnvcgNzo4EEweacyhjeA9Zk3cnaOZAZEfOo=
 github.com/prometheus/prometheus v0.50.1/go.mod h1:FvE8dtQ1Ww63IlyKBn1V4s+zMwF9kHkVNkQBR1pM4CU=
-github.com/pulumi/pulumi-go-provider v0.21.0 h1:sDHBtWkWRrWn6klfdvDIorlUGMBt6BwhgKXqcPoJh2c=
-github.com/pulumi/pulumi-go-provider v0.21.0/go.mod h1:2qQ4M1LXzv+SpY6v8JiTbPVGdeCeqfBMgsqb7WyH77o=
+github.com/pulumi/esc v0.9.1/go.mod h1:oEJ6bOsjYlQUpjf70GiX+CXn3VBmpwFDxUTlmtUN84c=
 github.com/pulumi/pulumi-java/pkg v0.10.0/go.mod h1:xu6UgYtQm+xXOo1/DZNa2CWVPytu+RMkZVTtI7w7ffY=
 github.com/pulumi/pulumi-java/pkg v0.11.0/go.mod h1:sXAk25P47AQVQL6ilAbFmRNgZykC7og/+87ihnqzFTc=
 github.com/pulumi/pulumi-java/pkg v0.14.0/go.mod h1:VybuJMWJtJc9ZNbt1kcYH4TbpocMx9mEi7YWL2Co99c=
@@ -690,12 +691,14 @@ github.com/pulumi/pulumi-yaml v1.7.0/go.mod h1:pCfYHSRmdl+5dM/7eT2uDQS528YOhAhiq
 github.com/pulumi/pulumi-yaml v1.9.1/go.mod h1:OH0R34yJxA5u6zjYBN4JXcWoEvfkRoOVWi6viu8buoA=
 github.com/pulumi/pulumi-yaml v1.9.2/go.mod h1:sIh/Oa/NLRGTojevh8D2/cPDPvo2j9iXegVDQIKKfw4=
 github.com/pulumi/pulumi-yaml v1.10.0/go.mod h1://lTvwHpgJ+WBKeMGiLrd/jinc4dl3eWV5LZ3G8iCfE=
+github.com/pulumi/pulumi-yaml v1.10.3/go.mod h1:MFMQXkaUP5YQUKVJ6Z/aagZDl2f8hdU9oGaJfTcMf1Y=
 github.com/pulumi/pulumi/pkg/v3 v3.128.0 h1:K3qtJYjHg4DkA7LxknY/MoQZ+QHdHQDh/k2njjmjHXM=
 github.com/pulumi/pulumi/pkg/v3 v3.128.0/go.mod h1:/spoJXy/mqQ8fBLgXBEbUrAnL7pHdfXOviIo5fZROEY=
 github.com/pulumi/pulumi/pkg/v3 v3.131.0/go.mod h1:+Cy9VMptNdrhGMcYWg3ZqzWlih+hyWoGOImRSoPNs8o=
 github.com/pulumi/pulumi/sdk/v3 v3.30.0/go.mod h1:hGo/+AL1L4sPL9Ukd/i5bNFM3WHs3dHcA+GKEW7M3RA=
 github.com/pulumi/pulumi/sdk/v3 v3.129.0/go.mod h1:p1U24en3zt51agx+WlNboSOV8eLlPWYAkxMzVEXKbnY=
 github.com/pulumi/pulumi/sdk/v3 v3.131.0/go.mod h1:J5kQEX8v87aeUhk6NdQXnjCo1DbiOnOiL3Sf2DuDda8=
+github.com/pulumi/pulumi/sdk/v3 v3.133.0/go.mod h1:J5kQEX8v87aeUhk6NdQXnjCo1DbiOnOiL3Sf2DuDda8=
 github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/retailnext/hllpp v1.0.1-0.20180308014038-101a6d2f8b52/go.mod h1:RDpi1RftBQPUCDRw6SmxeaREsAaRKnOclghuzp/WRzc=
 github.com/rjeczalik/notify v0.9.1/go.mod h1:rKwnCoCGeuQnwBtTSPL9Dad03Vh2n40ePRrjvIXnJho=
@@ -748,10 +751,15 @@ github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20240416134707
 github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20240416134707-eb36aa90df2d/go.mod h1:dtDKAPiUDxAwIkfHV7xcAFZcOm+xwNIuOI1MLFS+MeQ=
 github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.11 h1:FmEQplYSZ6pYslmBlUNaUabScOdi6hJialeV/yq0BrY=
 github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.11/go.mod h1:Obsv0kspgSSwF8jb91Z7CBY2FCQNq6RhiZXIQf26nWY=
+github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17 h1:JwjhOz4mSV0qL0/oF+fdLYtE+l0s7fFjObunzTairYA=
+github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17/go.mod h1:MwKEEeKN7qApCdabKRBTs18lrJ6JzA2Xx5Hd2/zb4o0=
 github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.10 h1:If91FVqQgd2mZutMMUIrapsqZKDN8/hL5r5Yfr+vFK0=
 github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.10/go.mod h1:yg1BDRR/TSr87mkjxEfsKc0VzMTJcbg87WW7C0GUPXQ=
 github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.11 h1:qsSICIj5cvoVBR4GLWmdu2n3FfJG5isJ2ABnNNWykLU=
 github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.11/go.mod h1:7cKHvKPpfdCpU4a/VCznRDDNMPBPI98cJ0uVJoUGrgg=
+github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.17 h1:rI9viGoLdgMX62Y1nFN6Utjbjp3ovZRfzImZBeNB5K4=
+github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.17/go.mod h1:2Z7uJYHeilN7bASpmkcDxtl+3AT8tim6iIvqZ08pwCg=
+github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.15.17/go.mod h1:cDTivSsUl4r1jN+H8/W6yDqByOOliY8HEGuVuL3ixV8=
 github.com/threefoldtech/zbus v1.0.1/go.mod h1:E/v/xEvG/l6z/Oj0aDkuSUXFm/1RVJkhKBwDTAIdsHo=
 github.com/threefoldtech/zos v0.5.6-0.20240611092312-66184cdeb953 h1:hzqMY2Ydb+N2TBrTJHpy5n5i5nflfre1dhoNQH/tfhI=
 github.com/threefoldtech/zos v0.5.6-0.20240611092312-66184cdeb953/go.mod h1:yH6T43SiHvQBBuLgKGElECsIhqzJ6fy/dJyaxtO/X0M=
@@ -777,7 +785,9 @@ github.com/valyala/fasthttp v1.6.0/go.mod h1:FstJa9V+Pj9vQ7OJie2qMHdwemEDaDiSdBn
 github.com/valyala/fasttemplate v1.0.1/go.mod h1:UQGH1tvbgY+Nz5t2n7tXsz52dQxojPUpymEIMZ47gx8=
 github.com/valyala/fasttemplate v1.2.1/go.mod h1:KHLXt3tVN2HBp8eijSv/kGJopbvo7S+qRAEEKiv+SiQ=
 github.com/valyala/tcplisten v0.0.0-20161114210144-ceec8f93295a/go.mod h1:v3UYOV9WzVtRmSR+PDvWpU/qWl4Wa5LApYYX4ZtKbio=
+github.com/vishvananda/netlink v1.1.1-0.20201029203352-d40f9887b852/go.mod h1:twkDnbuQxJYemMlGd4JFIcuhgX83tXhKS2B/PRMpOho=
 github.com/vishvananda/netlink v1.2.1-beta.2/go.mod h1:twkDnbuQxJYemMlGd4JFIcuhgX83tXhKS2B/PRMpOho=
+github.com/vishvananda/netns v0.0.0-20210104183010-2eb08e3e575f/go.mod h1:DD4vA1DwXk04H54A1oHXtwZmA0grkVMdPxx/VGLCah0=
 github.com/vishvananda/netns v0.0.4/go.mod h1:SpkAiCQRtJ6TvvxPnOSyH3BMl6unz3xZlaprSwhNNJM=
 github.com/vmihailenco/msgpack v4.0.4+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/vmihailenco/msgpack/v5 v5.3.5/go.mod h1:7xyJ9e+0+9SaZT0Wt1RGleJXzli6Q/V5KbhBonMG9jc=
