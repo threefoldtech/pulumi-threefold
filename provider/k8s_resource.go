@@ -13,12 +13,15 @@ type Kubernetes struct{}
 
 // KubernetesArgs is defining what arguments it accepts
 type KubernetesArgs struct {
-	Master       K8sNodeInput   `pulumi:"master"`
-	Workers      []K8sNodeInput `pulumi:"workers"`
-	Token        string         `pulumi:"token"`
-	NetworkName  string         `pulumi:"network_name"`
-	SolutionType string         `pulumi:"solution_type,optional"`
-	SSHKey       string         `pulumi:"ssh_key,optional"`
+	Master        K8sNodeInput   `pulumi:"master"`
+	Workers       []K8sNodeInput `pulumi:"workers"`
+	Token         string         `pulumi:"token"`
+	NetworkName   string         `pulumi:"network_name"`
+	SolutionType  string         `pulumi:"solution_type,optional"`
+	SSHKey        string         `pulumi:"ssh_key,optional"`
+	Flist         string         `pulumi:"flist,optional"`
+	EntryPoint    string         `pulumi:"entry_point,optional"`
+	FlistChecksum string         `pulumi:"flist_checksum,optional"`
 }
 
 // KubernetesState is describing the fields that exist on the created resource.
@@ -58,6 +61,13 @@ func (*Kubernetes) Check(
 		return args, checkFailures, err
 	}
 
+	// get master and worker flists from the cluster
+	Kubernetes.Master.Flist = Kubernetes.Flist
+	Kubernetes.Master.Entrypoint = Kubernetes.Entrypoint
+	for i := range Kubernetes.Workers {
+		Kubernetes.Workers[i].Flist = Kubernetes.Flist
+		Kubernetes.Workers[i].Entrypoint = Kubernetes.Entrypoint
+	}
 	return args, checkFailures, Kubernetes.Validate()
 }
 

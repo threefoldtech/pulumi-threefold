@@ -3,7 +3,6 @@ package provider
 import (
 	"encoding/hex"
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
@@ -12,8 +11,21 @@ import (
 
 // K8sNodeInput struct of input data
 type K8sNodeInput struct {
-	VMInput
-	DiskSize int `pulumi:"disk_size"`
+	Name           string      `pulumi:"name"`
+	Description    string      `pulumi:"description,optional"`
+	NetworkName    string      `pulumi:"network_name"`
+	NodeID         interface{} `pulumi:"node_id"`
+	DiskSize       int         `pulumi:"disk_size"`
+	Flist          string      `pulumi:"flist,optional"`
+	EntryPoint     string      `pulumi:"entry_point,optional"`
+	FlistChecksum  string      `pulumi:"flist_checksum,optional"`
+	CPU            int         `pulumi:"cpu"`
+	Memory         int         `pulumi:"memory"`
+	PublicIP       bool        `pulumi:"public_ip,optional"`
+	PublicIP6      bool        `pulumi:"public_ip6,optional"`
+	Planetary      bool        `pulumi:"planetary,optional"`
+	Mycelium       bool        `pulumi:"mycelium,optional"`
+	MyceliumIPSeed string      `pulumi:"mycelium_ip_seed,optional"`
 }
 
 func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
@@ -42,20 +54,20 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 
 	// parse master input
 	masterInput := K8sNodeInput{
-		VMInput: VMInput{
-			Name:           k8sCluster.Master.Name,
-			NetworkName:    k8sCluster.Master.NetworkName,
-			NodeID:         int(k8sCluster.Master.NodeID),
-			PublicIP:       k8sCluster.Master.PublicIP,
-			PublicIP6:      k8sCluster.Master.PublicIP6,
-			Planetary:      k8sCluster.Master.Planetary,
-			MyceliumIPSeed: hex.EncodeToString(k8sCluster.Master.MyceliumIPSeed),
-			Flist:          k8sCluster.Master.Flist,
-			FlistChecksum:  k8sCluster.Master.FlistChecksum,
-			CPU:            int(k8sCluster.Master.CPU),
-			Memory:         int(k8sCluster.Master.MemoryMB),
-		},
-		DiskSize: int(k8sCluster.Master.DiskSizeGB),
+		Name:           k8sCluster.Master.Name,
+		Description:    k8sCluster.Master.Description,
+		NetworkName:    k8sCluster.Master.NetworkName,
+		NodeID:         int(k8sCluster.Master.NodeID),
+		PublicIP:       k8sCluster.Master.PublicIP,
+		PublicIP6:      k8sCluster.Master.PublicIP6,
+		Planetary:      k8sCluster.Master.Planetary,
+		MyceliumIPSeed: hex.EncodeToString(k8sCluster.Master.MyceliumIPSeed),
+		Flist:          k8sCluster.Master.Flist,
+		EntryPoint:     k8sCluster.Master.Entrypoint,
+		FlistChecksum:  k8sCluster.Master.FlistChecksum,
+		CPU:            int(k8sCluster.Master.CPU),
+		Memory:         int(k8sCluster.Master.MemoryMB),
+		DiskSize:       int(k8sCluster.Master.DiskSizeGB),
 	}
 
 	// parse workers computed & input
@@ -74,32 +86,35 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 		workersComputed[w.Name] = newWorkerComputed
 
 		newWorkerInput := K8sNodeInput{
-			VMInput: VMInput{
-				Name:           w.Name,
-				NetworkName:    w.NetworkName,
-				NodeID:         int(w.NodeID),
-				PublicIP:       w.PublicIP,
-				PublicIP6:      w.PublicIP6,
-				Planetary:      w.Planetary,
-				MyceliumIPSeed: hex.EncodeToString(w.MyceliumIPSeed),
-				Flist:          w.Flist,
-				FlistChecksum:  w.FlistChecksum,
-				CPU:            int(w.CPU),
-				Memory:         int(w.MemoryMB),
-			},
-			DiskSize: int(w.DiskSizeGB),
+			Name:           w.Name,
+			Description:    w.Description,
+			NetworkName:    w.NetworkName,
+			NodeID:         int(w.NodeID),
+			PublicIP:       w.PublicIP,
+			PublicIP6:      w.PublicIP6,
+			Planetary:      w.Planetary,
+			MyceliumIPSeed: hex.EncodeToString(w.MyceliumIPSeed),
+			Flist:          w.Flist,
+			EntryPoint:     w.Entrypoint,
+			FlistChecksum:  w.FlistChecksum,
+			CPU:            int(w.CPU),
+			Memory:         int(w.MemoryMB),
+			DiskSize:       int(w.DiskSizeGB),
 		}
 		workersInput = append(workersInput, newWorkerInput)
 	}
 
 	return KubernetesState{
 		KubernetesArgs: KubernetesArgs{
-			Master:       masterInput,
-			Workers:      workersInput,
-			Token:        k8sCluster.Token,
-			NetworkName:  k8sCluster.NetworkName,
-			SolutionType: k8sCluster.SolutionType,
-			SSHKey:       k8sCluster.SSHKey,
+			Master:        masterInput,
+			Workers:       workersInput,
+			Token:         k8sCluster.Token,
+			NetworkName:   k8sCluster.NetworkName,
+			SolutionType:  k8sCluster.SolutionType,
+			SSHKey:        k8sCluster.SSHKey,
+			Flist:         k8sCluster.Flist,
+			EntryPoint:    k8sCluster.Entrypoint,
+			FlistChecksum: k8sCluster.FlistChecksum,
 		},
 		MasterComputed:   masterComputed,
 		WorkersComputed:  workersComputed,
@@ -109,12 +124,6 @@ func parseToK8sState(k8sCluster workloads.K8sCluster) KubernetesState {
 }
 
 func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, error) {
-	// for tests
-	sshKey := os.Getenv("SSH_KEY")
-	if sshKey != "" {
-		kubernetesArgs.SSHKey = sshKey
-	}
-
 	nodeID, err := strconv.Atoi(fmt.Sprint(kubernetesArgs.Master.NodeID))
 	if err != nil {
 		return workloads.K8sCluster{}, err
@@ -140,6 +149,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 	master := &workloads.K8sNode{
 		VM: &workloads.VM{
 			Name:           kubernetesArgs.Master.Name,
+			Description:    kubernetesArgs.Master.Description,
 			NetworkName:    kubernetesArgs.Master.NetworkName,
 			NodeID:         uint32(nodeID),
 			PublicIP:       kubernetesArgs.Master.PublicIP,
@@ -147,16 +157,12 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 			Planetary:      kubernetesArgs.Master.Planetary,
 			MyceliumIPSeed: myceliumIPSeed,
 			Flist:          kubernetesArgs.Master.Flist,
+			Entrypoint:     kubernetesArgs.Master.EntryPoint,
 			FlistChecksum:  kubernetesArgs.Master.FlistChecksum,
 			CPU:            uint8(kubernetesArgs.Master.CPU),
 			MemoryMB:       uint64(kubernetesArgs.Master.Memory),
 		},
 		DiskSizeGB: uint64(kubernetesArgs.Master.DiskSize),
-	}
-
-	// set default flist
-	if master.Flist == "" {
-		master.Flist = "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist"
 	}
 
 	// parse workers
@@ -186,6 +192,7 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 		newWorker := workloads.K8sNode{
 			VM: &workloads.VM{
 				Name:           w.Name,
+				Description:    w.Description,
 				NetworkName:    w.NetworkName,
 				NodeID:         uint32(nodeID),
 				PublicIP:       w.PublicIP,
@@ -194,28 +201,28 @@ func parseToK8sCluster(kubernetesArgs KubernetesArgs) (workloads.K8sCluster, err
 				MyceliumIPSeed: myceliumIPSeed,
 				Flist:          w.Flist,
 				FlistChecksum:  w.FlistChecksum,
+				Entrypoint:     w.EntryPoint,
 				CPU:            uint8(w.CPU),
 				MemoryMB:       uint64(w.Memory),
 			},
 			DiskSizeGB: uint64(w.DiskSize),
 		}
 
-		// set default flist
-		if newWorker.Flist == "" {
-			newWorker.Flist = "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist"
-		}
-
 		workers = append(workers, newWorker)
 	}
 
 	return workloads.K8sCluster{
-		Master:       master,
-		Workers:      workers,
-		Token:        kubernetesArgs.Token,
-		NetworkName:  kubernetesArgs.NetworkName,
-		SolutionType: kubernetesArgs.SolutionType,
-		SSHKey:       kubernetesArgs.SSHKey,
-		NodesIPRange: make(map[uint32]gridtypes.IPNet),
+		Master:           master,
+		Workers:          workers,
+		Token:            kubernetesArgs.Token,
+		NetworkName:      kubernetesArgs.NetworkName,
+		Flist:            kubernetesArgs.Flist,
+		Entrypoint:       kubernetesArgs.EntryPoint,
+		FlistChecksum:    kubernetesArgs.FlistChecksum,
+		SolutionType:     kubernetesArgs.SolutionType,
+		SSHKey:           kubernetesArgs.SSHKey,
+		NodesIPRange:     make(map[uint32]gridtypes.IPNet),
+		NodeDeploymentID: map[uint32]uint64{},
 	}, nil
 }
 

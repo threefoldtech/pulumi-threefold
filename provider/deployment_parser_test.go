@@ -42,7 +42,7 @@ func generateInputs() (Disk, ZDBInput, VMInput, QSFSInput, DeploymentArgs) {
 		Description: "vm-description",
 		GPUs:        []zos.GPU{"gpu"},
 		RootfsSize:  0,
-		Entrypoint:  "entrypoint",
+		EntryPoint:  "entrypoint",
 		Mounts: []Mount{{
 			Name:       diskInput.Name,
 			MountPoint: fmt.Sprintf("/%s", diskInput.Name),

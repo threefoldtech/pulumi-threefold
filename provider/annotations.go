@@ -2,11 +2,10 @@ package provider
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
 )
-
-// TODO: computed
 
 var _ = (infer.Annotated)((*NetworkArgs)(nil))
 var _ = (infer.Annotated)((*NetworkState)(nil))
@@ -80,7 +79,7 @@ func (v *VMInput) Annotate(a infer.Annotator) {
 	a.Describe(&v.Description, "The description of the virtual machine workload, optional with no restrictions")
 	a.Describe(&v.NodeID, "The node ID to deploy the virtual machine on, required and should match the requested resources")
 	a.Describe(&v.Flist, "The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist")
-	a.Describe(&v.Entrypoint, "The entry point for the flist. Example: /sbin/zinit init")
+	a.Describe(&v.EntryPoint, "The entry point for the flist. Example: /sbin/zinit init")
 	a.Describe(&v.FlistChecksum, "The checksum of the flist which should match the checksum of the given flist, optional")
 	a.Describe(&v.CPU, "The cpu units needed for the virtual machine. Range in [1: 32]")
 	a.Describe(&v.Memory, "The memory capacity for the virtual machine in MB. Min is 250 MB")
@@ -183,6 +182,7 @@ var _ = (infer.Annotated)((*K8sNodeInput)(nil))
 
 func (k *KubernetesArgs) Annotate(a infer.Annotator) {
 	a.SetDefault(&k.SolutionType, fmt.Sprintf("kubernetes/%s", k.Master.Name))
+	a.SetDefault(&k.SSHKey, os.Getenv("SSH_KEY")) // for testing purposes
 
 	a.Describe(&k.Master, "Master holds the configuration of master node in the kubernetes cluster")
 	a.Describe(&k.Workers, "Workers is a list holding the workers configuration for the kubernetes cluster")
@@ -190,6 +190,9 @@ func (k *KubernetesArgs) Annotate(a infer.Annotator) {
 	a.Describe(&k.SolutionType, "The solution type of the cluster, displayed as project name in contract metadata")
 	a.Describe(&k.SSHKey, "SSH key to access the cluster nodes")
 	a.Describe(&k.Token, "The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string")
+	a.Describe(&k.Flist, "The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist")
+	a.Describe(&k.EntryPoint, "The entry point for the flist. Example: /sbin/zinit init")
+	a.Describe(&k.FlistChecksum, "The checksum of the flist which should match the checksum of the given flist, optional")
 }
 
 func (k *KubernetesState) Annotate(a infer.Annotator) {
@@ -200,6 +203,23 @@ func (k *KubernetesState) Annotate(a infer.Annotator) {
 }
 
 func (k *K8sNodeInput) Annotate(a infer.Annotator) {
+	a.SetDefault(&k.Flist, "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist")
+	a.SetDefault(&k.EntryPoint, "/sbin/zinit init")
+
+	a.Describe(&k.Name, "The name of the kubernetes node, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported")
+	a.Describe(&k.NetworkName, "The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist")
+	a.Describe(&k.Description, "The description of the kubernetes node, optional with no restrictions")
+	a.Describe(&k.NodeID, "The node ID to deploy the kubernetes node on, required and should match the requested resources")
+	a.Describe(&k.Flist, "The flist to be mounted in the kubernetes node. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist")
+	a.Describe(&k.EntryPoint, "The entry point for the flist. Example: /sbin/zinit init")
+	a.Describe(&k.FlistChecksum, "The checksum of the flist which should match the checksum of the given flist, optional")
+	a.Describe(&k.CPU, "The cpu units needed for the kubernetes node. Range in [1: 32]")
+	a.Describe(&k.Memory, "The memory capacity for the kubernetes node in MB. Min is 250 MB")
+	a.Describe(&k.Mycelium, "A flag to generate a random mycelium IP seed to support mycelium in the kubernetes node")
+	a.Describe(&k.MyceliumIPSeed, "The seed used for mycelium IP generated for the kubernetes node. It's length should be 6")
+	a.Describe(&k.Planetary, "A flag to enable generating a yggdrasil IP for the kubernetes node")
+	a.Describe(&k.PublicIP, "A flag to enable generating a public IP for the kubernetes node, public node is required for it")
+	a.Describe(&k.PublicIP6, "A flag to enable generating a public IPv6 for the kubernetes node, public node is required for it")
 	a.Describe(&k.DiskSize, "Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)")
 }
 
