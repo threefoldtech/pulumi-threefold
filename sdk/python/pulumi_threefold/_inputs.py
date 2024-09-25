@@ -4,23 +4,57 @@
 
 import copy
 import warnings
+import sys
 import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
+if sys.version_info >= (3, 11):
+    from typing import NotRequired, TypedDict, TypeAlias
+else:
+    from typing_extensions import NotRequired, TypedDict, TypeAlias
 from . import _utilities
 
 __all__ = [
     'BackendArgs',
+    'BackendArgsDict',
     'DiskArgs',
+    'DiskArgsDict',
     'GroupArgs',
+    'GroupArgsDict',
     'K8sNodeInputArgs',
+    'K8sNodeInputArgsDict',
     'MetadataArgs',
+    'MetadataArgsDict',
     'MountArgs',
+    'MountArgsDict',
     'QSFSInputArgs',
+    'QSFSInputArgsDict',
     'VMInputArgs',
+    'VMInputArgsDict',
     'ZDBInputArgs',
+    'ZDBInputArgsDict',
     'ZlogArgs',
+    'ZlogArgsDict',
 ]
+
+MYPY = False
+
+if not MYPY:
+    class BackendArgsDict(TypedDict):
+        address: pulumi.Input[str]
+        """
+        Address of backend ZDB (e.g. [300:a582:c60c:df75:f6da:8a92:d5ed:71ad]:9900 or 60.60.60.60:9900)
+        """
+        namespace: pulumi.Input[str]
+        """
+        ZDB namespace
+        """
+        password: pulumi.Input[str]
+        """
+        Namespace password
+        """
+elif False:
+    BackendArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class BackendArgs:
@@ -73,6 +107,23 @@ class BackendArgs:
     def password(self, value: pulumi.Input[str]):
         pulumi.set(self, "password", value)
 
+
+if not MYPY:
+    class DiskArgsDict(TypedDict):
+        name: pulumi.Input[str]
+        """
+        The name of the disk workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+        size: pulumi.Input[int]
+        """
+        The disk size in GB (type SSD)
+        """
+        description: NotRequired[pulumi.Input[str]]
+        """
+        The description of the disk workload, optional with no restrictions
+        """
+elif False:
+    DiskArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class DiskArgs:
@@ -127,6 +178,15 @@ class DiskArgs:
         pulumi.set(self, "description", value)
 
 
+if not MYPY:
+    class GroupArgsDict(TypedDict):
+        backends: NotRequired[pulumi.Input[Sequence[pulumi.Input['BackendArgsDict']]]]
+        """
+        List of ZDB backends configurations
+        """
+elif False:
+    GroupArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class GroupArgs:
     def __init__(__self__, *,
@@ -149,6 +209,91 @@ class GroupArgs:
     def backends(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['BackendArgs']]]]):
         pulumi.set(self, "backends", value)
 
+
+if not MYPY:
+    class K8sNodeInputArgsDict(TypedDict):
+        cpu: pulumi.Input[int]
+        """
+        The cpu units needed for the virtual machine. Range in [1: 32]
+        """
+        disk_size: pulumi.Input[int]
+        """
+        Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
+        """
+        flist: pulumi.Input[str]
+        """
+        The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        """
+        memory: pulumi.Input[int]
+        """
+        The memory capacity for the virtual machine in MB. Min is 250 MB
+        """
+        name: pulumi.Input[str]
+        """
+        The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+        network_name: pulumi.Input[str]
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
+        node_id: Any
+        """
+        The node ID to deploy the virtual machine on, required and should match the requested resources
+        """
+        description: NotRequired[pulumi.Input[str]]
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
+        entrypoint: NotRequired[pulumi.Input[str]]
+        """
+        The entry point for the flist. Example: /sbin/zinit init
+        """
+        env_vars: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        """
+        flist_checksum: NotRequired[pulumi.Input[str]]
+        """
+        The checksum of the flist which should match the checksum of the given flist, optional
+        """
+        gpus: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+        """
+        mounts: NotRequired[pulumi.Input[Sequence[pulumi.Input['MountArgsDict']]]]
+        """
+        A list of mounted disks or volumes
+        """
+        mycelium: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        """
+        mycelium_ip_seed: NotRequired[pulumi.Input[str]]
+        """
+        The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        """
+        planetary: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to enable generating a yggdrasil IP for the virtual machine
+        """
+        public_ip: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to enable generating a public IP for the virtual machine, public node is required for it
+        """
+        public_ip6: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+        """
+        rootfs_size: NotRequired[pulumi.Input[int]]
+        """
+        The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+        """
+        zlogs: NotRequired[pulumi.Input[Sequence[pulumi.Input['ZlogArgsDict']]]]
+        """
+        A list of virtual machine loggers
+        """
+elif False:
+    K8sNodeInputArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class K8sNodeInputArgs:
@@ -470,6 +615,31 @@ class K8sNodeInputArgs:
         pulumi.set(self, "zlogs", value)
 
 
+if not MYPY:
+    class MetadataArgsDict(TypedDict):
+        encryption_key: pulumi.Input[str]
+        """
+        64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+        """
+        prefix: pulumi.Input[str]
+        """
+        Data stored on the remote metadata is prefixed with
+        """
+        backends: NotRequired[pulumi.Input[Sequence[pulumi.Input['BackendArgsDict']]]]
+        """
+        List of ZDB backends configurations
+        """
+        encryption_algorithm: NotRequired[pulumi.Input[str]]
+        """
+        configuration to use for the encryption stage. Currently only AES is supported
+        """
+        type: NotRequired[pulumi.Input[str]]
+        """
+        configuration for the metadata store to use, currently only ZDB is supported
+        """
+elif False:
+    MetadataArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class MetadataArgs:
     def __init__(__self__, *,
@@ -555,6 +725,19 @@ class MetadataArgs:
         pulumi.set(self, "type", value)
 
 
+if not MYPY:
+    class MountArgsDict(TypedDict):
+        mount_point: pulumi.Input[str]
+        """
+        The mount point of the disk/volume
+        """
+        name: pulumi.Input[str]
+        """
+        The name of the mounted disk/volume, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+elif False:
+    MountArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class MountArgs:
     def __init__(__self__, *,
@@ -591,6 +774,63 @@ class MountArgs:
     def name(self, value: pulumi.Input[str]):
         pulumi.set(self, "name", value)
 
+
+if not MYPY:
+    class QSFSInputArgsDict(TypedDict):
+        cache: pulumi.Input[int]
+        """
+        The size of the fuse mountpoint on the node in MBs (holds qsfs local data before pushing)
+        """
+        encryption_key: pulumi.Input[str]
+        """
+        64 long hex encoded encryption key (e.g. 0000000000000000000000000000000000000000000000000000000000000000)
+        """
+        expected_shards: pulumi.Input[int]
+        """
+        The amount of shards which are generated when the data is encoded. Essentially, this is the amount of shards which is needed to be able to recover the data, and some disposable shards which could be lost. The amount of disposable shards can be calculated as expected_shards - minimal_shards
+        """
+        groups: pulumi.Input[Sequence[pulumi.Input['GroupArgsDict']]]
+        """
+        The backend groups to write the data to
+        """
+        max_zdb_data_dir_size: pulumi.Input[int]
+        """
+        Maximum size of the data dir in MiB, if this is set and the sum of the file sizes in the data dir gets higher than this value, the least used, already encoded file will be removed
+        """
+        metadata: pulumi.Input['MetadataArgsDict']
+        """
+        List of ZDB backends configurations
+        """
+        minimal_shards: pulumi.Input[int]
+        """
+        The minimum amount of shards which are needed to recover the original data
+        """
+        name: pulumi.Input[str]
+        """
+        The name of the qsfs workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+        redundant_groups: pulumi.Input[int]
+        """
+        The amount of groups which one should be able to loose while still being able to recover the original data
+        """
+        redundant_nodes: pulumi.Input[int]
+        """
+        The amount of nodes that can be lost in every group while still being able to recover the original data
+        """
+        compression_algorithm: NotRequired[pulumi.Input[str]]
+        """
+        configuration to use for the compression stage. Currently only snappy is supported
+        """
+        description: NotRequired[pulumi.Input[str]]
+        """
+        The description of the qsfs workload, optional with no restrictions
+        """
+        encryption_algorithm: NotRequired[pulumi.Input[str]]
+        """
+        configuration to use for the encryption stage. Currently only AES is supported
+        """
+elif False:
+    QSFSInputArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class QSFSInputArgs:
@@ -796,6 +1036,87 @@ class QSFSInputArgs:
     def encryption_algorithm(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "encryption_algorithm", value)
 
+
+if not MYPY:
+    class VMInputArgsDict(TypedDict):
+        cpu: pulumi.Input[int]
+        """
+        The cpu units needed for the virtual machine. Range in [1: 32]
+        """
+        flist: pulumi.Input[str]
+        """
+        The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        """
+        memory: pulumi.Input[int]
+        """
+        The memory capacity for the virtual machine in MB. Min is 250 MB
+        """
+        name: pulumi.Input[str]
+        """
+        The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+        network_name: pulumi.Input[str]
+        """
+        The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
+        """
+        node_id: Any
+        """
+        The node ID to deploy the virtual machine on, required and should match the requested resources
+        """
+        description: NotRequired[pulumi.Input[str]]
+        """
+        The description of the virtual machine workload, optional with no restrictions
+        """
+        entrypoint: NotRequired[pulumi.Input[str]]
+        """
+        The entry point for the flist. Example: /sbin/zinit init
+        """
+        env_vars: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        """
+        The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        """
+        flist_checksum: NotRequired[pulumi.Input[str]]
+        """
+        The checksum of the flist which should match the checksum of the given flist, optional
+        """
+        gpus: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
+        """
+        A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
+        """
+        mounts: NotRequired[pulumi.Input[Sequence[pulumi.Input['MountArgsDict']]]]
+        """
+        A list of mounted disks or volumes
+        """
+        mycelium: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        """
+        mycelium_ip_seed: NotRequired[pulumi.Input[str]]
+        """
+        The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        """
+        planetary: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to enable generating a yggdrasil IP for the virtual machine
+        """
+        public_ip: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to enable generating a public IP for the virtual machine, public node is required for it
+        """
+        public_ip6: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+        """
+        rootfs_size: NotRequired[pulumi.Input[int]]
+        """
+        The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
+        """
+        zlogs: NotRequired[pulumi.Input[Sequence[pulumi.Input['ZlogArgsDict']]]]
+        """
+        A list of virtual machine loggers
+        """
+elif False:
+    VMInputArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class VMInputArgs:
@@ -1102,6 +1423,35 @@ class VMInputArgs:
         pulumi.set(self, "zlogs", value)
 
 
+if not MYPY:
+    class ZDBInputArgsDict(TypedDict):
+        name: pulumi.Input[str]
+        """
+        The name of the 0-db workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+        password: pulumi.Input[str]
+        """
+        The 0-db password
+        """
+        size: pulumi.Input[int]
+        """
+        The 0-db size in GB (type HDD)
+        """
+        description: NotRequired[pulumi.Input[str]]
+        """
+        The description of the 0-db workload, optional with no restrictions
+        """
+        mode: NotRequired[pulumi.Input[str]]
+        """
+        the enumeration of the modes 0-db can operate in (default user)
+        """
+        public: NotRequired[pulumi.Input[bool]]
+        """
+        A flag to make 0-db namespace public - readable by anyone
+        """
+elif False:
+    ZDBInputArgsDict: TypeAlias = Mapping[str, Any]
+
 @pulumi.input_type
 class ZDBInputArgs:
     def __init__(__self__, *,
@@ -1203,6 +1553,19 @@ class ZDBInputArgs:
     def public(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "public", value)
 
+
+if not MYPY:
+    class ZlogArgsDict(TypedDict):
+        output: pulumi.Input[str]
+        """
+        The output logs URL, should be a valid url
+        """
+        zmachine: pulumi.Input[str]
+        """
+        The name of virtual machine, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        """
+elif False:
+    ZlogArgsDict: TypeAlias = Mapping[str, Any]
 
 @pulumi.input_type
 class ZlogArgs:
