@@ -62,11 +62,13 @@ func (*Kubernetes) Check(
 	}
 
 	// get master and worker flists from the cluster
-	Kubernetes.Master.Flist = Kubernetes.Flist
-	Kubernetes.Master.Entrypoint = Kubernetes.Entrypoint
-	for i := range Kubernetes.Workers {
-		Kubernetes.Workers[i].Flist = Kubernetes.Flist
-		Kubernetes.Workers[i].Entrypoint = Kubernetes.Entrypoint
+	if Kubernetes.Flist != "" {
+		Kubernetes.Master.Flist = Kubernetes.Flist
+		Kubernetes.Master.Entrypoint = Kubernetes.Entrypoint
+		for i := range Kubernetes.Workers {
+			Kubernetes.Workers[i].Flist = Kubernetes.Flist
+			Kubernetes.Workers[i].Entrypoint = Kubernetes.Entrypoint
+		}
 	}
 	return args, checkFailures, Kubernetes.Validate()
 }
