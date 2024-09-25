@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-go-provider v0.21.0
+	github.com/pulumi/pulumi-go-provider v0.22.0
 	github.com/pulumi/pulumi/pkg/v3 v3.134.0
 	github.com/pulumi/pulumi/sdk/v3 v3.134.0
 	github.com/stretchr/testify v1.9.0
