@@ -46,11 +46,11 @@ export interface GroupArgs {
 
 export interface K8sNodeInputArgs {
     /**
-     * The cpu units needed for the virtual machine. Range in [1: 32]
+     * The cpu units needed for the kubernetes node. Range in [1: 32]
      */
     cpu: pulumi.Input<number>;
     /**
-     * The description of the virtual machine workload, optional with no restrictions
+     * The description of the kubernetes node, optional with no restrictions
      */
     description?: pulumi.Input<string>;
     /**
@@ -60,41 +60,29 @@ export interface K8sNodeInputArgs {
     /**
      * The entry point for the flist. Example: /sbin/zinit init
      */
-    entrypoint?: pulumi.Input<string>;
+    entry_point?: pulumi.Input<string>;
     /**
-     * The environment variables to be passed to the virtual machine. Example: SSH_KEY
+     * The flist to be mounted in the kubernetes node. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
      */
-    env_vars?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
-    /**
-     * The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
-     */
-    flist: pulumi.Input<string>;
+    flist?: pulumi.Input<string>;
     /**
      * The checksum of the flist which should match the checksum of the given flist, optional
      */
     flist_checksum?: pulumi.Input<string>;
     /**
-     * A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
-     */
-    gpus?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * The memory capacity for the virtual machine in MB. Min is 250 MB
+     * The memory capacity for the kubernetes node in MB. Min is 250 MB
      */
     memory: pulumi.Input<number>;
     /**
-     * A list of mounted disks or volumes
-     */
-    mounts?: pulumi.Input<pulumi.Input<inputs.MountArgs>[]>;
-    /**
-     * A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+     * A flag to generate a random mycelium IP seed to support mycelium in the kubernetes node
      */
     mycelium?: pulumi.Input<boolean>;
     /**
-     * The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+     * The seed used for mycelium IP generated for the kubernetes node. It's length should be 6
      */
     mycelium_ip_seed?: pulumi.Input<string>;
     /**
-     * The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+     * The name of the kubernetes node, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
      */
     name: pulumi.Input<string>;
     /**
@@ -102,29 +90,31 @@ export interface K8sNodeInputArgs {
      */
     network_name: pulumi.Input<string>;
     /**
-     * The node ID to deploy the virtual machine on, required and should match the requested resources
+     * The node ID to deploy the kubernetes node on, required and should match the requested resources
      */
     node_id: any;
     /**
-     * A flag to enable generating a yggdrasil IP for the virtual machine
+     * A flag to enable generating a yggdrasil IP for the kubernetes node
      */
     planetary?: pulumi.Input<boolean>;
     /**
-     * A flag to enable generating a public IP for the virtual machine, public node is required for it
+     * A flag to enable generating a public IP for the kubernetes node, public node is required for it
      */
     public_ip?: pulumi.Input<boolean>;
     /**
-     * A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+     * A flag to enable generating a public IPv6 for the kubernetes node, public node is required for it
      */
     public_ip6?: pulumi.Input<boolean>;
-    /**
-     * The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
-     */
-    rootfs_size?: pulumi.Input<number>;
-    /**
-     * A list of virtual machine loggers
-     */
-    zlogs?: pulumi.Input<pulumi.Input<inputs.ZlogArgs>[]>;
+}
+/**
+ * k8sNodeInputArgsProvideDefaults sets the appropriate defaults for K8sNodeInputArgs
+ */
+export function k8sNodeInputArgsProvideDefaults(val: K8sNodeInputArgs): K8sNodeInputArgs {
+    return {
+        ...val,
+        entry_point: (val.entry_point) ?? "/sbin/zinit init",
+        flist: (val.flist) ?? "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist",
+    };
 }
 
 export interface MetadataArgs {

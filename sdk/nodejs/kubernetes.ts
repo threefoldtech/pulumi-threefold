@@ -34,6 +34,18 @@ export class Kubernetes extends pulumi.CustomResource {
     }
 
     /**
+     * The entry point for the flist. Example: /sbin/zinit init
+     */
+    public readonly entry_point!: pulumi.Output<string | undefined>;
+    /**
+     * The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+     */
+    public readonly flist!: pulumi.Output<string | undefined>;
+    /**
+     * The checksum of the flist which should match the checksum of the given flist, optional
+     */
+    public readonly flist_checksum!: pulumi.Output<string | undefined>;
+    /**
      * Master holds the configuration of master node in the kubernetes cluster
      */
     public readonly master!: pulumi.Output<outputs.K8sNodeInput>;
@@ -97,10 +109,13 @@ export class Kubernetes extends pulumi.CustomResource {
             if ((!args || args.workers === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'workers'");
             }
-            resourceInputs["master"] = args ? args.master : undefined;
+            resourceInputs["entry_point"] = args ? args.entry_point : undefined;
+            resourceInputs["flist"] = args ? args.flist : undefined;
+            resourceInputs["flist_checksum"] = args ? args.flist_checksum : undefined;
+            resourceInputs["master"] = args ? (args.master ? pulumi.output(args.master).apply(inputs.k8sNodeInputArgsProvideDefaults) : undefined) : undefined;
             resourceInputs["network_name"] = args ? args.network_name : undefined;
             resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "kubernetes/";
-            resourceInputs["ssh_key"] = args ? args.ssh_key : undefined;
+            resourceInputs["ssh_key"] = (args ? args.ssh_key : undefined) ?? "";
             resourceInputs["token"] = args ? args.token : undefined;
             resourceInputs["workers"] = args ? args.workers : undefined;
             resourceInputs["master_computed"] = undefined /*out*/;
@@ -108,6 +123,9 @@ export class Kubernetes extends pulumi.CustomResource {
             resourceInputs["nodes_ip_range"] = undefined /*out*/;
             resourceInputs["workers_computed"] = undefined /*out*/;
         } else {
+            resourceInputs["entry_point"] = undefined /*out*/;
+            resourceInputs["flist"] = undefined /*out*/;
+            resourceInputs["flist_checksum"] = undefined /*out*/;
             resourceInputs["master"] = undefined /*out*/;
             resourceInputs["master_computed"] = undefined /*out*/;
             resourceInputs["network_name"] = undefined /*out*/;
@@ -128,6 +146,18 @@ export class Kubernetes extends pulumi.CustomResource {
  * The set of arguments for constructing a Kubernetes resource.
  */
 export interface KubernetesArgs {
+    /**
+     * The entry point for the flist. Example: /sbin/zinit init
+     */
+    entry_point?: pulumi.Input<string>;
+    /**
+     * The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+     */
+    flist?: pulumi.Input<string>;
+    /**
+     * The checksum of the flist which should match the checksum of the given flist, optional
+     */
+    flist_checksum?: pulumi.Input<string>;
     /**
      * Master holds the configuration of master node in the kubernetes cluster
      */

@@ -510,17 +510,15 @@ func main() {
     }
     kubernetes, err := threefold.NewKubernetes(ctx, "kubernetes", &threefold.KubernetesArgs{
       Master: &threefold.K8sNodeInputArgs{
-        VMInput: &threefold.VMInput{
-          Name:         pulumi.String("kubernetes"),
-          Network_name: pulumi.String("test"),
-          NodeID: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
-            return nodes[0], nil
-          }).(pulumi.IntOutput),
-          Planetary: pulumi.Bool(true),
-          Mycelium:  pulumi.Bool(true),
-          Cpu:       pulumi.Int(2),
-          Memory:    pulumi.Int(2048),
-        },
+        Name:         pulumi.String("kubernetes"),
+        Network_name: pulumi.String("test"),
+        NodeID: scheduler.Nodes.ApplyT(func(nodes []int) (int, error) {
+          return nodes[0], nil
+        }).(pulumi.IntOutput),
+        Planetary: pulumi.Bool(true),
+        Mycelium:  pulumi.Bool(true),
+        Cpu:       pulumi.Int(2),
+        Memory:    pulumi.Int(2048),
         Disk_size: pulumi.Int(2),
       },
       Workers: threefold.K8sNodeInputArray{

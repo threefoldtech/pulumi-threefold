@@ -63,7 +63,7 @@ type VMInput struct {
 	Description    string            `pulumi:"description,optional"`
 	GPUs           []zos.GPU         `pulumi:"gpus,optional"`
 	RootfsSize     int               `pulumi:"rootfs_size,optional"`
-	Entrypoint     string            `pulumi:"entrypoint,optional"`
+	EntryPoint     string            `pulumi:"entrypoint,optional"`
 	Mounts         []Mount           `pulumi:"mounts,optional"`
 	Zlogs          []Zlog            `pulumi:"zlogs,optional"`
 	EnvVars        map[string]string `pulumi:"env_vars,optional"`
@@ -210,7 +210,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 			CPU:            uint8(vm.CPU),
 			MemoryMB:       uint64(vm.Memory),
 			RootfsSizeMB:   uint64(vm.RootfsSize),
-			Entrypoint:     vm.Entrypoint,
+			Entrypoint:     vm.EntryPoint,
 			Mounts:         mounts,
 			Zlogs:          zlogs,
 			EnvVars:        vm.EnvVars,
@@ -347,7 +347,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 			CPU:            int(vm.CPU),
 			Memory:         int(vm.MemoryMB),
 			RootfsSize:     int(vm.RootfsSizeMB),
-			Entrypoint:     vm.Entrypoint,
+			EntryPoint:     vm.Entrypoint,
 			Mounts:         mounts,
 			Zlogs:          zlogs,
 			EnvVars:        vm.EnvVars,

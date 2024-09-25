@@ -8,7 +8,7 @@ require (
 	github.com/pulumi/pulumi/pkg/v3 v3.134.0
 	github.com/pulumi/pulumi/sdk/v3 v3.134.0
 	github.com/stretchr/testify v1.9.0
-	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17-0.20240904123303-a296d35314f5
+	github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17
 	github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.16
 	github.com/threefoldtech/zos v0.5.6-0.20240902110349-172a0a29a6ee
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20230429144221-925a1e7659e6
@@ -172,7 +172,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
 	github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20240827163226-d4e15e206974 // indirect
-	github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.15.16 // indirect
+	github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.15.17 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/vedhavyas/go-subkey v1.0.3 // indirect

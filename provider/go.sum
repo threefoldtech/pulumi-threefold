@@ -558,12 +558,12 @@ github.com/texttheater/golang-levenshtein v1.0.1 h1:+cRNoVrfiwufQPhoMzB6N0Yf/Mqa
 github.com/texttheater/golang-levenshtein v1.0.1/go.mod h1:PYAKrbF5sAiq9wd+H82hs7gNaen0CplQ9uvm6+enD/8=
 github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20240827163226-d4e15e206974 h1:95Ox9WYNiwm3mVJeVF/lp7iCpVGA28AkU1atN893eDo=
 github.com/threefoldtech/tfchain/clients/tfchain-client-go v0.0.0-20240827163226-d4e15e206974/go.mod h1:dtDKAPiUDxAwIkfHV7xcAFZcOm+xwNIuOI1MLFS+MeQ=
-github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17-0.20240904123303-a296d35314f5 h1:MHzGVSmShASc+6nt6advdjzZjr/ae7g2WJXLDHTKOIc=
-github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17-0.20240904123303-a296d35314f5/go.mod h1:MwKEEeKN7qApCdabKRBTs18lrJ6JzA2Xx5Hd2/zb4o0=
+github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17 h1:JwjhOz4mSV0qL0/oF+fdLYtE+l0s7fFjObunzTairYA=
+github.com/threefoldtech/tfgrid-sdk-go/grid-client v0.15.17/go.mod h1:MwKEEeKN7qApCdabKRBTs18lrJ6JzA2Xx5Hd2/zb4o0=
 github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.16 h1:Bnt9POje9hc9nv1YwAu13ABnl63DBMH0qL4SeVhNsIQ=
 github.com/threefoldtech/tfgrid-sdk-go/grid-proxy v0.15.16/go.mod h1:2Z7uJYHeilN7bASpmkcDxtl+3AT8tim6iIvqZ08pwCg=
-github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.15.16 h1:xe3LgMdznykz6d6cOFBt2s+sq3XooOVn20aHOZ3gbQE=
-github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.15.16/go.mod h1:cDTivSsUl4r1jN+H8/W6yDqByOOliY8HEGuVuL3ixV8=
+github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.15.17 h1:0pdPsy5KekfzlNbHj6y3suxM8jk4R41s0mUcC3aT1N4=
+github.com/threefoldtech/tfgrid-sdk-go/rmb-sdk-go v0.15.17/go.mod h1:cDTivSsUl4r1jN+H8/W6yDqByOOliY8HEGuVuL3ixV8=
 github.com/threefoldtech/zos v0.5.6-0.20240902110349-172a0a29a6ee h1:pqpYVM0qkXujplHNfH6w5GDqcY5sLJAgOc4/hlR6+Xw=
 github.com/threefoldtech/zos v0.5.6-0.20240902110349-172a0a29a6ee/go.mod h1:lut72yYMJhgK0QRvF0Wd/mB3+OfIoXWz04DQuXck3Sw=
 github.com/tklauser/go-sysconf v0.3.11 h1:89WgdJhk5SNwJfu+GKyYveZ4IaJ7xAkecBo+KdJV0CM=

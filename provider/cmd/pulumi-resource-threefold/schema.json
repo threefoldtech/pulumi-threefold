@@ -155,64 +155,45 @@
       "properties": {
         "cpu": {
           "type": "integer",
-          "description": "The cpu units needed for the virtual machine. Range in [1: 32]"
+          "description": "The cpu units needed for the kubernetes node. Range in [1: 32]"
         },
         "description": {
           "type": "string",
-          "description": "The description of the virtual machine workload, optional with no restrictions"
+          "description": "The description of the kubernetes node, optional with no restrictions"
         },
         "disk_size": {
           "type": "integer",
           "description": "Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)"
         },
-        "entrypoint": {
+        "entry_point": {
           "type": "string",
-          "description": "The entry point for the flist. Example: /sbin/zinit init"
-        },
-        "env_vars": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "The environment variables to be passed to the virtual machine. Example: SSH_KEY"
+          "description": "The entry point for the flist. Example: /sbin/zinit init",
+          "default": "/sbin/zinit init"
         },
         "flist": {
           "type": "string",
-          "description": "The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist"
+          "description": "The flist to be mounted in the kubernetes node. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist",
+          "default": "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist"
         },
         "flist_checksum": {
           "type": "string",
           "description": "The checksum of the flist which should match the checksum of the given flist, optional"
         },
-        "gpus": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "A list of gpu IDs to be used in the virtual machine. GPU ID format: \u003cslot\u003e/\u003cvendor\u003e/\u003cdevice\u003e. Example: 0000:28:00.0/1002/731f"
-        },
         "memory": {
           "type": "integer",
-          "description": "The memory capacity for the virtual machine in MB. Min is 250 MB"
-        },
-        "mounts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/types/threefold:index:Mount"
-          },
-          "description": "A list of mounted disks or volumes"
+          "description": "The memory capacity for the kubernetes node in MB. Min is 250 MB"
         },
         "mycelium": {
           "type": "boolean",
-          "description": "A flag to generate a random mycelium IP seed to support mycelium in the virtual machine"
+          "description": "A flag to generate a random mycelium IP seed to support mycelium in the kubernetes node"
         },
         "mycelium_ip_seed": {
           "type": "string",
-          "description": "The seed used for mycelium IP generated for the virtual machine. It's length should be 6"
+          "description": "The seed used for mycelium IP generated for the kubernetes node. It's length should be 6"
         },
         "name": {
           "type": "string",
-          "description": "The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
+          "description": "The name of the kubernetes node, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported"
         },
         "network_name": {
           "type": "string",
@@ -220,37 +201,25 @@
         },
         "node_id": {
           "$ref": "pulumi.json#/Any",
-          "description": "The node ID to deploy the virtual machine on, required and should match the requested resources"
+          "description": "The node ID to deploy the kubernetes node on, required and should match the requested resources"
         },
         "planetary": {
           "type": "boolean",
-          "description": "A flag to enable generating a yggdrasil IP for the virtual machine"
+          "description": "A flag to enable generating a yggdrasil IP for the kubernetes node"
         },
         "public_ip": {
           "type": "boolean",
-          "description": "A flag to enable generating a public IP for the virtual machine, public node is required for it"
+          "description": "A flag to enable generating a public IP for the kubernetes node, public node is required for it"
         },
         "public_ip6": {
           "type": "boolean",
-          "description": "A flag to enable generating a public IPv6 for the virtual machine, public node is required for it"
-        },
-        "rootfs_size": {
-          "type": "integer",
-          "description": "The root fs size in GB (type SSD). Can be set as 0 to get the default minimum"
-        },
-        "zlogs": {
-          "type": "array",
-          "items": {
-            "$ref": "#/types/threefold:index:Zlog"
-          },
-          "description": "A list of virtual machine loggers"
+          "description": "A flag to enable generating a public IPv6 for the kubernetes node, public node is required for it"
         }
       },
       "type": "object",
       "required": [
         "cpu",
         "disk_size",
-        "flist",
         "memory",
         "name",
         "network_name",
@@ -1083,6 +1052,18 @@
     },
     "threefold:index:Kubernetes": {
       "properties": {
+        "entry_point": {
+          "type": "string",
+          "description": "The entry point for the flist. Example: /sbin/zinit init"
+        },
+        "flist": {
+          "type": "string",
+          "description": "The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist"
+        },
+        "flist_checksum": {
+          "type": "string",
+          "description": "The checksum of the flist which should match the checksum of the given flist, optional"
+        },
         "master": {
           "$ref": "#/types/threefold:index:K8sNodeInput",
           "description": "Master holds the configuration of master node in the kubernetes cluster"
@@ -1116,7 +1097,8 @@
         },
         "ssh_key": {
           "type": "string",
-          "description": "SSH key to access the cluster nodes"
+          "description": "SSH key to access the cluster nodes",
+          "default": ""
         },
         "token": {
           "type": "string",
@@ -1149,6 +1131,18 @@
         "workers_computed"
       ],
       "inputProperties": {
+        "entry_point": {
+          "type": "string",
+          "description": "The entry point for the flist. Example: /sbin/zinit init"
+        },
+        "flist": {
+          "type": "string",
+          "description": "The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist"
+        },
+        "flist_checksum": {
+          "type": "string",
+          "description": "The checksum of the flist which should match the checksum of the given flist, optional"
+        },
         "master": {
           "$ref": "#/types/threefold:index:K8sNodeInput",
           "description": "Master holds the configuration of master node in the kubernetes cluster"
@@ -1164,7 +1158,8 @@
         },
         "ssh_key": {
           "type": "string",
-          "description": "SSH key to access the cluster nodes"
+          "description": "SSH key to access the cluster nodes",
+          "default": ""
         },
         "token": {
           "type": "string",

@@ -25,6 +25,9 @@ class KubernetesArgs:
                  network_name: pulumi.Input[str],
                  token: pulumi.Input[str],
                  workers: pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]],
+                 entry_point: Optional[pulumi.Input[str]] = None,
+                 flist: Optional[pulumi.Input[str]] = None,
+                 flist_checksum: Optional[pulumi.Input[str]] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
                  ssh_key: Optional[pulumi.Input[str]] = None):
         """
@@ -33,6 +36,9 @@ class KubernetesArgs:
         :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
         :param pulumi.Input[str] token: The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
         :param pulumi.Input[Sequence[pulumi.Input['K8sNodeInputArgs']]] workers: Workers is a list holding the workers configuration for the kubernetes cluster
+        :param pulumi.Input[str] entry_point: The entry point for the flist. Example: /sbin/zinit init
+        :param pulumi.Input[str] flist: The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        :param pulumi.Input[str] flist_checksum: The checksum of the flist which should match the checksum of the given flist, optional
         :param pulumi.Input[str] solution_type: The solution type of the cluster, displayed as project name in contract metadata
         :param pulumi.Input[str] ssh_key: SSH key to access the cluster nodes
         """
@@ -40,10 +46,18 @@ class KubernetesArgs:
         pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "token", token)
         pulumi.set(__self__, "workers", workers)
+        if entry_point is not None:
+            pulumi.set(__self__, "entry_point", entry_point)
+        if flist is not None:
+            pulumi.set(__self__, "flist", flist)
+        if flist_checksum is not None:
+            pulumi.set(__self__, "flist_checksum", flist_checksum)
         if solution_type is None:
             solution_type = 'kubernetes/'
         if solution_type is not None:
             pulumi.set(__self__, "solution_type", solution_type)
+        if ssh_key is None:
+            ssh_key = ''
         if ssh_key is not None:
             pulumi.set(__self__, "ssh_key", ssh_key)
 
@@ -97,6 +111,42 @@ class KubernetesArgs:
 
     @property
     @pulumi.getter
+    def entry_point(self) -> Optional[pulumi.Input[str]]:
+        """
+        The entry point for the flist. Example: /sbin/zinit init
+        """
+        return pulumi.get(self, "entry_point")
+
+    @entry_point.setter
+    def entry_point(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "entry_point", value)
+
+    @property
+    @pulumi.getter
+    def flist(self) -> Optional[pulumi.Input[str]]:
+        """
+        The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        """
+        return pulumi.get(self, "flist")
+
+    @flist.setter
+    def flist(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "flist", value)
+
+    @property
+    @pulumi.getter
+    def flist_checksum(self) -> Optional[pulumi.Input[str]]:
+        """
+        The checksum of the flist which should match the checksum of the given flist, optional
+        """
+        return pulumi.get(self, "flist_checksum")
+
+    @flist_checksum.setter
+    def flist_checksum(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "flist_checksum", value)
+
+    @property
+    @pulumi.getter
     def solution_type(self) -> Optional[pulumi.Input[str]]:
         """
         The solution type of the cluster, displayed as project name in contract metadata
@@ -125,6 +175,9 @@ class Kubernetes(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 entry_point: Optional[pulumi.Input[str]] = None,
+                 flist: Optional[pulumi.Input[str]] = None,
+                 flist_checksum: Optional[pulumi.Input[str]] = None,
                  master: Optional[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]] = None,
                  network_name: Optional[pulumi.Input[str]] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
@@ -136,6 +189,9 @@ class Kubernetes(pulumi.CustomResource):
         Create a Kubernetes resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] entry_point: The entry point for the flist. Example: /sbin/zinit init
+        :param pulumi.Input[str] flist: The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        :param pulumi.Input[str] flist_checksum: The checksum of the flist which should match the checksum of the given flist, optional
         :param pulumi.Input[pulumi.InputType['K8sNodeInputArgs']] master: Master holds the configuration of master node in the kubernetes cluster
         :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
         :param pulumi.Input[str] solution_type: The solution type of the cluster, displayed as project name in contract metadata
@@ -166,6 +222,9 @@ class Kubernetes(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 entry_point: Optional[pulumi.Input[str]] = None,
+                 flist: Optional[pulumi.Input[str]] = None,
+                 flist_checksum: Optional[pulumi.Input[str]] = None,
                  master: Optional[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]] = None,
                  network_name: Optional[pulumi.Input[str]] = None,
                  solution_type: Optional[pulumi.Input[str]] = None,
@@ -181,6 +240,9 @@ class Kubernetes(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = KubernetesArgs.__new__(KubernetesArgs)
 
+            __props__.__dict__["entry_point"] = entry_point
+            __props__.__dict__["flist"] = flist
+            __props__.__dict__["flist_checksum"] = flist_checksum
             if master is None and not opts.urn:
                 raise TypeError("Missing required property 'master'")
             __props__.__dict__["master"] = master
@@ -190,6 +252,8 @@ class Kubernetes(pulumi.CustomResource):
             if solution_type is None:
                 solution_type = 'kubernetes/'
             __props__.__dict__["solution_type"] = solution_type
+            if ssh_key is None:
+                ssh_key = ''
             __props__.__dict__["ssh_key"] = ssh_key
             if token is None and not opts.urn:
                 raise TypeError("Missing required property 'token'")
@@ -223,6 +287,9 @@ class Kubernetes(pulumi.CustomResource):
 
         __props__ = KubernetesArgs.__new__(KubernetesArgs)
 
+        __props__.__dict__["entry_point"] = None
+        __props__.__dict__["flist"] = None
+        __props__.__dict__["flist_checksum"] = None
         __props__.__dict__["master"] = None
         __props__.__dict__["master_computed"] = None
         __props__.__dict__["network_name"] = None
@@ -234,6 +301,30 @@ class Kubernetes(pulumi.CustomResource):
         __props__.__dict__["workers"] = None
         __props__.__dict__["workers_computed"] = None
         return Kubernetes(resource_name, opts=opts, __props__=__props__)
+
+    @property
+    @pulumi.getter
+    def entry_point(self) -> pulumi.Output[Optional[str]]:
+        """
+        The entry point for the flist. Example: /sbin/zinit init
+        """
+        return pulumi.get(self, "entry_point")
+
+    @property
+    @pulumi.getter
+    def flist(self) -> pulumi.Output[Optional[str]]:
+        """
+        The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+        """
+        return pulumi.get(self, "flist")
+
+    @property
+    @pulumi.getter
+    def flist_checksum(self) -> pulumi.Output[Optional[str]]:
+        """
+        The checksum of the flist which should match the checksum of the given flist, optional
+        """
+        return pulumi.get(self, "flist_checksum")
 
     @property
     @pulumi.getter

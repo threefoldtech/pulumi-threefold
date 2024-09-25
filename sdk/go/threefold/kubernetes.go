@@ -15,6 +15,12 @@ import (
 type Kubernetes struct {
 	pulumi.CustomResourceState
 
+	// The entry point for the flist. Example: /sbin/zinit init
+	Entry_point pulumi.StringPtrOutput `pulumi:"entry_point"`
+	// The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+	Flist pulumi.StringPtrOutput `pulumi:"flist"`
+	// The checksum of the flist which should match the checksum of the given flist, optional
+	Flist_checksum pulumi.StringPtrOutput `pulumi:"flist_checksum"`
 	// Master holds the configuration of master node in the kubernetes cluster
 	Master K8sNodeInputOutput `pulumi:"master"`
 	// The computed fields of the master node
@@ -56,8 +62,12 @@ func NewKubernetes(ctx *pulumi.Context,
 	if args.Workers == nil {
 		return nil, errors.New("invalid value for required argument 'Workers'")
 	}
+	args.Master = args.Master.ToK8sNodeInputOutput().ApplyT(func(v K8sNodeInput) K8sNodeInput { return *v.Defaults() }).(K8sNodeInputOutput)
 	if args.Solution_type == nil {
 		args.Solution_type = pulumi.StringPtr("kubernetes/")
+	}
+	if args.Ssh_key == nil {
+		args.Ssh_key = pulumi.StringPtr("")
 	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Kubernetes
@@ -92,6 +102,12 @@ func (KubernetesState) ElementType() reflect.Type {
 }
 
 type kubernetesArgs struct {
+	// The entry point for the flist. Example: /sbin/zinit init
+	Entry_point *string `pulumi:"entry_point"`
+	// The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+	Flist *string `pulumi:"flist"`
+	// The checksum of the flist which should match the checksum of the given flist, optional
+	Flist_checksum *string `pulumi:"flist_checksum"`
 	// Master holds the configuration of master node in the kubernetes cluster
 	Master K8sNodeInput `pulumi:"master"`
 	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
@@ -108,6 +124,12 @@ type kubernetesArgs struct {
 
 // The set of arguments for constructing a Kubernetes resource.
 type KubernetesArgs struct {
+	// The entry point for the flist. Example: /sbin/zinit init
+	Entry_point pulumi.StringPtrInput
+	// The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+	Flist pulumi.StringPtrInput
+	// The checksum of the flist which should match the checksum of the given flist, optional
+	Flist_checksum pulumi.StringPtrInput
 	// Master holds the configuration of master node in the kubernetes cluster
 	Master K8sNodeInputInput
 	// The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
@@ -207,6 +229,21 @@ func (o KubernetesOutput) ToKubernetesOutput() KubernetesOutput {
 
 func (o KubernetesOutput) ToKubernetesOutputWithContext(ctx context.Context) KubernetesOutput {
 	return o
+}
+
+// The entry point for the flist. Example: /sbin/zinit init
+func (o KubernetesOutput) Entry_point() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Kubernetes) pulumi.StringPtrOutput { return v.Entry_point }).(pulumi.StringPtrOutput)
+}
+
+// The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
+func (o KubernetesOutput) Flist() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Kubernetes) pulumi.StringPtrOutput { return v.Flist }).(pulumi.StringPtrOutput)
+}
+
+// The checksum of the flist which should match the checksum of the given flist, optional
+func (o KubernetesOutput) Flist_checksum() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Kubernetes) pulumi.StringPtrOutput { return v.Flist_checksum }).(pulumi.StringPtrOutput)
 }
 
 // Master holds the configuration of master node in the kubernetes cluster

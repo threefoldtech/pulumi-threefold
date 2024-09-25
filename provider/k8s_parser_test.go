@@ -9,17 +9,15 @@ import (
 
 func TestK8sParser(t *testing.T) {
 	k8sNodeInput := K8sNodeInput{
-		VMInput: VMInput{
-			Name:      "master",
-			NodeID:    1,
-			Flist:     "",
-			CPU:       1,
-			Memory:    1,
-			PublicIP:  false,
-			PublicIP6: false,
-			Planetary: false,
-		},
-		DiskSize: 1,
+		Name:      "master",
+		NodeID:    1,
+		Flist:     "",
+		CPU:       1,
+		Memory:    1,
+		PublicIP:  false,
+		PublicIP6: false,
+		Planetary: false,
+		DiskSize:  1,
 	}
 
 	k8sWorkerInput1 := k8sNodeInput

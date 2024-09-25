@@ -214,23 +214,19 @@ if not MYPY:
     class K8sNodeInputArgsDict(TypedDict):
         cpu: pulumi.Input[int]
         """
-        The cpu units needed for the virtual machine. Range in [1: 32]
+        The cpu units needed for the kubernetes node. Range in [1: 32]
         """
         disk_size: pulumi.Input[int]
         """
         Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
         """
-        flist: pulumi.Input[str]
-        """
-        The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
-        """
         memory: pulumi.Input[int]
         """
-        The memory capacity for the virtual machine in MB. Min is 250 MB
+        The memory capacity for the kubernetes node in MB. Min is 250 MB
         """
         name: pulumi.Input[str]
         """
-        The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        The name of the kubernetes node, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
         """
         network_name: pulumi.Input[str]
         """
@@ -238,59 +234,43 @@ if not MYPY:
         """
         node_id: Any
         """
-        The node ID to deploy the virtual machine on, required and should match the requested resources
+        The node ID to deploy the kubernetes node on, required and should match the requested resources
         """
         description: NotRequired[pulumi.Input[str]]
         """
-        The description of the virtual machine workload, optional with no restrictions
+        The description of the kubernetes node, optional with no restrictions
         """
-        entrypoint: NotRequired[pulumi.Input[str]]
+        entry_point: NotRequired[pulumi.Input[str]]
         """
         The entry point for the flist. Example: /sbin/zinit init
         """
-        env_vars: NotRequired[pulumi.Input[Mapping[str, pulumi.Input[str]]]]
+        flist: NotRequired[pulumi.Input[str]]
         """
-        The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        The flist to be mounted in the kubernetes node. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
         """
         flist_checksum: NotRequired[pulumi.Input[str]]
         """
         The checksum of the flist which should match the checksum of the given flist, optional
         """
-        gpus: NotRequired[pulumi.Input[Sequence[pulumi.Input[str]]]]
-        """
-        A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
-        """
-        mounts: NotRequired[pulumi.Input[Sequence[pulumi.Input['MountArgsDict']]]]
-        """
-        A list of mounted disks or volumes
-        """
         mycelium: NotRequired[pulumi.Input[bool]]
         """
-        A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        A flag to generate a random mycelium IP seed to support mycelium in the kubernetes node
         """
         mycelium_ip_seed: NotRequired[pulumi.Input[str]]
         """
-        The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        The seed used for mycelium IP generated for the kubernetes node. It's length should be 6
         """
         planetary: NotRequired[pulumi.Input[bool]]
         """
-        A flag to enable generating a yggdrasil IP for the virtual machine
+        A flag to enable generating a yggdrasil IP for the kubernetes node
         """
         public_ip: NotRequired[pulumi.Input[bool]]
         """
-        A flag to enable generating a public IP for the virtual machine, public node is required for it
+        A flag to enable generating a public IP for the kubernetes node, public node is required for it
         """
         public_ip6: NotRequired[pulumi.Input[bool]]
         """
-        A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
-        """
-        rootfs_size: NotRequired[pulumi.Input[int]]
-        """
-        The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
-        """
-        zlogs: NotRequired[pulumi.Input[Sequence[pulumi.Input['ZlogArgsDict']]]]
-        """
-        A list of virtual machine loggers
+        A flag to enable generating a public IPv6 for the kubernetes node, public node is required for it
         """
 elif False:
     K8sNodeInputArgsDict: TypeAlias = Mapping[str, Any]
@@ -300,65 +280,54 @@ class K8sNodeInputArgs:
     def __init__(__self__, *,
                  cpu: pulumi.Input[int],
                  disk_size: pulumi.Input[int],
-                 flist: pulumi.Input[str],
                  memory: pulumi.Input[int],
                  name: pulumi.Input[str],
                  network_name: pulumi.Input[str],
                  node_id: Any,
                  description: Optional[pulumi.Input[str]] = None,
-                 entrypoint: Optional[pulumi.Input[str]] = None,
-                 env_vars: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 entry_point: Optional[pulumi.Input[str]] = None,
+                 flist: Optional[pulumi.Input[str]] = None,
                  flist_checksum: Optional[pulumi.Input[str]] = None,
-                 gpus: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
-                 mounts: Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]] = None,
                  mycelium: Optional[pulumi.Input[bool]] = None,
                  mycelium_ip_seed: Optional[pulumi.Input[str]] = None,
                  planetary: Optional[pulumi.Input[bool]] = None,
                  public_ip: Optional[pulumi.Input[bool]] = None,
-                 public_ip6: Optional[pulumi.Input[bool]] = None,
-                 rootfs_size: Optional[pulumi.Input[int]] = None,
-                 zlogs: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]] = None):
+                 public_ip6: Optional[pulumi.Input[bool]] = None):
         """
-        :param pulumi.Input[int] cpu: The cpu units needed for the virtual machine. Range in [1: 32]
+        :param pulumi.Input[int] cpu: The cpu units needed for the kubernetes node. Range in [1: 32]
         :param pulumi.Input[int] disk_size: Data disk size in GBs. Must be between 1GB and 10240GBs (10TBs)
-        :param pulumi.Input[str] flist: The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
-        :param pulumi.Input[int] memory: The memory capacity for the virtual machine in MB. Min is 250 MB
-        :param pulumi.Input[str] name: The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        :param pulumi.Input[int] memory: The memory capacity for the kubernetes node in MB. Min is 250 MB
+        :param pulumi.Input[str] name: The name of the kubernetes node, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
         :param pulumi.Input[str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
-        :param Any node_id: The node ID to deploy the virtual machine on, required and should match the requested resources
-        :param pulumi.Input[str] description: The description of the virtual machine workload, optional with no restrictions
-        :param pulumi.Input[str] entrypoint: The entry point for the flist. Example: /sbin/zinit init
-        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] env_vars: The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        :param Any node_id: The node ID to deploy the kubernetes node on, required and should match the requested resources
+        :param pulumi.Input[str] description: The description of the kubernetes node, optional with no restrictions
+        :param pulumi.Input[str] entry_point: The entry point for the flist. Example: /sbin/zinit init
+        :param pulumi.Input[str] flist: The flist to be mounted in the kubernetes node. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
         :param pulumi.Input[str] flist_checksum: The checksum of the flist which should match the checksum of the given flist, optional
-        :param pulumi.Input[Sequence[pulumi.Input[str]]] gpus: A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
-        :param pulumi.Input[Sequence[pulumi.Input['MountArgs']]] mounts: A list of mounted disks or volumes
-        :param pulumi.Input[bool] mycelium: A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
-        :param pulumi.Input[str] mycelium_ip_seed: The seed used for mycelium IP generated for the virtual machine. It's length should be 6
-        :param pulumi.Input[bool] planetary: A flag to enable generating a yggdrasil IP for the virtual machine
-        :param pulumi.Input[bool] public_ip: A flag to enable generating a public IP for the virtual machine, public node is required for it
-        :param pulumi.Input[bool] public_ip6: A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
-        :param pulumi.Input[int] rootfs_size: The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
-        :param pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]] zlogs: A list of virtual machine loggers
+        :param pulumi.Input[bool] mycelium: A flag to generate a random mycelium IP seed to support mycelium in the kubernetes node
+        :param pulumi.Input[str] mycelium_ip_seed: The seed used for mycelium IP generated for the kubernetes node. It's length should be 6
+        :param pulumi.Input[bool] planetary: A flag to enable generating a yggdrasil IP for the kubernetes node
+        :param pulumi.Input[bool] public_ip: A flag to enable generating a public IP for the kubernetes node, public node is required for it
+        :param pulumi.Input[bool] public_ip6: A flag to enable generating a public IPv6 for the kubernetes node, public node is required for it
         """
         pulumi.set(__self__, "cpu", cpu)
         pulumi.set(__self__, "disk_size", disk_size)
-        pulumi.set(__self__, "flist", flist)
         pulumi.set(__self__, "memory", memory)
         pulumi.set(__self__, "name", name)
         pulumi.set(__self__, "network_name", network_name)
         pulumi.set(__self__, "node_id", node_id)
         if description is not None:
             pulumi.set(__self__, "description", description)
-        if entrypoint is not None:
-            pulumi.set(__self__, "entrypoint", entrypoint)
-        if env_vars is not None:
-            pulumi.set(__self__, "env_vars", env_vars)
+        if entry_point is None:
+            entry_point = '/sbin/zinit init'
+        if entry_point is not None:
+            pulumi.set(__self__, "entry_point", entry_point)
+        if flist is None:
+            flist = 'https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist'
+        if flist is not None:
+            pulumi.set(__self__, "flist", flist)
         if flist_checksum is not None:
             pulumi.set(__self__, "flist_checksum", flist_checksum)
-        if gpus is not None:
-            pulumi.set(__self__, "gpus", gpus)
-        if mounts is not None:
-            pulumi.set(__self__, "mounts", mounts)
         if mycelium is not None:
             pulumi.set(__self__, "mycelium", mycelium)
         if mycelium_ip_seed is not None:
@@ -369,16 +338,12 @@ class K8sNodeInputArgs:
             pulumi.set(__self__, "public_ip", public_ip)
         if public_ip6 is not None:
             pulumi.set(__self__, "public_ip6", public_ip6)
-        if rootfs_size is not None:
-            pulumi.set(__self__, "rootfs_size", rootfs_size)
-        if zlogs is not None:
-            pulumi.set(__self__, "zlogs", zlogs)
 
     @property
     @pulumi.getter
     def cpu(self) -> pulumi.Input[int]:
         """
-        The cpu units needed for the virtual machine. Range in [1: 32]
+        The cpu units needed for the kubernetes node. Range in [1: 32]
         """
         return pulumi.get(self, "cpu")
 
@@ -400,21 +365,9 @@ class K8sNodeInputArgs:
 
     @property
     @pulumi.getter
-    def flist(self) -> pulumi.Input[str]:
-        """
-        The flist to be mounted in the virtual machine, required and should be valid. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
-        """
-        return pulumi.get(self, "flist")
-
-    @flist.setter
-    def flist(self, value: pulumi.Input[str]):
-        pulumi.set(self, "flist", value)
-
-    @property
-    @pulumi.getter
     def memory(self) -> pulumi.Input[int]:
         """
-        The memory capacity for the virtual machine in MB. Min is 250 MB
+        The memory capacity for the kubernetes node in MB. Min is 250 MB
         """
         return pulumi.get(self, "memory")
 
@@ -426,7 +379,7 @@ class K8sNodeInputArgs:
     @pulumi.getter
     def name(self) -> pulumi.Input[str]:
         """
-        The name of the virtual machine workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
+        The name of the kubernetes node, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
         """
         return pulumi.get(self, "name")
 
@@ -450,7 +403,7 @@ class K8sNodeInputArgs:
     @pulumi.getter
     def node_id(self) -> Any:
         """
-        The node ID to deploy the virtual machine on, required and should match the requested resources
+        The node ID to deploy the kubernetes node on, required and should match the requested resources
         """
         return pulumi.get(self, "node_id")
 
@@ -462,7 +415,7 @@ class K8sNodeInputArgs:
     @pulumi.getter
     def description(self) -> Optional[pulumi.Input[str]]:
         """
-        The description of the virtual machine workload, optional with no restrictions
+        The description of the kubernetes node, optional with no restrictions
         """
         return pulumi.get(self, "description")
 
@@ -472,27 +425,27 @@ class K8sNodeInputArgs:
 
     @property
     @pulumi.getter
-    def entrypoint(self) -> Optional[pulumi.Input[str]]:
+    def entry_point(self) -> Optional[pulumi.Input[str]]:
         """
         The entry point for the flist. Example: /sbin/zinit init
         """
-        return pulumi.get(self, "entrypoint")
+        return pulumi.get(self, "entry_point")
 
-    @entrypoint.setter
-    def entrypoint(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "entrypoint", value)
+    @entry_point.setter
+    def entry_point(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "entry_point", value)
 
     @property
     @pulumi.getter
-    def env_vars(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+    def flist(self) -> Optional[pulumi.Input[str]]:
         """
-        The environment variables to be passed to the virtual machine. Example: SSH_KEY
+        The flist to be mounted in the kubernetes node. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
         """
-        return pulumi.get(self, "env_vars")
+        return pulumi.get(self, "flist")
 
-    @env_vars.setter
-    def env_vars(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
-        pulumi.set(self, "env_vars", value)
+    @flist.setter
+    def flist(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "flist", value)
 
     @property
     @pulumi.getter
@@ -508,33 +461,9 @@ class K8sNodeInputArgs:
 
     @property
     @pulumi.getter
-    def gpus(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
-        """
-        A list of gpu IDs to be used in the virtual machine. GPU ID format: <slot>/<vendor>/<device>. Example: 0000:28:00.0/1002/731f
-        """
-        return pulumi.get(self, "gpus")
-
-    @gpus.setter
-    def gpus(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
-        pulumi.set(self, "gpus", value)
-
-    @property
-    @pulumi.getter
-    def mounts(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]]:
-        """
-        A list of mounted disks or volumes
-        """
-        return pulumi.get(self, "mounts")
-
-    @mounts.setter
-    def mounts(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['MountArgs']]]]):
-        pulumi.set(self, "mounts", value)
-
-    @property
-    @pulumi.getter
     def mycelium(self) -> Optional[pulumi.Input[bool]]:
         """
-        A flag to generate a random mycelium IP seed to support mycelium in the virtual machine
+        A flag to generate a random mycelium IP seed to support mycelium in the kubernetes node
         """
         return pulumi.get(self, "mycelium")
 
@@ -546,7 +475,7 @@ class K8sNodeInputArgs:
     @pulumi.getter
     def mycelium_ip_seed(self) -> Optional[pulumi.Input[str]]:
         """
-        The seed used for mycelium IP generated for the virtual machine. It's length should be 6
+        The seed used for mycelium IP generated for the kubernetes node. It's length should be 6
         """
         return pulumi.get(self, "mycelium_ip_seed")
 
@@ -558,7 +487,7 @@ class K8sNodeInputArgs:
     @pulumi.getter
     def planetary(self) -> Optional[pulumi.Input[bool]]:
         """
-        A flag to enable generating a yggdrasil IP for the virtual machine
+        A flag to enable generating a yggdrasil IP for the kubernetes node
         """
         return pulumi.get(self, "planetary")
 
@@ -570,7 +499,7 @@ class K8sNodeInputArgs:
     @pulumi.getter
     def public_ip(self) -> Optional[pulumi.Input[bool]]:
         """
-        A flag to enable generating a public IP for the virtual machine, public node is required for it
+        A flag to enable generating a public IP for the kubernetes node, public node is required for it
         """
         return pulumi.get(self, "public_ip")
 
@@ -582,37 +511,13 @@ class K8sNodeInputArgs:
     @pulumi.getter
     def public_ip6(self) -> Optional[pulumi.Input[bool]]:
         """
-        A flag to enable generating a public IPv6 for the virtual machine, public node is required for it
+        A flag to enable generating a public IPv6 for the kubernetes node, public node is required for it
         """
         return pulumi.get(self, "public_ip6")
 
     @public_ip6.setter
     def public_ip6(self, value: Optional[pulumi.Input[bool]]):
         pulumi.set(self, "public_ip6", value)
-
-    @property
-    @pulumi.getter
-    def rootfs_size(self) -> Optional[pulumi.Input[int]]:
-        """
-        The root fs size in GB (type SSD). Can be set as 0 to get the default minimum
-        """
-        return pulumi.get(self, "rootfs_size")
-
-    @rootfs_size.setter
-    def rootfs_size(self, value: Optional[pulumi.Input[int]]):
-        pulumi.set(self, "rootfs_size", value)
-
-    @property
-    @pulumi.getter
-    def zlogs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]]:
-        """
-        A list of virtual machine loggers
-        """
-        return pulumi.get(self, "zlogs")
-
-    @zlogs.setter
-    def zlogs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ZlogArgs']]]]):
-        pulumi.set(self, "zlogs", value)
 
 
 if not MYPY:
