@@ -173,7 +173,7 @@
         "flist": {
           "type": "string",
           "description": "The flist to be mounted in the kubernetes node. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist",
-          "default": "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist"
+          "default": "https://hub.grid.tf/tf-official-apps/threefolddev-k3s-v1.31.0.flist"
         },
         "flist_checksum": {
           "type": "string",

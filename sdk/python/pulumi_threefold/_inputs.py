@@ -323,7 +323,7 @@ class K8sNodeInputArgs:
         if entry_point is not None:
             pulumi.set(__self__, "entry_point", entry_point)
         if flist is None:
-            flist = 'https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist'
+            flist = 'https://hub.grid.tf/tf-official-apps/threefolddev-k3s-v1.31.0.flist'
         if flist is not None:
             pulumi.set(__self__, "flist", flist)
         if flist_checksum is not None:

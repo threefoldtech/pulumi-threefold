@@ -113,7 +113,7 @@ export function k8sNodeInputProvideDefaults(val: K8sNodeInput): K8sNodeInput {
     return {
         ...val,
         entry_point: (val.entry_point) ?? "/sbin/zinit init",
-        flist: (val.flist) ?? "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist",
+        flist: (val.flist) ?? "https://hub.grid.tf/tf-official-apps/threefolddev-k3s-v1.31.0.flist",
     };
 }
 
