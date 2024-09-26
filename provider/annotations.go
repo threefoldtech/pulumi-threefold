@@ -203,7 +203,8 @@ func (k *KubernetesState) Annotate(a infer.Annotator) {
 }
 
 func (k *K8sNodeInput) Annotate(a infer.Annotator) {
-	a.SetDefault(&k.Flist, "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist")
+	// a.SetDefault(&k.Flist, "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist")
+	a.SetDefault(&k.Flist, "https://hub.grid.tf/tf-official-apps/threefolddev-k3s-v1.31.0.flist")
 	a.SetDefault(&k.EntryPoint, "/sbin/zinit init")
 
 	a.Describe(&k.Name, "The name of the kubernetes node, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported")

@@ -384,7 +384,7 @@ func (val *K8sNodeInput) Defaults() *K8sNodeInput {
 		tmp.Entry_point = &entry_point_
 	}
 	if tmp.Flist == nil {
-		flist_ := "https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist"
+		flist_ := "https://hub.grid.tf/tf-official-apps/threefolddev-k3s-v1.31.0.flist"
 		tmp.Flist = &flist_
 	}
 	return &tmp
@@ -444,7 +444,7 @@ func (val *K8sNodeInputArgs) Defaults() *K8sNodeInputArgs {
 		tmp.Entry_point = pulumi.StringPtr("/sbin/zinit init")
 	}
 	if tmp.Flist == nil {
-		tmp.Flist = pulumi.StringPtr("https://hub.grid.tf/tf-official-apps/threefoldtech-k3s-latest.flist")
+		tmp.Flist = pulumi.StringPtr("https://hub.grid.tf/tf-official-apps/threefolddev-k3s-v1.31.0.flist")
 	}
 	return &tmp
 }
