@@ -684,6 +684,8 @@ github.com/prometheus/procfs v0.9.0/go.mod h1:+pB4zwohETzFnmlpe6yd2lSc+0/46IYZRB
 github.com/prometheus/procfs v0.12.0/go.mod h1:pcuDEFsWDnvcgNzo4EEweacyhjeA9Zk3cnaOZAZEfOo=
 github.com/prometheus/prometheus v0.50.1/go.mod h1:FvE8dtQ1Ww63IlyKBn1V4s+zMwF9kHkVNkQBR1pM4CU=
 github.com/pulumi/esc v0.9.1/go.mod h1:oEJ6bOsjYlQUpjf70GiX+CXn3VBmpwFDxUTlmtUN84c=
+github.com/pulumi/pulumi-go-provider v0.21.0 h1:sDHBtWkWRrWn6klfdvDIorlUGMBt6BwhgKXqcPoJh2c=
+github.com/pulumi/pulumi-go-provider v0.21.0/go.mod h1:2qQ4M1LXzv+SpY6v8JiTbPVGdeCeqfBMgsqb7WyH77o=
 github.com/pulumi/pulumi-java/pkg v0.10.0/go.mod h1:xu6UgYtQm+xXOo1/DZNa2CWVPytu+RMkZVTtI7w7ffY=
 github.com/pulumi/pulumi-java/pkg v0.11.0/go.mod h1:sXAk25P47AQVQL6ilAbFmRNgZykC7og/+87ihnqzFTc=
 github.com/pulumi/pulumi-java/pkg v0.14.0/go.mod h1:VybuJMWJtJc9ZNbt1kcYH4TbpocMx9mEi7YWL2Co99c=
