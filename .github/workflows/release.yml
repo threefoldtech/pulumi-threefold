@@ -11,7 +11,7 @@ env:
   # IF YOU NEED TO PUBLISH A NPM PACKAGE THEN ENSURE A NPM_TOKEN SECRET IS SET
   # AND PUBLISH_NPM: TRUE. IF YOU WANT TO PUBLISH TO A PRIVATE NPM REGISTRY
   # THEN ENSURE THE NPM_REGISTRY_URL IS CHANGED
-  # NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   PUBLISH_NPM: true
   # NPM_REGISTRY_URL: https://registry.npmjs.org
@@ -126,7 +126,7 @@ jobs:
           package: ${{github.workspace}}/sdk/nodejs/bin/package.json
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         language:
           - nodejs
