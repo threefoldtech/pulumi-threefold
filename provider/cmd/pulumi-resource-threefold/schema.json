@@ -1,6 +1,7 @@
 {
   "name": "threefold",
   "displayName": "Threefold Grid",
+  "version": "0.7.7",
   "description": "The Pulumi Resource Provider for the Threefold Grid.",
   "keywords": [
     "pulumi",
@@ -1392,6 +1393,12 @@
         },
         "twin_id": {
           "type": "integer"
+        },
+        "wireguard": {
+          "type": "boolean"
+        },
+        "ygg": {
+          "type": "boolean"
         }
       },
       "type": "object",
@@ -1470,6 +1477,12 @@
         },
         "twin_id": {
           "type": "integer"
+        },
+        "wireguard": {
+          "type": "boolean"
+        },
+        "ygg": {
+          "type": "boolean"
         }
       }
     }

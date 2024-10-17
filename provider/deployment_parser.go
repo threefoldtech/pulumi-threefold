@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
-	"github.com/threefoldtech/zos/pkg/gridtypes/zos"
+	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
 )
 
 // Disk represents the disk struct
@@ -147,7 +147,7 @@ func parseInputsToBackends(backends []Backend) workloads.Backends {
 	return bs
 }
 
-func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment, error) {
+func parseInputToDeployment(deploymentArgs DeploymentArgs, light bool) (workloads.Deployment, error) {
 	var solutionProvider *uint64
 	if deploymentArgs.SolutionProvider != 0 {
 		solutionProviderUint := uint64(deploymentArgs.SolutionProvider)
@@ -160,6 +160,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 	}
 
 	var vms []workloads.VM
+	var vmsLight []workloads.VMLight
 	for _, vm := range deploymentArgs.VmsInputs {
 		var mounts []workloads.Mount
 		for _, mount := range vm.Mounts {
@@ -193,6 +194,27 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 			if err != nil {
 				return workloads.Deployment{}, err
 			}
+		}
+
+		if light {
+			vmsLight = append(vmsLight, workloads.VMLight{
+				Name:           vm.Name,
+				NodeID:         uint32(nodeID),
+				Flist:          vm.Flist,
+				FlistChecksum:  vm.FlistChecksum,
+				NetworkName:    vm.NetworkName,
+				MyceliumIPSeed: myceliumIPSeed,
+				Description:    vm.Description,
+				GPUs:           vm.GPUs,
+				CPU:            uint8(vm.CPU),
+				MemoryMB:       uint64(vm.Memory),
+				RootfsSizeMB:   uint64(vm.RootfsSize),
+				Entrypoint:     vm.EntryPoint,
+				Mounts:         mounts,
+				Zlogs:          zlogs,
+				EnvVars:        vm.EnvVars,
+			})
+			continue
 		}
 
 		vms = append(vms, workloads.VM{
@@ -279,6 +301,7 @@ func parseInputToDeployment(deploymentArgs DeploymentArgs) (workloads.Deployment
 		Disks:            disks,
 		Zdbs:             zdbs,
 		Vms:              vms,
+		VmsLight:         vmsLight,
 		QSFS:             qsfss,
 	}, nil
 }
@@ -341,6 +364,46 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 			PublicIP:       vm.PublicIP,
 			PublicIP6:      vm.PublicIP6,
 			Planetary:      vm.Planetary,
+			MyceliumIPSeed: hex.EncodeToString(vm.MyceliumIPSeed),
+			Description:    vm.Description,
+			GPUs:           vm.GPUs,
+			CPU:            int(vm.CPU),
+			Memory:         int(vm.MemoryMB),
+			RootfsSize:     int(vm.RootfsSizeMB),
+			EntryPoint:     vm.Entrypoint,
+			Mounts:         mounts,
+			Zlogs:          zlogs,
+			EnvVars:        vm.EnvVars,
+		})
+	}
+
+	for _, vm := range deployment.VmsLight {
+		var zlogs []Zlog
+		for _, zlog := range vm.Zlogs {
+			zlogs = append(zlogs, Zlog{
+				Zmachine: zlog.Zmachine,
+				Output:   zlog.Output,
+			})
+		}
+
+		var mounts []Mount
+		for _, mount := range vm.Mounts {
+			mounts = append(mounts, Mount{
+				Name:       mount.Name,
+				MountPoint: mount.MountPoint,
+			})
+		}
+
+		if vm.NodeID == 0 {
+			vm.NodeID = deployment.NodeID
+		}
+
+		vms = append(vms, VMInput{
+			Name:           vm.Name,
+			NodeID:         vm.NodeID,
+			Flist:          vm.Flist,
+			FlistChecksum:  vm.FlistChecksum,
+			NetworkName:    vm.NetworkName,
 			MyceliumIPSeed: hex.EncodeToString(vm.MyceliumIPSeed),
 			Description:    vm.Description,
 			GPUs:           vm.GPUs,
@@ -425,6 +488,15 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 		})
 	}
 
+	for _, vm := range deployment.VmsLight {
+		vmsComputed = append(vmsComputed, VMComputed{
+			MyceliumIPSeed: hex.EncodeToString(vm.MyceliumIPSeed),
+			MyceliumIP:     vm.MyceliumIP,
+			ConsoleURL:     vm.ConsoleURL,
+			IP:             vm.IP,
+		})
+	}
+
 	qsfsComputed := make([]QSFSComputed, 0)
 	for _, qsfs := range deployment.QSFS {
 		qsfsComputed = append(qsfsComputed, QSFSComputed{
@@ -445,7 +517,7 @@ func parseDeploymentToState(deployment workloads.Deployment) DeploymentState {
 	return state
 }
 
-func updateDeploymentFromState(deployment *workloads.Deployment, state DeploymentState) error {
+func updateDeploymentFromState(deployment *workloads.Deployment, state DeploymentState, light bool) error {
 	nodeDeploymentID := make(map[uint32]uint64)
 	for nodeID, deploymentID := range state.NodeDeploymentID {
 		node, err := strconv.ParseUint(nodeID, 10, 32)
@@ -464,10 +536,18 @@ func updateDeploymentFromState(deployment *workloads.Deployment, state Deploymen
 	}
 
 	for i, vm := range state.VmsComputed {
-		if len(deployment.Vms) > i {
+		if len(deployment.Vms) > i || len(deployment.VmsLight) > i {
 			myceliumIPSeed, err := hex.DecodeString(vm.MyceliumIPSeed)
 			if err != nil {
 				return err
+			}
+
+			if light {
+				deployment.VmsLight[i].MyceliumIPSeed = myceliumIPSeed
+				deployment.VmsLight[i].MyceliumIP = vm.MyceliumIP
+				deployment.VmsLight[i].ConsoleURL = vm.ConsoleURL
+				deployment.VmsLight[i].IP = vm.IP
+				continue
 			}
 
 			deployment.Vms[i].MyceliumIPSeed = myceliumIPSeed

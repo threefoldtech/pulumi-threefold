@@ -55,6 +55,8 @@ export class Scheduler extends pulumi.CustomResource {
     public readonly rented!: pulumi.Output<boolean | undefined>;
     public readonly sru!: pulumi.Output<number | undefined>;
     public readonly twin_id!: pulumi.Output<number | undefined>;
+    public readonly wireguard!: pulumi.Output<boolean | undefined>;
+    public readonly ygg!: pulumi.Output<boolean | undefined>;
 
     /**
      * Create a Scheduler resource with the given unique name, arguments, and options.
@@ -90,6 +92,8 @@ export class Scheduler extends pulumi.CustomResource {
             resourceInputs["rented"] = args ? args.rented : undefined;
             resourceInputs["sru"] = args ? args.sru : undefined;
             resourceInputs["twin_id"] = args ? args.twin_id : undefined;
+            resourceInputs["wireguard"] = args ? args.wireguard : undefined;
+            resourceInputs["ygg"] = args ? args.ygg : undefined;
             resourceInputs["nodes"] = undefined /*out*/;
         } else {
             resourceInputs["certification_type"] = undefined /*out*/;
@@ -116,6 +120,8 @@ export class Scheduler extends pulumi.CustomResource {
             resourceInputs["rented"] = undefined /*out*/;
             resourceInputs["sru"] = undefined /*out*/;
             resourceInputs["twin_id"] = undefined /*out*/;
+            resourceInputs["wireguard"] = undefined /*out*/;
+            resourceInputs["ygg"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Scheduler.__pulumiType, name, resourceInputs, opts);
@@ -149,4 +155,6 @@ export interface SchedulerArgs {
     rented?: pulumi.Input<boolean>;
     sru?: pulumi.Input<number>;
     twin_id?: pulumi.Input<number>;
+    wireguard?: pulumi.Input<boolean>;
+    ygg?: pulumi.Input<boolean>;
 }

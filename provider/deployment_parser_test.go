@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/threefoldtech/zos/pkg/gridtypes/zos"
+	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
 )
 
 func generateInputs() (Disk, ZDBInput, VMInput, QSFSInput, DeploymentArgs) {
@@ -102,7 +102,7 @@ func TestDeploymentParser(t *testing.T) {
 	diskInput, zdbInput, vmInput, qsfsInput, deploymentInput := generateInputs()
 
 	t.Run("parsing input success", func(t *testing.T) {
-		deployment, err := parseInputToDeployment(deploymentInput)
+		deployment, err := parseInputToDeployment(deploymentInput, false)
 		assert.NoError(t, err)
 		assert.Equal(t, deployment.NodeID, uint32(deploymentInput.NodeID.(int)))
 		assert.Equal(t, deployment.Name, deploymentInput.Name)
@@ -115,32 +115,46 @@ func TestDeploymentParser(t *testing.T) {
 		assert.Equal(t, deployment.QSFS[0].Name, qsfsInput.Name)
 	})
 
+	t.Run("parsing input-light success", func(t *testing.T) {
+		deployment, err := parseInputToDeployment(deploymentInput, true)
+		assert.NoError(t, err)
+		assert.Equal(t, deployment.NodeID, uint32(deploymentInput.NodeID.(int)))
+		assert.Equal(t, deployment.Name, deploymentInput.Name)
+		assert.Equal(t, deployment.NetworkName, deploymentInput.NetworkName)
+		assert.Equal(t, deployment.SolutionType, deploymentInput.SolutionType)
+		assert.Equal(t, *deployment.SolutionProvider, uint64(deploymentInput.SolutionProvider))
+		assert.Equal(t, deployment.Disks[0].Name, diskInput.Name)
+		assert.Equal(t, deployment.Zdbs[0].Name, zdbInput.Name)
+		assert.Equal(t, deployment.VmsLight[0].Name, vmInput.Name)
+		assert.Equal(t, deployment.QSFS[0].Name, qsfsInput.Name)
+	})
+
 	t.Run("parsing input failed: wrong node id type", func(t *testing.T) {
 		deploymentInput.NodeID = ""
-		_, err := parseInputToDeployment(deploymentInput)
+		_, err := parseInputToDeployment(deploymentInput, false)
 		assert.Error(t, err)
 		deploymentInput.NodeID = 1
 	})
 
 	t.Run("parsing and update deployment success", func(t *testing.T) {
-		deployment, err := parseInputToDeployment(deploymentInput)
+		deployment, err := parseInputToDeployment(deploymentInput, false)
 		assert.NoError(t, err)
 
 		deployment.NodeDeploymentID = map[uint32]uint64{1: 1}
 		state := parseDeploymentToState(deployment)
 		assert.Equal(t, deployment.NodeDeploymentID[1], uint64(state.NodeDeploymentID["1"]))
 
-		err = updateDeploymentFromState(&deployment, state)
+		err = updateDeploymentFromState(&deployment, state, false)
 		assert.NoError(t, err)
 	})
 
 	t.Run("parsing and update deployment failed: wrong node id type", func(t *testing.T) {
-		deployment, err := parseInputToDeployment(deploymentInput)
+		deployment, err := parseInputToDeployment(deploymentInput, false)
 		assert.NoError(t, err)
 
 		state := parseDeploymentToState(deployment)
 		state.NodeDeploymentID = map[string]int64{"": 1}
-		err = updateDeploymentFromState(&deployment, state)
+		err = updateDeploymentFromState(&deployment, state, false)
 		assert.Error(t, err)
 	})
 }

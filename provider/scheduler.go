@@ -20,6 +20,8 @@ type SchedulerArgs struct {
 	FarmName          string  `pulumi:"farm_name,optional"`
 	FarmIDs           []int64 `pulumi:"farm_ids,optional"`
 	FreeIPs           int64   `pulumi:"free_ips,optional"`
+	Ygg               bool    `pulumi:"ygg,optional"`
+	Wireguard         bool    `pulumi:"wireguard,optional"`
 	IPv4              bool    `pulumi:"ipv4,optional"`
 	IPv6              bool    `pulumi:"ipv6,optional"`
 	Domain            bool    `pulumi:"domain,optional"`

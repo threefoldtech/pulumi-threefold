@@ -6,6 +6,7 @@ import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
 )
 
 // Kubernetes controlling struct
@@ -127,7 +128,11 @@ func (*Kubernetes) Update(
 
 	config := infer.GetConfig[Config](ctx)
 
-	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(k8sCluster.NetworkName, k8sCluster.NodesIPRange)
+	ipRanges := make(map[uint32]zos.IPNet)
+	for node, ipRange := range k8sCluster.NodesIPRange {
+		ipRanges[node] = zos.IPNet(ipRange)
+	}
+	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(k8sCluster.NetworkName, ipRanges)
 
 	if err := config.TFPluginClient.K8sDeployer.Deploy(ctx, &k8sCluster); err != nil {
 		return state, err
