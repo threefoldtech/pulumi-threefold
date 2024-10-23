@@ -41,7 +41,9 @@ class SchedulerArgs:
                  rentable: Optional[pulumi.Input[bool]] = None,
                  rented: Optional[pulumi.Input[bool]] = None,
                  sru: Optional[pulumi.Input[int]] = None,
-                 twin_id: Optional[pulumi.Input[int]] = None):
+                 twin_id: Optional[pulumi.Input[int]] = None,
+                 wireguard: Optional[pulumi.Input[bool]] = None,
+                 ygg: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a Scheduler resource.
         """
@@ -91,6 +93,10 @@ class SchedulerArgs:
             pulumi.set(__self__, "sru", sru)
         if twin_id is not None:
             pulumi.set(__self__, "twin_id", twin_id)
+        if wireguard is not None:
+            pulumi.set(__self__, "wireguard", wireguard)
+        if ygg is not None:
+            pulumi.set(__self__, "ygg", ygg)
 
     @property
     @pulumi.getter
@@ -299,6 +305,24 @@ class SchedulerArgs:
     def twin_id(self, value: Optional[pulumi.Input[int]]):
         pulumi.set(self, "twin_id", value)
 
+    @property
+    @pulumi.getter
+    def wireguard(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "wireguard")
+
+    @wireguard.setter
+    def wireguard(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "wireguard", value)
+
+    @property
+    @pulumi.getter
+    def ygg(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "ygg")
+
+    @ygg.setter
+    def ygg(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "ygg", value)
+
 
 class Scheduler(pulumi.CustomResource):
     @overload
@@ -328,6 +352,8 @@ class Scheduler(pulumi.CustomResource):
                  rented: Optional[pulumi.Input[bool]] = None,
                  sru: Optional[pulumi.Input[int]] = None,
                  twin_id: Optional[pulumi.Input[int]] = None,
+                 wireguard: Optional[pulumi.Input[bool]] = None,
+                 ygg: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         """
         Create a Scheduler resource with the given unique name, props, and options.
@@ -380,6 +406,8 @@ class Scheduler(pulumi.CustomResource):
                  rented: Optional[pulumi.Input[bool]] = None,
                  sru: Optional[pulumi.Input[int]] = None,
                  twin_id: Optional[pulumi.Input[int]] = None,
+                 wireguard: Optional[pulumi.Input[bool]] = None,
+                 ygg: Optional[pulumi.Input[bool]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):
@@ -412,6 +440,8 @@ class Scheduler(pulumi.CustomResource):
             __props__.__dict__["rented"] = rented
             __props__.__dict__["sru"] = sru
             __props__.__dict__["twin_id"] = twin_id
+            __props__.__dict__["wireguard"] = wireguard
+            __props__.__dict__["ygg"] = ygg
             __props__.__dict__["nodes"] = None
         super(Scheduler, __self__).__init__(
             'threefold:index:Scheduler',
@@ -459,6 +489,8 @@ class Scheduler(pulumi.CustomResource):
         __props__.__dict__["rented"] = None
         __props__.__dict__["sru"] = None
         __props__.__dict__["twin_id"] = None
+        __props__.__dict__["wireguard"] = None
+        __props__.__dict__["ygg"] = None
         return Scheduler(resource_name, opts=opts, __props__=__props__)
 
     @property
@@ -580,4 +612,14 @@ class Scheduler(pulumi.CustomResource):
     @pulumi.getter
     def twin_id(self) -> pulumi.Output[Optional[int]]:
         return pulumi.get(self, "twin_id")
+
+    @property
+    @pulumi.getter
+    def wireguard(self) -> pulumi.Output[Optional[bool]]:
+        return pulumi.get(self, "wireguard")
+
+    @property
+    @pulumi.getter
+    def ygg(self) -> pulumi.Output[Optional[bool]]:
+        return pulumi.get(self, "ygg")
 

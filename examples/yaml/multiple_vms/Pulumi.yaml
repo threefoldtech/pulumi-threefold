@@ -10,16 +10,17 @@ resources:
       mnemonic:
 
   scheduler:
-    type: threefold:provider:Scheduler
+    type: threefold:Scheduler
     options:
       provider: ${provider}
     properties:
       mru: 4 # 4gb ram
       sru: 100 # 100gb storage
       farm_ids: [71,73, 74, 76, 77]
+      ygg: true
 
   network:
-    type: threefold:provider:Network
+    type: threefold:Network
     options:
       provider: ${provider}
       dependsOn:
@@ -35,7 +36,7 @@ resources:
       #   manual_nodeID: 9751c596c7c951aedad1a5f78f18b59515064adf660e0d55abead65e6fbbd627 # hex encoded 32 bytes [example]
 
   deployment:
-    type: threefold:provider:Deployment
+    type: threefold:Deployment
     options:
       provider: ${provider}
       dependsOn:
@@ -46,6 +47,7 @@ resources:
       network_name: test
       vms:
         - name: vm
+          node_id: ${scheduler.nodes[0]}
           flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
           entrypoint: "/sbin/zinit init"
           network_name: test
@@ -61,6 +63,7 @@ resources:
             SSH_KEY:
 
         - name: vm2
+          node_id: ${scheduler.nodes[0]}
           flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
           entrypoint: "/sbin/zinit init"
           network_name: test
@@ -76,6 +79,7 @@ resources:
             SSH_KEY:
 
         - name: vm3
+          node_id: ${scheduler.nodes[0]}
           flist: https://hub.grid.tf/tf-official-apps/base:latest.flist
           entrypoint: "/sbin/zinit init"
           network_name: test
@@ -101,4 +105,4 @@ outputs:
   planetary_ip2: ${deployment.vms_computed[1].planetary_ip}
   mycelium_ip2: ${deployment.vms_computed[1].mycelium_ip}
   planetary_ip3: ${deployment.vms_computed[2].planetary_ip}
-  mycelium_ip3: ${deployment.vms_computed[2].mycelium_ip}  
+  mycelium_ip3: ${deployment.vms_computed[2].mycelium_ip}

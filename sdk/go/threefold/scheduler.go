@@ -38,6 +38,8 @@ type Scheduler struct {
 	Rented             pulumi.BoolPtrOutput   `pulumi:"rented"`
 	Sru                pulumi.IntPtrOutput    `pulumi:"sru"`
 	Twin_id            pulumi.IntPtrOutput    `pulumi:"twin_id"`
+	Wireguard          pulumi.BoolPtrOutput   `pulumi:"wireguard"`
+	Ygg                pulumi.BoolPtrOutput   `pulumi:"ygg"`
 }
 
 // NewScheduler registers a new resource with the given unique name, arguments, and options.
@@ -103,6 +105,8 @@ type schedulerArgs struct {
 	Rented             *bool   `pulumi:"rented"`
 	Sru                *int    `pulumi:"sru"`
 	Twin_id            *int    `pulumi:"twin_id"`
+	Wireguard          *bool   `pulumi:"wireguard"`
+	Ygg                *bool   `pulumi:"ygg"`
 }
 
 // The set of arguments for constructing a Scheduler resource.
@@ -130,6 +134,8 @@ type SchedulerArgs struct {
 	Rented             pulumi.BoolPtrInput
 	Sru                pulumi.IntPtrInput
 	Twin_id            pulumi.IntPtrInput
+	Wireguard          pulumi.BoolPtrInput
+	Ygg                pulumi.BoolPtrInput
 }
 
 func (SchedulerArgs) ElementType() reflect.Type {
@@ -313,6 +319,14 @@ func (o SchedulerOutput) Sru() pulumi.IntPtrOutput {
 
 func (o SchedulerOutput) Twin_id() pulumi.IntPtrOutput {
 	return o.ApplyT(func(v *Scheduler) pulumi.IntPtrOutput { return v.Twin_id }).(pulumi.IntPtrOutput)
+}
+
+func (o SchedulerOutput) Wireguard() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Scheduler) pulumi.BoolPtrOutput { return v.Wireguard }).(pulumi.BoolPtrOutput)
+}
+
+func (o SchedulerOutput) Ygg() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Scheduler) pulumi.BoolPtrOutput { return v.Ygg }).(pulumi.BoolPtrOutput)
 }
 
 type SchedulerArrayOutput struct{ *pulumi.OutputState }

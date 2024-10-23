@@ -2,6 +2,8 @@ package provider
 
 import (
 	"context"
+	"fmt"
+	"strconv"
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
@@ -58,7 +60,7 @@ func (*Deployment) Check(
 		}
 	}
 
-	deployment, err := parseInputToDeployment(args)
+	deployment, err := parseInputToDeployment(args, false)
 	if err != nil {
 		return args, checkFailures, err
 	}
@@ -77,12 +79,22 @@ func (*Deployment) Create(
 		return id, state, nil
 	}
 
-	deployment, err := parseInputToDeployment(input)
+	config := infer.GetConfig[Config](ctx)
+
+	nodeID, err := strconv.Atoi(fmt.Sprint(input.NodeID))
 	if err != nil {
 		return id, state, err
 	}
 
-	config := infer.GetConfig[Config](ctx)
+	isLight, err := isZosLight(ctx, uint32(nodeID), config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
+	if err != nil {
+		return id, state, err
+	}
+
+	deployment, err := parseInputToDeployment(input, isLight)
+	if err != nil {
+		return id, state, err
+	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Deploy(ctx, &deployment); err != nil {
 		return id, state, err
@@ -109,16 +121,26 @@ func (*Deployment) Update(
 		return state, nil
 	}
 
-	deployment, err := parseInputToDeployment(input)
+	config := infer.GetConfig[Config](ctx)
+
+	nodeID, err := strconv.Atoi(fmt.Sprint(input.NodeID))
 	if err != nil {
 		return state, err
 	}
 
-	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
+	isLight, err := isZosLight(ctx, uint32(nodeID), config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
+	if err != nil {
 		return state, err
 	}
 
-	config := infer.GetConfig[Config](ctx)
+	deployment, err := parseInputToDeployment(input, isLight)
+	if err != nil {
+		return state, err
+	}
+
+	if err := updateDeploymentFromState(&deployment, oldState, isLight); err != nil {
+		return state, err
+	}
 
 	dl_network := config.TFPluginClient.State.Networks.GetNetwork(deployment.NetworkName)
 	dl_network.SetNodeSubnet(deployment.NodeID, deployment.IPrange)
@@ -138,16 +160,26 @@ func (*Deployment) Update(
 
 // Read gets the state of the deployment resource
 func (*Deployment) Read(ctx context.Context, id string, oldState DeploymentState) (string, DeploymentState, error) {
-	deployment, err := parseInputToDeployment(oldState.DeploymentArgs)
+	config := infer.GetConfig[Config](ctx)
+
+	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.DeploymentArgs.NodeID))
 	if err != nil {
 		return id, oldState, err
 	}
 
-	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
+	isLight, err := isZosLight(ctx, uint32(nodeID), config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
+	if err != nil {
 		return id, oldState, err
 	}
 
-	config := infer.GetConfig[Config](ctx)
+	deployment, err := parseInputToDeployment(oldState.DeploymentArgs, isLight)
+	if err != nil {
+		return id, oldState, err
+	}
+
+	if err := updateDeploymentFromState(&deployment, oldState, isLight); err != nil {
+		return id, oldState, err
+	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Sync(ctx, &deployment); err != nil {
 		return id, oldState, err
@@ -160,16 +192,26 @@ func (*Deployment) Read(ctx context.Context, id string, oldState DeploymentState
 
 // Delete deletes a deployment resource
 func (*Deployment) Delete(ctx context.Context, id string, oldState DeploymentState) error {
-	deployment, err := parseInputToDeployment(oldState.DeploymentArgs)
+	config := infer.GetConfig[Config](ctx)
+
+	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.DeploymentArgs.NodeID))
 	if err != nil {
 		return err
 	}
 
-	if err := updateDeploymentFromState(&deployment, oldState); err != nil {
+	isLight, err := isZosLight(ctx, uint32(nodeID), config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
+	if err != nil {
 		return err
 	}
 
-	config := infer.GetConfig[Config](ctx)
+	deployment, err := parseInputToDeployment(oldState.DeploymentArgs, isLight)
+	if err != nil {
+		return err
+	}
+
+	if err := updateDeploymentFromState(&deployment, oldState, isLight); err != nil {
+		return err
+	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Cancel(ctx, &deployment); err != nil {
 		return err

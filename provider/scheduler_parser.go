@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-proxy/pkg/types"
 )
 
@@ -110,6 +111,12 @@ func parseSchedulerInput(input SchedulerArgs) (types.NodeFilter, []uint64, []uin
 
 	if input.GpuVendorName != "" {
 		filter.GpuVendorName = &input.GpuVendorName
+	}
+
+	if input.IPv4 || input.IPv6 || input.Domain || input.Ygg || input.Wireguard {
+		filter.Features = []string{zos.ZMachineType, zos.NetworkType}
+	} else {
+		filter.Features = []string{zos.ZMachineLightType, zos.NetworkLightType}
 	}
 
 	return filter, ssds, hdds

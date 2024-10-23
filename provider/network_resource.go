@@ -54,7 +54,7 @@ func (*Network) Check(
 		}
 	}
 
-	network, err := parseToZNet(args)
+	network, err := parseToZNet(args, false)
 	if err != nil {
 		return args, checkFailures, err
 	}
@@ -69,14 +69,24 @@ func (*Network) Create(ctx context.Context, id string, input NetworkArgs, previe
 		return id, state, nil
 	}
 
-	network, err := parseToZNet(input)
+	config := infer.GetConfig[Config](ctx)
+
+	nodes, err := parseNodes(input.Nodes)
+	if err != nil {
+		return id, state, nil
+	}
+
+	light, err := isNetworkLight(ctx, nodes, config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
 		return id, state, err
 	}
 
-	config := infer.GetConfig[Config](ctx)
+	network, err := parseToZNet(input, light)
+	if err != nil {
+		return id, state, err
+	}
 
-	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
+	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, network); err != nil {
 		return id, state, err
 	}
 
@@ -97,18 +107,28 @@ func (*Network) Update(
 		return state, nil
 	}
 
-	network, err := parseToZNet(input)
+	config := infer.GetConfig[Config](ctx)
+
+	nodes, err := parseNodes(input.Nodes)
+	if err != nil {
+		return state, nil
+	}
+
+	light, err := isNetworkLight(ctx, nodes, config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
 		return state, err
 	}
 
-	if err := updateNetworkFromState(&network, oldState); err != nil {
+	network, err := parseToZNet(input, light)
+	if err != nil {
 		return state, err
 	}
 
-	config := infer.GetConfig[Config](ctx)
+	if err := updateNetworkFromState(network, oldState); err != nil {
+		return state, err
+	}
 
-	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, &network); err != nil {
+	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, network); err != nil {
 		return state, err
 	}
 
@@ -119,24 +139,30 @@ func (*Network) Update(
 
 // Read get the state of the network resource
 func (*Network) Read(ctx context.Context, id string, oldState NetworkState) (string, NetworkState, error) {
-	network, err := parseToZNet(oldState.NetworkArgs)
+	config := infer.GetConfig[Config](ctx)
+
+	nodes, err := parseNodes(oldState.Nodes)
+	if err != nil {
+		return id, oldState, nil
+	}
+
+	light, err := isNetworkLight(ctx, nodes, config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
 		return id, oldState, err
 	}
 
-	if err := updateNetworkFromState(&network, oldState); err != nil {
+	network, err := parseToZNet(oldState.NetworkArgs, light)
+	if err != nil {
 		return id, oldState, err
 	}
 
-	config := infer.GetConfig[Config](ctx)
-
-	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(network.Name, network.NodesIPRange)
-
-	if err := config.TFPluginClient.NetworkDeployer.InvalidateBrokenAttributes(&network); err != nil {
+	if err := updateNetworkFromState(network, oldState); err != nil {
 		return id, oldState, err
 	}
 
-	if err = config.TFPluginClient.NetworkDeployer.ReadNodesConfig(ctx, &network); err != nil {
+	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(network.GetName(), network.GetNodesIPRange())
+
+	if err := network.InvalidateBrokenAttributes(config.TFPluginClient.SubstrateConn, config.TFPluginClient.NcPool); err != nil {
 		return id, oldState, err
 	}
 
@@ -147,16 +173,26 @@ func (*Network) Read(ctx context.Context, id string, oldState NetworkState) (str
 
 // Delete deletes the network resource
 func (*Network) Delete(ctx context.Context, id string, oldState NetworkState) error {
-	network, err := parseToZNet(oldState.NetworkArgs)
+	config := infer.GetConfig[Config](ctx)
+
+	nodes, err := parseNodes(oldState.Nodes)
 	if err != nil {
 		return err
 	}
 
-	if err := updateNetworkFromState(&network, oldState); err != nil {
+	light, err := isNetworkLight(ctx, nodes, config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
+	if err != nil {
 		return err
 	}
 
-	config := infer.GetConfig[Config](ctx)
+	network, err := parseToZNet(oldState.NetworkArgs, light)
+	if err != nil {
+		return err
+	}
 
-	return config.TFPluginClient.NetworkDeployer.Cancel(ctx, &network)
+	if err := updateNetworkFromState(network, oldState); err != nil {
+		return err
+	}
+
+	return config.TFPluginClient.NetworkDeployer.Cancel(ctx, network)
 }
