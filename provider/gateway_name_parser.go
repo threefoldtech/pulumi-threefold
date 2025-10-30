@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
-	"github.com/threefoldtech/zos/pkg/gridtypes/zos"
+	"github.com/threefoldtech/zosbase/pkg/gridtypes/zos"
 )
 
 func parseToGWNameState(gw workloads.GatewayNameProxy) GatewayNameState {
