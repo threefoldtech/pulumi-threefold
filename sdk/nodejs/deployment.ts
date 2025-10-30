@@ -36,54 +36,54 @@ export class Deployment extends pulumi.CustomResource {
     /**
      * The deployment ID
      */
-    public /*out*/ readonly contract_id!: pulumi.Output<number>;
+    declare public /*out*/ readonly contract_id: pulumi.Output<number>;
     /**
      * The disks requested to be included in the deployment
      */
-    public readonly disks!: pulumi.Output<outputs.Disk[] | undefined>;
+    declare public readonly disks: pulumi.Output<outputs.Disk[] | undefined>;
     /**
      * IP range of the node for the wireguard network (e.g. 10.1.2.0/24). Has to have a subnet mask of 24
      */
-    public /*out*/ readonly ip_range!: pulumi.Output<string>;
+    declare public /*out*/ readonly ip_range: pulumi.Output<string>;
     /**
      * The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
      */
-    public readonly network_name!: pulumi.Output<string | undefined>;
+    declare public readonly network_name: pulumi.Output<string | undefined>;
     /**
      * Mapping from each node to its deployment ID
      */
-    public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
+    declare public /*out*/ readonly node_deployment_id: pulumi.Output<{[key: string]: number}>;
     /**
      * The node ID to deploy on, required and should match the requested resources
      */
-    public readonly node_id!: pulumi.Output<any>;
+    declare public readonly node_id: pulumi.Output<any>;
     /**
      * The qsfs output instances requested to be included in the deployment
      */
-    public readonly qsfs!: pulumi.Output<outputs.QSFSInput[] | undefined>;
-    public /*out*/ readonly qsfs_computed!: pulumi.Output<outputs.QSFSComputed[]>;
+    declare public readonly qsfs: pulumi.Output<outputs.QSFSInput[] | undefined>;
+    declare public /*out*/ readonly qsfs_computed: pulumi.Output<outputs.QSFSComputed[]>;
     /**
      * ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
      */
-    public readonly solution_provider!: pulumi.Output<number | undefined>;
+    declare public readonly solution_provider: pulumi.Output<number | undefined>;
     /**
      * The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
      */
-    public readonly solution_type!: pulumi.Output<string | undefined>;
+    declare public readonly solution_type: pulumi.Output<string | undefined>;
     /**
      * The vms output requested to be included in the deployment
      */
-    public readonly vms!: pulumi.Output<outputs.VMInput[] | undefined>;
-    public /*out*/ readonly vms_computed!: pulumi.Output<outputs.VMComputed[]>;
+    declare public readonly vms: pulumi.Output<outputs.VMInput[] | undefined>;
+    declare public /*out*/ readonly vms_computed: pulumi.Output<outputs.VMComputed[]>;
     /**
      * The zdbs output requested to be included in the deployment
      */
-    public readonly zdbs!: pulumi.Output<outputs.ZDBInput[] | undefined>;
-    public /*out*/ readonly zdbs_computed!: pulumi.Output<outputs.ZDBComputed[]>;
+    declare public readonly zdbs: pulumi.Output<outputs.ZDBInput[] | undefined>;
+    declare public /*out*/ readonly zdbs_computed: pulumi.Output<outputs.ZDBComputed[]>;
 
     /**
      * Create a Deployment resource with the given unique name, arguments, and options.
@@ -96,21 +96,21 @@ export class Deployment extends pulumi.CustomResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.name === undefined) && !opts.urn) {
+            if (args?.name === undefined && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
-            if ((!args || args.node_id === undefined) && !opts.urn) {
+            if (args?.node_id === undefined && !opts.urn) {
                 throw new Error("Missing required property 'node_id'");
             }
-            resourceInputs["disks"] = args ? args.disks : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["network_name"] = args ? args.network_name : undefined;
-            resourceInputs["node_id"] = args ? args.node_id : undefined;
-            resourceInputs["qsfs"] = args ? args.qsfs : undefined;
-            resourceInputs["solution_provider"] = args ? args.solution_provider : undefined;
-            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "vm/";
-            resourceInputs["vms"] = args ? args.vms : undefined;
-            resourceInputs["zdbs"] = args ? args.zdbs : undefined;
+            resourceInputs["disks"] = args?.disks;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["network_name"] = args?.network_name;
+            resourceInputs["node_id"] = args?.node_id;
+            resourceInputs["qsfs"] = args?.qsfs;
+            resourceInputs["solution_provider"] = args?.solution_provider;
+            resourceInputs["solution_type"] = (args?.solution_type) ?? "vm/";
+            resourceInputs["vms"] = args?.vms;
+            resourceInputs["zdbs"] = args?.zdbs;
             resourceInputs["contract_id"] = undefined /*out*/;
             resourceInputs["ip_range"] = undefined /*out*/;
             resourceInputs["node_deployment_id"] = undefined /*out*/;

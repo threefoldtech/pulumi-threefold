@@ -34,47 +34,47 @@ export class GatewayName extends pulumi.CustomResource {
     /**
      * The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
      */
-    public readonly backends!: pulumi.Output<string[]>;
+    declare public readonly backends: pulumi.Output<string[]>;
     /**
      * The deployment ID
      */
-    public /*out*/ readonly contract_id!: pulumi.Output<number>;
+    declare public /*out*/ readonly contract_id: pulumi.Output<number>;
     /**
      * The description of the virtual machine workload, optional with no restrictions
      */
-    public readonly description!: pulumi.Output<string | undefined>;
+    declare public readonly description: pulumi.Output<string | undefined>;
     /**
      * The computed fully qualified domain name of the deployed workload
      */
-    public /*out*/ readonly fqdn!: pulumi.Output<string>;
+    declare public /*out*/ readonly fqdn: pulumi.Output<string>;
     /**
      * Domain prefix. The fqdn will be <name>.<gateway-domain>. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
      * The reserved name contract ID
      */
-    public /*out*/ readonly name_contract_id!: pulumi.Output<number>;
+    declare public /*out*/ readonly name_contract_id: pulumi.Output<number>;
     /**
      * Network name to join, if backend IP is private
      */
-    public readonly network_name!: pulumi.Output<string | undefined>;
+    declare public readonly network_name: pulumi.Output<string | undefined>;
     /**
      * Mapping from each node to its deployment ID
      */
-    public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
+    declare public /*out*/ readonly node_deployment_id: pulumi.Output<{[key: string]: number}>;
     /**
      * The gateway's node ID
      */
-    public readonly node_id!: pulumi.Output<any>;
+    declare public readonly node_id: pulumi.Output<any>;
     /**
      * The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
      */
-    public readonly solution_type!: pulumi.Output<string | undefined>;
+    declare public readonly solution_type: pulumi.Output<string | undefined>;
     /**
      * TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service
      */
-    public readonly tls_passthrough!: pulumi.Output<boolean | undefined>;
+    declare public readonly tls_passthrough: pulumi.Output<boolean | undefined>;
 
     /**
      * Create a GatewayName resource with the given unique name, arguments, and options.
@@ -87,22 +87,22 @@ export class GatewayName extends pulumi.CustomResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.backends === undefined) && !opts.urn) {
+            if (args?.backends === undefined && !opts.urn) {
                 throw new Error("Missing required property 'backends'");
             }
-            if ((!args || args.name === undefined) && !opts.urn) {
+            if (args?.name === undefined && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
-            if ((!args || args.node_id === undefined) && !opts.urn) {
+            if (args?.node_id === undefined && !opts.urn) {
                 throw new Error("Missing required property 'node_id'");
             }
-            resourceInputs["backends"] = args ? args.backends : undefined;
-            resourceInputs["description"] = args ? args.description : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["network_name"] = args ? args.network_name : undefined;
-            resourceInputs["node_id"] = args ? args.node_id : undefined;
-            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "";
-            resourceInputs["tls_passthrough"] = args ? args.tls_passthrough : undefined;
+            resourceInputs["backends"] = args?.backends;
+            resourceInputs["description"] = args?.description;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["network_name"] = args?.network_name;
+            resourceInputs["node_id"] = args?.node_id;
+            resourceInputs["solution_type"] = (args?.solution_type) ?? "";
+            resourceInputs["tls_passthrough"] = args?.tls_passthrough;
             resourceInputs["contract_id"] = undefined /*out*/;
             resourceInputs["fqdn"] = undefined /*out*/;
             resourceInputs["name_contract_id"] = undefined /*out*/;

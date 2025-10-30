@@ -36,55 +36,55 @@ export class Kubernetes extends pulumi.CustomResource {
     /**
      * The entry point for the flist. Example: /sbin/zinit init
      */
-    public readonly entry_point!: pulumi.Output<string | undefined>;
+    declare public readonly entry_point: pulumi.Output<string | undefined>;
     /**
      * The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
      */
-    public readonly flist!: pulumi.Output<string | undefined>;
+    declare public readonly flist: pulumi.Output<string | undefined>;
     /**
      * The checksum of the flist which should match the checksum of the given flist, optional
      */
-    public readonly flist_checksum!: pulumi.Output<string | undefined>;
+    declare public readonly flist_checksum: pulumi.Output<string | undefined>;
     /**
      * Master holds the configuration of master node in the kubernetes cluster
      */
-    public readonly master!: pulumi.Output<outputs.K8sNodeInput>;
+    declare public readonly master: pulumi.Output<outputs.K8sNodeInput>;
     /**
      * The computed fields of the master node
      */
-    public /*out*/ readonly master_computed!: pulumi.Output<outputs.VMComputed>;
+    declare public /*out*/ readonly master_computed: pulumi.Output<outputs.VMComputed>;
     /**
      * The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
      */
-    public readonly network_name!: pulumi.Output<string>;
+    declare public readonly network_name: pulumi.Output<string>;
     /**
      * Mapping from each node to its deployment ID
      */
-    public /*out*/ readonly node_deployment_id!: pulumi.Output<{[key: string]: number}>;
+    declare public /*out*/ readonly node_deployment_id: pulumi.Output<{[key: string]: number}>;
     /**
      * Computed values of nodes' IP ranges after deployment
      */
-    public /*out*/ readonly nodes_ip_range!: pulumi.Output<{[key: string]: string}>;
+    declare public /*out*/ readonly nodes_ip_range: pulumi.Output<{[key: string]: string}>;
     /**
      * The solution type of the cluster, displayed as project name in contract metadata
      */
-    public readonly solution_type!: pulumi.Output<string | undefined>;
+    declare public readonly solution_type: pulumi.Output<string | undefined>;
     /**
      * SSH key to access the cluster nodes
      */
-    public readonly ssh_key!: pulumi.Output<string | undefined>;
+    declare public readonly ssh_key: pulumi.Output<string | undefined>;
     /**
      * The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
      */
-    public readonly token!: pulumi.Output<string>;
+    declare public readonly token: pulumi.Output<string>;
     /**
      * Workers is a list holding the workers configuration for the kubernetes cluster
      */
-    public readonly workers!: pulumi.Output<outputs.K8sNodeInput[]>;
+    declare public readonly workers: pulumi.Output<outputs.K8sNodeInput[]>;
     /**
      * List of the computed fields of the worker nodes
      */
-    public /*out*/ readonly workers_computed!: pulumi.Output<{[key: string]: outputs.VMComputed}>;
+    declare public /*out*/ readonly workers_computed: pulumi.Output<{[key: string]: outputs.VMComputed}>;
 
     /**
      * Create a Kubernetes resource with the given unique name, arguments, and options.
@@ -97,27 +97,27 @@ export class Kubernetes extends pulumi.CustomResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            if ((!args || args.master === undefined) && !opts.urn) {
+            if (args?.master === undefined && !opts.urn) {
                 throw new Error("Missing required property 'master'");
             }
-            if ((!args || args.network_name === undefined) && !opts.urn) {
+            if (args?.network_name === undefined && !opts.urn) {
                 throw new Error("Missing required property 'network_name'");
             }
-            if ((!args || args.token === undefined) && !opts.urn) {
+            if (args?.token === undefined && !opts.urn) {
                 throw new Error("Missing required property 'token'");
             }
-            if ((!args || args.workers === undefined) && !opts.urn) {
+            if (args?.workers === undefined && !opts.urn) {
                 throw new Error("Missing required property 'workers'");
             }
-            resourceInputs["entry_point"] = args ? args.entry_point : undefined;
-            resourceInputs["flist"] = args ? args.flist : undefined;
-            resourceInputs["flist_checksum"] = args ? args.flist_checksum : undefined;
+            resourceInputs["entry_point"] = args?.entry_point;
+            resourceInputs["flist"] = args?.flist;
+            resourceInputs["flist_checksum"] = args?.flist_checksum;
             resourceInputs["master"] = args ? (args.master ? pulumi.output(args.master).apply(inputs.k8sNodeInputArgsProvideDefaults) : undefined) : undefined;
-            resourceInputs["network_name"] = args ? args.network_name : undefined;
-            resourceInputs["solution_type"] = (args ? args.solution_type : undefined) ?? "kubernetes/";
-            resourceInputs["ssh_key"] = (args ? args.ssh_key : undefined) ?? "";
-            resourceInputs["token"] = args ? args.token : undefined;
-            resourceInputs["workers"] = args ? args.workers : undefined;
+            resourceInputs["network_name"] = args?.network_name;
+            resourceInputs["solution_type"] = (args?.solution_type) ?? "kubernetes/";
+            resourceInputs["ssh_key"] = (args?.ssh_key) ?? "";
+            resourceInputs["token"] = args?.token;
+            resourceInputs["workers"] = args?.workers;
             resourceInputs["master_computed"] = undefined /*out*/;
             resourceInputs["node_deployment_id"] = undefined /*out*/;
             resourceInputs["nodes_ip_range"] = undefined /*out*/;

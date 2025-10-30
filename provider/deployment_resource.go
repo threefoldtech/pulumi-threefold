@@ -162,7 +162,7 @@ func (*Deployment) Update(
 func (*Deployment) Read(ctx context.Context, id string, oldState DeploymentState) (string, DeploymentState, error) {
 	config := infer.GetConfig[Config](ctx)
 
-	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.DeploymentArgs.NodeID))
+	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.NodeID))
 	if err != nil {
 		return id, oldState, err
 	}
@@ -194,7 +194,7 @@ func (*Deployment) Read(ctx context.Context, id string, oldState DeploymentState
 func (*Deployment) Delete(ctx context.Context, id string, oldState DeploymentState) error {
 	config := infer.GetConfig[Config](ctx)
 
-	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.DeploymentArgs.NodeID))
+	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.NodeID))
 	if err != nil {
 		return err
 	}

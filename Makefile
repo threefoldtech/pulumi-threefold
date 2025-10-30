@@ -68,7 +68,6 @@ clean:
 	rm -rf $(GARBAGE)
 
 lint:
-	@echo "Installing golangci-lint" && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 	for DIR in "provider" "sdk" "tests" ; do \
 		cd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 10m && cd ../ ; \
 	done
