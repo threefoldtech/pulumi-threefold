@@ -25,16 +25,5 @@ formatters:
       - builtin$
       - examples$
 
-linters-settings:
-  revive:
-    rules:
-      - name: exported
-        arguments:
-          - disableStutteringCheck
-
-issues:
-  exclude-files:
-    - schema.go
-    - pulumiManifest.go
 run:
   timeout: 20m

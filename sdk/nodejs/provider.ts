@@ -22,19 +22,19 @@ export class Provider extends pulumi.ProviderResource {
     /**
      * The key type registered on substrate (ed25519 or sr25519).
      */
-    public readonly key_type!: pulumi.Output<string | undefined>;
+    declare public readonly key_type: pulumi.Output<string | undefined>;
     /**
      * The mnemonic of the user. It is very secret.
      */
-    public readonly mnemonic!: pulumi.Output<string | undefined>;
+    declare public readonly mnemonic: pulumi.Output<string | undefined>;
     /**
      * The network to deploy on.
      */
-    public readonly network!: pulumi.Output<string | undefined>;
+    declare public readonly network: pulumi.Output<string | undefined>;
     /**
      * The timeout duration in seconds for rmb calls
      */
-    public readonly rmb_timeout!: pulumi.Output<string | undefined>;
+    declare public readonly rmb_timeout: pulumi.Output<string | undefined>;
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -47,14 +47,14 @@ export class Provider extends pulumi.ProviderResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         {
-            resourceInputs["graphql_url"] = pulumi.output(args ? args.graphql_url : undefined).apply(JSON.stringify);
-            resourceInputs["key_type"] = (args ? args.key_type : undefined) ?? (utilities.getEnv("") || "sr25519");
+            resourceInputs["graphql_url"] = pulumi.output(args?.graphql_url).apply(JSON.stringify);
+            resourceInputs["key_type"] = (args?.key_type) ?? (utilities.getEnv("") || "sr25519");
             resourceInputs["mnemonic"] = (args?.mnemonic ? pulumi.secret(args.mnemonic) : undefined) ?? (utilities.getEnv("") || "");
-            resourceInputs["network"] = (args ? args.network : undefined) ?? (utilities.getEnv("") || "");
-            resourceInputs["proxy_url"] = pulumi.output(args ? args.proxy_url : undefined).apply(JSON.stringify);
-            resourceInputs["relay_url"] = pulumi.output(args ? args.relay_url : undefined).apply(JSON.stringify);
-            resourceInputs["rmb_timeout"] = args ? args.rmb_timeout : undefined;
-            resourceInputs["substrate_url"] = pulumi.output(args ? args.substrate_url : undefined).apply(JSON.stringify);
+            resourceInputs["network"] = (args?.network) ?? (utilities.getEnv("") || "");
+            resourceInputs["proxy_url"] = pulumi.output(args?.proxy_url).apply(JSON.stringify);
+            resourceInputs["relay_url"] = pulumi.output(args?.relay_url).apply(JSON.stringify);
+            resourceInputs["rmb_timeout"] = args?.rmb_timeout;
+            resourceInputs["substrate_url"] = pulumi.output(args?.substrate_url).apply(JSON.stringify);
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         const secretOpts = { additionalSecretOutputs: ["mnemonic"] };
