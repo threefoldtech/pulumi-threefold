@@ -176,29 +176,29 @@ class Deployment(pulumi.CustomResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 disks: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DiskArgs']]]]] = None,
+                 disks: Optional[pulumi.Input[Sequence[pulumi.Input[Union['DiskArgs', 'DiskArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
                  network_name: Optional[pulumi.Input[_builtins.str]] = None,
                  node_id: Optional[Any] = None,
-                 qsfs: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['QSFSInputArgs']]]]] = None,
+                 qsfs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['QSFSInputArgs', 'QSFSInputArgsDict']]]]] = None,
                  solution_provider: Optional[pulumi.Input[_builtins.int]] = None,
                  solution_type: Optional[pulumi.Input[_builtins.str]] = None,
-                 vms: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VMInputArgs']]]]] = None,
-                 zdbs: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ZDBInputArgs']]]]] = None,
+                 vms: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VMInputArgs', 'VMInputArgsDict']]]]] = None,
+                 zdbs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ZDBInputArgs', 'ZDBInputArgsDict']]]]] = None,
                  __props__=None):
         """
         Create a Deployment resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DiskArgs']]]] disks: The disks requested to be included in the deployment
+        :param pulumi.Input[Sequence[pulumi.Input[Union['DiskArgs', 'DiskArgsDict']]]] disks: The disks requested to be included in the deployment
         :param pulumi.Input[_builtins.str] name: The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
         :param pulumi.Input[_builtins.str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
         :param Any node_id: The node ID to deploy on, required and should match the requested resources
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['QSFSInputArgs']]]] qsfs: The qsfs instances requested to be included in the deployment
+        :param pulumi.Input[Sequence[pulumi.Input[Union['QSFSInputArgs', 'QSFSInputArgsDict']]]] qsfs: The qsfs instances requested to be included in the deployment
         :param pulumi.Input[_builtins.int] solution_provider: ID for the deployed solution which allows the creator of the solution to gain a percentage of the rewards
         :param pulumi.Input[_builtins.str] solution_type: The name of the solution for created contract to be consistent across threefold tooling (project name in deployment metadata)
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VMInputArgs']]]] vms: The vms requested to be included in the deployment
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ZDBInputArgs']]]] zdbs: The zdbs requested to be included in the deployment
+        :param pulumi.Input[Sequence[pulumi.Input[Union['VMInputArgs', 'VMInputArgsDict']]]] vms: The vms requested to be included in the deployment
+        :param pulumi.Input[Sequence[pulumi.Input[Union['ZDBInputArgs', 'ZDBInputArgsDict']]]] zdbs: The zdbs requested to be included in the deployment
         """
         ...
     @overload
@@ -223,15 +223,15 @@ class Deployment(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 disks: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['DiskArgs']]]]] = None,
+                 disks: Optional[pulumi.Input[Sequence[pulumi.Input[Union['DiskArgs', 'DiskArgsDict']]]]] = None,
                  name: Optional[pulumi.Input[_builtins.str]] = None,
                  network_name: Optional[pulumi.Input[_builtins.str]] = None,
                  node_id: Optional[Any] = None,
-                 qsfs: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['QSFSInputArgs']]]]] = None,
+                 qsfs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['QSFSInputArgs', 'QSFSInputArgsDict']]]]] = None,
                  solution_provider: Optional[pulumi.Input[_builtins.int]] = None,
                  solution_type: Optional[pulumi.Input[_builtins.str]] = None,
-                 vms: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['VMInputArgs']]]]] = None,
-                 zdbs: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['ZDBInputArgs']]]]] = None,
+                 vms: Optional[pulumi.Input[Sequence[pulumi.Input[Union['VMInputArgs', 'VMInputArgsDict']]]]] = None,
+                 zdbs: Optional[pulumi.Input[Sequence[pulumi.Input[Union['ZDBInputArgs', 'ZDBInputArgsDict']]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):

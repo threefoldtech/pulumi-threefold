@@ -21,7 +21,6 @@ import (
 	"os"
 	"path/filepath"
 
-	dotnetgen "github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
 	gogen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
 	nodejsgen "github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
 	pythongen "github.com/pulumi/pulumi/pkg/v3/codegen/python"
@@ -80,9 +79,6 @@ func main() {
 	case Python:
 		// templateDir := filepath.Join(TemplateDir, "python-templates")
 		writePythonClient(readSchema(inputFile, version), outDir)
-	case DotNet:
-		// templateDir := filepath.Join(TemplateDir, "dotnet-templates")
-		writeDotnetClient(readSchema(inputFile, version), outDir)
 	case Go:
 		// templateDir := filepath.Join(TemplateDir, "_go-templates")
 		writeGoClient(readSchema(inputFile, version), outDir)
@@ -104,7 +100,7 @@ func readSchema(schemaPath string, version string) *schema.Package {
 	}
 	pkgSpec.Version = version
 
-	pkg, err := schema.ImportSpec(pkgSpec, nil)
+	pkg, err := schema.ImportSpec(pkgSpec, nil, schema.ValidationOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +115,7 @@ func writeNodeJSClient(pkg *schema.Package, outDir string) {
 
 	overlays := map[string][]byte{}
 	localDependencies := map[string]string{}
-	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, localDependencies, false)
+	files, err := nodejsgen.GeneratePackage("pulumigen", pkg, overlays, localDependencies, false, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -134,23 +130,7 @@ func writePythonClient(pkg *schema.Package, outDir string) {
 	}
 
 	overlays := map[string][]byte{}
-	files, err := pythongen.GeneratePackage("pulumigen", pkg, overlays)
-	if err != nil {
-		panic(err)
-	}
-
-	mustWriteFiles(outDir, files)
-}
-
-func writeDotnetClient(pkg *schema.Package, outDir string) {
-	_, err := dotnetgen.LanguageResources("pulumigen", pkg)
-	if err != nil {
-		panic(err)
-	}
-
-	overlays := map[string][]byte{}
-	localDependencies := map[string]string{}
-	files, err := dotnetgen.GeneratePackage("pulumigen", pkg, overlays, localDependencies)
+	files, err := pythongen.GeneratePackage("pulumigen", pkg, overlays, nil)
 	if err != nil {
 		panic(err)
 	}

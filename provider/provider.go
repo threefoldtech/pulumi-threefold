@@ -40,14 +40,14 @@ func Provider() p.Provider {
 			},
 		},
 		Resources: []infer.InferredResource{
-			infer.Resource[*Scheduler](),
-			infer.Resource[*Network](),
-			infer.Resource[*Deployment](),
-			infer.Resource[*Kubernetes](),
-			infer.Resource[*GatewayName](),
-			infer.Resource[*GatewayFQDN](),
+			infer.Resource(&Scheduler{}),
+			infer.Resource(&Network{}),
+			infer.Resource(&Deployment{}),
+			infer.Resource(&Kubernetes{}),
+			infer.Resource(&GatewayName{}),
+			infer.Resource(&GatewayFQDN{}),
 		},
-		Config: infer.Config[*Config](),
+		Config: infer.Config(&Config{}),
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
 		},
@@ -55,8 +55,8 @@ func Provider() p.Provider {
 }
 
 // RunProvider runs the pulumi provider and adds its resources
-func RunProvider(providerName, Version string) error {
-	return p.RunProvider(providerName, Version, Provider())
+func RunProvider(ctx context.Context, providerName, Version string) error {
+	return p.RunProvider(ctx, providerName, Version, Provider())
 }
 
 // Config struct holds the configuration fields for the provider
