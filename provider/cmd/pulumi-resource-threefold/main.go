@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	threefold "github.com/threefoldtech/pulumi-threefold/provider"
@@ -10,7 +11,7 @@ import (
 var providerName = "threefold"
 
 func main() {
-	if err := threefold.RunProvider(providerName, version.Version); err != nil {
+	if err := threefold.RunProvider(context.Background(), providerName, version.Version); err != nil {
 		log.Fatal(err.Error())
 	}
 }

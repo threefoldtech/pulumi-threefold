@@ -7,7 +7,7 @@ import (
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/property"
 )
 
 // Deployment controlling struct
@@ -42,7 +42,7 @@ type DeploymentState struct {
 func (*Deployment) Check(
 	ctx context.Context,
 	name string, oldInputs,
-	newInputs resource.PropertyMap,
+	newInputs property.Map,
 ) (DeploymentArgs, []p.CheckFailure, error) {
 	args, checkFailures, err := infer.DefaultCheck[DeploymentArgs](ctx, newInputs)
 	if err != nil {
@@ -71,130 +71,127 @@ func (*Deployment) Check(
 // Create creates a deployment
 func (*Deployment) Create(
 	ctx context.Context,
-	id string,
-	input DeploymentArgs,
-	preview bool) (string, DeploymentState, error) {
-	state := DeploymentState{DeploymentArgs: input}
-	if preview {
-		return id, state, nil
+	req infer.CreateRequest[DeploymentArgs],
+) (infer.CreateResponse[DeploymentState], error) {
+	state := DeploymentState{DeploymentArgs: req.Inputs}
+	if req.DryRun {
+		return infer.CreateResponse[DeploymentState]{ID: req.Name, Output: state}, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodeID, err := strconv.Atoi(fmt.Sprint(input.NodeID))
+	nodeID, err := strconv.Atoi(fmt.Sprint(req.Inputs.NodeID))
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[DeploymentState]{ID: req.Name, Output: state}, err
 	}
 
 	isLight, err := isZosLight(ctx, uint32(nodeID), config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[DeploymentState]{ID: req.Name, Output: state}, err
 	}
 
-	deployment, err := parseInputToDeployment(input, isLight)
+	deployment, err := parseInputToDeployment(req.Inputs, isLight)
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[DeploymentState]{ID: req.Name, Output: state}, err
 	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Deploy(ctx, &deployment); err != nil {
-		return id, state, err
+		return infer.CreateResponse[DeploymentState]{ID: req.Name, Output: state}, err
 	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Sync(ctx, &deployment); err != nil {
-		return id, state, err
+		return infer.CreateResponse[DeploymentState]{ID: req.Name, Output: state}, err
 	}
 
 	state = parseDeploymentToState(deployment)
 
-	return id, state, nil
+	return infer.CreateResponse[DeploymentState]{ID: req.Name, Output: state}, nil
 }
 
 // Update updates the arguments of the deployment resource
 func (*Deployment) Update(
 	ctx context.Context,
-	id string,
-	oldState DeploymentState,
-	input DeploymentArgs,
-	preview bool) (DeploymentState, error) {
-	state := DeploymentState{DeploymentArgs: input}
-	if preview {
-		return state, nil
+	req infer.UpdateRequest[DeploymentArgs, DeploymentState],
+) (infer.UpdateResponse[DeploymentState], error) {
+	state := DeploymentState{DeploymentArgs: req.Inputs}
+	if req.DryRun {
+		return infer.UpdateResponse[DeploymentState]{Output: state}, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodeID, err := strconv.Atoi(fmt.Sprint(input.NodeID))
+	nodeID, err := strconv.Atoi(fmt.Sprint(req.Inputs.NodeID))
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[DeploymentState]{Output: state}, err
 	}
 
 	isLight, err := isZosLight(ctx, uint32(nodeID), config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[DeploymentState]{Output: state}, err
 	}
 
-	deployment, err := parseInputToDeployment(input, isLight)
+	deployment, err := parseInputToDeployment(req.Inputs, isLight)
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[DeploymentState]{Output: state}, err
 	}
 
-	if err := updateDeploymentFromState(&deployment, oldState, isLight); err != nil {
-		return state, err
+	if err := updateDeploymentFromState(&deployment, req.State, isLight); err != nil {
+		return infer.UpdateResponse[DeploymentState]{Output: state}, err
 	}
 
 	dl_network := config.TFPluginClient.State.Networks.GetNetwork(deployment.NetworkName)
 	dl_network.SetNodeSubnet(deployment.NodeID, deployment.IPrange)
 
 	if err := config.TFPluginClient.DeploymentDeployer.Deploy(ctx, &deployment); err != nil {
-		return state, err
+		return infer.UpdateResponse[DeploymentState]{Output: state}, err
 	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Sync(ctx, &deployment); err != nil {
-		return state, err
+		return infer.UpdateResponse[DeploymentState]{Output: state}, err
 	}
 
 	state = parseDeploymentToState(deployment)
 
-	return state, nil
+	return infer.UpdateResponse[DeploymentState]{Output: state}, nil
 }
 
 // Read gets the state of the deployment resource
-func (*Deployment) Read(ctx context.Context, id string, oldState DeploymentState) (string, DeploymentState, error) {
+func (*Deployment) Read(ctx context.Context, req infer.ReadRequest[DeploymentArgs, DeploymentState]) (infer.ReadResponse[DeploymentArgs, DeploymentState], error) {
 	config := infer.GetConfig[Config](ctx)
 
-	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.NodeID))
+	nodeID, err := strconv.Atoi(fmt.Sprint(req.State.NodeID))
 	if err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[DeploymentArgs, DeploymentState](req), err
 	}
 
 	isLight, err := isZosLight(ctx, uint32(nodeID), config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[DeploymentArgs, DeploymentState](req), err
 	}
 
-	deployment, err := parseInputToDeployment(oldState.DeploymentArgs, isLight)
+	deployment, err := parseInputToDeployment(req.State.DeploymentArgs, isLight)
 	if err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[DeploymentArgs, DeploymentState](req), err
 	}
 
-	if err := updateDeploymentFromState(&deployment, oldState, isLight); err != nil {
-		return id, oldState, err
+	if err := updateDeploymentFromState(&deployment, req.State, isLight); err != nil {
+		return infer.ReadResponse[DeploymentArgs, DeploymentState](req), err
 	}
 
 	if err := config.TFPluginClient.DeploymentDeployer.Sync(ctx, &deployment); err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[DeploymentArgs, DeploymentState](req), err
 	}
 
 	state := parseDeploymentToState(deployment)
 
-	return id, state, nil
+	return infer.ReadResponse[DeploymentArgs, DeploymentState]{ID: req.ID, Inputs: req.Inputs, State: state}, nil
 }
 
 // Delete deletes a deployment resource
-func (*Deployment) Delete(ctx context.Context, id string, oldState DeploymentState) error {
+func (*Deployment) Delete(ctx context.Context, req infer.DeleteRequest[DeploymentState]) error {
 	config := infer.GetConfig[Config](ctx)
 
-	nodeID, err := strconv.Atoi(fmt.Sprint(oldState.NodeID))
+	nodeID, err := strconv.Atoi(fmt.Sprint(req.State.NodeID))
 	if err != nil {
 		return err
 	}
@@ -204,12 +201,12 @@ func (*Deployment) Delete(ctx context.Context, id string, oldState DeploymentSta
 		return err
 	}
 
-	deployment, err := parseInputToDeployment(oldState.DeploymentArgs, isLight)
+	deployment, err := parseInputToDeployment(req.State.DeploymentArgs, isLight)
 	if err != nil {
 		return err
 	}
 
-	if err := updateDeploymentFromState(&deployment, oldState, isLight); err != nil {
+	if err := updateDeploymentFromState(&deployment, req.State, isLight); err != nil {
 		return err
 	}
 

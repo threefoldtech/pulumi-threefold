@@ -5,7 +5,7 @@ import (
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/property"
 )
 
 // GatewayName controlling struct
@@ -36,7 +36,7 @@ type GatewayNameState struct {
 func (*GatewayName) Check(
 	ctx context.Context,
 	name string, oldInputs,
-	newInputs resource.PropertyMap,
+	newInputs property.Map,
 ) (GatewayNameArgs, []p.CheckFailure, error) {
 	args, checkFailures, err := infer.DefaultCheck[GatewayNameArgs](ctx, newInputs)
 	if err != nil {
@@ -66,100 +66,97 @@ func (*GatewayName) Check(
 // Create creates GatewayName and deploy it
 func (*GatewayName) Create(
 	ctx context.Context,
-	id string,
-	input GatewayNameArgs,
-	preview bool) (string, GatewayNameState, error) {
-	state := GatewayNameState{GatewayNameArgs: input}
-	if preview {
-		return id, state, nil
+	req infer.CreateRequest[GatewayNameArgs],
+) (infer.CreateResponse[GatewayNameState], error) {
+	state := GatewayNameState{GatewayNameArgs: req.Inputs}
+	if req.DryRun {
+		return infer.CreateResponse[GatewayNameState]{ID: req.Name, Output: state}, nil
 	}
 
-	gw, err := parseToGWName(input)
+	gw, err := parseToGWName(req.Inputs)
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[GatewayNameState]{ID: req.Name, Output: state}, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.GatewayNameDeployer.Deploy(ctx, &gw); err != nil {
-		return id, state, err
+		return infer.CreateResponse[GatewayNameState]{ID: req.Name, Output: state}, err
 	}
 
 	if err := config.TFPluginClient.GatewayNameDeployer.Sync(ctx, &gw); err != nil {
-		return id, state, err
+		return infer.CreateResponse[GatewayNameState]{ID: req.Name, Output: state}, err
 	}
 
 	state = parseToGWNameState(gw)
 
-	return id, state, nil
+	return infer.CreateResponse[GatewayNameState]{ID: req.Name, Output: state}, nil
 }
 
 // Update updates the GatewayName resource
 func (*GatewayName) Update(
 	ctx context.Context,
-	id string,
-	oldState GatewayNameState,
-	input GatewayNameArgs,
-	preview bool) (GatewayNameState, error) {
-	state := GatewayNameState{GatewayNameArgs: input}
-	if preview {
-		return state, nil
+	req infer.UpdateRequest[GatewayNameArgs, GatewayNameState],
+) (infer.UpdateResponse[GatewayNameState], error) {
+	state := GatewayNameState{GatewayNameArgs: req.Inputs}
+	if req.DryRun {
+		return infer.UpdateResponse[GatewayNameState]{Output: state}, nil
 	}
 
-	gw, err := parseToGWName(input)
+	gw, err := parseToGWName(req.Inputs)
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[GatewayNameState]{Output: state}, err
 	}
 
-	if err := updateGWNameFromState(&gw, oldState); err != nil {
-		return state, err
+	if err := updateGWNameFromState(&gw, req.State); err != nil {
+		return infer.UpdateResponse[GatewayNameState]{Output: state}, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.GatewayNameDeployer.Deploy(ctx, &gw); err != nil {
-		return state, err
+		return infer.UpdateResponse[GatewayNameState]{Output: state}, err
 	}
 
 	if err := config.TFPluginClient.GatewayNameDeployer.Sync(ctx, &gw); err != nil {
-		return state, err
+		return infer.UpdateResponse[GatewayNameState]{Output: state}, err
 	}
 
 	state = parseToGWNameState(gw)
 
-	return state, nil
+	return infer.UpdateResponse[GatewayNameState]{Output: state}, nil
 }
 
 // Read gets the state of the GatewayName resource
-func (*GatewayName) Read(ctx context.Context, id string, oldState GatewayNameState) (string, GatewayNameState, error) {
-	gw, err := parseToGWName(oldState.GatewayNameArgs)
+func (*GatewayName) Read(ctx context.Context, req infer.ReadRequest[GatewayNameArgs, GatewayNameState]) (infer.ReadResponse[GatewayNameArgs, GatewayNameState], error) {
+	gw, err := parseToGWName(req.State.GatewayNameArgs)
 	if err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[GatewayNameArgs, GatewayNameState](req), err
 	}
 
-	if err := updateGWNameFromState(&gw, oldState); err != nil {
-		return id, oldState, err
+	if err := updateGWNameFromState(&gw, req.State); err != nil {
+		return infer.ReadResponse[GatewayNameArgs, GatewayNameState](req), err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.GatewayNameDeployer.Sync(ctx, &gw); err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[GatewayNameArgs, GatewayNameState](req), err
 	}
 
 	state := parseToGWNameState(gw)
 
-	return id, state, nil
+	return infer.ReadResponse[GatewayNameArgs, GatewayNameState]{ID: req.ID, Inputs: req.Inputs, State: state}, nil
 }
 
 // Delete deletes the GatewayName resource
-func (*GatewayName) Delete(ctx context.Context, id string, oldState GatewayNameState) error {
-	gw, err := parseToGWName(oldState.GatewayNameArgs)
+func (*GatewayName) Delete(ctx context.Context, req infer.DeleteRequest[GatewayNameState]) error {
+	gw, err := parseToGWName(req.State.GatewayNameArgs)
 	if err != nil {
 		return err
 	}
 
-	if err := updateGWNameFromState(&gw, oldState); err != nil {
+	if err := updateGWNameFromState(&gw, req.State); err != nil {
 		return err
 	}
 

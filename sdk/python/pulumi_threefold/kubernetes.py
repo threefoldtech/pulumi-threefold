@@ -179,12 +179,12 @@ class Kubernetes(pulumi.CustomResource):
                  entry_point: Optional[pulumi.Input[_builtins.str]] = None,
                  flist: Optional[pulumi.Input[_builtins.str]] = None,
                  flist_checksum: Optional[pulumi.Input[_builtins.str]] = None,
-                 master: Optional[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]] = None,
+                 master: Optional[pulumi.Input[Union['K8sNodeInputArgs', 'K8sNodeInputArgsDict']]] = None,
                  network_name: Optional[pulumi.Input[_builtins.str]] = None,
                  solution_type: Optional[pulumi.Input[_builtins.str]] = None,
                  ssh_key: Optional[pulumi.Input[_builtins.str]] = None,
                  token: Optional[pulumi.Input[_builtins.str]] = None,
-                 workers: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]]]] = None,
+                 workers: Optional[pulumi.Input[Sequence[pulumi.Input[Union['K8sNodeInputArgs', 'K8sNodeInputArgsDict']]]]] = None,
                  __props__=None):
         """
         Create a Kubernetes resource with the given unique name, props, and options.
@@ -193,12 +193,12 @@ class Kubernetes(pulumi.CustomResource):
         :param pulumi.Input[_builtins.str] entry_point: The entry point for the flist. Example: /sbin/zinit init
         :param pulumi.Input[_builtins.str] flist: The flist to be mounted in the kubernetes cluster nodes. Example: https://hub.grid.tf/tf-official-apps/base:latest.flist
         :param pulumi.Input[_builtins.str] flist_checksum: The checksum of the flist which should match the checksum of the given flist, optional
-        :param pulumi.Input[pulumi.InputType['K8sNodeInputArgs']] master: Master holds the configuration of master node in the kubernetes cluster
+        :param pulumi.Input[Union['K8sNodeInputArgs', 'K8sNodeInputArgsDict']] master: Master holds the configuration of master node in the kubernetes cluster
         :param pulumi.Input[_builtins.str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
         :param pulumi.Input[_builtins.str] solution_type: The solution type of the cluster, displayed as project name in contract metadata
         :param pulumi.Input[_builtins.str] ssh_key: SSH key to access the cluster nodes
         :param pulumi.Input[_builtins.str] token: The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
-        :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]]] workers: Workers is a list holding the workers configuration for the kubernetes cluster
+        :param pulumi.Input[Sequence[pulumi.Input[Union['K8sNodeInputArgs', 'K8sNodeInputArgsDict']]]] workers: Workers is a list holding the workers configuration for the kubernetes cluster
         """
         ...
     @overload
@@ -226,12 +226,12 @@ class Kubernetes(pulumi.CustomResource):
                  entry_point: Optional[pulumi.Input[_builtins.str]] = None,
                  flist: Optional[pulumi.Input[_builtins.str]] = None,
                  flist_checksum: Optional[pulumi.Input[_builtins.str]] = None,
-                 master: Optional[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]] = None,
+                 master: Optional[pulumi.Input[Union['K8sNodeInputArgs', 'K8sNodeInputArgsDict']]] = None,
                  network_name: Optional[pulumi.Input[_builtins.str]] = None,
                  solution_type: Optional[pulumi.Input[_builtins.str]] = None,
                  ssh_key: Optional[pulumi.Input[_builtins.str]] = None,
                  token: Optional[pulumi.Input[_builtins.str]] = None,
-                 workers: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['K8sNodeInputArgs']]]]] = None,
+                 workers: Optional[pulumi.Input[Sequence[pulumi.Input[Union['K8sNodeInputArgs', 'K8sNodeInputArgsDict']]]]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
         if not isinstance(opts, pulumi.ResourceOptions):

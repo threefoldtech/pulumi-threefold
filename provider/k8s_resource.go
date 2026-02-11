@@ -5,7 +5,7 @@ import (
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/property"
 	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
 )
 
@@ -39,7 +39,7 @@ type KubernetesState struct {
 func (*Kubernetes) Check(
 	ctx context.Context,
 	name string, oldInputs,
-	newInputs resource.PropertyMap,
+	newInputs property.Map,
 ) (KubernetesArgs, []p.CheckFailure, error) {
 	args, checkFailures, err := infer.DefaultCheck[KubernetesArgs](ctx, newInputs)
 	if err != nil {
@@ -77,53 +77,50 @@ func (*Kubernetes) Check(
 // Create creates Kubernetes cluster and deploy it
 func (*Kubernetes) Create(
 	ctx context.Context,
-	id string,
-	input KubernetesArgs,
-	preview bool) (string, KubernetesState, error) {
-	state := KubernetesState{KubernetesArgs: input}
-	if preview {
-		return id, state, nil
+	req infer.CreateRequest[KubernetesArgs],
+) (infer.CreateResponse[KubernetesState], error) {
+	state := KubernetesState{KubernetesArgs: req.Inputs}
+	if req.DryRun {
+		return infer.CreateResponse[KubernetesState]{ID: req.Name, Output: state}, nil
 	}
 
-	k8sCluster, err := parseToK8sCluster(input)
+	k8sCluster, err := parseToK8sCluster(req.Inputs)
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[KubernetesState]{ID: req.Name, Output: state}, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.K8sDeployer.Deploy(ctx, &k8sCluster); err != nil {
-		return id, state, err
+		return infer.CreateResponse[KubernetesState]{ID: req.Name, Output: state}, err
 	}
 
 	if err := config.TFPluginClient.K8sDeployer.UpdateFromRemote(ctx, &k8sCluster); err != nil {
-		return id, state, err
+		return infer.CreateResponse[KubernetesState]{ID: req.Name, Output: state}, err
 	}
 
 	state = parseToK8sState(k8sCluster)
 
-	return id, state, nil
+	return infer.CreateResponse[KubernetesState]{ID: req.Name, Output: state}, nil
 }
 
 // Update updates the arguments of the Kubernetes resource
 func (*Kubernetes) Update(
 	ctx context.Context,
-	id string,
-	oldState KubernetesState,
-	input KubernetesArgs,
-	preview bool) (KubernetesState, error) {
-	state := KubernetesState{KubernetesArgs: input}
-	if preview {
-		return state, nil
+	req infer.UpdateRequest[KubernetesArgs, KubernetesState],
+) (infer.UpdateResponse[KubernetesState], error) {
+	state := KubernetesState{KubernetesArgs: req.Inputs}
+	if req.DryRun {
+		return infer.UpdateResponse[KubernetesState]{Output: state}, nil
 	}
 
-	k8sCluster, err := parseToK8sCluster(input)
+	k8sCluster, err := parseToK8sCluster(req.Inputs)
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[KubernetesState]{Output: state}, err
 	}
 
-	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
-		return state, err
+	if err := updateK8sFromState(&k8sCluster, req.State); err != nil {
+		return infer.UpdateResponse[KubernetesState]{Output: state}, err
 	}
 
 	config := infer.GetConfig[Config](ctx)
@@ -135,56 +132,56 @@ func (*Kubernetes) Update(
 	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(k8sCluster.NetworkName, ipRanges)
 
 	if err := config.TFPluginClient.K8sDeployer.Deploy(ctx, &k8sCluster); err != nil {
-		return state, err
+		return infer.UpdateResponse[KubernetesState]{Output: state}, err
 	}
 
 	if err := config.TFPluginClient.K8sDeployer.UpdateFromRemote(ctx, &k8sCluster); err != nil {
-		return state, err
+		return infer.UpdateResponse[KubernetesState]{Output: state}, err
 	}
 
 	state = parseToK8sState(k8sCluster)
 
-	return state, nil
+	return infer.UpdateResponse[KubernetesState]{Output: state}, nil
 }
 
 // Read get the state of the Kubernetes resource
-func (*Kubernetes) Read(ctx context.Context, id string, oldState KubernetesState) (string, KubernetesState, error) {
-	k8sCluster, err := parseToK8sCluster(oldState.KubernetesArgs)
+func (*Kubernetes) Read(ctx context.Context, req infer.ReadRequest[KubernetesArgs, KubernetesState]) (infer.ReadResponse[KubernetesArgs, KubernetesState], error) {
+	k8sCluster, err := parseToK8sCluster(req.State.KubernetesArgs)
 	if err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[KubernetesArgs, KubernetesState](req), err
 	}
 
-	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
-		return id, oldState, err
+	if err := updateK8sFromState(&k8sCluster, req.State); err != nil {
+		return infer.ReadResponse[KubernetesArgs, KubernetesState](req), err
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
 	if err := config.TFPluginClient.K8sDeployer.Validate(ctx, &k8sCluster); err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[KubernetesArgs, KubernetesState](req), err
 	}
 
 	if err := k8sCluster.InvalidateBrokenAttributes(config.TFPluginClient.SubstrateConn); err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[KubernetesArgs, KubernetesState](req), err
 	}
 
 	if err := config.TFPluginClient.K8sDeployer.UpdateFromRemote(ctx, &k8sCluster); err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[KubernetesArgs, KubernetesState](req), err
 	}
 
 	state := parseToK8sState(k8sCluster)
 
-	return id, state, nil
+	return infer.ReadResponse[KubernetesArgs, KubernetesState]{ID: req.ID, Inputs: req.Inputs, State: state}, nil
 }
 
 // Delete deletes the Kubernetes resource
-func (*Kubernetes) Delete(ctx context.Context, id string, oldState KubernetesState) error {
-	k8sCluster, err := parseToK8sCluster(oldState.KubernetesArgs)
+func (*Kubernetes) Delete(ctx context.Context, req infer.DeleteRequest[KubernetesState]) error {
+	k8sCluster, err := parseToK8sCluster(req.State.KubernetesArgs)
 	if err != nil {
 		return err
 	}
 
-	if err := updateK8sFromState(&k8sCluster, oldState); err != nil {
+	if err := updateK8sFromState(&k8sCluster, req.State); err != nil {
 		return err
 	}
 

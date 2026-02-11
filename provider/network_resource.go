@@ -5,7 +5,7 @@ import (
 
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
-	"github.com/pulumi/pulumi/sdk/v3/go/common/resource"
+	"github.com/pulumi/pulumi/sdk/v3/go/property"
 )
 
 // Network controlling struct
@@ -40,7 +40,7 @@ type NetworkState struct {
 func (*Network) Check(
 	ctx context.Context,
 	name string, oldInputs,
-	newInputs resource.PropertyMap,
+	newInputs property.Map,
 ) (NetworkArgs, []p.CheckFailure, error) {
 	args, checkFailures, err := infer.DefaultCheck[NetworkArgs](ctx, newInputs)
 	if err != nil {
@@ -63,119 +63,117 @@ func (*Network) Check(
 }
 
 // Create creates network and deploy it
-func (*Network) Create(ctx context.Context, id string, input NetworkArgs, preview bool) (string, NetworkState, error) {
-	state := NetworkState{NetworkArgs: input}
-	if preview {
-		return id, state, nil
+func (*Network) Create(ctx context.Context, req infer.CreateRequest[NetworkArgs]) (infer.CreateResponse[NetworkState], error) {
+	state := NetworkState{NetworkArgs: req.Inputs}
+	if req.DryRun {
+		return infer.CreateResponse[NetworkState]{ID: req.Name, Output: state}, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodes, err := parseNodes(input.Nodes)
+	nodes, err := parseNodes(req.Inputs.Nodes)
 	if err != nil {
-		return id, state, nil
+		return infer.CreateResponse[NetworkState]{ID: req.Name, Output: state}, nil
 	}
 
 	light, err := isNetworkLight(ctx, nodes, config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[NetworkState]{ID: req.Name, Output: state}, err
 	}
 
-	network, err := parseToZNet(input, light)
+	network, err := parseToZNet(req.Inputs, light)
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[NetworkState]{ID: req.Name, Output: state}, err
 	}
 
 	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, network); err != nil {
-		return id, state, err
+		return infer.CreateResponse[NetworkState]{ID: req.Name, Output: state}, err
 	}
 
 	state = parseNetworkToState(network)
 
-	return id, state, nil
+	return infer.CreateResponse[NetworkState]{ID: req.Name, Output: state}, nil
 }
 
 // Update updates the arguments of the network resource
 func (*Network) Update(
 	ctx context.Context,
-	id string,
-	oldState NetworkState,
-	input NetworkArgs,
-	preview bool) (NetworkState, error) {
-	state := NetworkState{NetworkArgs: input}
-	if preview {
-		return state, nil
+	req infer.UpdateRequest[NetworkArgs, NetworkState],
+) (infer.UpdateResponse[NetworkState], error) {
+	state := NetworkState{NetworkArgs: req.Inputs}
+	if req.DryRun {
+		return infer.UpdateResponse[NetworkState]{Output: state}, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodes, err := parseNodes(input.Nodes)
+	nodes, err := parseNodes(req.Inputs.Nodes)
 	if err != nil {
-		return state, nil
+		return infer.UpdateResponse[NetworkState]{Output: state}, nil
 	}
 
 	light, err := isNetworkLight(ctx, nodes, config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[NetworkState]{Output: state}, err
 	}
 
-	network, err := parseToZNet(input, light)
+	network, err := parseToZNet(req.Inputs, light)
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[NetworkState]{Output: state}, err
 	}
 
-	if err := updateNetworkFromState(network, oldState); err != nil {
-		return state, err
+	if err := updateNetworkFromState(network, req.State); err != nil {
+		return infer.UpdateResponse[NetworkState]{Output: state}, err
 	}
 
 	if err := config.TFPluginClient.NetworkDeployer.Deploy(ctx, network); err != nil {
-		return state, err
+		return infer.UpdateResponse[NetworkState]{Output: state}, err
 	}
 
 	state = parseNetworkToState(network)
 
-	return state, nil
+	return infer.UpdateResponse[NetworkState]{Output: state}, nil
 }
 
 // Read get the state of the network resource
-func (*Network) Read(ctx context.Context, id string, oldState NetworkState) (string, NetworkState, error) {
+func (*Network) Read(ctx context.Context, req infer.ReadRequest[NetworkArgs, NetworkState]) (infer.ReadResponse[NetworkArgs, NetworkState], error) {
 	config := infer.GetConfig[Config](ctx)
 
-	nodes, err := parseNodes(oldState.Nodes)
+	nodes, err := parseNodes(req.State.Nodes)
 	if err != nil {
-		return id, oldState, nil
+		return infer.ReadResponse[NetworkArgs, NetworkState](req), nil
 	}
 
 	light, err := isNetworkLight(ctx, nodes, config.TFPluginClient.NcPool, config.TFPluginClient.SubstrateConn)
 	if err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[NetworkArgs, NetworkState](req), err
 	}
 
-	network, err := parseToZNet(oldState.NetworkArgs, light)
+	network, err := parseToZNet(req.State.NetworkArgs, light)
 	if err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[NetworkArgs, NetworkState](req), err
 	}
 
-	if err := updateNetworkFromState(network, oldState); err != nil {
-		return id, oldState, err
+	if err := updateNetworkFromState(network, req.State); err != nil {
+		return infer.ReadResponse[NetworkArgs, NetworkState](req), err
 	}
 
 	config.TFPluginClient.State.Networks.UpdateNetworkSubnets(network.GetName(), network.GetNodesIPRange())
 
 	if err := network.InvalidateBrokenAttributes(config.TFPluginClient.SubstrateConn, config.TFPluginClient.NcPool); err != nil {
-		return id, oldState, err
+		return infer.ReadResponse[NetworkArgs, NetworkState](req), err
 	}
 
 	state := parseNetworkToState(network)
 
-	return id, state, nil
+	return infer.ReadResponse[NetworkArgs, NetworkState]{ID: req.ID, Inputs: req.Inputs, State: state}, nil
 }
 
 // Delete deletes the network resource
-func (*Network) Delete(ctx context.Context, id string, oldState NetworkState) error {
+func (*Network) Delete(ctx context.Context, req infer.DeleteRequest[NetworkState]) error {
 	config := infer.GetConfig[Config](ctx)
 
-	nodes, err := parseNodes(oldState.Nodes)
+	nodes, err := parseNodes(req.State.Nodes)
 	if err != nil {
 		return err
 	}
@@ -185,12 +183,12 @@ func (*Network) Delete(ctx context.Context, id string, oldState NetworkState) er
 		return err
 	}
 
-	network, err := parseToZNet(oldState.NetworkArgs, light)
+	network, err := parseToZNet(req.State.NetworkArgs, light)
 	if err != nil {
 		return err
 	}
 
-	if err := updateNetworkFromState(network, oldState); err != nil {
+	if err := updateNetworkFromState(network, req.State); err != nil {
 		return err
 	}
 

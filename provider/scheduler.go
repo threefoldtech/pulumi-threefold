@@ -52,18 +52,16 @@ type SchedulerState struct {
 // Create creates scheduler
 func (*Scheduler) Create(
 	ctx context.Context,
-	id string,
-	input SchedulerArgs,
-	preview bool,
-) (string, SchedulerState, error) {
-	state := SchedulerState{SchedulerArgs: input}
-	if preview {
-		return id, state, nil
+	req infer.CreateRequest[SchedulerArgs],
+) (infer.CreateResponse[SchedulerState], error) {
+	state := SchedulerState{SchedulerArgs: req.Inputs}
+	if req.DryRun {
+		return infer.CreateResponse[SchedulerState]{ID: req.Name, Output: state}, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodeFilter, ssds, hdds := parseSchedulerInput(input)
+	nodeFilter, ssds, hdds := parseSchedulerInput(req.Inputs)
 
 	nodes, err := deployer.FilterNodes(ctx, config.TFPluginClient, nodeFilter, hdds, ssds, nil)
 	if errors.Is(err, deployer.ErrNoNodesMatchesResources) && slices.Contains(nodeFilter.Features, zos.NetworkLightType) {
@@ -72,49 +70,47 @@ func (*Scheduler) Create(
 	}
 
 	if err != nil {
-		return id, state, err
+		return infer.CreateResponse[SchedulerState]{ID: req.Name, Output: state}, err
 	}
 
 	for _, node := range nodes {
 		state.Nodes = append(state.Nodes, int32(node.NodeID))
 	}
 
-	return id, state, nil
+	return infer.CreateResponse[SchedulerState]{ID: req.Name, Output: state}, nil
 }
 
 // Update updates the arguments of the scheduler resource
 func (*Scheduler) Update(
 	ctx context.Context,
-	id string,
-	oldState SchedulerState,
-	input SchedulerArgs,
-	preview bool) (SchedulerState, error) {
-	state := SchedulerState{SchedulerArgs: input}
-	if preview {
-		return state, nil
+	req infer.UpdateRequest[SchedulerArgs, SchedulerState],
+) (infer.UpdateResponse[SchedulerState], error) {
+	state := SchedulerState{SchedulerArgs: req.Inputs}
+	if req.DryRun {
+		return infer.UpdateResponse[SchedulerState]{Output: state}, nil
 	}
 
 	config := infer.GetConfig[Config](ctx)
 
-	nodeFilter, hdds, ssds := parseSchedulerInput(input)
+	nodeFilter, hdds, ssds := parseSchedulerInput(req.Inputs)
 	nodes, err := deployer.FilterNodes(ctx, config.TFPluginClient, nodeFilter, hdds, ssds, nil)
 	if err != nil {
-		return state, err
+		return infer.UpdateResponse[SchedulerState]{Output: state}, err
 	}
 
 	for _, node := range nodes {
 		state.Nodes = append(state.Nodes, int32(node.NodeID))
 	}
 
-	return state, nil
+	return infer.UpdateResponse[SchedulerState]{Output: state}, nil
 }
 
 // Read get the state of the scheduler resource
-func (*Scheduler) Read(ctx context.Context, id string, oldState SchedulerState) (string, SchedulerState, error) {
-	return id, oldState, nil
+func (*Scheduler) Read(ctx context.Context, req infer.ReadRequest[SchedulerArgs, SchedulerState]) (infer.ReadResponse[SchedulerArgs, SchedulerState], error) {
+	return infer.ReadResponse[SchedulerArgs, SchedulerState](req), nil
 }
 
 // Delete deletes the scheduler resource
-func (*Scheduler) Delete(ctx context.Context, id string, oldState SchedulerState) error {
+func (*Scheduler) Delete(ctx context.Context, req infer.DeleteRequest[SchedulerState]) error {
 	return nil
 }
