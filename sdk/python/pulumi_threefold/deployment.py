@@ -32,6 +32,7 @@ class DeploymentArgs:
                  zdbs: Optional[pulumi.Input[Sequence[pulumi.Input['ZDBInputArgs']]]] = None):
         """
         The set of arguments for constructing a Deployment resource.
+
         :param pulumi.Input[_builtins.str] name: The name of the deployment, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
         :param Any node_id: The node ID to deploy on, required and should match the requested resources
         :param pulumi.Input[Sequence[pulumi.Input['DiskArgs']]] disks: The disks requested to be included in the deployment
@@ -188,6 +189,7 @@ class Deployment(pulumi.CustomResource):
                  __props__=None):
         """
         Create a Deployment resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Sequence[pulumi.Input[Union['DiskArgs', 'DiskArgsDict']]]] disks: The disks requested to be included in the deployment
@@ -208,6 +210,7 @@ class Deployment(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Deployment resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param DeploymentArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

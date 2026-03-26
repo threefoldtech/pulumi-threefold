@@ -85,8 +85,8 @@ nodejs_sdk:: build
 	rm -rf sdk/nodejs
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language nodejs
 	cd sdk/nodejs/ && \
-		yarn install && \
-		yarn run tsc && \
+		yarn install --ignore-engines && \
+		yarn run build && \
 		cp ../../README.md ../../LICENSE package.json yarn.lock bin/ && \
 		sed -i.bak 's/$${VERSION}/$(VERSION)/g' bin/package.json && \
 		rm ./bin/package.json.bak

@@ -28,6 +28,7 @@ class GatewayNameArgs:
                  tls_passthrough: Optional[pulumi.Input[_builtins.bool]] = None):
         """
         The set of arguments for constructing a GatewayName resource.
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] backends: The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
         :param pulumi.Input[_builtins.str] name: Domain prefix. The fqdn will be <name>.<gateway-domain>. This has to be unique within the deployment. It's required and cannot exceed 50 characters. Must contain only alphanumeric and underscore characters
         :param Any node_id: The gateway's node ID
@@ -151,6 +152,7 @@ class GatewayName(pulumi.CustomResource):
                  __props__=None):
         """
         Create a GatewayName resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] backends: The backends of the gateway proxy. must be in the format ip:port if tls_passthrough is set, otherwise the format should be http://ip[:port]
@@ -169,6 +171,7 @@ class GatewayName(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a GatewayName resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param GatewayNameArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

@@ -29,6 +29,7 @@ class ProviderArgs:
                  substrate_url: Optional[pulumi.Input[Sequence[pulumi.Input[_builtins.str]]]] = None):
         """
         The set of arguments for constructing a Provider resource.
+
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] graphql_url: The graphql urls, example: https://graphql.grid.tf/graphql
         :param pulumi.Input[_builtins.str] key_type: The key type registered on substrate (ed25519 or sr25519).
         :param pulumi.Input[_builtins.str] mnemonic: The mnemonic of the user. It is very secret.
@@ -175,6 +176,7 @@ class Provider(pulumi.ProviderResource):
                  __props__=None):
         """
         Create a Threefold resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Sequence[pulumi.Input[_builtins.str]]] graphql_url: The graphql urls, example: https://graphql.grid.tf/graphql
@@ -194,6 +196,7 @@ class Provider(pulumi.ProviderResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Threefold resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param ProviderArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

@@ -15,9 +15,6 @@
   "logoUrl": "https://www.threefold.io/images/black_threefold.png",
   "pluginDownloadURL": "github://api.github.com/threefoldtech/pulumi-threefold",
   "publisher": "Threefold",
-  "meta": {
-    "moduleFormat": "(.*)"
-  },
   "language": {
     "go": {
       "importBasePath": "github.com/threefoldtech/pulumi-threefold/sdk/go/threefold",
@@ -218,12 +215,12 @@
       },
       "type": "object",
       "required": [
-        "cpu",
-        "disk_size",
-        "memory",
         "name",
         "network_name",
-        "node_id"
+        "node_id",
+        "disk_size",
+        "cpu",
+        "memory"
       ]
     },
     "threefold:index:Metadata": {
@@ -271,8 +268,8 @@
       },
       "type": "object",
       "required": [
-        "mount_point",
-        "name"
+        "name",
+        "mount_point"
       ]
     },
     "threefold:index:QSFSComputed": {
@@ -347,16 +344,16 @@
       },
       "type": "object",
       "required": [
-        "cache",
-        "encryption_key",
-        "expected_shards",
-        "groups",
-        "max_zdb_data_dir_size",
-        "metadata",
-        "minimal_shards",
         "name",
+        "cache",
+        "minimal_shards",
+        "expected_shards",
         "redundant_groups",
-        "redundant_nodes"
+        "redundant_nodes",
+        "max_zdb_data_dir_size",
+        "encryption_key",
+        "metadata",
+        "groups"
       ]
     },
     "threefold:index:VMComputed": {
@@ -392,12 +389,12 @@
       },
       "type": "object",
       "required": [
+        "mycelium_ip_seed",
         "computed_ip",
         "computed_ip6",
-        "console_url",
+        "planetary_ip",
         "mycelium_ip",
-        "mycelium_ip_seed",
-        "planetary_ip"
+        "console_url"
       ]
     },
     "threefold:index:VMInput": {
@@ -493,12 +490,12 @@
       },
       "type": "object",
       "required": [
-        "cpu",
-        "flist",
-        "memory",
         "name",
+        "node_id",
+        "flist",
         "network_name",
-        "node_id"
+        "cpu",
+        "memory"
       ]
     },
     "threefold:index:ZDBComputed": {
@@ -522,8 +519,8 @@
       "type": "object",
       "required": [
         "ips",
-        "namespace",
-        "port"
+        "port",
+        "namespace"
       ]
     },
     "threefold:index:ZDBInput": {
@@ -562,8 +559,8 @@
       "type": "object",
       "required": [
         "name",
-        "password",
-        "size"
+        "size",
+        "password"
       ]
     },
     "threefold:index:Zlog": {
@@ -579,13 +576,20 @@
       },
       "type": "object",
       "required": [
-        "output",
-        "zmachine"
+        "zmachine",
+        "output"
       ]
     }
   },
   "provider": {
     "properties": {
+      "graphql_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The graphql urls, example: https://graphql.grid.tf/graphql"
+      },
       "key_type": {
         "type": "string",
         "description": "The key type registered on substrate (ed25519 or sr25519).",
@@ -617,12 +621,32 @@
           ]
         }
       },
+      "proxy_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The proxy urls, example: https://gridproxy.grid.tf/"
+      },
+      "relay_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The relay urls, example: wss://relay.grid.tf"
+      },
       "rmb_timeout": {
         "type": "string",
         "description": "The timeout duration in seconds for rmb calls"
+      },
+      "substrate_url": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The substrate url, example: wss://tfchain.grid.tf/ws"
       }
     },
-    "type": "object",
     "inputProperties": {
       "graphql_url": {
         "type": "array",
@@ -775,16 +799,15 @@
           }
         }
       },
-      "type": "object",
       "required": [
-        "contract_id",
-        "ip_range",
+        "node_id",
         "name",
         "node_deployment_id",
-        "node_id",
-        "qsfs_computed",
+        "contract_id",
+        "ip_range",
+        "zdbs_computed",
         "vms_computed",
-        "zdbs_computed"
+        "qsfs_computed"
       ],
       "inputProperties": {
         "disks": {
@@ -838,8 +861,8 @@
         }
       },
       "requiredInputs": [
-        "name",
-        "node_id"
+        "node_id",
+        "name"
       ]
     },
     "threefold:index:GatewayFQDN": {
@@ -892,14 +915,13 @@
           "description": "TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service"
         }
       },
-      "type": "object",
       "required": [
+        "node_id",
+        "name",
+        "fqdn",
         "backends",
         "contract_id",
-        "fqdn",
-        "name",
-        "node_deployment_id",
-        "node_id"
+        "node_deployment_id"
       ],
       "inputProperties": {
         "backends": {
@@ -940,10 +962,10 @@
         }
       },
       "requiredInputs": [
-        "backends",
-        "fqdn",
+        "node_id",
         "name",
-        "node_id"
+        "fqdn",
+        "backends"
       ]
     },
     "threefold:index:GatewayName": {
@@ -1000,15 +1022,14 @@
           "description": "TLS passthrough controls the TLS termination, if false, the gateway will terminate the TLS, if True, it will only be terminated by the backend service"
         }
       },
-      "type": "object",
       "required": [
-        "backends",
-        "contract_id",
-        "fqdn",
         "name",
-        "name_contract_id",
+        "node_id",
+        "backends",
         "node_deployment_id",
-        "node_id"
+        "fqdn",
+        "name_contract_id",
+        "contract_id"
       ],
       "inputProperties": {
         "backends": {
@@ -1045,9 +1066,9 @@
         }
       },
       "requiredInputs": [
-        "backends",
         "name",
-        "node_id"
+        "node_id",
+        "backends"
       ]
     },
     "threefold:index:Kubernetes": {
@@ -1119,16 +1140,15 @@
           "description": "List of the computed fields of the worker nodes"
         }
       },
-      "type": "object",
       "required": [
         "master",
-        "master_computed",
-        "network_name",
-        "node_deployment_id",
-        "nodes_ip_range",
-        "token",
         "workers",
-        "workers_computed"
+        "token",
+        "network_name",
+        "master_computed",
+        "workers_computed",
+        "nodes_ip_range",
+        "node_deployment_id"
       ],
       "inputProperties": {
         "entry_point": {
@@ -1175,9 +1195,9 @@
       },
       "requiredInputs": [
         "master",
-        "network_name",
+        "workers",
         "token",
-        "workers"
+        "network_name"
       ]
     },
     "threefold:index:Network": {
@@ -1252,18 +1272,17 @@
           "default": "Network"
         }
       },
-      "type": "object",
       "required": [
-        "access_wg_config",
+        "name",
         "description",
+        "nodes",
+        "ip_range",
+        "access_wg_config",
         "external_ip",
         "external_sk",
-        "ip_range",
-        "name",
-        "node_deployment_id",
-        "nodes",
+        "public_node_id",
         "nodes_ip_range",
-        "public_node_id"
+        "node_deployment_id"
       ],
       "inputProperties": {
         "add_wg_access": {
@@ -1307,10 +1326,10 @@
         }
       },
       "requiredInputs": [
-        "description",
-        "ip_range",
         "name",
-        "nodes"
+        "description",
+        "nodes",
+        "ip_range"
       ]
     },
     "threefold:index:Scheduler": {
@@ -1400,7 +1419,6 @@
           "type": "boolean"
         }
       },
-      "type": "object",
       "required": [
         "nodes"
       ],

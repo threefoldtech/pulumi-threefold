@@ -29,6 +29,7 @@ class NetworkArgs:
                  solution_type: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Network resource.
+
         :param pulumi.Input[_builtins.str] description: The description of the network workload, optional with no restrictions
         :param pulumi.Input[_builtins.str] ip_range: The IP range for the network, subnet should be 16
         :param pulumi.Input[_builtins.str] name: The name of the network workload, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported
@@ -167,6 +168,7 @@ class Network(pulumi.CustomResource):
                  __props__=None):
         """
         Create a Network resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.bool] add_wg_access: A flag to support wireguard in the network
@@ -186,6 +188,7 @@ class Network(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Network resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param NetworkArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.

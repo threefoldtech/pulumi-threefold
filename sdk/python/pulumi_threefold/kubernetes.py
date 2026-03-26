@@ -32,6 +32,7 @@ class KubernetesArgs:
                  ssh_key: Optional[pulumi.Input[_builtins.str]] = None):
         """
         The set of arguments for constructing a Kubernetes resource.
+
         :param pulumi.Input['K8sNodeInputArgs'] master: Master holds the configuration of master node in the kubernetes cluster
         :param pulumi.Input[_builtins.str] network_name: The name of the network, it's required and cannot exceed 50 characters. Only alphanumeric and underscores characters are supported. Network must exist
         :param pulumi.Input[_builtins.str] token: The cluster secret token. Each node has to have this token to be part of the cluster. This token should be an alphanumeric non-empty string
@@ -188,6 +189,7 @@ class Kubernetes(pulumi.CustomResource):
                  __props__=None):
         """
         Create a Kubernetes resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[_builtins.str] entry_point: The entry point for the flist. Example: /sbin/zinit init
@@ -208,6 +210,7 @@ class Kubernetes(pulumi.CustomResource):
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Kubernetes resource with the given unique name, props, and options.
+
         :param str resource_name: The name of the resource.
         :param KubernetesArgs args: The arguments to use to populate this resource's properties.
         :param pulumi.ResourceOptions opts: Options for the resource.
