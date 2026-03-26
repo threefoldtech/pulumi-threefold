@@ -119,6 +119,10 @@ jobs:
           packages-dir: ${{github.workspace}}/sdk/python/bin/dist
 
       - if: ${{ matrix.language == 'nodejs' && env.PUBLISH_NPM == 'true' }}
+        name: Fix package.json
+        run: cd ${{github.workspace}}/sdk/nodejs/bin && npm pkg fix
+
+      - if: ${{ matrix.language == 'nodejs' && env.PUBLISH_NPM == 'true' }}
         uses: JS-DevTools/npm-publish@v3
         with:
           access: "public"
