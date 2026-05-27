@@ -1,4 +1,4 @@
-# Pulumi ThreeFold Provider
+# Grid Pulumi
 
 [![Integration tests](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/integration.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/integration.yaml) [![Lint](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/lint.yaml/badge.svg?branch=development)](https://github.com/threefoldtech/pulumi-threefold/actions/workflows/lint.yaml) [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/) <a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-54%25-brightgreen.svg?longCache=true&style=flat)</a>
 
