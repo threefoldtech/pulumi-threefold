@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/workloads"
+	"github.com/threefoldtech/zos_sdk_go/grid-client/workloads"
 	"github.com/threefoldtech/zos_base/pkg/gridtypes"
 )
 

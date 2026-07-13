@@ -6,7 +6,7 @@ import (
 	p "github.com/pulumi/pulumi-go-provider"
 	"github.com/pulumi/pulumi-go-provider/infer"
 	"github.com/pulumi/pulumi/sdk/v3/go/property"
-	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
+	"github.com/threefoldtech/zos_sdk_go/grid-client/zos"
 )
 
 // Kubernetes controlling struct

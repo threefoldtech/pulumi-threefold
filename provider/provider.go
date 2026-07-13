@@ -12,7 +12,7 @@ import (
 	goGen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
 	nodejsGen "github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
-	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
+	"github.com/threefoldtech/zos_sdk_go/grid-client/deployer"
 )
 
 // Provider data and resources

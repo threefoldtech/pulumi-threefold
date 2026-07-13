@@ -1,8 +1,8 @@
 package provider
 
 import (
-	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
-	"github.com/threefoldtech/tfgrid-sdk-go/grid-proxy/pkg/types"
+	"github.com/threefoldtech/zos_sdk_go/grid-client/zos"
+	"github.com/threefoldtech/zos_sdk_go/grid-proxy/pkg/types"
 )
 
 func convertGBToBytes(gb uint64) *uint64 {
