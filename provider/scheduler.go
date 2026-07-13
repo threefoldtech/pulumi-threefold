@@ -6,8 +6,8 @@ import (
 	"slices"
 
 	"github.com/pulumi/pulumi-go-provider/infer"
-	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/deployer"
-	"github.com/threefoldtech/tfgrid-sdk-go/grid-client/zos"
+	"github.com/threefoldtech/zos_sdk_go/grid-client/deployer"
+	"github.com/threefoldtech/zos_sdk_go/grid-client/zos"
 )
 
 // Scheduler controlling struct
