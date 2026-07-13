@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/threefoldtech/zos_sdk_go/grid-client/workloads"
 	"github.com/threefoldtech/zos_base/pkg/gridtypes"
+	"github.com/threefoldtech/zos_sdk_go/grid-client/workloads"
 )
 
 // K8sNodeInput struct of input data
